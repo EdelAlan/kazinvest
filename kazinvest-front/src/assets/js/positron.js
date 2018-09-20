@@ -15,10 +15,6 @@ export default () => ({
     'bearing': 0,
     'pitch': 0,
     'sources': {
-        'openmaptiles': {
-            'type': 'vector',
-            'url': 'https://free.tilehosting.com/data/v3.json?key=hWWfWrAiWGtv68r8wA6D'
-        },
         'composite': {
             'url': 'mapbox://alanedel.cjm90ybsq0jsz2qps9bus0l61-7bc8n,alanedel.ark1w3xd,alanedel.dx9wk4j2,alanedel.cjm90zdb907gq2wmp3wsdp3m6-9iaf8,alanedel.cc7b6dd2,alanedel.cjm90wsdu2c0v32o7un0y4zh1-11pop,alanedel.cjm90whgh0xn02vnu9ni5nmre-09wbg,alanedel.cjm90ylwj2m9x32nxnwymzdih-0fgd2,alanedel.cjm90xhsi0y3s2vtn8jhfn5fb-59tpr,alanedel.cjm90x7qs2c1l2qo7twhzxid9-1fbbx,alanedel.cjm90z1se1ywa2vqvr1hzrdla-4wr07,alanedel.0yjs07oo,alanedel.cz505b5o,alanedel.2bdo6zvq',
             'type': 'vector'
