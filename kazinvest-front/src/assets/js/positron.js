@@ -18,7 +18,155 @@ export default () => ({
         'composite': {
             'url': 'mapbox://alanedel.cjm90ybsq0jsz2qps9bus0l61-7bc8n,alanedel.ark1w3xd,alanedel.dx9wk4j2,alanedel.cjm90zdb907gq2wmp3wsdp3m6-9iaf8,alanedel.cc7b6dd2,alanedel.cjm90wsdu2c0v32o7un0y4zh1-11pop,alanedel.cjm90whgh0xn02vnu9ni5nmre-09wbg,alanedel.cjm90ylwj2m9x32nxnwymzdih-0fgd2,alanedel.cjm90xhsi0y3s2vtn8jhfn5fb-59tpr,alanedel.cjm90x7qs2c1l2qo7twhzxid9-1fbbx,alanedel.cjm90z1se1ywa2vqvr1hzrdla-4wr07,alanedel.0yjs07oo,alanedel.cz505b5o,alanedel.2bdo6zvq',
             'type': 'vector'
-        }
+        },
+        'symbols': {
+            type: "geojson",
+            data: {
+              type: "FeatureCollection",
+              features: [
+                {
+                  type: "Feature",
+                  geometry: {
+                    type: "Point",
+                    coordinates: [69.159995, 54.472108]
+                  },
+                  properties: {
+                    title: "СКО"
+                  }
+                },
+                {
+                  type: "Feature",
+                  geometry: {
+                    type: "Point",
+                    coordinates: [76.484217, 52.469523]
+                  },
+                  properties: {
+                    title: "Павлодарская"
+                  }
+                },
+                {
+                  type: "Feature",
+                  geometry: {
+                    type: "Point",
+                    coordinates: [82.217746, 48.970037]
+                  },
+                  properties: {
+                    title: "ВКО"
+                  }
+                },
+                {
+                  type: "Feature",
+                  geometry: {
+                    type: "Point",
+                    coordinates: [77.851468, 45.140789]
+                  },
+                  properties: {
+                    title: "Алматинская"
+                  }
+                },
+                {
+                  type: "Feature",
+                  geometry: {
+                    type: "Point",
+                    coordinates: [72.144071, 44.66465]
+                  },
+                  properties: {
+                    title: "Жамбылская"
+                  }
+                },
+                {
+                  type: "Feature",
+                  geometry: {
+                    type: "Point",
+                    coordinates: [68.680888, 42.416407]
+                  },
+                  properties: {
+                    title: "ЮКО"
+                  }
+                },
+                {
+                  type: "Feature",
+                  geometry: {
+                    type: "Point",
+                    coordinates: [63.418783, 45.236046]
+                  },
+                  properties: {
+                    title: "Кызылординская"
+                  }
+                },
+                {
+                  type: "Feature",
+                  geometry: {
+                    type: "Point",
+                    coordinates: [58.810698, 48.619783]
+                  },
+                  properties: {
+                    title: "Актюбинская"
+                  }
+                },
+                {
+                  type: "Feature",
+                  geometry: {
+                    type: "Point",
+                    coordinates: [53.776071, 44.05414]
+                  },
+                  properties: {
+                    title: "Мангыстауская"
+                  }
+                },
+                {
+                  type: "Feature",
+                  geometry: {
+                    type: "Point",
+                    coordinates: [52.176394, 47.822386]
+                  },
+                  properties: {
+                    title: "Атырауская"
+                  }
+                },
+                {
+                  type: "Feature",
+                  geometry: {
+                    type: "Point",
+                    coordinates: [63.496522, 52.509224]
+                  },
+                  properties: {
+                    title: "Костанайская"
+                  }
+                },
+                {
+                  type: "Feature",
+                  geometry: {
+                    type: "Point",
+                    coordinates: [70.298717, 52.006681]
+                  },
+                  properties: {
+                    title: "Акмолинская"
+                  }
+                },
+                {
+                  type: "Feature",
+                  geometry: {
+                    type: "Point",
+                    coordinates: [71.518106, 48.516465]
+                  },
+                  properties: {
+                    title: "Карагандинская"
+                  }
+                },
+                {
+                  type: "Feature",
+                  geometry: {
+                    type: "Point",
+                    coordinates: [50.905113, 50.19334]
+                  },
+                  properties: {
+                    title: "ЗКО"
+                  }
+                }
+              ]
+            }
+          },
     },
     'sprite': 'mapbox://sprites/alanedel/cjm8zxhak2s1i2sn29k3p7b8n',
     'glyphs': 'https://free.tilehosting.com/fonts/{fontstack}/{range}.pbf?key=hWWfWrAiWGtv68r8wA6D',
@@ -251,6 +399,17 @@ export default () => ({
                 ],
             }
         },
+        {
+            id: "symbols",
+            type: "symbol",
+            source: 'symbols',
+            layout: {
+              "text-field": "{title}",
+              "text-font": ["Proxima Nova"],
+              "text-size": 14,
+              "text-allow-overlap": true,
+            }
+          },
     ],
     'created': '2018-09-19T10:20:07.260Z',
     'id': 'cjm8zxhak2s1i2sn29k3p7b8n',

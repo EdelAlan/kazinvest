@@ -28,13 +28,141 @@ export default {
       interactive: false
     });
 
-    this.map.once("style.load", _ => {
+    this.map.on("load", _ => {
       // this._addObjects();
+
+      this.map.addLayer({
+        "id": "sez",
+        "type": "symbol",
+        "source": {
+          "type": "geojson",
+          "data": {
+            "type": "FeatureCollection",
+            "features": [
+              {
+                "type": "Feature",
+                "geometry": {
+                  "type": "Point",
+                  "properties": {},
+                  "coordinates": [80.23772478103639, 44.21026476671932]
+                },
+                "properties": {
+                  "title": "Хоргос - Восточные ворота"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                  "type": "Point",
+                  "coordinates": [44.238816, 80.350786]
+                },
+                "properties": {
+                  "title": "Международный центр приграничного сотрудничества «Хоргос»"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                  "type": "Point",
+                  "coordinates": [77.144503, 43.343108]
+                },
+                "properties": {
+                  "title": "Парк инновационных технологий"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                  "type": "Point",
+                  "coordinates": [73.59760522842409, 43.50232444502018]
+                },
+                "properties": {
+                  "title": "Химический парк Тараз"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                  "type": "Point",
+                  "coordinates": [69.64606761932374, 42.24278385574829]
+                },
+                "properties": {
+                  "title": "Оңтүстік"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                  "type": "Point",
+                  "coordinates": [51.21002197265626, 43.619238579046694]
+                },
+                "properties": {
+                  "title": "Морпорт Актау"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                  "type": "Point",
+                  "coordinates": [52.24822998046876, 47.351908008336025]
+                },
+                "properties": {
+                  "title": "Специальная экономическая зона «Национальный индустриальный нефтехимический технопарк»"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                  "type": "Point",
+                  "coordinates": [73.24087411165239, 49.912379774883284]
+                },
+                "properties": {
+                  "title": "Сарыарқа"
+                }
+              },
+              {
+                "type": "Feature",
+                "geometry": {
+                  "type": "Point",
+                  "coordinates": [76.91554069519044, 52.383353419833725]
+                },
+                "properties": {
+                  "title": "Павлодар"
+                }
+              },
+              {
+                "type": "Feature",
+                'geometry': {
+                  "type": "Point",
+                  "coordinates": [71.49438858032228, 51.17256293114924]
+                },
+                "properties": {
+                  "title": "Астана - новый город"
+                }
+              },
+              {
+                "type": "Feature",
+                'geometry': {
+                  "type": "Point",
+                  "coordinates": [71.61867141723634, 51.17175571614918]
+                },
+                "properties": {
+                  "title": "Астана-Технополис"
+                }
+              }
+            ]
+          }
+        },
+        "layout": {
+            "icon-image": "marker"
+        }
+      });
+
     });
 
     this.map.on("mousemove", e => {
       var features = this.map.queryRenderedFeatures(e.point);
-      if (features[0]) {
+      if (features[0] && features[0].sourceLayer != undefined) {
         if (this.hoveredStateId) {
           this.map.setFeatureState(
             {
@@ -56,6 +184,29 @@ export default {
           { hover: true }
         );
       }
+    });
+
+    this.map.on('click', e => {
+        var features = this.map.queryRenderedFeatures(e.point);
+        console.log(features[0]);
+    });
+
+    var popup = new mapboxgl.Popup({
+        closeButton: false,
+        closeOnClick: false
+    });
+
+    this.map.on('mouseenter', "sez", e => {
+        var features = this.map.queryRenderedFeatures(e.point);
+        this.map.getCanvas().style.cursor = 'pointer';
+        popup.setLngLat(features[0].geometry.coordinates.slice())
+            .setHTML(features[0].properties.title)
+            .addTo(this.map)
+    });
+
+    this.map.on('mouseleave', "sez", e => {
+        this.map.getCanvas().style.cursor = '';
+        popup.remove();
     });
 
     this.map.on("mouseleave", "akm-obl", _ => {
