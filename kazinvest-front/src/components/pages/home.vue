@@ -1,22 +1,66 @@
+<script>
+	import modal from '../ui/modal.vue';
+  import { mapGetters, mapActions } from 'vuex';
+
+	export default {
+		components: {
+			modal,
+		},
+
+		data() {
+			return {
+				menu: false
+			}
+		},
+
+    computed: mapGetters([
+      'signup_signin_modal',
+    ]),
+
+		methods: {
+      ...mapActions([
+        'change_ui_visibility',
+      ]),
+			toggleMenu() {
+				this.menu = !this.menu;
+			},
+		},
+
+	}
+</script>
+
+
 <template>
   <div class="wrapper">
-    <button v-on:click="modal = true">Modal on</button>
 
     <modal
-      v-if="modal"
-      v-on:close="modal = false">
+      v-if="signup_signin_modal"
+      v-on:close="change_ui_visibility({
+        ui_component: 'signup_signin_modal', 
+        ui_component_state: false,
+      })">
       <div>Auth</div>
     </modal>
-				
 
-        <div class="background"></div>
-        <div class="lang_container">
-            <div id="kk" class="lang"></div>
-            <div id="ru" class="lang"></div>
-            <div id="en" class="lang"></div>
-        </div>
+    <div class="background"></div>
+
+    <div class="lang_container">
+      <div id="kk" class="lang"></div>
+      <div id="ru" class="lang"></div>
+      <div id="en" class="lang"></div>
+    </div>
+
         <div class="content">
-            <a href="#" id="sign_in" class="btn">Войти</a>
+            
+            <a href="#" 
+              id="sign_in" 
+              class="btn"
+              v-on:click="change_ui_visibility({
+                ui_component: 'signup_signin_modal', 
+                ui_component_state: true,
+              })"
+              >Войти</a>
+            
             <div class="filter_line">
                 <select id="type" class="field">
                     <option value="сэз">СЭЗ</option>
@@ -63,28 +107,7 @@
     </div>
 </template>
 
-<script>
-	import modal from '../ui/modal.vue';
 
-	export default {
-		components: {
-			modal,
-		},
-
-		data() {
-			return {
-				modal: false,
-				menu: false
-			}
-		},
-
-		methods: {
-			toggleMenu() {
-				this.menu = !this.menu;
-			}
-		}
-	}
-</script>
 
 <style>
     .wrapper {
