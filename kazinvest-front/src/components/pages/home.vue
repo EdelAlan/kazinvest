@@ -1,5 +1,14 @@
 <template>
-    <div class="wrapper">
+  <div class="wrapper">
+    <button v-on:click="modal = true">Modal on</button>
+
+    <modal
+      v-if="modal"
+      v-on:close="modal = false">
+      <div>Auth</div>
+    </modal>
+				
+
         <div class="background"></div>
         <div class="lang_container">
             <div id="kk" class="lang"></div>
@@ -55,26 +64,33 @@
 </template>
 
 <script>
-    export default {
-        data() {
-            return {
-                menu: false
-            }
-        },
+	import modal from '../ui/modal.vue';
 
-        methods: {
-            toggleMenu() {
-                this.menu = !this.menu;
-            }
-        }
-    }
+	export default {
+		components: {
+			modal,
+		},
+
+		data() {
+			return {
+				modal: false,
+				menu: false
+			}
+		},
+
+		methods: {
+			toggleMenu() {
+				this.menu = !this.menu;
+			}
+		}
+	}
 </script>
 
 <style>
     .wrapper {
         position: relative;
         min-height: 100%;
-        background: url('../assets/images/kz-borders.svg') no-repeat top;
+        background: url('../../assets/images/kz-borders.svg') no-repeat top;
         background-size: 98%;
         padding-bottom: 100px;
     }
@@ -92,15 +108,15 @@
     }
 
     #kk.lang {
-        background: url('../assets/images/lang-kk.svg') no-repeat center;
+        background: url('../../assets/images/lang-kk.svg') no-repeat center;
     }
 
     #ru.lang {
-        background: url('../assets/images/lang-ru.svg') no-repeat center;
+        background: url('../../assets/images/lang-ru.svg') no-repeat center;
     }
 
     #en.lang {
-        background: url('../assets/images/lang-en.svg') no-repeat center;
+        background: url('../../assets/images/lang-en.svg') no-repeat center;
     }
 
     .content {
@@ -187,7 +203,7 @@
 
     .logo {
         height: 78px;
-        background: url('../assets/images/logo.svg') no-repeat center;
+        background: url('../../assets/images/logo.svg') no-repeat center;
         background-size: contain;
         margin-bottom: 10px;
     }
@@ -236,7 +252,7 @@
         position: absolute;
         bottom: 10px;
         right: 10px;
-        background: url('../assets/images/assistant.svg') no-repeat center;
+        background: url('../../assets/images/assistant.svg') no-repeat center;
         cursor: pointer;
         user-select: none;
     }

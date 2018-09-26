@@ -38,6 +38,7 @@
   }
 
   html {
+    /* @beknur мешает дочерним элементам */
     background: url('./assets/images/background.svg') repeat, url('./assets/images/background.svg') repeat -69px -68px;
   }
 
@@ -45,7 +46,7 @@
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-align: center;
+    /*text-align: center; @beknur мешает дочерним элементам */ 
     height: 100%;
     overflow: auto;
   }
