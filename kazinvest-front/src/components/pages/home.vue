@@ -3,6 +3,7 @@
   import tabs from '../ui/tabs.vue';
 
   import signup from '../logic/signup.vue';
+  import signin from '../logic/signin.vue';
 
   import { mapGetters, mapActions } from 'vuex';
 
@@ -11,6 +12,7 @@
         modal,
         tabs,
         signup,
+        signin,
       },
 
       data() {
@@ -50,7 +52,9 @@
 
         <tabs
           :tabs_titles="['Войти', 'Регистрация']">
-          <div slot="tab_0">Authod</div>
+          <div slot="tab_0">
+            <signin></signin>
+          </div>
           <div slot="tab_1">
             <signup></signup>
           </div>

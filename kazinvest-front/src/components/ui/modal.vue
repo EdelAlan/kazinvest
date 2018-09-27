@@ -1,6 +1,7 @@
 <template>
 	<div class="modal">
-		<div class="modal-shadow"></div>
+		<div class="modal-shadow"
+			v-on:click="$emit('close')"></div>
 		<div class="modal-container">
 			<slot></slot>
 			<button class="modal-close"
@@ -20,6 +21,7 @@
 		height: 100%;
 		top: 0;
 		left: 0;
+		overflow-y: auto;
 	}
 
 	.modal-shadow {
