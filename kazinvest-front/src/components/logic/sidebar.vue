@@ -1,10 +1,12 @@
 <script>
   import piechart from '../ui/piechart';
+  import lang from './lang';
   import { mapGetters, mapActions } from 'vuex';  
 
   export default {
     components: { 
       piechart,
+      lang,
     },
 
     computed: mapGetters([
@@ -23,11 +25,7 @@
     <div class="filter">
       <div class="filter_header">
         <div class="logo"></div>
-        <div class="lang_container">
-          <a href="#" id="kk" class="lang">KAZ</a>
-          <a href="#" id="ru" class="lang">RUS</a>
-          <a href="#" id="en" class="lang">ENG</a>
-        </div>
+        <lang></lang>
       </div>
       <div class="filter_body">
         <input type="text" class="search" placeholder="Область, название СЭЗ / ИЗ, объект">
@@ -131,20 +129,6 @@
     margin: 5px;
     background: url(../../assets/images/logo.svg) no-repeat center;
     background-size: cover;
-  }
-
-  .lang_container {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .lang {
-    color: white;
-    text-decoration: none;
-  }
-
-  .lang:hover {
-    text-decoration: underline;
   }
 
   .filter_body {

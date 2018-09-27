@@ -72,9 +72,7 @@
       </defs>
       <g mask="url(#circleClip)">
         <g class="piechart-piece"
-          v-for="s in processed_pieces"
-          v-on:mouseover="key = s.key, val = s.val"
-          :class="{ 'piechart-piece--hovered': hovered_key == s.key }">
+          v-for="s in processed_pieces">
           <path :fill="s.color" :d="s.d" :transform="s.transform" />
         </g>
       </g>
@@ -84,8 +82,6 @@
       <div
         class="piechart-legend_item"
         v-for="({ val, key }, idx) in sectors"
-        v-on:mouseover="hovered_key = key"
-        v-on:mouseleave="hovered_key = ''"
       >
         <div
           class="piechart-legend_item_color"

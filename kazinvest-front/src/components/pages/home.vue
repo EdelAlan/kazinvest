@@ -92,12 +92,14 @@
                 <input type="text" id="search" class="field" placeholder="Нефть">
                 <button id="find" class="field btn">Найти</button>
             </div>
-            <a href="#" id="map_link">
-                <div>
-                    <div class="logo"></div>
-                    <div class="title">Интерактивная карта Специальных экономических и Индустриальных зон Республики Казахстан</div>
-                </div>
-            </a>
+            <router-link to="/map">
+              <a href="#" id="map_link">
+                  <div>
+                      <div class="logo"></div>
+                      <div class="title">Интерактивная карта Специальных экономических и Индустриальных зон Республики Казахстан</div>
+                  </div>
+              </a>
+            </router-link>
             <div class="btn_group">
                 <a href="#" class="btn category">
                     <div class="count">11</div>
