@@ -25,7 +25,8 @@
 		<div class="tabs-btns">
 			<button class="tabs-btn"
 				v-for="tab_title, key in tabs_titles"
-				v-on:click=page_activate(key)>
+				v-on:click=page_activate(key)
+				:key="key">
 				<span v-text="tab_title"></span>
 				<span class="tabs-btn_active"
 					v-if="active_page_num == key"></span>	

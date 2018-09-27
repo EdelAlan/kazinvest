@@ -5,8 +5,8 @@
 
 <script>
 import mapboxgl from "mapbox-gl";
-import positron from "../assets/js/positron";
-import "../assets/css/mapbox-gl.css";
+import positron from "../../assets/js/positron";
+import "../../assets/css/mapbox-gl.css";
 import { mapGetters } from "vuex";
 
 export default {
