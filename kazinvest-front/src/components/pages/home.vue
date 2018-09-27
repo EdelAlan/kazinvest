@@ -1,17 +1,25 @@
 <script>
-	import modal from '../ui/modal.vue';
+  import modal from '../ui/modal.vue';
+  import tabs from '../ui/tabs.vue';
+
+  import signup from '../logic/signup.vue';
+  import signin from '../logic/signin.vue';
+
   import { mapGetters, mapActions } from 'vuex';
 
-	export default {
-		components: {
-			modal,
-		},
+  export default {
+    components: {
+      modal,
+      tabs,
+      signup,
+      signin,
+    },
 
-		data() {
-			return {
-				menu: false
-			}
-		},
+    data() {
+      return {
+        menu: false
+      }
+    },
 
     computed: mapGetters([
       'signup_signin_modal',
@@ -31,15 +39,29 @@
 
 
 <template>
-  <div class="wrapper">
+  <div class="home">
 
     <modal
       v-if="signup_signin_modal"
       v-on:close="change_ui_visibility({
-        ui_component: 'signup_signin_modal', 
+        ui_component: 'signup_signin_modal',
         ui_component_state: false,
       })">
-      <div>Auth</div>
+
+      <div class="home-signup_signin_container">
+
+        <tabs
+          :tabs_titles="['Войти', 'Регистрация']">
+          <div slot="tab_0">
+            <signin></signin>
+          </div>
+          <div slot="tab_1">
+            <signup></signup>
+          </div>
+        </tabs>
+
+      </div>
+
     </modal>
 
     <div class="background"></div>
@@ -50,67 +72,67 @@
       <div id="en" class="lang"></div>
     </div>
 
-      <div class="content">
+        <div class="content">
 
-        <a href="#"
-          id="sign_in"
-          class="btn"
-          v-on:click="change_ui_visibility({
-            ui_component: 'signup_signin_modal',
-            ui_component_state: true,
-          })"
-          >Войти</a>
+            <a href="#"
+              id="sign_in"
+              class="btn"
+              v-on:click="change_ui_visibility({
+                ui_component: 'signup_signin_modal',
+                ui_component_state: true,
+              })"
+              >Войти</a>
 
-        <div class="filter_line">
-          <select id="type" class="field">
-            <option value="сэз">СЭЗ</option>
-            <option value="из">ИЗ</option>
-          </select>
-          <input type="text" id="territory" class="field" placeholder="Весь Казахстан">
-          <input type="text" id="search" class="field" placeholder="Нефть">
-          <button id="find" class="field btn">Найти</button>
+            <div class="filter_line">
+                <select id="type" class="field">
+                    <option value="сэз">СЭЗ</option>
+                    <option value="из">ИЗ</option>
+                </select>
+                <input type="text" id="territory" class="field" placeholder="Весь Казахстан">
+                <input type="text" id="search" class="field" placeholder="Нефть">
+                <button id="find" class="field btn">Найти</button>
+            </div>
+            <a href="#" id="map_link">
+                <div>
+                    <div class="logo"></div>
+                    <div class="title">Интерактивная карта Специальных экономических и Индустриальных зон Республики Казахстан</div>
+                </div>
+            </a>
+            <div class="btn_group">
+                <a href="#" class="btn category">
+                    <div class="count">11</div>
+                    <p class="title">Специальные экономические зоны (СЭЗ)</p>
+                </a>
+                <a href="#" class="btn category">
+                    <div class="count">28</div>
+                    <p class="title">Индустриальные зоны (ИЗ)</p>
+                </a>
+                <a href="#" class="btn category">
+                    <p class="title">Инвестиционные возможности</p>
+                </a>
+            </div>
         </div>
-        <router-link id="map_link" to="map">
-          <div>
-            <div class="logo"></div>
-            <div class="title">Интерактивная карта Специальных экономических и Индустриальных зон Республики Казахстан</div>
-          </div>
-        </router-link>
-        <div class="btn_group">
-          <a href="#" class="btn category">
-            <div class="count">11</div>
-            <p class="title">Специальные экономические зоны (СЭЗ)</p>
-          </a>
-          <a href="#" class="btn category">
-            <div class="count">28</div>
-            <p class="title">Индустриальные зоны (ИЗ)</p>
-          </a>
-          <a href="#" class="btn category">
-            <p class="title">Инвестиционные возможности</p>
-          </a>
+        <div class="assistant" :class="{'assistant--menu': menu}" @click="toggleMenu">
+            <div class="welcome">
+                <div class="title">Добро пожаловать!</div>
+                <div class="helper"></div>
+            </div>
+            <div class="menu" @click.stop>
+                <div class="close_btn" @click="toggleMenu"></div>
+                <div class="menu_body">
+                    <a href="#" class="btn">Хочу стать участником</a>
+                    <a href="#" class="btn">Я участник СЭЗ / ИЗ</a>
+                    <a href="#" class="btn">Задать вопрос</a>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="assistant" :class="{'assistant--menu': menu}" @click="toggleMenu">
-        <div class="welcome">
-          <div class="title">Добро пожаловать!</div>
-          <div class="helper"></div>
-        </div>
-        <div class="menu" @click.stop>
-          <div class="close_btn" @click="toggleMenu"></div>
-          <div class="menu_body">
-            <a href="#" class="btn">Хочу стать участником</a>
-            <a href="#" class="btn">Я участник СЭЗ / ИЗ</a>
-            <a href="#" class="btn">Задать вопрос</a>
-          </div>
-        </div>
-      </div>
     </div>
 </template>
 
 
 
 <style scoped>
-  .wrapper {
+  .home {
     position: relative;
     min-height: 100%;
     background: url('../../assets/images/kz-borders.svg') no-repeat top;
@@ -118,10 +140,15 @@
     padding-bottom: 100px;
   }
 
+  .home-signup_signin_container {
+    width: 730px;
+    margin: 0 auto;
+  }
+
   .lang_container {
-    padding: 20px;
-    display: flex;
-    justify-content: flex-end;
+      padding: 20px;
+      display: flex;
+      justify-content: flex-end;
   }
 
   .lang {
@@ -292,8 +319,8 @@
 
   .assistant--menu .menu,
   .menu_body {
-    display: flex;
-    flex-direction: column;
+      display: flex;
+      flex-direction: column;
   }
 
   .menu_body {

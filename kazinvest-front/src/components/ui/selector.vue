@@ -64,6 +64,7 @@
       v-on:input="search($event.target.value)"
       v-on:click="focus"
     />
+    <span class="selector-carret"></span>
     <div class="selector-items"
       v-if="list_is_shown">
       <div class="selector-item"
@@ -88,6 +89,17 @@
     width: 100%;
     outline: none;
     background: #fff;
+  }
+
+  .selector-carret {
+    width: 20px;
+    height: 12px;
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-size: contain;
+    background-image: url('../../assets/images/carret.svg');
   }
 
   .selector-items {
