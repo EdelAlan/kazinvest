@@ -1,9 +1,9 @@
 <script>
-  import dropdown from '../ui/dropdown';
+  // import dropdown from '../ui/dropdown';
   import { mapGetters, mapActions } from 'vuex';  
 
   export default {
-    components: { dropdown },
+    // components: { dropdown },
 
     computed: mapGetters([
       'sidebar',
