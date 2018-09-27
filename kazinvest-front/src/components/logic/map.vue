@@ -5,9 +5,9 @@
 
 <script>
 import mapboxgl from 'mapbox-gl';
-import positron from '../assets/js/positron';
-import osm from '../assets/js/osm';
-import '../assets/css/mapbox-gl.css';
+import positron from '../../assets/js/positron';
+import osm from '../../assets/js/osm';
+import '../../assets/css/mapbox-gl.css';
 import { mapGetters } from 'vuex';
 import * as turf from '@turf/turf';
 
@@ -56,7 +56,7 @@ export default {
         }
       }
       if (this.map_level == 2) {
-        console.log(features);
+        console.log(features.length);
       }
     });
 
