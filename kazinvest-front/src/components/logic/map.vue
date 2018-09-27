@@ -56,7 +56,7 @@ export default {
         }
       }
       if (this.map_level == 2) {
-        console.log(features);
+        console.log(features.length);
       }
     });
 
