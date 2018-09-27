@@ -1,9 +1,11 @@
 <script>
-  // import dropdown from '../ui/dropdown';
+  import piechart from '../ui/piechart';
   import { mapGetters, mapActions } from 'vuex';  
 
   export default {
-    // components: { dropdown },
+    components: { 
+      piechart,
+    },
 
     computed: mapGetters([
       'sidebar',
@@ -64,7 +66,13 @@
       </div>
       <div class="tab_wrapper">
         <div class="tab">
-
+          <piechart
+            :size="100"
+            :pieces="[
+              { key: 'Потребность', val: 123333 },
+              { key: 'Выделено', val: 321321 },
+            ]"
+          ></piechart>
         </div>
         <div class="tab">
 
