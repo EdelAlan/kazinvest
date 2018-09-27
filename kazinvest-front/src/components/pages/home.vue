@@ -51,7 +51,14 @@
       <div class="home-signup_signin_container">
 
         <tabs
-          :tabs_titles="['Войти', 'Регистрация']">
+          :titles_style="{
+            'font-size': '20px',
+            'padding': '22px',
+          }">
+          
+          <span slot="tab_title_0">Войти</span>
+          <span slot="tab_title_1">Регистрация</span>
+          
           <div slot="tab_0">
             <signin></signin>
           </div>
