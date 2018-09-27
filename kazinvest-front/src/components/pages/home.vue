@@ -1,45 +1,63 @@
 <script>
-	import modal from '../ui/modal.vue';
+  import modal from '../ui/modal.vue';
+  import tabs from '../ui/tabs.vue';
+
+  import signup from '../logic/signup.vue';
+
   import { mapGetters, mapActions } from 'vuex';
 
-	export default {
-		components: {
-			modal,
-		},
+    export default {
+      components: {
+        modal,
+        tabs,
+        signup,
+      },
 
-		data() {
-			return {
-				menu: false
-			}
-		},
+      data() {
+        return {
+          menu: false
+        }
+      },
 
-    computed: mapGetters([
-      'signup_signin_modal',
-    ]),
+      computed: mapGetters([
+        'signup_signin_modal',
+      ]),
 
-		methods: {
+        methods: {
       ...mapActions([
         'change_ui_visibility',
       ]),
-			toggleMenu() {
-				this.menu = !this.menu;
-			},
-		},
+            toggleMenu() {
+                this.menu = !this.menu;
+            },
+        },
 
-	}
+    }
 </script>
 
 
 <template>
-  <div class="wrapper">
+  <div class="home">
 
     <modal
       v-if="signup_signin_modal"
       v-on:close="change_ui_visibility({
-        ui_component: 'signup_signin_modal', 
+        ui_component: 'signup_signin_modal',
         ui_component_state: false,
       })">
-      <div>Auth</div>
+
+      <div class="home-signup_signin_container">
+
+        <tabs
+          :tabs_titles="['Войти', 'Регистрация']">
+          <div slot="tab_0">Authod</div>
+          <div slot="tab_1">
+            <signup></signup>
+          </div>
+        </tabs>
+
+      </div>
+
     </modal>
 
     <div class="background"></div>
@@ -51,16 +69,16 @@
     </div>
 
         <div class="content">
-            
-            <a href="#" 
-              id="sign_in" 
+
+            <a href="#"
+              id="sign_in"
               class="btn"
               v-on:click="change_ui_visibility({
-                ui_component: 'signup_signin_modal', 
+                ui_component: 'signup_signin_modal',
                 ui_component_state: true,
               })"
               >Войти</a>
-            
+
             <div class="filter_line">
                 <select id="type" class="field">
                     <option value="сэз">СЭЗ</option>
@@ -110,13 +128,18 @@
 
 
 <style>
-    .wrapper {
-        position: relative;
-        min-height: 100%;
-        background: url('../../assets/images/kz-borders.svg') no-repeat top;
-        background-size: 98%;
-        padding-bottom: 100px;
-    }
+  .home {
+    position: relative;
+    min-height: 100%;
+    background: url('../../assets/images/kz-borders.svg') no-repeat top;
+    background-size: 98%;
+    padding-bottom: 100px;
+  }
+
+  .home-signup_signin_container {
+    width: 730px;
+    margin: 0 auto;
+  }
 
     .lang_container {
         padding: 20px;
@@ -173,7 +196,7 @@
         align-items: stretch;
         padding: 5px;
     }
-    
+
     .filter_line, #map_link {
         margin: 5px 0;
         border-radius: 3px;
@@ -234,7 +257,7 @@
     .title {
         font-size: 24px;
     }
-    
+
     .btn_group {
         display: flex;
         margin: 5px 0;
@@ -293,7 +316,7 @@
     .assistant--menu .menu,
     .menu_body {
         display: flex;
-        flex-direction: column;        
+        flex-direction: column;
     }
 
     .menu_body {
@@ -334,7 +357,7 @@
     .close_btn::before {
         transform: rotate(-45deg);
     }
-    
+
     .close_btn:hover::after {
         transform: rotate(135deg);
     }

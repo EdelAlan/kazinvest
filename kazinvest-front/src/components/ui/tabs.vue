@@ -58,7 +58,7 @@
 		font-size: 20px;
 		border: none;
 		padding: 20px;
-		flex-grow: 2;
+		flex-grow: 99; /* many tabs */
 		color: #878DA1;
 		position: relative;
 		outline: none;
