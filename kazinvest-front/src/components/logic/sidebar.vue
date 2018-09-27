@@ -67,8 +67,7 @@
       <div class="tab_wrapper">
         <div class="tab">
           <piechart
-            :size="100"
-            :pieces="[
+            :sectors="[
               { key: 'Потребность', val: 123333 },
               { key: 'Выделено', val: 321321 },
             ]"

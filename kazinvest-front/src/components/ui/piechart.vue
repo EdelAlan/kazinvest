@@ -4,30 +4,24 @@
 
 	export default {
 
-    props: ['size', 'pieces', 'hole'],
+    props: ['sectors'],
 
     data() {
       return {
-        tooltip_style: {},
-        hovered_key: '',
-        key: '',
-        val: '',
         colors,
+        size: 165,
       };
     },
 
     computed: {
-      is_hole() {
-        return this.hole;
-      },
       total() {
-        return this.pieces.reduce((acc, it) => acc + it.val, 0);
+        return this.sectors.reduce((acc, it) => acc + it.val, 0);
       },
       processed_pieces() {
         const result = [];
-        const l = 100 / 2;
+        const l = this.size / 2;
         let rotation = 0;
-        this.pieces.forEach(({ val, key }, idx) => {
+        this.sectors.forEach(({ val, key }, idx) => {
           const angle = 360 * val / this.total;
           const aCalc = (angle > 180) ? 360 - angle : angle;
           const angleRad = aCalc * Math.PI / 180;
@@ -54,7 +48,7 @@
             percentage: val / this.total,
             color: this.colors[idx],
             d: `M${l},${l} L${l},0 A${l},${l} 0 ${arcSweep},1 ${x}, ${y} z`,
-            transform: `translate(${100 * 0.05}, ${100 * 0.05}) rotate(${rotation}, ${l}, ${l})`,
+            transform: `translate(${this.size * 0.05}, ${this.size * 0.05}) rotate(${rotation}, ${l}, ${l})`,
           });
           rotation += angle;
         });
@@ -68,11 +62,12 @@
 
 <template>
 	<div class="piechart">
+    <span class="piechart-total" v-text="total"></span>
     <svg class="piechart-svg" :width="size * 1.1" :height="size * 1.1">
       <defs>
         <mask id="circleClip" >
           <rect fill="white" width="100%" height="100%" />
-          <circle fill="black" :cx="size * 0.55" :cy="size * 0.55" :r="size * 0.4" />
+          <circle fill="black" :cx="size * 0.55" :cy="size * 0.55" :r="size * 0.39" />
         </mask>
       </defs>
       <g mask="url(#circleClip)">
@@ -88,7 +83,7 @@
     <div class="piechart-legend" :style="{ 'left': size * 1.15 }">
       <div
         class="piechart-legend_item"
-        v-for="({ val, key }, idx) in pieces"
+        v-for="({ val, key }, idx) in sectors"
         v-on:mouseover="hovered_key = key"
         v-on:mouseleave="hovered_key = ''"
       >
@@ -112,13 +107,21 @@
   }
 
   .piechart-legend {
-    bottom: 1em;
-    overflow-y: auto;
+    padding: 0 10px;
+  }
+
+  .piechart-total {
+    position: absolute;
+    left: 50%;
+    font-size: 18px;
+    top: 94px;
+    color: #949494;
+    transform: translateX(-50%);
   }
 
   .piechart-legend_item {
     padding: 5px 0;
-    font-size: 12px;
+    font-size: 16px;
     align-items: stretch;
   }
 
@@ -137,13 +140,15 @@
     border-radius: 50%;
     margin-right: 5px;
     width: 14px;
+    margin-top: 3px;
     height: 14px;
     float: left;  
     margin-bottom: 10px;
   }
 
   .piechart-svg {
-    margin-left: .1em;
+    margin: 15px auto;
+    display: block;
   }
 
   .piechart-piece {
