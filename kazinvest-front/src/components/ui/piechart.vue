@@ -14,10 +14,11 @@
     },
 
     computed: {
-      total() {
+      total () {
         return this.sectors.reduce((acc, it) => acc + it.val, 0);
       },
-      processed_pieces() {
+
+      processed_sectors () {
         const result = [];
         const l = this.size / 2;
         let rotation = 0;
@@ -56,13 +57,30 @@
       },
     },
 
+    methods: {
+      separated_num (num) {
+        let newnum = '';
+        let space_count = 0;
+        for (let i = String(num).length-1; i >= 0; i--) {
+          newnum += String(num)[i];
+          if ((newnum.length - space_count) % 3 == 0) {
+            newnum += ' ';
+            space_count += 1;
+          }
+        }
+        if (newnum[0] == ' ') {
+          newnum = newnum.slice(1);
+        }
+        return newnum.split('').reverse().join('');
+      },
+    },
 
 	}
 </script>
 
 <template>
 	<div class="piechart">
-    <span class="piechart-total" v-text="total"></span>
+    <span class="piechart-total" v-text="separated_num(total)"></span>
     <svg class="piechart-svg" :width="size * 1.1" :height="size * 1.1">
       <defs>
         <mask id="circleClip" >
@@ -72,7 +90,7 @@
       </defs>
       <g mask="url(#circleClip)">
         <g class="piechart-piece"
-          v-for="s in processed_pieces">
+          v-for="s in processed_sectors">
           <path :fill="s.color" :d="s.d" :transform="s.transform" />
         </g>
       </g>
@@ -88,7 +106,7 @@
           :style="{ 'border': '3px solid ' + colors[idx] }"></div>
         <div class="piechart-legend_item_key" v-text="key"></div>
         <div class="piechart-legend_item_val">
-          <span v-text="val"></span>
+          <span v-text="separated_num(val) + ' (' + (val * 100 / total).toFixed(0) + ' %)'"></span>
         </div>
       </div>
     </div>
@@ -126,10 +144,7 @@
   }
 
   .piechart-legend_item_val {
-    margin-right: 1em;
-    margin-left: 1em;
-    width: 6em;
-    color: #666;
+    color: #999;
   }
 
   .piechart-legend_item_color {
