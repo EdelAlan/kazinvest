@@ -1,5 +1,5 @@
 const express = require('express');
-const controller = require('./controller');
+const controller = require('./src/api/map');
 
 process.env.PGUSER = 'postgres';
 process.env.PGPASSWORD = '1';
