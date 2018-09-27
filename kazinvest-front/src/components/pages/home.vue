@@ -1,13 +1,88 @@
+<script>
+  import modal from '../ui/modal.vue';
+  import tabs from '../ui/tabs.vue';
+
+  import signup from '../logic/signup.vue';
+  import signin from '../logic/signin.vue';
+
+  import { mapGetters, mapActions } from 'vuex';
+
+    export default {
+      components: {
+        modal,
+        tabs,
+        signup,
+        signin,
+      },
+
+      data() {
+        return {
+          menu: false
+        }
+      },
+
+      computed: mapGetters([
+        'signup_signin_modal',
+      ]),
+
+        methods: {
+      ...mapActions([
+        'change_ui_visibility',
+      ]),
+            toggleMenu() {
+                this.menu = !this.menu;
+            },
+        },
+
+    }
+</script>
+
+
 <template>
-    <div class="wrapper">
-        <div class="background"></div>
-        <div class="lang_container">
-            <div id="kk" class="lang"></div>
-            <div id="ru" class="lang"></div>
-            <div id="en" class="lang"></div>
-        </div>
+  <div class="home">
+
+    <modal
+      v-if="signup_signin_modal"
+      v-on:close="change_ui_visibility({
+        ui_component: 'signup_signin_modal',
+        ui_component_state: false,
+      })">
+
+      <div class="home-signup_signin_container">
+
+        <tabs
+          :tabs_titles="['Войти', 'Регистрация']">
+          <div slot="tab_0">
+            <signin></signin>
+          </div>
+          <div slot="tab_1">
+            <signup></signup>
+          </div>
+        </tabs>
+
+      </div>
+
+    </modal>
+
+    <div class="background"></div>
+
+    <div class="lang_container">
+      <div id="kk" class="lang"></div>
+      <div id="ru" class="lang"></div>
+      <div id="en" class="lang"></div>
+    </div>
+
         <div class="content">
-            <a href="#" id="sign_in" class="btn">Войти</a>
+
+            <a href="#"
+              id="sign_in"
+              class="btn"
+              v-on:click="change_ui_visibility({
+                ui_component: 'signup_signin_modal',
+                ui_component_state: true,
+              })"
+              >Войти</a>
+
             <div class="filter_line">
                 <select id="type" class="field">
                     <option value="сэз">СЭЗ</option>
@@ -54,30 +129,21 @@
     </div>
 </template>
 
-<script>
-    export default {
-        data() {
-            return {
-                menu: false
-            }
-        },
 
-        methods: {
-            toggleMenu() {
-                this.menu = !this.menu;
-            }
-        }
-    }
-</script>
 
 <style>
-    .wrapper {
-        position: relative;
-        min-height: 100%;
-        background: url('../assets/images/kz-borders.svg') no-repeat top;
-        background-size: 98%;
-        padding-bottom: 100px;
-    }
+  .home {
+    position: relative;
+    min-height: 100%;
+    background: url('../../assets/images/kz-borders.svg') no-repeat top;
+    background-size: 98%;
+    padding-bottom: 100px;
+  }
+
+  .home-signup_signin_container {
+    width: 730px;
+    margin: 0 auto;
+  }
 
     .lang_container {
         padding: 20px;
@@ -92,15 +158,15 @@
     }
 
     #kk.lang {
-        background: url('../assets/images/lang-kk.svg') no-repeat center;
+        background: url('../../assets/images/lang-kk.svg') no-repeat center;
     }
 
     #ru.lang {
-        background: url('../assets/images/lang-ru.svg') no-repeat center;
+        background: url('../../assets/images/lang-ru.svg') no-repeat center;
     }
 
     #en.lang {
-        background: url('../assets/images/lang-en.svg') no-repeat center;
+        background: url('../../assets/images/lang-en.svg') no-repeat center;
     }
 
     .content {
@@ -134,7 +200,7 @@
         align-items: stretch;
         padding: 5px;
     }
-    
+
     .filter_line, #map_link {
         margin: 5px 0;
         border-radius: 3px;
@@ -187,7 +253,7 @@
 
     .logo {
         height: 78px;
-        background: url('../assets/images/logo.svg') no-repeat center;
+        background: url('../../assets/images/logo.svg') no-repeat center;
         background-size: contain;
         margin-bottom: 10px;
     }
@@ -195,7 +261,7 @@
     .title {
         font-size: 24px;
     }
-    
+
     .btn_group {
         display: flex;
         margin: 5px 0;
@@ -236,7 +302,7 @@
         position: absolute;
         bottom: 10px;
         right: 10px;
-        background: url('../assets/images/assistant.svg') no-repeat center;
+        background: url('../../assets/images/assistant.svg') no-repeat center;
         cursor: pointer;
         user-select: none;
     }
@@ -254,7 +320,7 @@
     .assistant--menu .menu,
     .menu_body {
         display: flex;
-        flex-direction: column;        
+        flex-direction: column;
     }
 
     .menu_body {
@@ -295,7 +361,7 @@
     .close_btn::before {
         transform: rotate(-45deg);
     }
-    
+
     .close_btn:hover::after {
         transform: rotate(135deg);
     }
