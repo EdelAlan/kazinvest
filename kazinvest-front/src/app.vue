@@ -50,4 +50,15 @@
     height: 100%;
     overflow: auto;
   }
+
+  ::-webkit-scrollbar {
+    width: .3rem;
+    height: .3rem;
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: .3em;
+}
 </style>

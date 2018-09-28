@@ -92,7 +92,7 @@
   .sidebar {
     width: 0;
     position: relative;
-    z-index: 99;
+    z-index: 10;
     display: inline-flex;
     flex-direction: column;
     height: 100%;
