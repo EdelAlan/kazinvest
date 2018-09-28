@@ -1,6 +1,7 @@
 <script>
 import sidebar from '../logic/sidebar';
 import breadcrumb from '../ui/breadcrumb';
+import basemaps from '../ui/basemaps'
 import xmap from '../logic/map';
 import { mapGetters, mapActions } from 'vuex';  
 
@@ -9,16 +10,19 @@ export default {
     sidebar,
     xmap,
     breadcrumb,
+    basemaps,
   },
 
   computed: mapGetters([
     'sidebar_expanded',
     'levels',
+    'basemap',
     'active_level',
   ]),
 
   methods: mapActions([
     'toggle_sidebar',
+    'set_basemap',
   ]),
 
 }
@@ -38,6 +42,9 @@ export default {
       :active_crumb="active_level"
     ></breadcrumb>
     <xmap></xmap>
+    <basemaps v-on:click="set_basemap"
+      v-if="active_level.id != 1"
+    ></basemaps>
   </div>  
 </template>
 

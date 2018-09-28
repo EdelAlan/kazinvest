@@ -1,10 +1,8 @@
-const {
-  Router
-} = require('express');
+const AsyncRouter = require("express-async-router").AsyncRouter;
 const bodyparser = require('body-parser');
 const db_query = require('../util/db_query')
 
-const router = module.exports = Router();
+const router = module.exports = AsyncRouter();
 
 router.use(bodyparser.json());
 

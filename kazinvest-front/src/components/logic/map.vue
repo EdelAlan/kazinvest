@@ -8,19 +8,20 @@ import mapboxgl from 'mapbox-gl';
 import positron from '../../assets/js/positron';
 import osm from '../../assets/js/osm';
 import '../../assets/css/mapbox-gl.css';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 import * as turf from '@turf/turf';
 
 export default {
   name: 'mapgl',
+
   data() {
     return {
       map_style: positron(),
       hoveredStateId: null,
       hoveredFeature: null,
-      map_level: 1
     };
   },
+
   mounted() {
     mapboxgl.accessToken =
       'pk.eyJ1IjoiYWxhbmVkZWwiLCJhIjoiY2pnZXhxN2h4NGZjdzJ3a2w5bHQxcDcxcyJ9.74qnkPsP7PUJ4Fu3Jv5LuQ';
@@ -28,16 +29,20 @@ export default {
     this._mapboxgl_map = new mapboxgl.Map({
       container: 'map',
       style: positron(),
-      zoom: 4,
-      center: [62.0672845, 48.3718379],
+      zoom: 4.7,
+      center: [67.04020349, 47.898657],
       interactive: false
     });
+
+    this._mapboxgl_map.fitBounds(
+      turf.bbox( turf.lineString([[86.357452, 39.389153],[47.722955, 56.408161]]) ),
+    );
 
     this._addObjects();
 
     this._mapboxgl_map.on('mousemove', e => {
       var features = this._mapboxgl_map.queryRenderedFeatures(e.point);
-      if (this.map_level == 1) {
+      if (this.active_level.id == 1) {
         if (features[0] && features[0].sourceLayer != undefined) {
           if (this.hoveredStateId) {
             this._mapboxgl_map.setPaintProperty(
@@ -55,49 +60,49 @@ export default {
           );
         }
       }
-      if (this.map_level == 2) {
+      if (this.active_level.id == 2) {
         console.log(features.length);
       }
     });
 
     this._mapboxgl_map.on('mouseleave', 'akm-obl', _ => {
-      if (this.map_level == 1) {
+      if (this.active_level.id == 1) {
         this._mapboxgl_map.setPaintProperty('akm-obl', 'fill-color', '#accad7');
         this.hoveredStateId = null;
       }
     });
     this._mapboxgl_map.on('mouseleave', 'akt-obl', _ => {
-      if (this.map_level == 1) {
+      if (this.active_level.id == 1) {
         this._mapboxgl_map.setPaintProperty('akt-obl', 'fill-color', '#accad7');
         this.hoveredStateId = null;
       }
     });
     this._mapboxgl_map.on('mouseleave', 'alm-obl', _ => {
-      if (this.map_level == 1) {
+      if (this.active_level.id == 1) {
         this._mapboxgl_map.setPaintProperty('alm-obl', 'fill-color', '#accad7');
         this.hoveredStateId = null;
       }
     });
     this._mapboxgl_map.on('mouseleave', 'vko-obl', _ => {
-      if (this.map_level == 1) {
+      if (this.active_level.id == 1) {
         this._mapboxgl_map.setPaintProperty('vko-obl', 'fill-color', '#accad7');
         this.hoveredStateId = null;
       }
     });
     this._mapboxgl_map.on('mouseleave', 'tur-obl', _ => {
-      if (this.map_level == 1) {
+      if (this.active_level.id == 1) {
         this._mapboxgl_map.setPaintProperty('tur-obl', 'fill-color', '#accad7');
         this.hoveredStateId = null;
       }
     });
     this._mapboxgl_map.on('mouseleave', 'sko-obl', _ => {
-      if (this.map_level == 1) {
+      if (this.active_level.id == 1) {
         this._mapboxgl_map.setPaintProperty('sko-obl', 'fill-color', '#accad7');
         this.hoveredStateId = null;
       }
     });
     this._mapboxgl_map.on('mouseleave', 'pavl-obl', _ => {
-      if (this.map_level == 1) {
+      if (this.active_level.id == 1) {
         this._mapboxgl_map.setPaintProperty(
           'pavl-obl',
           'fill-color',
@@ -107,13 +112,13 @@ export default {
       }
     });
     this._mapboxgl_map.on('mouseleave', 'kyz-obl', _ => {
-      if (this.map_level == 1) {
+      if (this.active_level.id == 1) {
         this._mapboxgl_map.setPaintProperty('kyz-obl', 'fill-color', '#accad7');
         this.hoveredStateId = null;
       }
     });
     this._mapboxgl_map.on('mouseleave', 'kost-obl', _ => {
-      if (this.map_level == 1) {
+      if (this.active_level.id == 1) {
         this._mapboxgl_map.setPaintProperty(
           'kost-obl',
           'fill-color',
@@ -123,13 +128,13 @@ export default {
       }
     });
     this._mapboxgl_map.on('mouseleave', 'kar-obl', _ => {
-      if (this.map_level == 1) {
+      if (this.active_level.id == 1) {
         this._mapboxgl_map.setPaintProperty('kar-obl', 'fill-color', '#accad7');
         this.hoveredStateId = null;
       }
     });
     this._mapboxgl_map.on('mouseleave', 'jamb-obl', _ => {
-      if (this.map_level == 1) {
+      if (this.active_level.id == 1) {
         this._mapboxgl_map.setPaintProperty(
           'jamb-obl',
           'fill-color',
@@ -139,19 +144,19 @@ export default {
       }
     });
     this._mapboxgl_map.on('mouseleave', 'man-obl', _ => {
-      if (this.map_level == 1) {
+      if (this.active_level.id == 1) {
         this._mapboxgl_map.setPaintProperty('man-obl', 'fill-color', '#accad7');
         this.hoveredStateId = null;
       }
     });
     this._mapboxgl_map.on('mouseleave', 'zko-obl', _ => {
-      if (this.map_level == 1) {
+      if (this.active_level.id == 1) {
         this._mapboxgl_map.setPaintProperty('zko-obl', 'fill-color', '#accad7');
         this.hoveredStateId = null;
       }
     });
     this._mapboxgl_map.on('mouseleave', 'atyr-obl', _ => {
-      if (this.map_level == 1) {
+      if (this.active_level.id == 1) {
         this._mapboxgl_map.setPaintProperty(
           'atyr-obl',
           'fill-color',
@@ -164,10 +169,13 @@ export default {
     this._mapboxgl_map.on('click', e => {
       var features = this._mapboxgl_map.queryRenderedFeatures(e.point);
 
-      if (this.map_level == 1) {
+      if (this.active_level.id == 1) {
         if (features[0].layer.id == 'sez' || features[0].layer.id == 'iz') {
           this._mapboxgl_map.setStyle(osm());
-          this.map_level = 2;
+          this.set_level({
+            id: 2,
+            name: features[0].properties.title,
+          })
 
           fetch('http://localhost:5000/zone/' + features[0].properties.zone_id)
             .then(res => {
@@ -196,7 +204,7 @@ export default {
               this._mapboxgl_map.fitBounds(
                 turf.bbox(turf.lineString(JSON.parse(res[0].polygonfield))),
                 {
-                  padding: 75
+                  padding: this.sidebar_expanded ? {top: 75, bottom:75, left: 200, right: 75} : 75
                 }
               );
             })
@@ -277,12 +285,23 @@ export default {
       popup.remove();
     });
   },
-  computed: {
-    // ...mapGetters({
-    //     geometries: 'getGeometries',
-    // }),
+
+  computed: mapGetters([
+    'basemap',
+    'active_level',
+    'sidebar_expanded'
+  ]),
+
+  watch: {
+    basemap: 'change_basemap',
+    sidebar_expanded: 'move_map',
   },
+
   methods: {
+    ...mapMutations([
+      'set_level',
+    ]),
+
     _addObjects() {
       this._mapboxgl_map.on('style.load', () => {
         fetch('http://localhost:5000/zone/')
@@ -368,20 +387,33 @@ export default {
             console.error(e);
           });
       });
+    },
+
+    change_basemap() {
+      this._mapboxgl_map.setLayoutProperty('bing', 'visibility', this.basemap ? 'visible' : 'none');
+    },
+
+    move_map() {
+      if (this.active_level.id == 1) {
+        if (this.sidebar_expanded) {
+          this._mapboxgl_map.fitBounds(
+            turf.bbox( turf.lineString([[34.309517, 52.990292],[86.383498, 41.286791]]) ),
+            {
+              padding: 70
+            }
+          );
+        } else {
+          this._mapboxgl_map.fitBounds(
+            turf.bbox( turf.lineString([[86.357452, 39.389153],[47.722955, 56.408161]]) ),
+          );
+        }
+      }
     }
   }
 };
 </script>
 
 <style>
-#map {
-  /* width: 100%;
-        height: 100%;
-        position: absolute;
-        margin: 0;
-        z-index: 1; */
-}
-
 .mapboxgl-map {
   height: 100%;
   width: 100%;

@@ -5,8 +5,9 @@
   "main": "index.js",
   "dependencies": {
     "express": "^4.16.3",
-    "pg": "^7.4.3",
-    "nodemon": "^1.18.4"
+    "express-async-router": "^0.1.13",
+    "nodemon": "^1.18.4",
+    "pg": "^7.4.3"
   },
   "devDependencies": {},
   "scripts": {
