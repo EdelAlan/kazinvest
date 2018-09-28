@@ -1,41 +1,38 @@
 <script>
-import sidebar from '../logic/sidebar';
-import breadcrumb from '../ui/breadcrumb';
-import basemaps from '../ui/basemaps'
-import xmap from '../logic/map';
-import { mapGetters, mapActions } from 'vuex';  
+  import sidebar from '../logic/sidebar';
+  import breadcrumb from '../ui/breadcrumb';
+  import basemaps from '../ui/basemaps'
+  import xmap from '../logic/map';
+  import { mapGetters, mapActions } from 'vuex';  
 
-export default {
-  components: {
-    sidebar,
-    xmap,
-    breadcrumb,
-    basemaps,
-  },
+  export default {
+    components: {
+      sidebar,
+      xmap,
+      breadcrumb,
+      basemaps,
+    },
 
-  computed: mapGetters([
-    'sidebar_expanded',
-    'levels',
-    'basemap',
-    'active_level',
-  ]),
+    computed: mapGetters([
+      'sidebar_expanded',
+      'levels',
+      'basemap',
+      'active_level',
+    ]),
 
-  methods: mapActions([
-    'toggle_sidebar',
-    'set_basemap',
-  ]),
-
-}
+    methods: mapActions([
+      'toggle_sidebar',
+      'set_basemap',
+    ]),
+  }
 </script>
 
 
 <template>
   <div class="mapview">
-    <div class="mapview-side">
-      <div class="mapview-logo"></div>
-      <button class="mapview-expand" v-on:click="toggle_sidebar"></button>
-      <sidebar :class="{'sidebar--expanded': sidebar_expanded }" />
-    </div>
+    <div class="mapview-logo"></div>
+    <button class="mapview-expand" v-on:click="toggle_sidebar"></button>
+    <sidebar :class="{'sidebar--expanded': sidebar_expanded }" />
     <breadcrumb class="mapview-breadcrumb"
       :class="{ 'mapview-breadcrumb--expanded': sidebar_expanded }"
       :crumbs="levels"
@@ -81,10 +78,6 @@ export default {
     outline: none;
   }
 
-  .mapview {
-    height: 100%;
-  }
-
   .mapview-breadcrumb {
     position: absolute;
     z-index: 20;
@@ -95,14 +88,8 @@ export default {
   }
 
   .mapview-breadcrumb--expanded {
-    left: 340px;
+    left: 330px;
     opacity: 1;
   }
 
-  .mapview-side {
-    position: relative;
-    display: inline-block;
-    height: 100%;
-    z-index: 10;
-  }
 </style>
