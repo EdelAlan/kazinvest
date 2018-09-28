@@ -21,10 +21,17 @@ export default {
   },
 
   mutations: {
-   
+   set_level(state, level) {
+    state.levels.push({
+      id: level.id,
+      name: level.name
+    })
+   }
   },
 
   actions: {
-    
+    set_level({commit}, level) {
+      commit('set_level', level);
+    }
   },
 };
