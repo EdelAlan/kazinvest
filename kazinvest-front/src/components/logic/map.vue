@@ -29,10 +29,14 @@ export default {
     this._mapboxgl_map = new mapboxgl.Map({
       container: 'map',
       style: positron(),
-      zoom: 4,
-      center: [62.0672845, 48.3718379],
+      zoom: 4.7,
+      center: [67.04020349, 47.898657],
       interactive: false
     });
+
+    this._mapboxgl_map.fitBounds(
+      turf.bbox( turf.lineString([[86.357452, 39.389153],[47.722955, 56.408161]]) ),
+    );
 
     this._addObjects();
 
@@ -200,7 +204,7 @@ export default {
               this._mapboxgl_map.fitBounds(
                 turf.bbox(turf.lineString(JSON.parse(res[0].polygonfield))),
                 {
-                  padding: 75
+                  padding: this.sidebar_expanded ? {top: 75, bottom:75, left: 200, right: 75} : 75
                 }
               );
             })
@@ -285,10 +289,12 @@ export default {
   computed: mapGetters([
     'basemap',
     'active_level',
+    'sidebar_expanded'
   ]),
 
   watch: {
     basemap: 'change_basemap',
+    sidebar_expanded: 'move_map',
   },
 
   methods: {
@@ -385,6 +391,23 @@ export default {
 
     change_basemap() {
       this._mapboxgl_map.setLayoutProperty('bing', 'visibility', this.basemap ? 'visible' : 'none');
+    },
+
+    move_map() {
+      if (this.active_level.id == 1) {
+        if (this.sidebar_expanded) {
+          this._mapboxgl_map.fitBounds(
+            turf.bbox( turf.lineString([[34.309517, 52.990292],[86.383498, 41.286791]]) ),
+            {
+              padding: 70
+            }
+          );
+        } else {
+          this._mapboxgl_map.fitBounds(
+            turf.bbox( turf.lineString([[86.357452, 39.389153],[47.722955, 56.408161]]) ),
+          );
+        }
+      }
     }
   }
 };
