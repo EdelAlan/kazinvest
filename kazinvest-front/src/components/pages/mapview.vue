@@ -32,16 +32,20 @@
   <div class="mapview">
     <div class="mapview-logo"></div>
     <button class="mapview-expand" v-on:click="toggle_sidebar"></button>
-    <sidebar :class="{'sidebar--expanded': sidebar_expanded }" />
+    <sidebar class="mapview-sidebar"
+      :class="{
+        'mapview-sidebar--expanded': sidebar_expanded 
+      }" 
+    />
     <breadcrumb class="mapview-breadcrumb"
       :class="{ 'mapview-breadcrumb--expanded': sidebar_expanded }"
       :crumbs="levels"
       :active_crumb="active_level"
-    ></breadcrumb>
-    <xmap></xmap>
+    />
+    <xmap />
     <basemaps v-on:click="set_basemap"
       v-if="active_level.id != 1"
-    ></basemaps>
+    />
   </div>  
 </template>
 
@@ -55,8 +59,8 @@
     position: absolute;
     top: 10px;
     left: 10px;
+    z-index: 10;
   }
-
   .mapview-expand {
     width: 30px;
     height: 30px;
@@ -67,29 +71,35 @@
     left: 10px;
     top: 100px;
     border: none;
+    cursor: pointer;
+    z-index: 10;
   }
-
   .mapview-expand:hover {
     background-color: #0380A3;
   }
-
   .mapview-expand:active,
   .mapview-expand:focus {
     outline: none;
   }
-
+  .mapview-sidebar {
+    left: -320px;
+    z-index: 10;
+    transition: all .5s ease-in-out;
+  }
+  .mapview-sidebar--expanded {
+    left: 0;
+    transition: all .5s ease-in-out;
+  }
   .mapview-breadcrumb {
     position: absolute;
     z-index: 20;
-    top: 0;
-    left: 0;
-    opacity: 0;
+    left: 330px;
     transition: all .5s ease-in-out;
+    top: -60px;
   }
-
   .mapview-breadcrumb--expanded {
     left: 330px;
-    opacity: 1;
+    top: 0;
   }
 
 </style>

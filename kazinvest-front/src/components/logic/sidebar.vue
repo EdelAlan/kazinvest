@@ -117,22 +117,15 @@
 <style>
   .sidebar {
     position: absolute;
-    left: -320px;
     z-index: 10;
-    transition: all .5s ease-in-out;
     width: 320px;
     height: 100vh;
     overflow: hidden;
   }
-
   .sidebar-scroll_section {
     height: calc(100vh - 210px);
     overflow-y: scroll;
     margin-top: 5px;
-  }
-
-  .sidebar--expanded {
-    left: 0;
   }
   .sidebar-header {
     margin: 5px 5px 0 5px;
