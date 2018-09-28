@@ -1,8 +1,14 @@
 <script>
-  export default {
+  import checkbox from './checkbox';
 
+  export default {
     name: 'treenode',
+    
     props: ['model'],
+    
+    components: {
+      checkbox,
+    },
 
     data () {
       return {
@@ -37,12 +43,16 @@
         'treenode-item--folder_active': is_directory && open
       }"
       @click="toggle">
-      {{ model.name }}
-      <span 
-        class="treenode-toggle"
-        v-if="is_directory"
-      >
-      </span>
+      <span v-if="is_directory" 
+        v-text="model.name"></span>
+      
+      <checkbox 
+        v-if="!is_directory"
+        :selected="model.selected"
+        :text="model.name"
+        :color="model.color"
+      />
+      
     </div>
     <div class="treenode-child"
       v-show="open" v-if="is_directory">
@@ -58,19 +68,15 @@
 
 
 <style>
-
   .treenode {
     background: #fff;
+    -webkit-user-select: none;        
+    -moz-user-select: none;
+    -ms-user-select: none;
   }
-
   .treenode-child {
-    padding-left: 20px;
+    padding-left: 15px;
   }
-
-  .treenode-toggle {
-
-  }
-
   .treenode-item {
     font-size: 16px;
     padding: 8px 25px;
@@ -79,11 +85,6 @@
     color: #777;
     box-sizing: border-box;
   }
-
-  .treenode-item--folder {
-
-  }
-
   .treenode-item--folder::before {
     content: '';
     position: absolute;
@@ -96,9 +97,7 @@
     border-right: 5px solid transparent;
     border-top: 5px solid #bbb;
   }
-
   .treenode-item--folder_active::before {
     transform: translateY(-50%) rotate(0deg);
   }
-
 </style>

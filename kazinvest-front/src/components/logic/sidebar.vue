@@ -31,15 +31,20 @@
     <div class="sidebar-scroll_section">
 
       <div class="sidebar-section">
+        <!-- В model надо класть state, где данные из базы -->
         <treenode
           :model="{
             name: 'Земельные участки',
             children: [{
               name: 'Объекты',
               children: [{ 
-                name: 'hello' 
+                name: 'hello',
+                selected: true,
+                color: 'orange',
               },{ 
                 name: 'wat',
+                selected: false,
+                color: 'blue',
               }],
             }],
           }"
