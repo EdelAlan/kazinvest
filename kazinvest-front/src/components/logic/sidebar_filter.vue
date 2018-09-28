@@ -1,10 +1,12 @@
 <script>
   import lang from './lang';
+  import selector from '../ui/selector';
   import { mapGetters, mapActions } from 'vuex';  
 
   export default {
     components: { 
       lang,
+      selector,
     },
     // ошибка дизайна, тоглить сайдбар лучше в sidebar_header
     computed: mapGetters([
@@ -13,7 +15,7 @@
 
     methods: mapActions([
       'toggle_sidebar',
-    ])
+    ]),
   }
 </script>
 
@@ -23,16 +25,47 @@
     <div class="sidebar_filter-container">
       <input type="text" class="sidebar_filter-input sidebar_filter-input--search" placeholder="Область, название СЭЗ / ИЗ, объект">
       
-      <select class="sidebar_filter-input category">
-        <option value="">СЭЗ, ИЗ</option>
-      </select>
-      <select class="sidebar_filter-input industry">
-        <option value="">Отрасли</option>
-      </select>
+
+      <div class="sidebar_filter-filter">
+        <selector
+          :list="[
+            { name: { ru: 'СЭЗ', kk: 'СЭЗ' } },
+            { name: { ru: 'ИЗ', kk: 'ИЗ' } },
+          ]"
+          :placeholder="'СЭЗ, ИЗ'"
+          :styles="{
+            'border': '1px solid #fff',
+            'border-radius': '3px',
+            'height': '40px',
+            'font-size': '14px',
+            'padding': '10px',
+            'line-height': '13px'
+          }"
+        ></selector>
+      </div>
+
+      <div class="sidebar_filter-filter">
+        <selector
+          :list="[
+            { name: { ru: 'Отрасль 1', kk: 'Отрасль 1' } },
+            { name: { ru: 'Отрасль 2', kk: 'Отрасль 2' } },
+          ]"
+          :placeholder="'Отрасли'"
+          :styles="{
+            'border': '1px solid #fff',
+            'border-radius': '3px',
+            'height': '40px',
+            'font-size': '14px',
+            'padding': '10px',
+            'line-height': '13px'
+          }"
+        ></selector>
+      </div>
+     
 
       <!-- ошибка дизайна, тоглить сайдбар лучше в sidebar_header -->
       <div class="sidebar_filter-collapse" 
-        v-on:click="toggle_sidebar">Свернуть</div>
+        @click="toggle_sidebar">Свернуть</div>
 
       <button class="sidebar_filter-find">Найти</button>
     </div>
@@ -43,9 +76,9 @@
 
 <style>
 
-  .category,
-  .industry {
+  .sidebar_filter-filter {
     width: calc(50% - 5px);
+    margin-bottom: 5px;
   }
 
   .sidebar_filter-container {

@@ -37,7 +37,6 @@
     margin: 5px;
     width: 320px;
     border-radius: 3px;
-    overflow: hidden;
     box-shadow: 0 0 5px rgba(0, 0, 0, .2);
   }
 

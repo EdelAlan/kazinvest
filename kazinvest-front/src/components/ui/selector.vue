@@ -94,9 +94,11 @@
   .selector-carret {
     width: 20px;
     height: 12px;
+    pointer-events: none;
     position: absolute;
     right: 14px;
     top: 50%;
+    opacity: .5;
     transform: translateY(-50%);
     background-size: contain;
     background-image: url('../../assets/images/carret.svg');
@@ -116,9 +118,8 @@
   .selector-item {
     color: #333;
     cursor: pointer;
-    font-size: 1em;
+    font-size: 14px;
     padding: .2em .5em;
-    border-bottom: 1px solid #ccc;
     font-family: inherit;
     white-space: nowrap;
     overflow: hidden;

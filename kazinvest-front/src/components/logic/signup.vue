@@ -125,8 +125,8 @@
 
 					<selector
 						:list="[
-							{ name: { ru: 'СЭЗ', kk: 'СЭЗ' } },
-							{ name: { ru: 'ИЗ', kk: 'ИЗ' } },
+							{ name: { ru: 'СЭЗ', kz: 'СЭЗ' } },
+							{ name: { ru: 'ИЗ', kz: 'ИЗ' } },
 						]"
 						v-on:select="select_department"
 						:styles="{
