@@ -20,7 +20,7 @@
           <div class="sidebar_header-logo"></div>
         </router-link>
 
-        <lang></lang>
+        <lang class="sidebar_header-lang"></lang>
       </div>
 
       <sidebar_filter></sidebar_filter>
@@ -46,6 +46,10 @@
     display: flex;
     justify-content: space-between;
     box-shadow: 0 0 5px rgba(0, 0, 0, .2);
+  }
+
+  .sidebar_header-lang {
+    margin-right: 5px;
   }
 
   .sidebar_header-logo {

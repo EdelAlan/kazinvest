@@ -113,6 +113,7 @@
     z-index: 10;
     max-height: 12em;
     overflow-y: auto;
+    border-radius: 2px;
   }
 
   .selector-item {

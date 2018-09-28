@@ -33,17 +33,19 @@
 <style>
   .lang-container {
     display: flex;
+    font-size: 12px;
     flex-direction: column;
   }
 
   .lang-item {
     color: white;
+    line-height: 21px;
     text-decoration: none;
     cursor: pointer;
   }
 
   .lang-item--active {
-    text-decoration: underline;
+    font-weight: bold;
   }
 
   .lang-item:hover {
