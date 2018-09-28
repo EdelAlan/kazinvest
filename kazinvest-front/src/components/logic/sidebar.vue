@@ -1,6 +1,7 @@
 <script>
   import piechart from '../ui/piechart';
   import sidebar_header from './sidebar_header';
+  import treenode from '../ui/treenode';
   import tabs from '../ui/tabs';
   import { mapGetters } from 'vuex';  
 
@@ -9,6 +10,7 @@
       piechart,
       tabs,
       sidebar_header,
+      treenode,
     },
 
     computed: mapGetters([
@@ -22,9 +24,28 @@
   <div class="sidebar" 
     :class="{'sidebar--expanded': sidebar_expanded}">
     
-    <sidebar_header></sidebar_header>
+    <div class="sidebar-section">
+      <sidebar_header></sidebar_header>
+    </div>
 
-    <div class="sidebar-container">
+    <div class="sidebar-section">
+      <treenode
+        :model="{
+          name: 'Земельные участки',
+          children: [{
+            name: 'Объекты',
+            children: [{ 
+              name: 'hello' 
+            },{ 
+              name: 'wat',
+            }],
+          }],
+        }"
+      ></treenode>
+    </div>
+
+
+    <div class="sidebar-section">
 
       <tabs
         :titles_style="{
@@ -88,31 +109,31 @@
 </template>
 
 
-<style scoped>
+<style>
   .sidebar {
-    width: 0;
-    position: relative;
+    position: absolute;
+    left: -320px;
     z-index: 10;
-    display: inline-flex;
-    flex-direction: column;
-    height: 100%;
-    align-items: flex-end;
-    transition: width .5s ease-in-out;
-    overflow: hidden;
+    height: 100vh;
+    overflow: scroll;
+    transition: all .5s ease-in-out;
+    width: 320px;
   }
 
   .sidebar--expanded {
-    width: 330px;
+    left: 0;
   }
 
-  .sidebar-container {
-    width: 320px;
-    margin: 5px;
-    background: white;
+  .sidebar-section {
+    background: #fff;
     border-radius: 3px;
+    overflow: hidden;
     box-shadow: 0 0 10px rgba(0, 0, 0, .2);
-    overflow: auto;
-    flex-grow: 1;
+    margin: 0 5px 5px 5px;
+  }
+
+  .sidebar-section:first-child {
+    margin-top: 5px;
   }
 
 </style>
