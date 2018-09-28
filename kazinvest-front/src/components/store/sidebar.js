@@ -10,7 +10,7 @@ export default {
   },
 
   getters: {
-    sidebar: state => state.expanded,
+    sidebar_expanded: state => state.expanded,
   },
 
   actions: {

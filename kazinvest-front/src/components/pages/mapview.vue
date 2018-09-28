@@ -10,12 +10,13 @@ export default {
   },
 
   computed: mapGetters([
-    'sidebar',
+    'sidebar_expanded',
   ]),
 
   methods: mapActions([
     'toggle_sidebar',
-  ])
+  ]),
+
 }
 </script>
 
@@ -25,7 +26,7 @@ export default {
     <div class="side">
       <div class="logo"></div>
       <button class="expand" v-on:click="toggle_sidebar"></button>
-      <sidebar :class="{'sidebar--expanded': sidebar}" />
+      <sidebar :class="{'sidebar--expanded': sidebar_expanded}" />
     </div>
     <div class="breadcrumb"></div>
     <xmap></xmap>
@@ -37,7 +38,7 @@ export default {
   .logo {
     height: 60px;
     width: 110px;
-    background: url(../../assets/images/logo-blue.svg) no-repeat center;
+    background: url('../../assets/images/logo-blue.svg') no-repeat center;
     background-size: cover;
     position: absolute;
     top: 10px;
@@ -54,7 +55,6 @@ export default {
     left: 10px;
     top: 100px;
     border: none;
-    
   }
 
   .expand:hover {
