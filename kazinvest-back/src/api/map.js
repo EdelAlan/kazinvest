@@ -1,9 +1,9 @@
 const router = require('express-async-router').AsyncRouter();
 // const bodyparser = require('body-parser');  // только для post нужен
-const db_query = require('../util/db_query')
+const db_query = require('../util/db_query');
 
 // router.use(bodyparser.json()) // только для post нужен
-router.get('/zone', async (req, res) => {
+router.get('/zone', async (_, res) => {
   res.send(await db_query(
     'SELECT * from zone'
   ));

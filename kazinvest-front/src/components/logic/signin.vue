@@ -6,7 +6,7 @@
 		data () {
 			return {
 				user_model: {
-					email: '',
+					userid: '',
 					password: '',
 				},
 				password_visibility: false,
@@ -15,14 +15,21 @@
 
 		methods: {
 			...mapActions([
-				
+				'sign_in',
 			]),
-			select_role (role) {
-				this.user_model.role = role;
+
+			signin () {
+				this.sign_in({
+					userid: this.user_model.userid,
+					password: this.user_model.password,
+				}).then(msg => {
+					if (msg == 'user enter') {
+						return this.$router.push('/map')
+					}
+					return console.log(msg)
+				})
 			},
-			select_department (department) {
-				this.user_model.department = department;
-			},
+
 			toggle_password_visibility () {
 				this.password_visibility = !this.password_visibility;
 			},
@@ -40,7 +47,7 @@
 					v-text="'E-mail'">
 				</div>
 				<input class="signin-input"
-					v-model="user_model.email" />
+					v-model="user_model.userid" />
 			</div>
 
 			<div class="signin-input_container">
@@ -51,7 +58,7 @@
 					:type="password_visibility ? 'text' : 'password'"
 					v-model="user_model.password" />
 				<span class="signin-password_eye"
-					v-on:click="toggle_password_visibility"></span>
+					@click="toggle_password_visibility"></span>
 			</div>
 
 			<div class="signin-password_forgot">
@@ -61,7 +68,8 @@
 
 			<div class="signin-controls">
 				<button class="signin-control">Отмена</button>
-				<button class="signin-control signin-control--primary">Войти</button>
+				<button class="signin-control signin-control--primary"
+					@click="signin">Войти</button>
 			</div>
 
 		</div>
