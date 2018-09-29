@@ -18,6 +18,12 @@ make b
 http://localhost:5000
 
 
+Обновить все node_modules:
+
+```
+make nodeup
+```
+
 ## Конвенции
 
 ### Компоненты
