@@ -177,7 +177,7 @@ export default {
             name: features[0].properties.title,
           })
 
-          fetch('http://localhost:5000/zone/' + features[0].properties.zone_id)
+          fetch('http://localhost:5000/api/map/zone/' + features[0].properties.zone_id)
             .then(res => {
               return res.json();
             })
@@ -304,7 +304,7 @@ export default {
 
     _addObjects() {
       this._mapboxgl_map.on('style.load', () => {
-        fetch('http://localhost:5000/zone/')
+        fetch('http://localhost:5000/api/map/zone/')
           .then(res => {
             return res.json();
           })

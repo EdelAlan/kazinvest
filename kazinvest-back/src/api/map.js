@@ -1,25 +1,26 @@
-const AsyncRouter = require("express-async-router").AsyncRouter;
-const bodyparser = require('body-parser');
+const router = require('express-async-router').AsyncRouter();
+// const bodyparser = require('body-parser');  // только для post нужен
 const db_query = require('../util/db_query')
 
-const router = module.exports = AsyncRouter();
-
-router.use(bodyparser.json());
-
+// router.use(bodyparser.json()) // только для post нужен
 router.get('/zone', async (req, res) => {
-  res.send(await db_query({
-    query: 'SELECT * from zone'
-  }));
+  res.send(await db_query(
+    'SELECT * from zone'
+  ));
 });
 
 router.get('/zone/:id', async (req, res) => {
-  res.send(await db_query({
-    query: 'SELECT * from zone where id = ' + req.params.id
-  }));
+  res.send(await db_query(
+    'SELECT * from zone where id = $1', // нужны параметры, чтобы не получить sql инъекцию
+    [req.params.id],
+  ));
 });
 
 router.get('/sector/:id', async (req, res) => {
-  res.send(await db_query({
-    query: 'SELECT * from sectors where zone_id = ' + req.params.id
-  }));
+  res.send(await db_query(
+    'SELECT * from sectors where zone_id = $1',
+    [req.params.id],
+  ));
 });
+
+module.exports = router;

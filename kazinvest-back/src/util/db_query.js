@@ -10,19 +10,20 @@ const client = new Client({
 });
 client.connect((err) => {
   if (err) {
-    console.error('connection error', err.stack)
+    console.error('connection error', err.stack);
+    return err.stack;
   } else {
-    console.log('connected')
+    console.log('Postgre connected');
   }
 });
 
-module.exports = async ({
+module.exports = async (
   query,
   params
-}) => {
+) => {
   return await client.query(query, params)
     .then(res => {
       return res.rows
     })
-    .catch(e => console.error(e.stack))
+    .catch(e => console.error(e.stack));
 }
