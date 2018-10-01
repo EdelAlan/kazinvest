@@ -15,6 +15,7 @@
 
     methods: mapActions([
       'toggle_sidebar',
+      'set_zone_type',
     ]),
   }
 </script>
@@ -29,9 +30,11 @@
       <div class="sidebar_filter-filter">
         <selector
           :list="[
-            { name: { ru: 'СЭЗ', kk: 'СЭЗ' } },
-            { name: { ru: 'ИЗ', kk: 'ИЗ' } },
+            { id: '1', name: { ru: 'СЭЗ', kk: 'СЭЗ' } },
+            { id: '2', name: { ru: 'ИЗ', kk: 'ИЗ' } },
+            { id: '3', name: { ru: 'CЭЗ/ИЗ', kk: 'CЭЗ/ИЗ' } },
           ]"
+          v-on:select="set_zone_type"
           :placeholder="'СЭЗ, ИЗ'"
           :styles="{
             'border': '1px solid #fff',

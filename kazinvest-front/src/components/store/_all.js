@@ -8,6 +8,8 @@ import sidebar from './sidebar';
 import lang from './lang';
 import levels from './levels';
 import signin from './signin';
+import zones from './zones';
+import sectors from './sectors';
 
 Vue.use(Vuex);
 
@@ -20,5 +22,7 @@ export default new Vuex.Store({
 		lang,
 		levels,
 		signin,
+		zones,
+		sectors,
 	},
 });

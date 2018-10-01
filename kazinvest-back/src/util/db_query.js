@@ -22,8 +22,6 @@ module.exports = async (
   params
 ) => {
   return await client.query(query, params)
-    .then(res => {
-      return res.rows
-    })
+    .then(res => res.rows)
     .catch(e => console.error(e.stack));
 }
