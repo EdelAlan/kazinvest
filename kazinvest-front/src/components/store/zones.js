@@ -22,10 +22,12 @@ export default {
   },
 
   actions: {
-    async set_zone_type({ commit}, zone_type) {
-      await commit('zone_type', zone_type);
-      commit('set_zones');
+    async set_zone_type({ commit, dispatch }, zone_type) {
+      console.log(32423)
+      await commit('set_zone_type', zone_type);
+      dispatch('set_zones');
     },
+
     set_zones({ commit, state }) {
       return fetcher({
         method: 'get',
