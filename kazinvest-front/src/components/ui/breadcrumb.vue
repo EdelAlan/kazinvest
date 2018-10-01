@@ -1,6 +1,12 @@
 <script>
+  import { mapActions } from 'vuex';
+
   export default {
     props: ['crumbs', 'active_crumb'],
+
+    methods: mapActions([
+      'set_level_b',
+    ]),
   };
 </script>
 
@@ -8,6 +14,7 @@
 <template>
   <div class="breadcrumb">
     <div class="breadcrumb-item"
+      v-on:click="set_level_b(item)"
       v-for="item, key in crumbs"
     >
       <span class="breadcrumb-item_front"></span>

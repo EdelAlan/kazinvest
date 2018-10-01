@@ -2,11 +2,8 @@ export default {
   state: () => ({
     levels: [
       { id: 1, name: { ru: 'Карта Казахстана' } }, // по-умолчанию
-      { id: 2, name: { ru: 'Астана-Технополис ТОО Tau-Ken Temir' } },
-      { id: 3, name: { ru: 'Астана-Технополис ТОО Tau-Ken Temir' } },
-      { id: 4, name: { ru: 'Астана-Технополис ТОО Tau-Ken Temir' } },
-      { id: 5, name: { ru: 'Астана-Технополис ТОО Tau-Ken Temir' } },
-      { id: 6, name: { ru: 'Астана-Технополис ТОО Tau-Ken Temir' } },
+      // { id: 2, name: { ru: 'Астана-Технополис ТОО Tau-Ken Temir' } },
+      // { id: 3, name: { ru: 'Астана-Технополис ТОО Tau-Ken Temir' } },
 
       // при погружении в карте или через навигацию, сюда добавляются
       // следующие уровни:
@@ -28,16 +25,29 @@ export default {
 
   mutations: {
    set_level(state, level) {
-    state.levels.push({
-      id: level.id,
-      name: level.name
-    })
+    if (level.name.ru != state.levels[state.levels.length - 1].name.ru) {
+      state.levels.push({
+        id: level.id,
+        name: { 
+          ru: level.name.ru
+        }
+      })
+    }
+    
+   },
+   set_level_b(state, level) {
+     if (level.name.ru != state.levels[state.levels.length - 1].name.ru) {
+      state.levels.pop();
+     }
    }
   },
 
   actions: {
     set_level({commit}, level) {
       commit('set_level', level);
+    },
+    set_level_b({commit}, level) {
+      commit('set_level_b', level);
     }
   },
 };

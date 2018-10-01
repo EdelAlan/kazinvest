@@ -6,6 +6,11 @@ const db_query = require('../util/db_query');
 
 router.get('/zones', async (req, res) => {
   //FIXME: отрефакторить!
+  if (!req.query.zone_type) {
+    return res.send(await db_query(`
+      SELECT * FROM zone
+    `));
+  }
   if (req.query.zone_type == 3) {
     return res.send(await db_query(`
       SELECT zone.*, (
