@@ -4,13 +4,13 @@
 	nodeup
 
 f:
-	cd kazinvest-front && npm run serve
+	cd front && npm run serve
 
 b:
-	cd kazinvest-back && nodemon index.js
+	cd back && nodemon index.js
 
 nodeup:
-	cd kazinvest-front && \
+	cd front && \
 	npm i && \
-	cd ../kazinvest-back && \
+	cd ../back && \
 	npm i
