@@ -11,7 +11,7 @@ export default {
     set_zone_type (state, zone_type) {
       state.zone_type = zone_type;
     },
-    set_zones(state, zones) {
+    set_zones (state, zones) {
       state.zones = zones;
     },
   },
@@ -30,7 +30,7 @@ export default {
     set_zones({ commit, state }) {
       return fetcher({
         method: 'get',
-        path: 'http://localhost:5000/api/zones?zone_type=' + state.zone_type.id,
+        path: 'http://localhost:5000/back/api/zones?zone_type=' + state.zone_type.id,
       }).then(zones => {
         commit('set_zones', zones);
         return;

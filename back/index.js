@@ -12,9 +12,9 @@ app
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     next();
   })
-  .use('/signin', signin)
+  .use('/back/signin', signin)
   // api
-  .use('/api/zones', zones)
-  .use('/api/sectors', sectors)
+  .use('/back/api/zones', zones)
+  .use('/back/api/sectors', sectors)
 
   .listen(5000, () => console.log('Listen on 5000'));
