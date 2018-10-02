@@ -14,4 +14,17 @@ router.get('/:id', async (req, res) => {
   ));
 });
 
+router.get('/geom', async (req, res) => {
+  res.send(await db_query(
+    'SELECT title_ru ,ST_AsGeoJSON(geom) from sectors',
+  ));
+});
+
+router.get('/geom/:id', async (req, res) => {
+  res.send(await db_query(
+    'SELECT title_ru , project_type, ST_AsGeoJSON(geom) from sectors where zone_id = $1',
+    [req.params.id],
+  ));
+});
+
 module.exports = router;

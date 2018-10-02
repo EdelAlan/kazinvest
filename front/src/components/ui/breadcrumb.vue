@@ -21,7 +21,7 @@
       <span class="breadcrumb-item_back"
         v-if="key != 0" ></span>
       <!-- FIXME: локализация -->
-      <span v-text="item.name.ru"></span> 
+      <span v-text="item.name.ru"></span>
     </div>
   </div>
 </template>

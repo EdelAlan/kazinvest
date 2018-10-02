@@ -2,8 +2,6 @@ export default {
   state: () => ({
     levels: [
       { id: 1, name: { ru: 'Карта Казахстана' } }, // по-умолчанию
-      // { id: 2, name: { ru: 'Астана-Технополис ТОО Tau-Ken Temir' } },
-      // { id: 3, name: { ru: 'Астана-Технополис ТОО Tau-Ken Temir' } },
 
       // при погружении в карте или через навигацию, сюда добавляются
       // следующие уровни:
@@ -37,7 +35,13 @@ export default {
    },
    set_level_b(state, level) {
      if (level.name.ru != state.levels[state.levels.length - 1].name.ru) {
-      state.levels.pop();
+      switch(level.id) {
+        case 1:
+          state.levels = [{ id: 1, name: { ru: 'Карта Казахстана' } }]
+          break;
+        case 2:
+          state.levels.pop();
+      }
      }
    }
   },

@@ -16,13 +16,15 @@ export default {
 
   data() {
     return {
-      map_style: positron(),
       hoveredStateId: null,
       hoveredFeature: null,
+      popup: null
     };
   },
 
   mounted() {
+    // ИНИЦИАЛИЗАЦИЯ КАРТЫ
+
     mapboxgl.accessToken =
       "pk.eyJ1IjoiYWxhbmVkZWwiLCJhIjoiY2pnZXhxN2h4NGZjdzJ3a2w5bHQxcDcxcyJ9.74qnkPsP7PUJ4Fu3Jv5LuQ";
 
@@ -34,7 +36,7 @@ export default {
       interactive: false
     });
 
-    var popup = new mapboxgl.Popup({
+    this.popup = new mapboxgl.Popup({
       closeButton: false,
       closeOnClick: false,
       offset: { bottom: [0, -13] }
@@ -50,42 +52,307 @@ export default {
       this._addObjects();
     });
 
-    this._mapboxgl_map.on("mousemove", e => {
+    // ИВЭНТЫ НА КАРТЕ
+
+    this._mapboxgl_map.on("click", e => {
       var features = this._mapboxgl_map.queryRenderedFeatures(e.point);
-      if (this.active_level.id == 1) {
-        if (features[0] && features[0].sourceLayer != undefined) {
-          this.mouseover = features[0].layer.id;
-          if (this.hoveredStateId) {
+
+      switch (this.active_level.id) {
+        case 1:
+          if (features[0].layer.id == "sez" || features[0].layer.id == "iz") {
+            this._mapboxgl_map.setStyle(osm());
+            this.set_level({
+              id: 2,
+              name: {
+                ru: features[0].properties.title
+              },
+              features: features[0]
+            });
+
+            fetch(
+              "http://localhost:5000/api/zones/" +
+                features[0].properties.zone_id
+            )
+              .then(res => {
+                return res.json();
+              })
+              .then(res => {
+                this._mapboxgl_map.addLayer({
+                  id: "zone",
+                  type: "line",
+                  source: {
+                    type: "geojson",
+                    data: turf.polygonToLine(
+                      turf.polygon([JSON.parse([res[0].polygonfield])])
+                    )
+                  },
+                  layout: {
+                    "line-join": "round",
+                    "line-cap": "round"
+                  },
+                  paint: {
+                    "line-color": "#888",
+                    "line-width": 3,
+                    "line-dasharray": [5, 10]
+                  }
+                });
+                this._mapboxgl_map.jumpTo(
+                  {
+                    center: turf.centerOfMass(
+                      turf.polygon([JSON.parse([res[0].polygonfield])])
+                    ).geometry.coordinates,
+                    zoom: 13,
+                    around: turf.centerOfMass(
+                      turf.polygon([JSON.parse([res[0].polygonfield])])
+                    ).geometry.coordinates
+                  },
+                  {
+                    padding: this.sidebar_expanded
+                      ? { top: 75, bottom: 75, left: 200, right: 75 }
+                      : 75
+                  }
+                );
+              })
+              .catch(e => {
+                console.error(e);
+              });
+
+            fetch(
+              "http://localhost:5000/api/sectors/geom/" +
+                features[0].properties.zone_id
+            )
+              .then(res => {
+                return res.json();
+              })
+              .then(res => {
+                var sector = {
+                  type: "geojson",
+                  data: {
+                    type: "FeatureCollection",
+                    features: []
+                  }
+                };
+
+                res.forEach(el => {
+                  if (el.st_asgeojson) {
+                    if (JSON.parse(el.st_asgeojson).type == "Polygon") {
+                      sector.data.features.push({
+                        type: "Feature",
+                        geometry: JSON.parse(el.st_asgeojson),
+                        properties: {
+                          title: el.title_ru,
+                          type: el.project_type
+                        }
+                      });
+                    }
+                  }
+                });
+
+                this._mapboxgl_map.addSource("sector", sector);
+
+                this._mapboxgl_map.addLayer({
+                  id: "current-sector",
+                  type: "fill",
+                  source: "sector",
+                  paint: {
+                    "fill-color": "#3498DB",
+                    "fill-outline-color": "#fff",
+                    "fill-opacity": 0.8
+                  },
+                  filter: ["==", "type", 1]
+                });
+                this._mapboxgl_map.addLayer({
+                  id: "processing-sector",
+                  type: "fill",
+                  source: "sector",
+                  paint: {
+                    "fill-color": "#F4D03F",
+                    "fill-outline-color": "#fff",
+                    "fill-opacity": 0.8
+                  },
+                  filter: ["==", "type", 2]
+                });
+                this._mapboxgl_map.addLayer({
+                  id: "free-sector",
+                  type: "fill",
+                  source: "sector",
+                  paint: {
+                    "fill-color": "#2ECC71",
+                    "fill-outline-color": "#fff",
+                    "fill-opacity": 0.8
+                  },
+                  filter: ["==", "type", 3]
+                });
+              })
+              .catch(e => {
+                console.error(e);
+              });
+          }
+          break;
+        case 2:
+          var features = this._mapboxgl_map.queryRenderedFeatures(e.point, {
+            layers: ["current-sector", "processing-sector", "free-sector"]
+          });
+          if (features[0]) {
+            this._mapboxgl_map.getCanvas().style.cursor = "";
+            this.set_level({
+              id: 3,
+              name: {
+                ru: features[0].properties.title
+              },
+              features: features[0]
+            });
+            this._mapboxgl_map.fitBounds(turf.bbox(features[0].geometry), {
+              padding: this.sidebar_expanded
+                ? { top: 150, bottom: 150, left: 200, right: 150 }
+                : 150
+            });
+            this._mapboxgl_map.setStyle(osm());
+            this._mapboxgl_map.addLayer({
+              id: "sector",
+              type: "fill",
+              source: {
+                type: "geojson",
+                data: {
+                  type: "Feature",
+                  geometry: {
+                    type: "Polygon",
+                    coordinates: features[0]._geometry.coordinates,
+                    properties: features[0].properties
+                  }
+                }
+              },
+              layout: {},
+              paint: features[0].layer.paint
+            });
+          }
+          break;
+      }
+    });
+
+    this._mapboxgl_map.on("mousemove", e => {
+      switch (this.active_level.id) {
+        case 1:
+          var cities = this._mapboxgl_map.queryRenderedFeatures(e.point, {
+            layers: ["astana", "shymkent", "almaty"]
+          });
+          var provinces = this._mapboxgl_map.queryRenderedFeatures(e.point, {
+            layers: [
+              "akm-obl",
+              "akt-obl",
+              "alm-obl",
+              "atyr-obl",
+              "vko-obl",
+              "tur-obl",
+              "sko-obl",
+              "pavl-obl",
+              "kyz-obl",
+              "kost-obl",
+              "kar-obl",
+              "jamb-obl",
+              "man-obl",
+              "zko-obl"
+            ]
+          });
+
+          if (provinces[0]) {
+            this.mouseover = provinces[0].layer.id;
+            if (this.hoveredStateId) {
+              this._mapboxgl_map.setPaintProperty(
+                this.hoveredStateId,
+                "fill-color",
+                "#03A0E3"
+              );
+            }
+            this.hoveredStateId = provinces[0].layer.id;
+            this.hoveredFeature = provinces[0];
             this._mapboxgl_map.setPaintProperty(
               this.hoveredStateId,
               "fill-color",
               "#03A0E3"
             );
           }
-          this.hoveredStateId = features[0].layer.id;
-          this.hoveredFeature = features[0];
-          this._mapboxgl_map.setPaintProperty(
-            this.hoveredStateId,
-            "fill-color",
-            "#03A0E3"
-          );
-        }
-      }
-      if (this.active_level.id == 2) {
-        if (features[0]) {
-          if (features[0].layer.id.startsWith('sector')) {
-            this.mouseover = features[0].layer.id;
+          if (cities[0]) {
             this._mapboxgl_map.getCanvas().style.cursor = "pointer";
-            popup
-              .setLngLat(turf.centerOfMass(
-                        turf.polygon(this._mapboxgl_map.getSource(features[0].layer.id)._data.geometry.coordinates)
-                      ).geometry.coordinates )
-              .setHTML(this._mapboxgl_map.getSource(features[0].layer.id)._data.geometry.properties.title)
+            this._mapboxgl_map.setPaintProperty(
+              cities[0].layer.id,
+              "circle-color",
+              "#fff"
+            );
+            this._mapboxgl_map.setPaintProperty(
+              cities[0].layer.id,
+              "circle-stroke-color",
+              "#C30D0D"
+            );
+          }
+          break;
+        case 2:
+          var sectors = this._mapboxgl_map.queryRenderedFeatures(e.point, {
+            layers: ["current-sector", "processing-sector", "free-sector"]
+          });
+          if (sectors[0]) {
+            this._mapboxgl_map.getCanvas().style.cursor = "pointer";
+            this.popup
+              .setLngLat(
+                turf.centerOfMass(turf.polygon(sectors[0].geometry.coordinates))
+                  .geometry.coordinates
+              )
+              .setHTML(sectors[0].properties.title)
               .addTo(this._mapboxgl_map);
           }
-        }
+          break;
       }
     });
+
+    // mouseleave ПЕРВЫЙ УРОВЕНЬ ГОРОДА
+
+    this._mapboxgl_map.on("mouseleave", "astana", _ => {
+      if (this.active_level.id == 1) {
+        this._mapboxgl_map.getCanvas().style.cursor = "";
+        this._mapboxgl_map.setPaintProperty(
+          "astana",
+          "circle-color",
+          "#C30D0D"
+        );
+        this._mapboxgl_map.setPaintProperty(
+          "astana",
+          "circle-stroke-color",
+          "#fff"
+        );
+      }
+    });
+    this._mapboxgl_map.on("mouseleave", "almaty", _ => {
+      if (this.active_level.id == 1) {
+        this._mapboxgl_map.getCanvas().style.cursor = "";
+        this._mapboxgl_map.setPaintProperty(
+          "almaty",
+          "circle-color",
+          "#C30D0D"
+        );
+        this._mapboxgl_map.setPaintProperty(
+          "almaty",
+          "circle-stroke-color",
+          "#fff"
+        );
+      }
+    });
+    this._mapboxgl_map.on("mouseleave", "shymkent", _ => {
+      if (this.active_level.id == 1) {
+        this._mapboxgl_map.getCanvas().style.cursor = "";
+        this._mapboxgl_map.setPaintProperty(
+          "shymkent",
+          "circle-color",
+          "#C30D0D"
+        );
+        this._mapboxgl_map.setPaintProperty(
+          "shymkent",
+          "circle-stroke-color",
+          "#fff"
+        );
+      }
+    });
+
+    // mouseleave ПЕРВЫЙ УРОВЕНЬ ДЛЯ ОБЛАСТЕЙ (ЗАРЕФАКТОРИТЬ)
 
     this._mapboxgl_map.on("mouseleave", "akm-obl", _ => {
       if (this.active_level.id == 1) {
@@ -188,224 +455,115 @@ export default {
       }
     });
 
-    this._mapboxgl_map.on("click", e => {
-      var features = this._mapboxgl_map.queryRenderedFeatures(e.point);
+    // ИВЭНТЫ ПЕРВОГО УРОВНЯ (СЭЗ) – КЛАСТЕРЫ, МАРКЕРЫ
 
-      if (this.active_level.id == 1) {
-        if (features[0].layer.id == "sez" || features[0].layer.id == "iz") {
-          this._mapboxgl_map.setStyle(osm());
-          this.set_level({
-            id: 2,
-            name: {
-              ru: features[0].properties.title
-            },
-            features: features[0]
-          });
+    this._mapboxgl_map.on("click", "sez-clusters", e => {
+      var features = this._mapboxgl_map.queryRenderedFeatures(e.point, {
+        layers: ["sez-clusters"]
+      });
 
-          fetch('http://localhost:5000/api/zones/' + features[0].properties.zone_id)
-            .then(res => {
-              return res.json();
-            })
-            .then(res => {
-              this._mapboxgl_map.addLayer({
-                id: "zone",
-                type: "line",
-                source: {
-                  type: "geojson",
-                  data: turf.polygonToLine(
-                    turf.polygon([JSON.parse([res[0].polygonfield])])
-                  )
-                },
-                layout: {
-                  "line-join": "round",
-                  "line-cap": "round"
-                },
-                paint: {
-                  "line-color": "#888",
-                  "line-width": 3,
-                  "line-dasharray": [5, 10]
-                }
-              });
-              this._mapboxgl_map.fitBounds(
-                turf.bbox(turf.lineString(JSON.parse(res[0].polygonfield))),
-                {
-                  padding: this.sidebar_expanded
-                    ? { top: 75, bottom: 75, left: 200, right: 75 }
-                    : 75
-                }
-              );
-            })
-            .catch(e => {
-              console.error(e);
+      this._mapboxgl_map
+        .getSource("sez")
+        .getClusterExpansionZoom(
+          features[0].properties.cluster_id,
+          (err, zoom) => {
+            if (err) return;
+
+            this._mapboxgl_map.easeTo({
+              center: features[0].geometry.coordinates,
+              zoom: zoom
             });
+          }
+        );
+    });
 
-          fetch(
-            "http://localhost:5000/api/sectors/" +
-              features[0].properties.zone_id
-          )
-            .then(res => {
-              return res.json();
-            })
-            .then(res => {
-              res.forEach(el => {
-                if (el.sector_polygon.length > 2) {
+    this._mapboxgl_map.on("mouseenter", "sez-clusters", e => {
+      var features = this._mapboxgl_map.queryRenderedFeatures(e.point, {
+        layers: ["sez-clusters"]
+      });
 
-                  if (el.project_type == 1) {
-                    this._mapboxgl_map.addLayer({
-                      id: "sector" + el.id,
-                      type: "fill",
-                      source: {
-                        type: "geojson",
-                        data: {
-                          type: "Feature",
-                          geometry: {
-                            type: "Polygon",
-                            coordinates: [JSON.parse(el.sector_polygon)],
-                            properties: {
-                              title: el.title_ru
-                            }
-                          }
-                        }
-                      },
-                      layout: {},
-                      paint: {
-                        "fill-color": "#3498DB",
-                        "fill-outline-color": "#fff",
-                        "fill-opacity": 0.8
-                      }
-                    });
-                  } else if (el.project_type == 2) {
-                    this._mapboxgl_map.addLayer({
-                      id: "sector" + el.id,
-                      type: "fill",
-                      source: {
-                        type: "geojson",
-                        data: {
-                          type: "Feature",
-                          geometry: {
-                            type: "Polygon",
-                            coordinates: [JSON.parse(el.sector_polygon)],
-                            properties: {
-                              title: el.title_ru
-                            }
-                          }
-                        }
-                      },
-                      layout: {},
-                      paint: {
-                        "fill-color": "#F4D03F",
-                        "fill-outline-color": "#fff",
-                        "fill-opacity": 0.8
-                      }
-                    });
-                  } else if (el.project_type == 3) {
-                    this._mapboxgl_map.addLayer({
-                      id: "sector" + el.id,
-                      type: "fill",
-                      source: {
-                        type: "geojson",
-                        data: {
-                          type: "Feature",
-                          geometry: {
-                            type: "Polygon",
-                            coordinates: [JSON.parse(el.sector_polygon)],
-                            properties: {
-                              title: el.title_ru
-                            }
-                          }
-                        }
-                      },
-                      layout: {},
-                      paint: {
-                        "fill-color": "#2ECC71",
-                        "fill-outline-color": "#fff",
-                        "fill-opacity": 0.8
-                      }
-                    });
-                  }
-                  
-                }
-              });
-            })
-            .catch(e => {
-              console.error(e);
-            });
-        }
-      } else if (this.active_level.id == 2) {
-        console.log(this._mapboxgl_map.getSource(features[0].source))
-        if (features[0].layer.id.startsWith('sector')) {
-          this.set_level({
-            id: 3,
-            name: {
-              ru: this._mapboxgl_map.getSource(features[0].source)._data.geometry.properties.title
-            },
-            features: features[0]
-          });
-          this._mapboxgl_map.fitBounds(
-            turf.bbox(this._mapboxgl_map.getSource(features[0].source)._data.geometry),
-            {
-              padding: this.sidebar_expanded
-                ? { top: 75, bottom: 75, left: 200, right: 75 }
-                : 75
-            }
-          );
-        }
-      }
+      this._mapboxgl_map
+        .getSource("sez")
+        .getClusterChildren(
+          features[0].properties.cluster_id,
+          (err, cl_features) => {
+            if (err) return;
+          }
+        );
+
+      this._mapboxgl_map.getCanvas().style.cursor = "pointer";
+    });
+
+    this._mapboxgl_map.on("mouseleave", "sez-clusters", e => {
+      this._mapboxgl_map.getCanvas().style.cursor = "";
+      this.popup.remove();
     });
 
     this._mapboxgl_map.on("mouseenter", "sez", e => {
-      var features = this._mapboxgl_map.queryRenderedFeatures(e.point, { layers: ['sez'] });
+      var features = this._mapboxgl_map.queryRenderedFeatures(e.point, {
+        layers: ["sez"]
+      });
 
       this._mapboxgl_map.getCanvas().style.cursor = "pointer";
-      popup
+      this.popup
         .setLngLat(features[0].geometry.coordinates.slice())
         .setHTML(features[0].properties.title)
         .addTo(this._mapboxgl_map);
     });
 
-    this._mapboxgl_map.on("mouseenter", "sez-clusters", e => {
-      var features = this._mapboxgl_map.queryRenderedFeatures(e.point, { layers: ['sez-clusters'] });
+    this._mapboxgl_map.on("mouseleave", "sez", e => {
+      this._mapboxgl_map.getCanvas().style.cursor = "";
+      this.popup.remove();
+    });
+
+    // ИВЭНТЫ ПЕРВОГО УРОВНЯ (ИЗ) – КЛАСТЕРЫ, МАРКЕРЫ
+
+    this._mapboxgl_map.on("click", "iz-clusters", e => {
+      var features = this._mapboxgl_map.queryRenderedFeatures(e.point, {
+        layers: ["iz-clusters"]
+      });
 
       this._mapboxgl_map
-        .getSource("sez")
-        .getClusterChildren(features[0].properties.cluster_id, (err, cl_features) => {
-          if (err) return;
+        .getSource("iz")
+        .getClusterExpansionZoom(
+          features[0].properties.cluster_id,
+          (err, zoom) => {
+            if (err) return;
 
-          
+            this._mapboxgl_map.easeTo({
+              center: features[0].geometry.coordinates,
+              zoom: zoom
+            });
+          }
+        );
+    });
+
+    this._mapboxgl_map.on("mouseenter", "iz-clusters", e => {
+      var features = this._mapboxgl_map.queryRenderedFeatures(e.point, {
+        layers: ["iz-clusters"]
       });
+
+      this._mapboxgl_map
+        .getSource("iz")
+        .getClusterChildren(
+          features[0].properties.cluster_id,
+          (err, cl_features) => {
+            if (err) return;
+          }
+        );
 
       this._mapboxgl_map.getCanvas().style.cursor = "pointer";
     });
 
-    this._mapboxgl_map.on("click", "sez-clusters", e => {
-      var features = this._mapboxgl_map.queryRenderedFeatures(e.point, { layers: ['sez-clusters'] });
-
-      this._mapboxgl_map
-        .getSource("sez")
-        .getClusterExpansionZoom(features[0].properties.cluster_id, (err, zoom) => {
-          if (err) return;
-
-          this._mapboxgl_map.easeTo({
-            center: features[0].geometry.coordinates,
-            zoom: zoom
-          });
-      });
-    });
-
-    this._mapboxgl_map.on("mouseleave", "sez-clusters", e => {
+    this._mapboxgl_map.on("mouseleave", "iz-clusters", e => {
       this._mapboxgl_map.getCanvas().style.cursor = "";
-      popup.remove();
-    });
-
-    this._mapboxgl_map.on("mouseleave", "sez", e => {
-      this._mapboxgl_map.getCanvas().style.cursor = "";
-      popup.remove();
+      this.popup.remove();
     });
 
     this._mapboxgl_map.on("mouseenter", "iz", e => {
       var features = this._mapboxgl_map.queryRenderedFeatures(e.point);
       this._mapboxgl_map.getCanvas().style.cursor = "pointer";
-      popup
+      this.popup
         .setLngLat(features[0].geometry.coordinates.slice())
         .setHTML(features[0].properties.title)
         .addTo(this._mapboxgl_map);
@@ -413,162 +571,205 @@ export default {
 
     this._mapboxgl_map.on("mouseleave", "iz", e => {
       this._mapboxgl_map.getCanvas().style.cursor = "";
-      popup.remove();
+      this.popup.remove();
     });
   },
 
-  computed: mapGetters([
-    "basemap", 
-    "active_level", 
-    "sidebar_expanded"
-  ]),
+  computed: mapGetters(["basemap", "active_level", "sidebar_expanded"]),
 
   watch: {
     basemap: "change_basemap",
     sidebar_expanded: "move_map",
-    active_level: "follow_level",
+    active_level: "follow_level"
   },
 
   methods: {
     ...mapMutations(["set_level"]),
 
     _addObjects() {
-        fetch('http://localhost:5000/api/zones/')
-          .then(res => {
-            return res.json();
-          })
-          .then(res => {
-            var sez_source = {
-              type: "geojson",
-              data: {
-                type: "FeatureCollection",
-                features: []
-              },
-              cluster: true,
-              clusterRadius: 20,
-              clusterMaxZoom: 9
-            };
-            var iz_source = {
-              type: "geojson",
-              data: {
-                type: "FeatureCollection",
-                features: []
-              },
-              cluster: true,
-              clusterRadius: 10,
-              clusterMaxZoom: 9
-            };
+      this._mapboxgl_map.addLayer({
+        id: "astana",
+        type: "circle",
+        source: {
+          type: "geojson",
+          data: {
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [71.463959, 51.154918]
+            },
+            properties: {
+              title: "Астана"
+            }
+          }
+        },
+        paint: {
+          "circle-radius": 6,
+          "circle-color": "#C30D0D",
+          "circle-stroke-width": 2,
+          "circle-stroke-color": "#fff"
+        }
+      });
 
-            res.forEach(el => {
-              if (el.zone_type == 1) {
-                sez_source.data.features.push({
-                  type: "Feature",
-                  geometry: {
-                    type: "Point",
-                    properties: {},
-                    coordinates: turf.centerOfMass(
-                      turf.polygon([JSON.parse(el.polygonfield)])
-                    ).geometry.coordinates
-                  },
-                  properties: {
-                    title: el.title_ru,
-                    name: el.title_en,
-                    zone_id: el.id
-                  }
-                });
-              }
-              if (el.zone_type == 2) {
-                iz_source.data.features.push({
-                  type: "Feature",
-                  geometry: {
-                    type: "Point",
-                    properties: {},
-                    coordinates: turf.centerOfMass(
-                      turf.polygon([JSON.parse(el.polygonfield)])
-                    ).geometry.coordinates
-                  },
-                  properties: {
-                    title: el.title_ru,
-                    name: el.title_en,
-                    zone_id: el.id
-                  }
-                });
-              }
-            });
+      this._mapboxgl_map.addLayer({
+        id: "almaty",
+        type: "circle",
+        source: {
+          type: "geojson",
+          data: {
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [76.904369, 43.23711]
+            },
+            properties: {
+              title: "Алматы"
+            }
+          }
+        },
+        paint: {
+          "circle-radius": 6,
+          "circle-color": "#C30D0D",
+          "circle-stroke-width": 2,
+          "circle-stroke-color": "#fff"
+        }
+      });
 
-            this._mapboxgl_map.addSource("sez", sez_source);
-            this._mapboxgl_map.addSource("iz", iz_source);
+      this._mapboxgl_map.addLayer({
+        id: "shymkent",
+        type: "circle",
+        source: {
+          type: "geojson",
+          data: {
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [69.591172, 42.335432]
+            },
+            properties: {
+              title: "Шымкент"
+            }
+          }
+        },
+        paint: {
+          "circle-radius": 6,
+          "circle-color": "#C30D0D",
+          "circle-stroke-width": 2,
+          "circle-stroke-color": "#fff"
+        }
+      });
 
-            this._mapboxgl_map.addLayer({
-              id: "iz",
-              type: "symbol",
-              source: "iz",
-              filter: ["!", ["has", "point_count"]],
-              layout: {
-                "icon-image": "marker2",
-                "icon-allow-overlap": true
-              }
-            });
-            this._mapboxgl_map.addLayer({
-              id: "sez",
-              type: "symbol",
-              source: "sez",
-              filter: ["!", ["has", "point_count"]],
-              layout: {
-                "icon-image": "marker",
-                "icon-allow-overlap": true
-              }
-            });
+      fetch("http://localhost:5000/api/zones/")
+        .then(res => {
+          return res.json();
+        })
+        .then(res => {
+          var zone = {
+            type: "geojson",
+            data: {
+              type: "FeatureCollection",
+              features: []
+            },
+            cluster: true,
+            clusterRadius: 20,
+            clusterMaxZoom: 9
+          };
 
-            this._mapboxgl_map.addLayer({
-              id: "sez-clusters",
-              type: "circle",
-              source: "sez",
-              filter: ["has", "point_count"],
-              paint: {
-                  "circle-color": "#2ECC71",
-                  "circle-radius": 8,
-                  "circle-stroke-color": "#fff",
-                  "circle-stroke-width": 3
-              }
-            });
-            this._mapboxgl_map.addLayer({
-              id: "sez-cluster-count",
-              type: "symbol",
-              source: "sez",
-              filter: ["has", "point_count"],
-              layout: {
-                "text-field": "{point_count_abbreviated}",
-                "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
-                "text-size": 12
-              }
-            });
-            this._mapboxgl_map.addLayer({
-              id: "iz-clusters",
-              type: "circle",
-              source: "iz",
-              filter: ["has", "point_count"],
-              paint: {
-                  "circle-color": "#F39C12",
-                  "circle-radius": 10,
-                  "circle-stroke-color": "#fff"
-              }
-            });
-            this._mapboxgl_map.addLayer({
-              id: "iz-cluster-count",
-              type: "symbol",
-              source: "iz",
-              filter: ["has", "point_count"],
-              layout: {
-                "text-field": "{point_count_abbreviated}",
-                "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
-                "text-size": 12
-              }
-            });
-          })
-          .catch(e => {
-            console.error(e);
+          res.forEach(el => {
+            // geom
+            if (el.polygonfield) {
+              zone.data.features.push({
+                type: "Feature",
+                geometry: {
+                  type: "Point",
+                  properties: {},
+                  coordinates: turf.centerOfMass(
+                    turf.polygon([JSON.parse(el.polygonfield)])
+                  ).geometry.coordinates
+                },
+                properties: {
+                  title: el.title_ru,
+                  name: el.title_en,
+                  zone_id: el.id,
+                  type: el.zone_type
+                }
+              });
+            }
           });
+
+          this._mapboxgl_map.addSource("zone", zone);
+
+          this._mapboxgl_map.addLayer({
+            id: "sez",
+            type: "symbol",
+            source: "zone",
+            filter: ["all", ["!has", "point_count"], ["==", "type", 1]],
+            layout: {
+              "icon-image": "marker",
+              "icon-allow-overlap": true
+            }
+          });
+          this._mapboxgl_map.addLayer({
+            id: "sez-clusters",
+            type: "circle",
+            source: "zone",
+            filter: ["all", ["has", "point_count"], ["==", "type", 1]],
+            paint: {
+              "circle-color": "#2ECC71",
+              "circle-radius": 8,
+              "circle-stroke-color": "#fff",
+              "circle-stroke-width": 3
+            }
+          });
+          this._mapboxgl_map.addLayer({
+            id: "sez-cluster-count",
+            type: "symbol",
+            source: "zone",
+            filter: ["all", ["has", "point_count"], ["==", "type", 1]],
+            layout: {
+              "text-field": "{point_count_abbreviated}",
+              "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+              "text-size": 12
+            }
+          });
+
+          this._mapboxgl_map.addLayer({
+            id: "iz",
+            type: "symbol",
+            source: "zone",
+            filter: ["all", ["!has", "point_count"], ["==", "type", 2]],
+            layout: {
+              "icon-image": "marker2",
+              "icon-allow-overlap": true
+            }
+          });
+          this._mapboxgl_map.addLayer({
+            id: "iz-clusters",
+            type: "circle",
+            source: "zone",
+            filter: ["all", ["has", "point_count"], ["==", "type", 2]],
+            paint: {
+              "circle-color": "#F39C12",
+              "circle-radius": 10,
+              "circle-stroke-color": "#fff",
+              "circle-stroke-width": 3
+            }
+          });
+          this._mapboxgl_map.addLayer({
+            id: "iz-cluster-count",
+            type: "symbol",
+            source: "zone",
+            filter: ["all", ["has", "point_count"], ["==", "type", 2]],
+            layout: {
+              "text-field": "{point_count_abbreviated}",
+              "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+              "text-size": 12
+            }
+          });
+        })
+        .catch(e => {
+          console.error(e);
+        });
     },
 
     change_basemap() {
@@ -580,40 +781,50 @@ export default {
     },
 
     move_map() {
-      if (this.active_level.id == 1) {
-        if (this.sidebar_expanded) {
-          this._mapboxgl_map.fitBounds(
-            turf.bbox(
-              turf.lineString([[34.309517, 52.990292], [86.383498, 41.286791]])
-            ),
-            {
-              padding: 70
-            }
-          );
-        } else {
-          this._mapboxgl_map.fitBounds(
-            turf.bbox(
-              turf.lineString([[86.357452, 39.389153], [47.722955, 56.408161]])
-            )
-          );
-        }
+      switch (this.active_level.id) {
+        case 1:
+          if (this.sidebar_expanded) {
+            this._mapboxgl_map.fitBounds(
+              turf.bbox(
+                turf.lineString([
+                  [34.309517, 52.990292],
+                  [86.383498, 41.286791]
+                ])
+              ),
+              {
+                padding: 70
+              }
+            );
+          } else {
+            this._mapboxgl_map.fitBounds(
+              turf.bbox(
+                turf.lineString([
+                  [86.357452, 39.389153],
+                  [47.722955, 56.408161]
+                ])
+              )
+            );
+          }
+          break;
       }
     },
 
     follow_level() {
-      if (this.active_level.id == 1) {
-        this._mapboxgl_map.setStyle(positron());
-        this._addObjects();
-        this._mapboxgl_map.fitBounds(
-            turf.bbox(
-              turf.lineString([[34.309517, 52.990292], [86.383498, 41.286791]])
-            ),
-            {
-              padding: 70
-            }
-        );
-      } else if (this.active_level.id == 2) {
-
+      this.popup.remove();
+      switch (this.active_level.id) {
+        case 1:
+          this._mapboxgl_map.setStyle(positron());
+          this._addObjects();
+          this._mapboxgl_map.flyTo({
+            center: [60.131017, 49.205201],
+            zoom: 4,
+            speed: 5
+          });
+          break;
+        case 2:
+          // this._mapboxgl_map.setStyle(osm());
+          this.hoveredStateId = "";
+          break;
       }
     }
   }
