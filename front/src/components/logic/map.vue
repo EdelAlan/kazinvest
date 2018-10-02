@@ -70,7 +70,7 @@ export default {
             });
 
             fetch(
-              "http://localhost:5000/api/zones/" +
+              "http://localhost:5000/back/api/zones/" +
                 features[0].properties.zone_id
             )
               .then(res => {
@@ -118,7 +118,7 @@ export default {
               });
 
             fetch(
-              "http://localhost:5000/api/sectors/geom/" +
+              "http://localhost:5000/back/api/sectors/geom/" +
                 features[0].properties.zone_id
             )
               .then(res => {
@@ -659,7 +659,7 @@ export default {
         }
       });
 
-      fetch("http://localhost:5000/api/zones/")
+      fetch("http://localhost:5000/back/api/zones/")
         .then(res => {
           return res.json();
         })

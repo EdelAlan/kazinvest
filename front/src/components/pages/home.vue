@@ -100,12 +100,17 @@
                 <button id="find" class="field btn">Найти</button>
             </div>
             <router-link to="/map">
-              <a href="#" id="map_link">
-                  <div>
-                      <div class="logo"></div>
-                      <div class="title">Интерактивная карта Специальных экономических и Индустриальных зон Республики Казахстан</div>
-                  </div>
-              </a>
+
+
+              <div class="home-main_btn_layer">
+                <div class="home-main_btn">
+                  <div class="home-main_btn_logo"></div>
+                  <span class="home-main_btn_title">Интерактивная карта Специальных экономических и Индустриальных зон Республики Казахстан</span>
+                </div>
+              </div>
+
+
+
             </router-link>
             <div class="btn_group">
                 <a href="#" class="btn category">
@@ -141,6 +146,9 @@
 
 
 <style scoped>
+  a {
+    text-decoration: none;
+  }
   .home {
     position: relative;
     min-height: 100%;
@@ -158,6 +166,35 @@
       padding: 20px;
       display: flex;
       justify-content: flex-end;
+  }
+
+  .home-main_btn_layer {
+    background: rgba(255,255,255,.5);
+    overflow: hidden;
+    border-radius: 3px;
+  }
+
+  .home-main_btn {
+    padding:15px;
+    background: #52cbff;
+    background: #fff;
+    box-shadow: 0 0 5px rgba(0,0,0,.2);
+    border-radius: 3px;
+    margin: 10px;
+    text-align: center;
+  }
+
+  .home-main_btn_logo {
+    height: 78px;
+    background: url('../../assets/images/logo-blue.svg') no-repeat center;
+    background-size: contain;
+    margin-bottom: 10px;
+  }
+
+  .home-main_btn_title {
+    font-size: 24px;
+    color: #666;
+    text-decoration: none;
   }
 
   .lang {
@@ -192,8 +229,8 @@
 
   .btn {
     padding: 5px 10px;
-    border: 1px solid #878DA1;
-    border-radius: 3px;
+    border: 1px solid #ccc;
+    border-radius: 1px;
     text-decoration: none;
     color: #484D5E;
     display: inline-block;
@@ -204,7 +241,7 @@
   }
 
   .filter_line {
-    background: #03A0E3;
+    background: #52cbff;
     display: flex;
     align-items: stretch;
     padding: 5px;
@@ -253,23 +290,14 @@
 
   #map_link > div {
     width: 100%;
-    background: #03A0E3;
+    background: #52cbff;
     margin: 0;
     display: inline-block;
     padding: 10px 100px;
     color: #fff;
   }
 
-  .logo {
-    height: 78px;
-    background: url('../../assets/images/logo.svg') no-repeat center;
-    background-size: contain;
-    margin-bottom: 10px;
-  }
 
-  .title {
-    font-size: 24px;
-  }
 
   .btn_group {
     display: flex;
@@ -283,25 +311,27 @@
     border: 1px solid #E3E3E3;
     box-shadow: 0 8px 15px #0004;
     align-items: center;
-    padding: 20px 10px;
+    padding: 5px 10px;
+    background: #52cbff;
     overflow: hidden;
   }
 
   .count {
-    font-size: 55px;
-    color: #69686866;
+    font-size: 65px;
+    color: #fff;
+    font-weight: bold;
     margin-right: 10px;
   }
 
   .category .title,
   .welcome .title {
-    font-size: 20px;
+    font-size: 17px;
     margin: 0;
     text-align: left;
   }
 
   .category .title {
-    color: #00ACFF;
+    color: #fff;
     font-family: 'ProximaNovaSemibold', sans-serif;
   }
 
@@ -321,7 +351,7 @@
     position: absolute;
     right: calc(100% + 20px);
     bottom: 50%;
-    background: #03A0E395;
+    background: #52cbff95;
     border-radius: 3px;
     align-items: flex-end;
   }

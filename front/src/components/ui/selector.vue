@@ -6,6 +6,7 @@
       'styles',
       'placeholder',
     ],
+    
     data () {
       return {
         filtered_list: null,
