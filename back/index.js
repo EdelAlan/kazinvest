@@ -2,7 +2,8 @@ const app = require('express')();
 const signin = require('./src/signin');
 
 // api
-const map = require('./src/api/map');
+const zones = require('./src/api/zones');
+const sectors = require('./src/api/sectors');
 
 app
   .use((_, res, next) => {
@@ -13,6 +14,7 @@ app
   })
   .use('/signin', signin)
   // api
-  .use('/api/map', map)
+  .use('/api/zones', zones)
+  .use('/api/sectors', sectors)
 
   .listen(5000, () => console.log('Listen on 5000'));

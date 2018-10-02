@@ -23,7 +23,6 @@ export default {
 
   actions: {
     async set_zone_type({ commit, dispatch }, zone_type) {
-      console.log(32423)
       await commit('set_zone_type', zone_type);
       dispatch('set_zones');
     },
@@ -31,9 +30,8 @@ export default {
     set_zones({ commit, state }) {
       return fetcher({
         method: 'get',
-        path: 'http://localhost:5000/api/map/zones?zone_type=' + state.zone_type.id,
+        path: 'http://localhost:5000/api/zones?zone_type=' + state.zone_type.id,
       }).then(zones => {
-        console.log(zones)
         commit('set_zones', zones);
         return;
       });
