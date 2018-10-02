@@ -21,7 +21,8 @@
 
     methods: mapActions([
       'set_zones',
-      'set_sectors'
+      'set_sectors',
+      'set_level_b'
     ]),
 
     mounted () {
@@ -94,7 +95,10 @@
             </span>        
           </span>
           -->
-
+   <!-- set_level_b({ 
+                  id: 2,
+                  name: { ru: zone.title_ru }
+                })-->
           <div slot="tab_0">
             <div class="sidebar-item"
               v-for="zone in zones"
