@@ -460,39 +460,41 @@ export default {
             };
 
             res.forEach(el => {
-              if (el.zone_type == 1) {
-                sez_source.data.features.push({
-                  type: "Feature",
-                  geometry: {
-                    type: "Point",
-                    properties: {},
-                    coordinates: turf.centerOfMass(
-                      turf.polygon([JSON.parse(el.polygonfield)])
-                    ).geometry.coordinates
-                  },
-                  properties: {
-                    title: el.title_ru,
-                    name: el.title_en,
-                    zone_id: el.id
-                  }
-                });
-              }
-              if (el.zone_type == 2) {
-                iz_source.data.features.push({
-                  type: "Feature",
-                  geometry: {
-                    type: "Point",
-                    properties: {},
-                    coordinates: turf.centerOfMass(
-                      turf.polygon([JSON.parse(el.polygonfield)])
-                    ).geometry.coordinates
-                  },
-                  properties: {
-                    title: el.title_ru,
-                    name: el.title_en,
-                    zone_id: el.id
-                  }
-                });
+              if (el.polygonfield) {
+                if (el.zone_type == 1) {
+                  sez_source.data.features.push({
+                    type: "Feature",
+                    geometry: {
+                      type: "Point",
+                      properties: {},
+                      coordinates: turf.centerOfMass(
+                        turf.polygon([JSON.parse(el.polygonfield)])
+                      ).geometry.coordinates
+                    },
+                    properties: {
+                      title: el.title_ru,
+                      name: el.title_en,
+                      zone_id: el.id
+                    }
+                  });
+                }
+                if (el.zone_type == 2) {
+                  iz_source.data.features.push({
+                    type: "Feature",
+                    geometry: {
+                      type: "Point",
+                      properties: {},
+                      coordinates: turf.centerOfMass(
+                        turf.polygon([JSON.parse(el.polygonfield)])
+                      ).geometry.coordinates
+                    },
+                    properties: {
+                      title: el.title_ru,
+                      name: el.title_en,
+                      zone_id: el.id
+                    }
+                  });
+                }
               }
             });
 
