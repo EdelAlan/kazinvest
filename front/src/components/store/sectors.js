@@ -30,7 +30,8 @@ export default {
     set_sectors ({ commit }, selected_zone) {
       console.log(selected_zone.id)
       return fetcher({
-        path: 'http://localhost:5000/back/api/sectors/' + selected_zone.id,
+        path: 'http://localhost:5000/back/api/sectors' 
+          + (selected_zone.id ? '?zone_id=' + selected_zone.id : ''),
       }).then(sectors => {
         console.log(sectors);
         commit('set_sectors', sectors);
