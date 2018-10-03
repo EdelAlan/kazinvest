@@ -186,7 +186,7 @@
 
   .home-main_btn_logo {
     height: 78px;
-    background: url('../../assets/images/logo-blue.svg') no-repeat center;
+    background: url('../../assets/images/logo-blue-black.svg') no-repeat center;
     background-size: contain;
     margin-bottom: 10px;
   }
