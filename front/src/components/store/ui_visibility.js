@@ -1,6 +1,7 @@
 export default {
   state: () => ({
     signup_signin_modal: false,
+    sector_passport: false,// паспорт объекта, "sector" - название из базы
   }),
 
   mutations: {
@@ -11,10 +12,11 @@ export default {
 
   getters: {
     signup_signin_modal: state => state.signup_signin_modal,
+    sector_passport: state => state.sector_passport,
   },
 
   actions: {
-    change_ui_visibility({ commit }, ui_component_state) {
+    change_ui_visibility ({ commit }, ui_component_state) {
       commit('change_ui_visibility', ui_component_state);
     },
   },

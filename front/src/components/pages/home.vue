@@ -95,8 +95,8 @@
                     <option value="сэз">СЭЗ</option>
                     <option value="из">ИЗ</option>
                 </select>
-                <input type="text" id="territory" class="field" placeholder="Весь Казахстан">
-                <input type="text" id="search" class="field" placeholder="Нефть">
+                <input type="text" id="territory" class="field" placeholder="Регионы">
+                <input type="text" id="search" class="field" placeholder="Отрасль">
                 <button id="find" class="field btn">Найти</button>
             </div>
             <router-link to="/map">
@@ -180,7 +180,7 @@
     background: #fff;
     box-shadow: 0 0 5px rgba(0,0,0,.2);
     border-radius: 3px;
-    margin: 10px;
+    margin: 5px;
     text-align: center;
   }
 
@@ -244,22 +244,27 @@
     background: #52cbff;
     display: flex;
     align-items: stretch;
-    padding: 5px;
   }
 
   .filter_line, #map_link {
     margin: 5px 0;
     border-radius: 3px;
     width: 100%;
+    border: 1px solid #E3E3E3;
   }
 
   .field {
-    font-size: 18px;
+    height: 35px;
+    font-size: 16px;
     padding: 10px 15px;
     background: #fff;
     border: none;
     border-radius: 3px;
     margin: 5px;
+  }
+
+  select.field {
+    padding: 0 10px;
   }
 
   #type {
@@ -280,6 +285,7 @@
     border: none;
     box-shadow: 0 3px 5px #0003;
     color: #fff;
+    line-height: 17px;
   }
 
   #map_link {

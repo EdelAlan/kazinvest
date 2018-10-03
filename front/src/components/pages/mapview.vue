@@ -27,10 +27,11 @@
   }
 </script>
 
-
 <template>
   <div class="mapview">
-    <div class="mapview-logo"></div>
+    <router-link to="/">
+      <div class="mapview-logo"></div>
+    </router-link>
     <button class="mapview-expand" v-on:click="toggle_sidebar"></button>
     <sidebar class="mapview-sidebar"
       :class="{
@@ -52,9 +53,9 @@
 
 <style scoped>
   .mapview-logo {
-    height: 60px;
+    height: 62px;
     width: 110px;
-    background: url('../../assets/images/logo-blue.svg') no-repeat center;
+    background: url('../../assets/images/logo-blue-black.svg') no-repeat center;
     background-size: cover;
     position: absolute;
     top: 10px;
@@ -93,12 +94,12 @@
   .mapview-breadcrumb {
     position: absolute;
     z-index: 20;
-    left: 330px;
+    left: 327px;
     transition: all .5s ease-in-out;
     top: -60px;
   }
   .mapview-breadcrumb--expanded {
-    left: 330px;
+    left: 327px;
     top: 0;
   }
 

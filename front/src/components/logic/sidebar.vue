@@ -3,6 +3,7 @@
   import sidebar_header from './sidebar_header';
   import treenode from '../ui/treenode';
   import tabs from '../ui/tabs';
+  import passport from './passport';
   import { mapGetters, mapActions } from 'vuex';  
 
   export default {
@@ -11,18 +12,23 @@
       tabs,
       sidebar_header,
       treenode,
+      passport,
     },
 
     computed: mapGetters([
       'sidebar_expanded',
       'zones',
       'sectors',
+      'selected_sector',
+      'sector_passport',
     ]),
 
     methods: mapActions([
       'set_zones',
       'set_sectors',
-      'set_level_b'
+      'set_selected_sector',
+      'set_level_b',
+      'change_ui_visibility',
     ]),
 
     mounted () {
@@ -39,6 +45,9 @@
     <div class="sidebar-header">
       <sidebar_header></sidebar_header>
     </div>
+
+    <passport class="sidebar-passport"
+      v-if="sector_passport"></passport>
 
     <div class="sidebar-scroll_section">
     <!--
@@ -75,14 +84,14 @@
           <span slot="tab_title_0">
             <span class="sidebar-tab">
               <span class="sidebar-tab_icon"></span>
-              <span class="sidebar-tab_title">Cписок</span>
+              <span class="sidebar-tab_title">Справка</span>
             </span>
           </span>
           
           <span slot="tab_title_1">
             <span class="sidebar-tab">
               <span class="sidebar-tab_icon"></span>
-              <span class="sidebar-tab_title">Справка</span>
+              <span class="sidebar-tab_title">Cписок</span>
             </span>        
           </span>
           
@@ -100,6 +109,16 @@
                   name: { ru: zone.title_ru }
                 })-->
           <div slot="tab_0">
+            <piechart
+                :sectors="[
+                  { key: 'Потребность', val: 3203333 },
+                  { key: 'Выделено', val: 2321321 },
+                ]"
+              ></piechart>
+            </div>
+
+          <div slot="tab_1">
+         
             <div class="sidebar-item"
               v-for="zone in zones"
               v-if="sectors.length == 0"
@@ -109,39 +128,24 @@
             </div>
 
             <div class="sidebar-item"
+              v-if="sectors.length > 0"
               v-for="sector in sectors"
-              v-if="sectors.length > 0">
+              :class="{ 'sidebar-item--active': selected_sector && selected_sector.id == sector.id  }"
+              @click="
+                set_selected_sector(sector),
+                change_ui_visibility({
+                  ui_component: 'sector_passport',
+                  ui_component_state: true,
+                })
+              ">
               <span class="sidebar-item_title"v-text="sector.title_ru"></span>
               <span class="sidebar-item_count"v-text="sector.title_project_ru"></span>
             </div>
           </div>
-
-          <div slot="tab_1">
-            <piechart
-              :sectors="[
-                { key: 'Потребность', val: 3203333 },
-                { key: 'Выделено', val: 2321321 },
-              ]"
-            ></piechart>
-          </div>
-          <!--
-
-          <div slot="tab_2">
-            <piechart
-              :sectors="[
-                { key: 'Потребность', val: 3333 },
-                { key: 'Выделено', val: 21321 },
-              ]"
-            ></piechart>
-          </div>
-          -->
           
         </tabs>
-          
       </div>
-
     </div>
-
   </div>
 </template>
 
@@ -152,12 +156,16 @@
     z-index: 10;
     width: 320px;
     height: 100vh;
-    overflow: hidden;
   }
   .sidebar-scroll_section {
     height: calc(100vh - 210px);
     overflow-y: scroll;
     margin-top: 5px;
+  }
+  .sidebar-passport {
+    position: absolute;
+    left: 330px;
+    top: 60px;
   }
   .sidebar-header {
     margin: 5px 5px 0 5px;
@@ -189,5 +197,16 @@
     color: #888;
     display: block;
   }
-
+  .sidebar-item--active {
+    background: #50C7F9;
+  }
+  .sidebar-item--active .sidebar-item_title {
+    color: #fff;
+  }
+  .sidebar-item--active .sidebar-item_count {
+    color: #fff;
+  }
+  .sidebar-item--active:hover {
+    background: #50C7F9;
+  }
 </style>

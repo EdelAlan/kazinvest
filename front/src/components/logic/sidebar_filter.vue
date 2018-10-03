@@ -30,7 +30,9 @@
   <div class="sidebar_filter">
 
     <div class="sidebar_filter-container">
-      <input type="text" class="sidebar_filter-input sidebar_filter-input--search" placeholder="Область, название СЭЗ / ИЗ, объект">
+      <input type="text" 
+        class="sidebar_filter-input sidebar_filter-input--search" 
+        placeholder="Регион, название СЭЗ / ИЗ, объект">
       
 
       <div class="sidebar_filter-filter">
