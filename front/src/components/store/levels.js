@@ -24,12 +24,7 @@ export default {
   mutations: {
    set_level(state, level) {
     if (level.name.ru != state.levels[state.levels.length - 1].name.ru) {
-      state.levels.push({
-        id: level.id,
-        name: { 
-          ru: level.name.ru
-        }
-      })
+      state.levels.push(level);
     }
     
    },
@@ -37,7 +32,7 @@ export default {
      if (level.name.ru != state.levels[state.levels.length - 1].name.ru) {
       switch(level.id) {
         case 1:
-          state.levels = [{ id: 1, name: { ru: 'Карта Казахстана' } }]
+          state.levels = [{ id: 1, name: { ru: 'Карта Казахстана' } }];
           break;
         case 2:
           state.levels.pop();
