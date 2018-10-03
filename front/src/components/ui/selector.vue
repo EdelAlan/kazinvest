@@ -1,4 +1,6 @@
 <script>
+  import { mapGetters } from 'vuex';
+
   export default {
     props: [
       'list',
@@ -19,23 +21,25 @@
       this.filtered_list = this.list;
     },
 
-    // ??????
-    // watch: {
-    //   list() {
-    //     console.log(32432, this.list)
-    //     this.filtered_list = this.list;
-    //   },
-    // },
+    computed: mapGetters([
+      'lang',
+    ]),
+
+    watch: {
+      list() {
+        this.filtered_list = this.list;
+      },
+    },
 
     methods: {
       select (item) {
-        this.selected_item = item.name.ru; // FIXME: lang
+        this.selected_item = item['title_' + this.lang]; // FIXME: lang
         this.$emit('select', item);
         this.$el.ownerDocument.removeEventListener('click', this.close, true);
       },
       search (match) {
         this.filtered_list = this.list.filter(it => { // FIXME: lang
-          if (it.name.ru.indexOf(match) > -1) {
+          if (it['title_' + this.lang].indexOf(match) > -1) {
             return it;
           }
         });
@@ -70,7 +74,7 @@
       v-if="list_is_shown">
       <div class="selector-item"
         v-for="item in filtered_list"
-        v-text="item.name.ru"
+        v-text="item['title_' + lang]"
         v-on:click="select(item)">
       </div>
     </div>

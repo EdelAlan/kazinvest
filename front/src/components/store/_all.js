@@ -10,6 +10,7 @@ import levels from './levels';
 import signin from './signin';
 import zones from './zones';
 import sectors from './sectors';
+import industries from './industries';
 
 Vue.use(Vuex);
 
@@ -24,5 +25,6 @@ export default new Vuex.Store({
 		signin,
 		zones,
 		sectors,
+		industries,
 	},
 });

@@ -11,12 +11,18 @@
     // ошибка дизайна, тоглить сайдбар лучше в sidebar_header
     computed: mapGetters([
       'sidebar',
+      'industries',
     ]),
 
     methods: mapActions([
       'toggle_sidebar',
       'set_zone_type',
+      'set_industries',
     ]),
+
+    mounted () {
+      this.set_industries();
+    },
   }
 </script>
 
@@ -29,11 +35,22 @@
 
       <div class="sidebar_filter-filter">
         <selector
-          :list="[
-            { id: '1', name: { ru: 'СЭЗ', kk: 'СЭЗ' } },
-            { id: '2', name: { ru: 'ИЗ', kk: 'ИЗ' } },
-            { id: '3', name: { ru: 'CЭЗ/ИЗ', kk: 'CЭЗ/ИЗ' } },
-          ]"
+          :list="[{ 
+            id: '1', 
+            title_ru: 'СЭЗ',
+            title_kz: 'СЭЗ',
+            title_en: 'СЭЗ',
+          }, { 
+            id: '2', 
+            title_ru: 'ИЗ',
+            title_kz: 'ИЗ',
+            title_en: 'ИЗ',
+          }, { 
+            id: '3',    
+            title_ru: 'СЭЗ/ИЗ',
+            title_kz: 'СЭЗ/ИЗ',
+            title_en: 'СЭЗ/ИЗ',
+          }]"
           v-on:select="set_zone_type"
           :placeholder="'СЭЗ, ИЗ'"
           :styles="{
@@ -49,10 +66,7 @@
 
       <div class="sidebar_filter-filter">
         <selector
-          :list="[
-            { name: { ru: 'Отрасль 1', kk: 'Отрасль 1' } },
-            { name: { ru: 'Отрасль 2', kk: 'Отрасль 2' } },
-          ]"
+          :list="industries"
           :placeholder="'Отрасли'"
           :styles="{
             'border': '1px solid #fff',
