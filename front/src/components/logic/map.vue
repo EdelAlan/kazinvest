@@ -181,6 +181,22 @@ export default {
               );
             }
             if (cities[0]) {
+              if (cities[0].layer.id )
+              switch(cities[0].layer.id){
+                case 'astana':
+                  this._mapboxgl_map.setPaintProperty("akm-obl", "fill-color", "#accad7");
+                  this.hoveredStateId = null;
+                  break;
+                case 'almaty':
+                  this._mapboxgl_map.setPaintProperty("alm-obl", "fill-color", "#accad7");
+                  this.hoveredStateId = null;
+                  break;
+                case 'shymkent':
+                  this._mapboxgl_map.setPaintProperty("tur-obl", "fill-color", "#accad7");
+                  this.hoveredStateId = null;
+                  break;
+              }
+
               this._mapboxgl_map.getCanvas().style.cursor = "pointer";
               this._mapboxgl_map.setPaintProperty(
                 cities[0].layer.id,
