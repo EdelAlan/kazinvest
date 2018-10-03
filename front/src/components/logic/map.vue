@@ -722,6 +722,7 @@ export default {
       this.popup.remove();
       switch (this.active_level.id) {
         case 1:
+          this._mapboxgl_map.setMaxBounds(null);
           this._mapboxgl_map.scrollZoom.disable();
           this._mapboxgl_map.dragPan.disable();
           this._mapboxgl_map.setStyle(positron());
