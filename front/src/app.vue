@@ -25,8 +25,22 @@
     font-weight: 600;
   }
 
+  @font-face {
+    font-family: "OpenSans";
+    src: url("./assets/fonts/OpenSans-Regular.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+  }
+
+  @font-face {
+    font-family: "OpenSansBold";
+    src: url("./assets/fonts/OpenSans-Bold.ttf") format("truetype");
+    font-style: normal;
+    font-weight: 600;
+  }
+
   * {
-    font-family: 'ProximaNovaRegular', sans-serif;
+    font-family: 'OpenSans', sans-serif;
     box-sizing: border-box;
   }
 

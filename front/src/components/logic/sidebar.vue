@@ -170,6 +170,8 @@
   .sidebar-header {
     margin: 5px 5px 0 5px;
     border-radius: 3px;
+    width: 306px;
+    overflow: hidden;
   }
   .sidebar-section {
     background: #fff;

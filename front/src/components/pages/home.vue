@@ -122,7 +122,7 @@
                     <p class="title">Индустриальные зоны (ИЗ)</p>
                 </a>
                 <a href="#" class="btn category">
-                    <p class="title">Инвестиционные возможности</p>
+                    <p class="title" style="text-align: center">Инвестиционные возможности</p>
                 </a>
             </div>
         </div>
@@ -323,8 +323,9 @@
   }
 
   .count {
-    font-size: 65px;
+    font-size: 73px;
     color: #fff;
+    line-height: 75px;
     font-weight: bold;
     margin-right: 10px;
   }
