@@ -5,6 +5,7 @@ const signin = require('./src/signin');
 const zones = require('./src/api/zones');
 const sectors = require('./src/api/sectors');
 const industries = require('./src/api/industries');
+const objects = require('./src/api/objects');
 
 app
   .use((_, res, next) => {
@@ -18,5 +19,6 @@ app
   .use('/back/api/zones', zones)
   .use('/back/api/sectors', sectors)
   .use('/back/api/industries', industries)
+  .use('/back/api/objects', objects)
 
   .listen(5000, () => console.log('Listen on 5000'));
