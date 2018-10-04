@@ -16,10 +16,16 @@ export default {
   },
 
   actions: {
-    set_industries ({ commit }) {
+    set_industries({ commit, dispatch }) {
       return fetcher({
         path: 'http://localhost:5000/back/api/industries',
-      }).then(industries => commit('set_industries', industries));
+      }).then(industries => {
+        //FIXME: плохая практика
+        this.dispatch('set_industries_filter', industries.map(it => {
+          return { ...it, checked: true };
+        }));
+        commit('set_industries', industries);
+      });
     },
   },
 };

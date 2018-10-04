@@ -2,7 +2,7 @@ import fetcher from '../../util/fetcher';
 
 export default {
   state: () => ({
-    sectors: [],
+    sectors: null,
     selected_sector: null,
   }),
 
@@ -23,7 +23,6 @@ export default {
   actions: {
 
     set_sectors ({ commit }, zone_id) {
-      console.log(zone_id)
       return fetcher({
         path: 'http://localhost:5000/back/api/sectors' 
           + (zone_id ? '?zone_id=' + zone_id : ''),
@@ -42,6 +41,10 @@ export default {
         commit('set_selected_sector', sector[0]);
         return;
       });
+    },
+    reset_sector ({ commit }, selected_sector) {
+      commit('set_sectors', null);
+      commit('set_selected_sector', null);
     },
   },
 };
