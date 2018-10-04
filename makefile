@@ -23,6 +23,7 @@ pub:
 	rm -rf ./front/kazinvest && \
 	scp -r ./back root@192.168.55.167:/srv/ && \
 	ssh root@192.168.55.167 ' \
+		rm -rf /srv/kazinvest-back && \
 		mv /srv/back /srv/kazinvest-back && \
 		cd /srv/kazinvest-back/ && \
 		forever stop 0 && \
