@@ -958,7 +958,7 @@ export default {
             filter: ["==", "type", 3]
           });
 
-          fetch('http://localhost:5000/back/api/objects/' + this.active_level.features.properties.zone_id)
+          fetch('http://localhost:5000/back/api/objects?zone_id=' + this.active_level.features.properties.zone_id)
           .then(res => {
               return res.json();
           })

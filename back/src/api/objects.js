@@ -11,10 +11,12 @@ const FIELDS = `
   ST_AsGeoJson(objects.geom)
 `;
 
-router.get('/:zone_id', async (req, res) => {
+router.get('/', async (req, res) => {
+  const { zone_id } = req.query;
+  console.log(`SELECT ${FIELDS} FROM objects ${zone_id ? 'WHERE zone_id = $1' : ''}`)
   res.send(await db_query(
-    `SELECT ${FIELDS} from objects where zone_id = $1`,
-    [req.params.zone_id],
+    `SELECT ${FIELDS} FROM objects ${zone_id ? 'WHERE zone_id = $1' : ''}`,
+    zone_id ? [zone_id] : [],
   ));
 });
 
