@@ -34,6 +34,7 @@
 
   .sidebar_header-container {
     background: #03A0E3;
+    border-radius: 3px;
   }
 
   .sidebar_header-header {

@@ -1,7 +1,7 @@
 const router = require('express-async-router').AsyncRouter();
 const db_query = require('../util/db_query');
 
-const FIELDS = ` 
+const FIELDS = `
   zone.id,
   zone.status,
   zone.zone_type,
@@ -19,23 +19,30 @@ const FIELDS = `
 `;
 
 router.get('/', async (req, res) => {
-  const { zone_type } = req.query;
-  // Перечисление полей нужно для того, чтобы
-  // не хранить на фронте кучу ненужных полей
-  return res.send(await db_query(`
-      SELECT ${FIELDS}, (
-        SELECT COUNT(*) AS object_count 
-        FROM sectors 
-        WHERE zone.id = sectors.zone_id
-      ) FROM zone ${
-        // FIXME:  отрефакторить
-        !zone_type || zone_type == 3 
-        ? 'WHERE zone_type = 1 OR zone_type = 2' 
-        : 'WHERE zone_type = $1'
-      }
-    `,
-    !zone_type || zone_type == 3 ? [] : [zone_type],
-  ));
+  const sql = `
+    SELECT ${FIELDS}, (
+      SELECT COUNT(*) AS object_count 
+      FROM sectors 
+      WHERE zone.id = sectors.zone_id
+    ) FROM zone 
+    ${req.query.zone_filter ? 
+      'WHERE zone_type IN (' + 
+      JSON.parse(req.query.zone_filter)
+      .map((it, key) => '$' + ++key) + ')' : ''}
+    ${req.query.industries_filter ? 
+      ('AND industries_id IN (' + 
+      JSON.parse(req.query.industries_filter)
+      .map((it, key) => '$' + (++key + (req.query.zone_filter ?  + JSON.parse(req.query.zone_filter).length : 0) )) + ')') : ''}
+  `;
+  const params = 
+    (req.query.zone_filter && req.query.industries_filter) ? 
+      JSON.parse(req.query.zone_filter).concat(JSON.parse(req.query.industries_filter)) :
+    req.query.zone_filter ? JSON.parse(req.query.zone_filter) :
+    req.query.industries_filter ? JSON.parse(req.query.industries_filter) : [];
+    
+  console.log(sql);
+  console.log(params);
+  return res.send(await db_query(sql, params));
 });
 
 router.get('/:id', async (req, res) => {

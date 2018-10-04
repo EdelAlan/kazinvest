@@ -1,27 +1,29 @@
 <script>
   import lang from './lang';
-  import selector from '../ui/selector';
+  import filter_checker from './filter_checker';
   import { mapGetters, mapActions } from 'vuex';  
 
   export default {
     components: { 
       lang,
-      selector,
+      filter_checker,
     },
     // ошибка дизайна, тоглить сайдбар лучше в sidebar_header
     computed: mapGetters([
       'sidebar',
-      'industries',
+      'zone_filter',
+      'industries_filter',
     ]),
 
     methods: mapActions([
       'toggle_sidebar',
-      'set_zone_type',
-      'set_industries',
+
+      'set_zone_filter',
+      'set_industries_filter',
     ]),
 
     mounted () {
-      this.set_industries();
+      // this.set_industries();
     },
   }
 </script>
@@ -36,49 +38,35 @@
       
 
       <div class="sidebar_filter-filter">
-        <selector
-          :list="[{ 
-            id: '1', 
-            title_ru: 'СЭЗ',
-            title_kz: 'СЭЗ',
-            title_en: 'СЭЗ',
-          }, { 
-            id: '2', 
-            title_ru: 'ИЗ',
-            title_kz: 'ИЗ',
-            title_en: 'ИЗ',
-          }, { 
-            id: '3',    
-            title_ru: 'СЭЗ/ИЗ',
-            title_kz: 'СЭЗ/ИЗ',
-            title_en: 'СЭЗ/ИЗ',
-          }]"
-          v-on:select="set_zone_type"
-          :placeholder="'СЭЗ, ИЗ'"
+        <filter_checker
+          :list="zone_filter"
+          :title="'СЭЗ, ИЗ'"
+          v-on:select="set_zone_filter"
           :styles="{
             'border': '1px solid #fff',
             'border-radius': '3px',
             'height': '40px',
             'font-size': '14px',
             'padding': '10px',
-            'line-height': '13px'
+            'line-height': '18px'
           }"
-        ></selector>
+        ></filter_checker>
       </div>
 
       <div class="sidebar_filter-filter">
-        <selector
-          :list="industries"
-          :placeholder="'Отрасли'"
+        <filter_checker
+          :list="industries_filter"
+          :title="'Отрасли'"
+          v-on:select="set_industries_filter"
           :styles="{
             'border': '1px solid #fff',
             'border-radius': '3px',
             'height': '40px',
             'font-size': '14px',
             'padding': '10px',
-            'line-height': '13px'
+            'line-height': '18px'
           }"
-        ></selector>
+        ></filter_checker>
       </div>
      
 
@@ -106,13 +94,13 @@
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+
   }
 
   .sidebar_filter-input {
     background: white;
     border: 1px solid #fff;
     display: inline-block;
-    line-height: 13px;
     font-size: 14px;
     font-weight: normal;
     border-radius: 3px;

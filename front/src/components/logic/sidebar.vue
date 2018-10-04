@@ -121,14 +121,14 @@
          
             <div class="sidebar-item"
               v-for="zone in zones"
-              v-if="sectors.length == 0"
+              v-if="!sectors"
               @click="set_sectors(zone)">
               <span class="sidebar-item_title"v-text="zone.title_ru"></span>
               <span class="sidebar-item_count"v-text="zone.object_count + ' объектов'"></span>
             </div>
 
             <div class="sidebar-item"
-              v-if="sectors.length > 0"
+              v-if="sectors"
               v-for="sector in sectors"
               :class="{ 'sidebar-item--active': selected_sector && selected_sector.id == sector.id  }"
               @click="
@@ -171,7 +171,6 @@
     margin: 5px 5px 0 5px;
     border-radius: 3px;
     width: 306px;
-    overflow: hidden;
   }
   .sidebar-section {
     background: #fff;
