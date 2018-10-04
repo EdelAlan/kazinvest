@@ -22,11 +22,11 @@ export default {
 
   actions: {
 
-    set_sectors ({ commit }, selected_zone) {
-      console.log(selected_zone.id)
+    set_sectors ({ commit }, zone_id) {
+      console.log(zone_id)
       return fetcher({
         path: 'http://localhost:5000/back/api/sectors' 
-          + (selected_zone.id ? '?zone_id=' + selected_zone.id : ''),
+          + (zone_id ? '?zone_id=' + zone_id : ''),
       }).then(sectors => {
         commit('set_sectors', sectors);
         return;

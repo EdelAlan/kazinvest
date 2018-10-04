@@ -31,9 +31,6 @@
       'change_ui_visibility',
     ]),
 
-    mounted () {
-      this.set_zones();
-    },
   }
 </script>
 
@@ -122,7 +119,7 @@
             <div class="sidebar-item"
               v-for="zone in zones"
               v-if="sectors.length == 0"
-              @click="set_sectors(zone)">
+              @click="set_sectors(zone.id)">
               <span class="sidebar-item_title"v-text="zone.title_ru"></span>
               <span class="sidebar-item_count"v-text="zone.object_count + ' объектов'"></span>
             </div>

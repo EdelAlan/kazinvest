@@ -1,11 +1,75 @@
 const router = require('express-async-router').AsyncRouter();
 const db_query = require('../util/db_query');
 
+const FIELDS = `
+  sectors.id,
+  sectors.project_type,
+  sectors.zone_id,
+  sectors.title_ru,
+  sectors.title_kz,
+  sectors.title_en,
+  sectors.title_project_ru,
+  sectors.title_project_kz,
+  sectors.title_project_en,
+  sectors.sef,
+  sectors.file,
+  sectors.contacts_ru,
+  sectors.contacts_kz,
+  sectors.contacts_en,
+  sectors.products_ru,
+  sectors.products_kz,
+  sectors.products_en,
+  sectors.project_date,
+  sectors.area,
+  sectors.time_realization_ru,
+  sectors.time_realization_kz,
+  sectors.time_realization_en,
+  sectors.current_status_ru,
+  sectors.current_status_kz,
+  sectors.current_status_en,
+  sectors.infrastructural_ru,
+  sectors.infrastructural_kz,
+  sectors.infrastructural_en,
+  sectors.divisible,
+  sectors.indicators_ru,
+  sectors.indicators_kz,
+  sectors.indicators_en,
+  sectors.meta_title_ru,
+  sectors.meta_title_kz,
+  sectors.meta_title_en,
+  sectors.meta_description_ru,
+  sectors.meta_description_kz,
+  sectors.meta_description_en,
+  sectors.meta_keywords_ru,
+  sectors.meta_keywords_kz,
+  sectors.meta_keywords_en,
+  sectors.og_title_ru,
+  sectors.og_title_kz,
+  sectors.og_title_en,
+  sectors.og_description_ru,
+  sectors.og_description_kz,
+  sectors.og_description_en,
+  sectors.og_keywords_ru,
+  sectors.og_keywords_kz,
+  sectors.og_keywords_en,
+  sectors.count_participant_current_project,
+  sectors.count_participant_underway_project,
+  sectors.count_participant_problem_project,
+  sectors.project_price,
+  sectors.foreign_participation,
+  sectors.power,
+  sectors.plan_jobs,
+  sectors.status,
+  sectors.user_updated,
+  sectors.comment,
+  ST_AsGeoJson(sectors.geom)
+`;
+
 router.get('/', async (req, res) => {
   const { zone_id } = req.query;
-  console.log(`SELECT * FROM sectors ${zone_id ? 'WHERE zone_id = $1' : ''}`)
+  console.log(`SELECT ${FIELDS} FROM sectors ${zone_id ? 'WHERE zone_id = $1' : ''}`)
   res.send(await db_query(
-    `SELECT * FROM sectors ${zone_id ? 'WHERE zone_id = $1' : ''}`,
+    `SELECT ${FIELDS} FROM sectors ${zone_id ? 'WHERE zone_id = $1' : ''}`,
     zone_id ? [zone_id] : [],
   ));
 });
@@ -13,19 +77,6 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   res.send(await db_query(
     'SELECT * from sectors where id = $1',
-    [req.params.id],
-  ));
-});
-
-router.get('/geom', async (req, res) => {
-  res.send(await db_query(
-    'SELECT title_ru ,ST_AsGeoJSON(geom) from sectors',
-  ));
-});
-
-router.get('/geom/:id', async (req, res) => {
-  res.send(await db_query(
-    'SELECT title_ru , project_type, ST_AsGeoJSON(geom) from sectors where zone_id = $1',
     [req.params.id],
   ));
 });

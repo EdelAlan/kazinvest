@@ -10,12 +10,12 @@ const FIELDS = `
   zone.zone_time,
   zone.description_ru,
   zone.contacts_ru,
-  zone.polygonfield,
   zone.created_date,
   zone.map,
   zone.budget_need,
   zone.budget_allocated,
-  zone.user_id
+  zone.user_id,
+  ST_AsGeoJson(zone.geom)
 `;
 
 router.get('/', async (req, res) => {
