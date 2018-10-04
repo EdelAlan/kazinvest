@@ -22,7 +22,7 @@ export default {
   actions: {
     async set_zones({ commit, dispatch }) {
       this.dispatch('reset_sector');
-      await this.dispatch('set_industries');
+      // await this.dispatch('set_industries');
       let industries_filter = this.state.filters.industries_filter.filter(it => it.checked).map(it => it.checked ? it.id : null);
       let zone_filter = this.state.filters.zone_filter.filter(it => it.checked).map(it => it.id);
       return fetcher({

@@ -20,11 +20,14 @@
 
       'set_zone_filter',
       'set_industries_filter',
+      'set_industries',
+      'set_zones',
     ]),
 
     mounted () {
-      // this.set_industries();
+      this.set_industries();
     },
+
   }
 </script>
 
@@ -74,7 +77,9 @@
       <div class="sidebar_filter-collapse" 
         @click="toggle_sidebar">Свернуть</div>
 
-      <button class="sidebar_filter-find">Найти</button>
+      <button class="sidebar_filter-find"
+        @click="set_zones"
+      >Найти</button>
     </div>
 
   </div>
