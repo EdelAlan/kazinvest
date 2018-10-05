@@ -175,7 +175,7 @@
   }
 
   .home-main_btn {
-    padding:15px;
+    padding: 40px 30px;
     background: #52cbff;
     background: #fff;
     box-shadow: 0 0 5px rgba(0,0,0,.2);
@@ -188,11 +188,11 @@
     height: 78px;
     background: url('../../assets/images/logo-blue-black.svg') no-repeat center;
     background-size: contain;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
   }
 
   .home-main_btn_title {
-    font-size: 24px;
+    font-size: 18px;
     color: #666;
     text-decoration: none;
   }
@@ -317,13 +317,13 @@
     border: 1px solid #E3E3E3;
     box-shadow: 0 8px 15px #0004;
     align-items: center;
-    padding: 5px 10px;
+    padding: 10px 20px;
     background: #52cbff;
     overflow: hidden;
   }
 
   .count {
-    font-size: 73px;
+    font-size: 60px;
     color: #fff;
     line-height: 75px;
     font-weight: bold;
@@ -332,7 +332,7 @@
 
   .category .title,
   .welcome .title {
-    font-size: 17px;
+    font-size: 16px;
     margin: 0;
     text-align: left;
   }

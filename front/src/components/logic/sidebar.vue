@@ -19,8 +19,11 @@
       'sidebar_expanded',
       'zones',
       'sectors',
+      'lang',
       'selected_sector',
       'sector_passport',
+      'zone_filter',
+      'republics',
     ]),
 
     methods: mapActions([
@@ -49,7 +52,7 @@
 
     <div class="sidebar-scroll_section">
     <!--
-      <div class="sidebar-section">
+      <div class="sidebarepublicsr-section">
         <treenode
           :model="{
             name: 'Земельные участки',
@@ -93,27 +96,25 @@
             </span>        
           </span>
           
-          <!--
-
           <span slot="tab_title_2">
             <span class="sidebar-tab">
               <span class="sidebar-tab_icon"></span>
               <span class="sidebar-tab_title">Показатели</span>
             </span>        
           </span>
-          -->
-   <!-- set_level_b({ 
-                  id: 2,
-                  name: { ru: zone.title_ru }
-                })-->
+
           <div slot="tab_0">
-            <piechart
-                :sectors="[
-                  { key: 'Потребность', val: 3203333 },
-                  { key: 'Выделено', val: 2321321 },
-                ]"
-              ></piechart>
+            <div class="sidebar-info_wrap">
+              <div 
+                v-for="republic, key in republics"
+                v-if="zone_filter[key].checked">
+                <h2 v-html="republic['title_' + lang]"></h2>
+                <p v-html="republic['advantages_' + lang]"></p>
+                <p v-html="republic['commont_' + lang]"></p>
+                <p v-html="republic['contacts_' + lang]"></p>
+              </div>
             </div>
+          </div>
 
           <div slot="tab_1">
          
@@ -129,7 +130,7 @@
                   properties: zone
                 }),
                 set_sectors(zone.id)">
-              <span class="sidebar-item_title"v-text="zone.title_ru"></span>
+              <span class="sidebar-item_title"v-text="zone['title_' + lang]"></span>
               <span class="sidebar-item_count"v-text="zone.object_count + ' объектов'"></span>
             </div>
 
@@ -151,9 +152,19 @@
                   ui_component_state: true,
                 })
               ">
-              <span class="sidebar-item_title"v-text="sector.title_ru"></span>
-              <span class="sidebar-item_count"v-text="sector.title_project_ru"></span>
+              <span class="sidebar-item_title"v-text="sector['title_' + lang]"></span>
+              <span class="sidebar-item_count"v-text="sector['title_project_' + lang]"></span>
             </div>
+          </div>
+
+
+          <div slot="tab_2">
+            <piechart
+              :sectors="[
+                { key: 'Потребность', val: 3203333 },
+                { key: 'Выделено', val: 2321321 },
+              ]"
+            ></piechart>
           </div>
           
         </tabs>
@@ -202,7 +213,7 @@
     background: #f5f5f5;
   }
   .sidebar-item_title {
-    font-size: 18px;
+    font-size: 16px;
     color: #03A0E3;
   }
   .sidebar-item_count {
@@ -210,6 +221,9 @@
     margin-top: 5px;
     color: #888;
     display: block;
+  }
+  .sidebar-info_wrap {
+    padding: 0 15px;
   }
   .sidebar-item--active {
     background: #50C7F9;

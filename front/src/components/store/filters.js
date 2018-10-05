@@ -2,25 +2,15 @@ import fetcher from '../../util/fetcher';
 
 export default {
   state: () => ({
-    zone_filter: [{
-      checked: true,
-      id: '1',
-      title_ru: 'СЭЗ',
-      title_kz: 'СЭЗ',
-      title_en: 'СЭЗ',
-    }, {
-      checked: true,
-      id: '2',
-      title_ru: 'ИЗ',
-      title_kz: 'ИЗ',
-      title_en: 'ИЗ',
-    }],
-    industries_filter: [], // заполнятся из s:industries экшшоном set_industries
+    search_string: '',
+    zone_filter: [], // from republics
+    industries_filter: [], 
   }),
 
   getters: {
     zone_filter: state => state.zone_filter,
     industries_filter: state => state.industries_filter,
+    search_string: state => state.search_string,
   },
 
   mutations: {
@@ -29,6 +19,9 @@ export default {
     },
     set_industries_filter (state, filter_list) {
       state.industries_filter = filter_list;
+    },
+    set_search_string (state, str) {
+      state.search_string = str;
     },
   },
 
@@ -39,6 +32,8 @@ export default {
     set_industries_filter ({ commit }, filter_list) {
       return commit('set_industries_filter', filter_list);
     },
-  
+    set_search_string ({ commit }, e) {
+      return commit('set_search_string', e.target.value);
+    },
   },
 };

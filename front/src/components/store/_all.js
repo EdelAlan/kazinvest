@@ -12,6 +12,7 @@ import zones from './zones';
 import sectors from './sectors';
 import industries from './industries';
 import filters from './filters';
+import republics from './republics';
 
 Vue.use(Vuex);
 
@@ -28,5 +29,6 @@ export default new Vuex.Store({
 		sectors,
 		industries,
 		filters,
+		republics,
 	},
 });

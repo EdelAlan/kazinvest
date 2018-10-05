@@ -133,10 +133,9 @@
 		font-size: 16px;
 		color: #999;
 		display: block;
-		padding-bottom: 8px;
 	}
 	.passport-body_item_val {
-		font-size: 18px;
+		font-size: 14px;
 	}
 
 	.passport-close {
