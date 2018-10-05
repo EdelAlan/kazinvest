@@ -124,9 +124,9 @@
               @click="
                 set_level({
                   id: 2,
-                  name: {
-                    ru: zone.title_ru
-                  },
+                  title_ru: zone.title_ru,
+                  title_en: zone.title_en,
+                  title_kz: zone.title_kz,
                   properties: zone
                 }),
                 set_sectors(zone.id)">
@@ -141,9 +141,9 @@
               @click="
                 set_level({
                   id: 3,
-                  name: {
-                    ru: sector.title_ru
-                  },
+                  title_ru: sector.title_ru,
+                  title_en: sector.title_en,
+                  title_kz: sector.title_kz,
                   properties: sector
                 }),
                 set_selected_sector(sector),

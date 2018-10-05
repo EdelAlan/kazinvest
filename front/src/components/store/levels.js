@@ -1,16 +1,11 @@
 export default {
   state: () => ({
-    levels: [
-      { id: 1, name: { ru: 'Карта Казахстана' } }, // по-умолчанию
-
-      // при погружении в карте или через навигацию, сюда добавляются
-      // следующие уровни:
-      // { id: 2, name: { ru: 'Астана-Технополис ТОО 'Tau-Ken Temir' } },
-      // ... и т.д.
-
-      // Возможно, что в этих объектах помимо id и name будут лежать
-      // еще какие-нибудь данные, возможно геометрия, цвет, любая мета-инфа
-    ],
+    levels: [{ 
+      id: 1, 
+      title_ru: 'Карта Казахстана',
+      title_kz: 'Қазақстан картасы',
+      title_en: 'Кazakhstan Map',
+    }],
   }),
   
   getters: {
@@ -23,19 +18,24 @@ export default {
 
   mutations: {
    set_level(state, level) {
-    if (level.name.ru != state.levels[state.levels.length - 1].name.ru) {
-      if (level.id == state.levels[state.levels.length - 1].id) {
-        state.levels.pop();
-      }
+    if (level.id == 3 && state.levels[state.levels.length - 1].id == 3) {
+      state.levels.pop();
+    }
+    if (level.id != state.levels[state.levels.length - 1].id) {
       state.levels.push(level);
-    } 
+    }
    },
 
    set_level_b(state, level) {
-     if (level.name.ru != state.levels[state.levels.length - 1].name.ru) {
+     if (level.id != state.levels[state.levels.length - 1].id) {
       switch(level.id) {
         case 1:
-          state.levels = [{ id: 1, name: { ru: 'Карта Казахстана' } }];
+          state.levels = [{ 
+            id: 1, 
+            title_ru: 'Карта Казахстана',
+            title_kz: 'Қазақстан картасы',
+            title_en: 'Кazakhstan Map',
+          }];
           break;
         case 2:
           state.levels.pop();
