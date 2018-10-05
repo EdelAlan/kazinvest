@@ -22,6 +22,8 @@
       'lang',
       'selected_sector',
       'sector_passport',
+      'zone_filter',
+      'republics',
     ]),
 
     methods: mapActions([
@@ -49,7 +51,7 @@
 
     <div class="sidebar-scroll_section">
     <!--
-      <div class="sidebar-section">
+      <div class="sidebarepublicsr-section">
         <treenode
           :model="{
             name: 'Земельные участки',
@@ -101,7 +103,16 @@
           </span>
 
           <div slot="tab_0">
-            <h2>Справки</h2>
+            <div class="sidebar-info_wrap">
+              <div 
+                v-for="republic, key in republics"
+                v-if="zone_filter[key].checked">
+                <h2 v-html="republic['title_' + lang]"></h2>
+                <p v-html="republic['advantages_' + lang]"></p>
+                <p v-html="republic['commont_' + lang]"></p>
+                <p v-html="republic['contacts_' + lang]"></p>
+              </div>
+            </div>
           </div>
 
           <div slot="tab_1">
@@ -194,6 +205,9 @@
     margin-top: 5px;
     color: #888;
     display: block;
+  }
+  .sidebar-info_wrap {
+    padding: 0 15px;
   }
   .sidebar-item--active {
     background: #50C7F9;
