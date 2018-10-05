@@ -549,9 +549,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["set_zones", "set_sectors"]),
-
-    ...mapMutations(["set_level"]),
+    ...mapActions(["set_zones", "set_sectors", "set_level"]),
 
     _addObjects() {
       this._mapboxgl_map.addLayer({
