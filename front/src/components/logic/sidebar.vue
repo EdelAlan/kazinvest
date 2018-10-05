@@ -19,6 +19,7 @@
       'sidebar_expanded',
       'zones',
       'sectors',
+      'lang',
       'selected_sector',
       'sector_passport',
     ]),
@@ -92,27 +93,16 @@
             </span>        
           </span>
           
-          <!--
-
           <span slot="tab_title_2">
             <span class="sidebar-tab">
               <span class="sidebar-tab_icon"></span>
               <span class="sidebar-tab_title">Показатели</span>
             </span>        
           </span>
-          -->
-   <!-- set_level_b({ 
-                  id: 2,
-                  name: { ru: zone.title_ru }
-                })-->
+
           <div slot="tab_0">
-            <piechart
-                :sectors="[
-                  { key: 'Потребность', val: 3203333 },
-                  { key: 'Выделено', val: 2321321 },
-                ]"
-              ></piechart>
-            </div>
+            <h2>Справки</h2>
+          </div>
 
           <div slot="tab_1">
          
@@ -120,7 +110,7 @@
               v-for="zone in zones"
               v-if="!sectors"
               @click="set_sectors(zone.id)">
-              <span class="sidebar-item_title"v-text="zone.title_ru"></span>
+              <span class="sidebar-item_title"v-text="zone['title_' + lang]"></span>
               <span class="sidebar-item_count"v-text="zone.object_count + ' объектов'"></span>
             </div>
 
@@ -135,9 +125,19 @@
                   ui_component_state: true,
                 })
               ">
-              <span class="sidebar-item_title"v-text="sector.title_ru"></span>
-              <span class="sidebar-item_count"v-text="sector.title_project_ru"></span>
+              <span class="sidebar-item_title"v-text="sector['title_' + lang]"></span>
+              <span class="sidebar-item_count"v-text="sector['title_project_' + lang]"></span>
             </div>
+          </div>
+
+
+          <div slot="tab_2">
+            <piechart
+              :sectors="[
+                { key: 'Потребность', val: 3203333 },
+                { key: 'Выделено', val: 2321321 },
+              ]"
+            ></piechart>
           </div>
           
         </tabs>

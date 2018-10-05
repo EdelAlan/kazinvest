@@ -54,7 +54,7 @@
   <div class="filter">
     <div class="filter-title"
       :style="styles"
-      v-text="title"
+      v-text="title['title_' + lang]"
       v-on:click="toggle"
     ></div>
 

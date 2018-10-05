@@ -8,11 +8,12 @@
       lang,
       filter_checker,
     },
-    // ошибка дизайна, тоглить сайдбар лучше в sidebar_header
     computed: mapGetters([
       'sidebar',
       'zone_filter',
       'industries_filter',
+      'search_string',
+      'lang',
     ]),
 
     methods: mapActions([
@@ -20,12 +21,16 @@
 
       'set_zone_filter',
       'set_industries_filter',
+      
       'set_industries',
+      'set_republics',
       'set_zones',
+      'set_search_string',
     ]),
 
     mounted () {
       this.set_industries();
+      this.set_republics();
     },
 
   }
@@ -36,14 +41,24 @@
 
     <div class="sidebar_filter-container">
       <input type="text" 
-        class="sidebar_filter-input sidebar_filter-input--search" 
-        placeholder="Регион, название СЭЗ / ИЗ, объект">
+        class="sidebar_filter-input sidebar_filter-input--search"
+        @input="set_search_string" 
+        :placeholder="{
+          'title_ru': 'СЭЗ, ИЗ', 
+          'title_kz': 'СЭЗ, ИЗ', 
+          'title_en': 'SEZ, IZ'
+        }['title_' + lang]"
+      />
       
 
       <div class="sidebar_filter-filter">
         <filter_checker
           :list="zone_filter"
-          :title="'СЭЗ, ИЗ'"
+          :title="{
+            'title_ru': 'СЭЗ, ИЗ', 
+            'title_kz': 'СЭЗ, ИЗ', 
+            'title_en': 'SEZ, IZ'
+          }"
           v-on:select="set_zone_filter"
           :styles="{
             'border': '1px solid #fff',
@@ -53,13 +68,17 @@
             'padding': '10px',
             'line-height': '18px'
           }"
-        ></filter_checker>
+        />
       </div>
 
       <div class="sidebar_filter-filter">
         <filter_checker
           :list="industries_filter"
-          :title="'Отрасли'"
+          :title="{
+            'title_ru': 'Отрасли', 
+            'title_kz': 'Салалары', 
+            'title_en': 'Industries'
+          }"
           v-on:select="set_industries_filter"
           :styles="{
             'border': '1px solid #fff',
@@ -69,7 +88,7 @@
             'padding': '10px',
             'line-height': '18px'
           }"
-        ></filter_checker>
+        />
       </div>
      
 
@@ -79,7 +98,13 @@
 
       <button class="sidebar_filter-find"
         @click="set_zones"
-      >Найти</button>
+        v-text="{
+          'title_ru': 'Найти', 
+          'title_kz': 'Іздеу', 
+          'title_en': 'Find'
+        }['title_' + lang]"
+      ></button>
+      
     </div>
 
   </div>

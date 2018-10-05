@@ -2,10 +2,11 @@ const app = require('express')();
 const signin = require('./src/signin');
 
 // api
-const zones = require('./src/api/zones');
-const sectors = require('./src/api/sectors');
-const industries = require('./src/api/industries');
-const objects = require('./src/api/objects');
+const republics = require('./src/api/republics'); // 1 level
+const zones = require('./src/api/zones'); // 2 level
+const sectors = require('./src/api/sectors'); // 3 level
+const industries = require('./src/api/industries'); // for filter
+const objects = require('./src/api/objects'); // for legend
 
 app
   .use((_, res, next) => {
@@ -20,5 +21,6 @@ app
   .use('/back/api/sectors', sectors)
   .use('/back/api/industries', industries)
   .use('/back/api/objects', objects)
+  .use('/back/api/republics', republics)
 
   .listen(5000, () => console.log('Listen on 5000'));
