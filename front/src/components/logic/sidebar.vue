@@ -27,7 +27,8 @@
       'set_zones',
       'set_sectors',
       'set_selected_sector',
-      'set_level_b',
+      'set_level',
+      'set_level_s',
       'change_ui_visibility',
     ]),
 
@@ -119,7 +120,15 @@
             <div class="sidebar-item"
               v-for="zone in zones"
               v-if="!sectors"
-              @click="set_sectors(zone.id)">
+              @click="
+                set_level({
+                  id: 2,
+                  name: {
+                    ru: zone.title_ru
+                  },
+                  properties: zone
+                }),
+                set_sectors(zone.id)">
               <span class="sidebar-item_title"v-text="zone.title_ru"></span>
               <span class="sidebar-item_count"v-text="zone.object_count + ' объектов'"></span>
             </div>
@@ -129,6 +138,13 @@
               v-for="sector in sectors"
               :class="{ 'sidebar-item--active': selected_sector && selected_sector.id == sector.id  }"
               @click="
+                set_level({
+                  id: 3,
+                  name: {
+                    ru: sector.title_ru
+                  },
+                  properties: sector
+                }),
                 set_selected_sector(sector),
                 change_ui_visibility({
                   ui_component: 'sector_passport',

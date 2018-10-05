@@ -24,10 +24,13 @@ export default {
   mutations: {
    set_level(state, level) {
     if (level.name.ru != state.levels[state.levels.length - 1].name.ru) {
+      if (level.id == state.levels[state.levels.length - 1].id) {
+        state.levels.pop();
+      }
       state.levels.push(level);
-    }
-    
+    } 
    },
+
    set_level_b(state, level) {
      if (level.name.ru != state.levels[state.levels.length - 1].name.ru) {
       switch(level.id) {
@@ -38,7 +41,7 @@ export default {
           state.levels.pop();
       }
      }
-   }
+   },
   },
 
   actions: {

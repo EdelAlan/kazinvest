@@ -63,13 +63,16 @@ export default {
               layers: ["sez", "iz"]
             });
             if (zones[0]) {
-              this._mapboxgl_map.setStyle(osm());
-              this.set_level({
-                id: 2,
-                name: {
-                  ru: zones[0].properties.title
-                },
-                features: zones[0]
+              this.zones.forEach(el => {
+                if (zones[0].properties.zone_id == el.id) {
+                  this.set_level({
+                    id: 2,
+                    name: {
+                      ru: el.title_ru
+                    },
+                    properties: el,
+                  });
+                }
               });
             }
             break;
@@ -78,77 +81,14 @@ export default {
               layers: ["current-sector", "processing-sector", "free-sector"]
             });
             if (sectors[0]) {
-              if (this._mapboxgl_map.getLayer('current-sector')) {
-                this._mapboxgl_map.removeLayer('current-sector');
-                this._mapboxgl_map.removeLayer('processing-sector');
-                this._mapboxgl_map.removeLayer('free-sector')
-
-                this._mapboxgl_map.removeLayer('current-sector-stroke');
-                this._mapboxgl_map.removeLayer('processing-sector-stroke');
-                this._mapboxgl_map.removeLayer('free-sector-stroke')
-                
-                this._mapboxgl_map.removeSource('sector');
-                this._mapboxgl_map.removeSource('sector-line');
-              }
-              this._mapboxgl_map.getCanvas().style.cursor = "";
-              this.set_level({
-                id: 3,
-                name: {
-                  ru: sectors[0].properties.title
-                },
-                features: sectors[0]
-              });
-              this._mapboxgl_map.fitBounds(turf.bbox(sectors[0].geometry), {
-                padding: this.sidebar_expanded
-                  ? { top: 150, bottom: 150, left: 200, right: 150 }
-                  : 150
-              });
               this.sectors.forEach(el => {
-                if (el.id == sectors[0].properties.id) {
-                  this._mapboxgl_map.addLayer({
-                      id: "sector",
-                      type: "fill",
-                      source: {
-                        type: "geojson",
-                        data: {
-                          type: "Feature",
-                          geometry: JSON.parse(el.st_asgeojson),
-                          properties: {
-                            title: el.title_ru,
-                            type: el.project_type
-                          }
-                        }
-                      },
-                      paint: sectors[0].layer.paint
-                  });
-                  this._mapboxgl_map.addLayer({
-                    id: "sector-stroke",
-                    type: "line",
-                    source: {
-                      type: "geojson",
-                      data: {
-                        type: "Feature",
-                        geometry: turf.polygonToLine( JSON.parse(el.st_asgeojson) ).geometry,
-                        properties: {
-                            title: el.title_ru,
-                            type: el.project_type
-                        }
-                      }
+                if (sectors[0].properties.id == el.id) {
+                  this.set_level({
+                    id: 3,
+                    name: {
+                      ru: el.title_ru
                     },
-                    layout: {
-                        "line-join": "round",
-                        "line-cap": "round"
-                    },
-                    paint: {
-                        "line-color":
-                          sectors[0].properties.type == 1
-                            ? "#3585AD"
-                            : sectors[0].properties.type == 2
-                              ? "#A48C10"
-                              : "#149541",
-                        "line-width": 3,
-                        "line-dasharray": [2.5, 2.5]
-                    }
+                    properties: el
                   });
                 }
               });
@@ -779,13 +719,14 @@ export default {
           });
           break;
         case 2:
+          this._mapboxgl_map.setStyle(osm());
           if (this._mapboxgl_map.getLayer('sector')) {
             this._mapboxgl_map.removeLayer('sector');
             this._mapboxgl_map.removeLayer('sector-stroke');
             this._mapboxgl_map.removeSource('sector');
             this._mapboxgl_map.removeSource('sector-stroke');
           }
-          await this.set_sectors(this.active_level.features.properties.zone_id);
+          await this.set_sectors(this.active_level.properties.id);
           this._mapboxgl_map.setMaxBounds(
             turf.bbox(
               turf.lineString([[86.357452, 39.389153], [47.722955, 56.408161]])
@@ -795,7 +736,7 @@ export default {
           this._mapboxgl_map.dragPan.enable();
 
           this.zones.forEach(el => {
-            if (el.id == this.active_level.features.properties.zone_id) {
+            if (el.id == this.active_level.properties.id) {
               if (!this._mapboxgl_map.getLayer('zone')) {
                 this._mapboxgl_map.addLayer({
                   id: "zone",
@@ -860,11 +801,29 @@ export default {
                     id: el.id,
                   }
                 });
-
                 sector_line.data.features.push({
                   type: "Feature",
-                  geometry: turf.polygonToLine(JSON.parse(el.st_asgeojson))
-                    .geometry,
+                  geometry: turf.polygonToLine(JSON.parse(el.st_asgeojson)).geometry,
+                  properties: {
+                    title: el.title_ru,
+                    type: el.project_type,
+                    id: el.id,
+                  }
+                });
+              }
+              if (JSON.parse(el.st_asgeojson).type == "LineString") {
+                sector.data.features.push({
+                  type: "Feature",
+                  geometry: turf.lineToPolygon(JSON.parse(el.st_asgeojson)).geometry,
+                  properties: {
+                    title: el.title_ru,
+                    type: el.project_type,
+                    id: el.id,
+                  }
+                });
+                sector_line.data.features.push({
+                  type: "Feature",
+                  geometry: JSON.parse(el.st_asgeojson),
                   properties: {
                     title: el.title_ru,
                     type: el.project_type,
@@ -956,7 +915,8 @@ export default {
             filter: ["==", "type", 3]
           });
 
-          fetch('http://localhost:5000/back/api/objects?zone_id=' + this.active_level.features.properties.zone_id)
+          // ОБЪЕКТЫ И ИНФРАСТРУКТУРА
+          fetch('http://localhost:5000/back/api/objects?zone_id=' + this.active_level.properties.id)
           .then(res => {
               return res.json();
           })
@@ -972,57 +932,90 @@ export default {
             }
 
             res.forEach(el => {
-              switch(JSON.parse(el.st_asgeojson).type) {
-                case 'Point':
-                  source.data.features.push(JSON.parse(el.st_asgeojson));
-                  break;
-                case 'LineString':
-                  break;
-              }
-            });
-
-            this._mapboxgl_map.addLayer({
-              "id": "points",
-              "type": "symbol",
-              "source": {
-                  "type": "geojson",
-                  "data": {
-                      "type": "FeatureCollection",
-                      "features": [{
-                          "type": "Feature",
-                          "geometry": {
-                              "type": "Point",
-                              "coordinates": [-77.03238901390978, 38.913188059745586]
-                          },
-                          "properties": {
-                              "title": "Mapbox DC",
-                              "icon": "monument"
-                          }
-                      }, {
-                          "type": "Feature",
-                          "geometry": {
-                              "type": "Point",
-                              "coordinates": [-122.414, 37.776]
-                          },
-                          "properties": {
-                              "title": "Mapbox SF",
-                              "icon": "harbor"
-                          }
-                      }]
-                  }
-              },
-              "layout": {
-                  "icon-image": "{icon}-15",
-                  "text-field": "{title}",
-                  "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
-                  "text-offset": [0, 0.6],
-                  "text-anchor": "top"
+              if (el.st_asgeojson) {
+                switch(JSON.parse(el.st_asgeojson).type) {
+                  case 'Point':
+                    source.data.features.push(JSON.parse(el.st_asgeojson));
+                    break;
+                  case 'LineString':
+                    break;
+                }
               }
             });
           });
 
-
           this.hoveredStateId = "";
+          break;
+        case 3:
+          if (this._mapboxgl_map.getLayer('current-sector')) {
+            this._mapboxgl_map.removeLayer('current-sector');
+            this._mapboxgl_map.removeLayer('processing-sector');
+            this._mapboxgl_map.removeLayer('free-sector')
+
+            this._mapboxgl_map.removeLayer('current-sector-stroke');
+            this._mapboxgl_map.removeLayer('processing-sector-stroke');
+            this._mapboxgl_map.removeLayer('free-sector-stroke')
+                
+            this._mapboxgl_map.removeSource('sector');
+            this._mapboxgl_map.removeSource('sector-line');
+          }
+          if (this._mapboxgl_map.getLayer('sector')) {
+            this._mapboxgl_map.removeLayer('sector');
+            this._mapboxgl_map.removeLayer('sector-stroke');
+            this._mapboxgl_map.removeSource('sector');
+            this._mapboxgl_map.removeSource('sector-stroke');
+          }
+          this._mapboxgl_map.getCanvas().style.cursor = "";
+          this._mapboxgl_map.fitBounds(turf.bbox(JSON.parse(this.active_level.properties.st_asgeojson)), {
+            padding: this.sidebar_expanded ? { top: 150, bottom: 150, left: 200, right: 150 } : 150
+          });
+          this._mapboxgl_map.addLayer({
+              id: "sector",
+              type: "fill",
+              source: {
+                type: "geojson",
+                data: {
+                  type: "Feature",
+                  geometry: JSON.parse(this.active_level.properties.st_asgeojson),
+                  properties: {
+                    title: this.active_level.properties.title_ru,
+                    type: this.active_level.properties.project_type
+                  }
+                }
+              },
+              paint: this.active_level.properties.project_type == 1 ?  { "fill-color": "rgba(19, 150, 214, 0.5)", "fill-opacity": 0.8 } :
+                      this.active_level.properties.project_type == 2 ?  { "fill-color": "rgba(229, 208, 12, 0.4)", "fill-opacity": 0.8 } :
+                      { "fill-color": "rgba(6, 178, 23, 0.4)", "fill-opacity": 0.8 },
+          });
+          this._mapboxgl_map.addLayer({
+            id: "sector-stroke",
+            type: "line",
+            source: {
+              type: "geojson",
+              data: {
+                type: "Feature",
+                geometry: turf.polygonToLine( JSON.parse(this.active_level.properties.st_asgeojson) ).geometry,
+                properties: {
+                    title: this.active_level.properties.title_ru,
+                    type: this.active_level.properties.project_type
+                }
+              }
+            },
+            layout: {
+                "line-join": "round",
+                "line-cap": "round"
+            },
+            paint: {
+                "line-color":
+                  this.active_level.properties.project_type == 1
+                    ? "#3585AD"
+                    : this.active_level.properties.project_type == 2
+                      ? "#A48C10"
+                      : "#149541",
+                "line-width": 3,
+                "line-dasharray": [2.5, 2.5]
+            }
+          });
           break;
       }
     }
