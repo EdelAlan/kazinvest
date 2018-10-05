@@ -195,7 +195,7 @@ export default {
                     turf.polygon(sectors[0].geometry.coordinates)
                   ).geometry.coordinates
                 )
-                .setHTML(sectors[0].properties['title_' + lang])
+                .setHTML(sectors[0].properties['title_' + this.lang])
                 .addTo(this._mapboxgl_map);
             }
             break;

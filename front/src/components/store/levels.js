@@ -27,6 +27,9 @@ export default {
    },
 
    set_level_b(state, level) {
+     if (level.id == 1) {
+        this.dispatch('set_zones');
+     }
      if (level.id != state.levels[state.levels.length - 1].id) {
       switch(level.id) {
         case 1:

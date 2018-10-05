@@ -21,6 +21,10 @@ export default {
 
   actions: {
     async set_zones({ commit }) {
+      this.dispatch('change_ui_visibility', {
+        ui_component: 'sector_passport',
+        ui_component_state: false,
+      });
       this.dispatch('reset_sector');
       const { lang } = this.state.lang;
       const { search_string } = this.state.filters;
