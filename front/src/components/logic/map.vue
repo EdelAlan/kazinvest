@@ -67,9 +67,9 @@ export default {
                 if (zones[0].properties.zone_id == el.id) {
                   this.set_level({
                     id: 2,
-                    name: {
-                      ru: el.title_ru
-                    },
+                    title_ru: el.title_ru,
+                    title_en: el.title_en,
+                    title_kz: el.title_kz,
                     properties: el,
                   });
                 }
@@ -85,10 +85,10 @@ export default {
                 if (sectors[0].properties.id == el.id) {
                   this.set_level({
                     id: 3,
-                    name: {
-                      ru: el.title_ru
-                    },
-                    properties: el
+                    title_ru: el.title_ru,
+                    title_en: el.title_en,
+                    title_kz: el.title_kz,
+                    properties: el,
                   });
                 }
               });
@@ -195,7 +195,7 @@ export default {
                     turf.polygon(sectors[0].geometry.coordinates)
                   ).geometry.coordinates
                 )
-                .setHTML(sectors[0].properties.title)
+                .setHTML(sectors[0].properties['title_' + lang])
                 .addTo(this._mapboxgl_map);
             }
             break;
@@ -479,7 +479,8 @@ export default {
     "active_level",
     "sidebar_expanded",
     "zones",
-    "sectors"
+    "sectors",
+    "lang",
   ]),
 
   watch: {
@@ -504,7 +505,9 @@ export default {
               coordinates: [71.463959, 51.154918]
             },
             properties: {
-              title: "Астана"
+              title_ru: "Астана",
+              title_kz: "Astana",
+              title_en: "Астана",
             }
           }
         },
@@ -527,7 +530,9 @@ export default {
               coordinates: [76.904369, 43.23711]
             },
             properties: {
-              title: "Алматы"
+              title_ru: "Алматы",
+              title_kz: "Алматы",
+              title_en: "Almaty",
             }
           }
         },
@@ -550,7 +555,9 @@ export default {
               coordinates: [69.591172, 42.335432]
             },
             properties: {
-              title: "Шымкент"
+              title_ru: "Шымкент",
+              title_en: "Shymkent",
+              title_kz: "Шымкент",
             }
           }
         },
@@ -585,8 +592,9 @@ export default {
                   .geometry.coordinates
               },
               properties: {
-                title: el.title_ru,
-                name: el.title_en,
+                title_ru: el.title_ru,
+                title_en: el.title_en,
+                title_kz: el.title_kz,
                 zone_id: el.id,
                 type: el.zone_type
               }
@@ -796,7 +804,9 @@ export default {
                   type: "Feature",
                   geometry: JSON.parse(el.st_asgeojson),
                   properties: {
-                    title: el.title_ru,
+                    title_ru: el.title_ru,
+                    title_kz: el.title_kz,
+                    title_en: el.title_en,
                     type: el.project_type,
                     id: el.id,
                   }
@@ -805,7 +815,9 @@ export default {
                   type: "Feature",
                   geometry: turf.polygonToLine(JSON.parse(el.st_asgeojson)).geometry,
                   properties: {
-                    title: el.title_ru,
+                    title_ru: el.title_ru,
+                    title_kz: el.title_kz,
+                    title_en: el.title_en,                    
                     type: el.project_type,
                     id: el.id,
                   }
@@ -816,7 +828,9 @@ export default {
                   type: "Feature",
                   geometry: turf.lineToPolygon(JSON.parse(el.st_asgeojson)).geometry,
                   properties: {
-                    title: el.title_ru,
+                    title_ru: el.title_ru,
+                    title_kz: el.title_kz,
+                    title_en: el.title_en,                    
                     type: el.project_type,
                     id: el.id,
                   }
@@ -825,7 +839,9 @@ export default {
                   type: "Feature",
                   geometry: JSON.parse(el.st_asgeojson),
                   properties: {
-                    title: el.title_ru,
+                    title_ru: el.title_ru,
+                    title_kz: el.title_kz,
+                    title_en: el.title_en,                    
                     type: el.project_type,
                     id: el.id,
                   }
@@ -978,7 +994,9 @@ export default {
                   type: "Feature",
                   geometry: JSON.parse(this.active_level.properties.st_asgeojson),
                   properties: {
-                    title: this.active_level.properties.title_ru,
+                    title_ru: this.active_level.properties.title_ru,
+                    title_en: this.active_level.properties.title_ru,
+                    title_kz: this.active_level.properties.title_kz,
                     type: this.active_level.properties.project_type
                   }
                 }
@@ -996,7 +1014,9 @@ export default {
                 type: "Feature",
                 geometry: turf.polygonToLine( JSON.parse(this.active_level.properties.st_asgeojson) ).geometry,
                 properties: {
-                    title: this.active_level.properties.title_ru,
+                    title_ru: this.active_level.properties.title_ru,
+                    title_kz: this.active_level.properties.title_kz,
+                    title_en: this.active_level.properties.title_en,
                     type: this.active_level.properties.project_type
                 }
               }
