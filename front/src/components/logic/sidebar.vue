@@ -197,7 +197,7 @@
     background: #f5f5f5;
   }
   .sidebar-item_title {
-    font-size: 18px;
+    font-size: 16px;
     color: #03A0E3;
   }
   .sidebar-item_count {

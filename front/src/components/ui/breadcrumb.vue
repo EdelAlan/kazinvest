@@ -37,7 +37,7 @@
   }
   .breadcrumb-item {
     background: #fff;
-    font-size: 18px;
+    font-size: 16px;
     cursor: pointer;
     height: 34px;
     padding: 6px 5px 6px 8px;
