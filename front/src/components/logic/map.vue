@@ -995,7 +995,7 @@ export default {
                   geometry: JSON.parse(this.active_level.properties.st_asgeojson),
                   properties: {
                     title_ru: this.active_level.properties.title_ru,
-                    title_en: this.active_level.properties.title_ru,
+                    title_en: this.active_level.properties.title_en,
                     title_kz: this.active_level.properties.title_kz,
                     type: this.active_level.properties.project_type
                   }
