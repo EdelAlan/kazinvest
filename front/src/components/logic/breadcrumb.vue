@@ -2,7 +2,7 @@
   import { mapActions, mapGetters } from 'vuex';
 
   export default {
-    props: ['crumbs', 'active_crumb'],
+    props: ['crumbs'],
 
     methods: mapActions([
       'set_level_b',
@@ -19,12 +19,10 @@
   <div class="breadcrumb">
     <div class="breadcrumb-item"
       v-for="item, key in crumbs"
-      v-on:click="set_level_b(item)"
-    >
+      v-on:click="set_level_b(item)">
       <span class="breadcrumb-item_front"></span>
       <span class="breadcrumb-item_back"
         v-if="key != 0" ></span>
-      <!-- FIXME: локализация -->
       <span v-text="item['title_' + lang]"></span>
     </div>
   </div>

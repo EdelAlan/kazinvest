@@ -78,7 +78,7 @@
     padding-left: 15px;
   }
   .treenode-item {
-    font-size: 16px;
+    font-size: 14px;
     padding: 8px 25px;
     position: relative;
     cursor: pointer;

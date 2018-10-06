@@ -44,9 +44,11 @@ make pub
 1 Уровень - Казахстан (инфа про СЭЗ/ИЗ):
   - таблица: republics
   - store: republics
+
 2 Уровень - СЭЗы/ИЗы:
   - таблица: zones
   - store: zones
+  
 3 Уровень - объекты/сектора/фирмы(ТООшки):
   - таблица: sectors
   - store: sectors

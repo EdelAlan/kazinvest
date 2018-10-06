@@ -1,9 +1,9 @@
 <script>
   import piechart from '../ui/piechart';
   import sidebar_header from './sidebar_header';
-  import treenode from '../ui/treenode';
   import tabs from '../ui/tabs';
   import passport from './passport';
+  import legends from './legends';
   import { mapGetters, mapActions } from 'vuex';  
 
   export default {
@@ -11,7 +11,7 @@
       piechart,
       tabs,
       sidebar_header,
-      treenode,
+      legends,
       passport,
     },
 
@@ -46,50 +46,28 @@
       v-if="sector_passport && sidebar_expanded"></passport>
 
     <div class="sidebar-scroll_section">
+      
       <div class="sidebar-section">
-        <treenode
-          class="sidebar-treenode"
-          :model="{
-            name: 'Земельные участки',
-            children: [{
-              name: 'Объекты',
-              children: [{ 
-                name: 'Объект 1',
-                selected: true,
-                color: 'orange',
-              },{ 
-                name: 'Объект 2',
-                selected: false,
-                color: 'blue',
-              }],
-            }],
-          }"
-        ></treenode>
+        <legends class="sidebar-legends"></legends>
       </div>
-
-
       <div class="sidebar-section">
-
         <tabs
           :titles_style="{
             'font-size': '14px',
             'padding': '10px',
           }">
-          
           <span slot="tab_title_0">
             <span class="sidebar-tab">
               <span class="sidebar-tab_icon"></span>
               <span class="sidebar-tab_title">Справка</span>
             </span>
           </span>
-          
           <span slot="tab_title_1">
             <span class="sidebar-tab">
               <span class="sidebar-tab_icon"></span>
               <span class="sidebar-tab_title">Cписок</span>
             </span>        
           </span>
-          
           <span slot="tab_title_2">
             <span class="sidebar-tab">
               <span class="sidebar-tab_icon"></span>
@@ -109,21 +87,17 @@
               </div>
             </div>
           </div>
-
           <div slot="tab_1">
-         
             <div class="sidebar-item"
               v-for="zone in zones"
               v-if="!sectors"
-              @click="
-                set_level({
-                  id: 2,
-                  title_ru: zone.title_ru,
-                  title_en: zone.title_en,
-                  title_kz: zone.title_kz,
-                  properties: zone
-                })
-              ">
+              @click="zone.object_count > 0 ? set_level({
+                id: 2,
+                title_ru: zone.title_ru,
+                title_en: zone.title_en,
+                title_kz: zone.title_kz,
+                properties: zone
+              }) : null">
               <span class="sidebar-item_title" 
                 :title="zone['title_' + lang]"
                 v-text="zone['title_' + lang]"></span>
@@ -131,20 +105,17 @@
                 :title="zone.object_count + ' объектов'"
                 v-text="zone.object_count + ' объектов'"></span>
             </div>
-
             <div class="sidebar-item"
               v-if="sectors"
               v-for="sector in sectors"
               :class="{ 'sidebar-item--active': selected_sector && selected_sector.id == sector.id  }"
-              @click="
-                set_level({
-                  id: 3,
-                  title_ru: sector.title_ru,
-                  title_en: sector.title_en,
-                  title_kz: sector.title_kz,
-                  properties: sector
-                })
-              ">
+              @click="set_level({
+                id: 3,
+                title_ru: sector.title_ru,
+                title_en: sector.title_en,
+                title_kz: sector.title_kz,
+                properties: sector
+              })">
               <span class="sidebar-item_title"
                 :title="sector['title_' + lang]"
                 v-text="sector['title_' + lang]"></span>
@@ -153,8 +124,6 @@
                 v-text="sector['title_project_' + lang] || '-'"></span>
             </div>
           </div>
-
-
           <div slot="tab_2">
             <piechart
               :sectors="[
@@ -163,7 +132,6 @@
               ]"
             ></piechart>
           </div>
-          
         </tabs>
       </div>
     </div>

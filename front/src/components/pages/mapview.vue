@@ -1,7 +1,7 @@
 <script>
   import sidebar from '../logic/sidebar';
-  import breadcrumb from '../ui/breadcrumb';
-  import basemaps from '../ui/basemaps'
+  import breadcrumb from '../logic/breadcrumb';
+  import basemaps from '../logic/basemaps'
   import xmap from '../logic/map';
   import { mapGetters, mapActions } from 'vuex';  
 

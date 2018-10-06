@@ -28,7 +28,7 @@ export default {
         for (let i = 0; i < this.getters.sectors.length; i++) {
           if (this.getters.sectors[i].id == level.properties.id) {
             let scrl_section = document.querySelector('.sidebar-scroll_section');
-            let treenode = document.querySelector('.sidebar-treenode');
+            let treenode = document.querySelector('.sidebar-legends');
             scrl_section.scrollTop = 67 * item_count + 39 + treenode.clientHeight + 5;
             return;
           }
