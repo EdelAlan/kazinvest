@@ -69,7 +69,7 @@ router.get('/', async (req, res) => {
   const { zone_id } = req.query;
   console.log(`SELECT ${FIELDS} FROM sectors ${zone_id ? 'WHERE zone_id = $1' : ''}`)
   res.send(await db_query(
-    `SELECT ${FIELDS} FROM sectors ${zone_id ? 'WHERE zone_id = $1' : ''}`,
+    `SELECT ${FIELDS} FROM sectors ${zone_id ? 'WHERE zone_id = $1' : ''} ORDER BY LENGTH(title_project_ru) DESC`,
     zone_id ? [zone_id] : [],
   ));
 });

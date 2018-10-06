@@ -7,7 +7,7 @@
   import { mapGetters, mapActions } from 'vuex';  
 
   export default {
-    components: { 
+    components: {
       piechart,
       tabs,
       sidebar_header,
@@ -27,12 +27,7 @@
     ]),
 
     methods: mapActions([
-      'set_zones',
-      'set_sectors',
-      'set_selected_sector',
       'set_level',
-      'set_level_s',
-      'change_ui_visibility',
     ]),
 
   }
@@ -128,8 +123,8 @@
                   title_en: zone.title_en,
                   title_kz: zone.title_kz,
                   properties: zone
-                }),
-                set_sectors(zone.id)">
+                })
+              ">
               <span class="sidebar-item_title"v-text="zone['title_' + lang]"></span>
               <span class="sidebar-item_count"v-text="zone.object_count + ' объектов'"></span>
             </div>
@@ -145,11 +140,6 @@
                   title_en: sector.title_en,
                   title_kz: sector.title_kz,
                   properties: sector
-                }),
-                set_selected_sector(sector),
-                change_ui_visibility({
-                  ui_component: 'sector_passport',
-                  ui_component_state: true,
                 })
               ">
               <span class="sidebar-item_title"v-text="sector['title_' + lang]"></span>

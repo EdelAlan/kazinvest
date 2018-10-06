@@ -1,58 +1,68 @@
+const LEVEL_1 = {
+  id: 1,
+  title_ru: 'Карта Казахстана',
+  title_kz: 'Қазақстан картасы',
+  title_en: 'Кazakhstan Map',
+};
+
 export default {
   state: () => ({
-    levels: [{ 
-      id: 1, 
-      title_ru: 'Карта Казахстана',
-      title_kz: 'Қазақстан картасы',
-      title_en: 'Кazakhstan Map',
-    }],
+    levels: [LEVEL_1],
   }),
   
   getters: {
-    // активный левел всегда будет последним элементом из массива levels
-    // т.е. сейчас есть только уровень 1 (id:1, Карта Каз.), значит
-    // это и есть активный уровнь
     levels: state => state.levels,
     active_level: state => state.levels[state.levels.length - 1],
   },
 
   mutations: {
-   set_level(state, level) {
-    if (level.id == 3 && state.levels[state.levels.length - 1].id == 3) {
-      state.levels.pop();
-    }
-    if (level.id != state.levels[state.levels.length - 1].id) {
-      state.levels.push(level);
-    }
-   },
-
-   set_level_b(state, level) {
-     if (level.id == 1) {
-        this.dispatch('set_zones');
-     }
-     if (level.id != state.levels[state.levels.length - 1].id) {
-      switch(level.id) {
-        case 1:
-          state.levels = [{ 
-            id: 1, 
-            title_ru: 'Карта Казахстана',
-            title_kz: 'Қазақстан картасы',
-            title_en: 'Кazakhstan Map',
-          }];
-          break;
-        case 2:
-          state.levels.pop();
-      }
-     }
-   },
+    set_level (state, updated_levels) {
+      state.levels = updated_levels;
+    },
   },
 
   actions: {
-    set_level({commit}, level) {
-      commit('set_level', level);
+    set_level({ commit, state}, level) {
+      let updated_levels = state.levels.slice();
+      switch (level.id) {
+        case 2:
+          updated_levels = updated_levels.slice(0, 1);
+          this.dispatch('set_sectors', level.properties.id);
+          break;
+        case 3:
+          updated_levels = updated_levels.slice(0, 2);
+          this.dispatch('set_selected_sector', level.properties);
+          this.dispatch('change_ui_visibility', {
+            ui_component: 'sector_passport',
+            ui_component_state: true,
+          });
+      }
+      commit('set_level', [...updated_levels, level]);
     },
-    set_level_b({commit}, level) {
-      commit('set_level_b', level);
+
+
+    set_level_b ({commit, state}, level) {
+      if (level.id == this.getters.active_level.id) {
+        return;
+      }
+      switch (level.id) {
+        case 1:
+          this.dispatch('change_ui_visibility', {
+            ui_component: 'sector_passport',
+            ui_component_state: false,
+          });
+          this.dispatch('reset_sector');
+          this.dispatch('set_zones');
+          commit('set_level', [LEVEL_1]);
+          break;
+        case 2:
+          this.commit('set_selected_sector', {});
+          this.dispatch('change_ui_visibility', {
+            ui_component: 'sector_passport',
+            ui_component_state: false,
+          });
+          commit('set_level', state.levels.slice(0, level.id));
+      }
     }
-  },
-};
+  }
+}

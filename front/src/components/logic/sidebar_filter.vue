@@ -12,7 +12,6 @@
       'sidebar',
       'zone_filter',
       'industries_filter',
-      'search_string',
       'lang',
     ]),
 
@@ -24,8 +23,9 @@
       
       'set_industries',
       'set_republics',
-      'set_zones',
       'set_search_string',
+      
+      'set_level_b',
     ]),
 
     mounted () {
@@ -97,7 +97,10 @@
         @click="toggle_sidebar">Свернуть</div>
 
       <button class="sidebar_filter-find"
-        @click="set_zones"
+        @click="set_level_b({
+          id: 1,
+          // для первого уровня прописывать тайтлы не обязательно
+        })"
         v-text="{
           'title_ru': 'Найти', 
           'title_kz': 'Іздеу', 

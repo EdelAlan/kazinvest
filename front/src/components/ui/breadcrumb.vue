@@ -18,8 +18,8 @@
 <template>
   <div class="breadcrumb">
     <div class="breadcrumb-item"
-      v-on:click="set_level_b(item)"
       v-for="item, key in crumbs"
+      v-on:click="set_level_b(item)"
     >
       <span class="breadcrumb-item_front"></span>
       <span class="breadcrumb-item_back"
