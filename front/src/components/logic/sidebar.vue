@@ -4,6 +4,7 @@
   import tabs from '../ui/tabs';
   import passport from './passport';
   import legends from './legends';
+  import reference from './reference';
   import { mapGetters, mapActions } from 'vuex';  
 
   export default {
@@ -13,6 +14,7 @@
       sidebar_header,
       legends,
       passport,
+      reference,
     },
 
     computed: mapGetters([
@@ -24,6 +26,8 @@
       'sector_passport',
       'zone_filter',
       'republics',
+      'active_level',
+      'selected_zone',
     ]),
 
     methods: mapActions([
@@ -37,20 +41,135 @@
 <template>
   <div class="sidebar" 
     :class="{'sidebar--expanded': sidebar_expanded}">
-    
     <div class="sidebar-header">
       <sidebar_header></sidebar_header>
     </div>
 
+
+
     <passport class="sidebar-passport"
-      v-if="sector_passport && sidebar_expanded"></passport>
+      :title="selected_sector"
+      v-if="sector_passport && sidebar_expanded">
+
+
+      <!-- Общая инфа о секторе -->
+      <div slot="body" v-if="selected_sector">
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Название компании участника</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector['title_' + lang]"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Описание</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector['title_project_' + lang]"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Стоимость проекта</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector.project_price"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Площадь занимаемого участка</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector.area"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Текущий статус</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector['current_status_' + lang]"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Год</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector.project_date"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Продукция</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector['products_' + lang]"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Сроки реализации</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector['time_realization_' + lang]"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">План работы</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector.plan_jobs"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Мощность</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector.power"></span>
+        </div>
+      </div>
+
+
+      <!-- Общая инфа о секторе -->
+      <div slot="body" v-if="selected_sector">
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Название компании участника</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector['title_' + lang]"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Описание</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector['title_project_' + lang]"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Стоимость проекта</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector.project_price"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Площадь занимаемого участка</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector.area"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Текущий статус</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector['current_status_' + lang]"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Год</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector.project_date"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Продукция</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector['products_' + lang]"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Сроки реализации</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector['time_realization_' + lang]"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">План работы</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector.plan_jobs"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Мощность</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector.power"></span>
+        </div>
+      </div>
+    </passport>
+
+
 
     <div class="sidebar-scroll_section">
-      
       <div class="sidebar-section">
         <legends class="sidebar-legends"></legends>
       </div>
-      <div class="sidebar-section">
+
+      <div class="sidebar-section sidebar-section--main_content">
         <tabs
           :titles_style="{
             'font-size': '14px',
@@ -75,18 +194,84 @@
             </span>        
           </span>
 
+
+
           <div slot="tab_0">
-            <div class="sidebar-info_wrap">
-              <div 
-                v-for="republic, key in republics"
-                v-if="zone_filter[key].checked">
-                <h2 v-html="republic['title_' + lang]"></h2>
-                <p v-html="republic['advantages_' + lang]"></p>
-                <p v-html="republic['commont_' + lang]"></p>
-                <p v-html="republic['contacts_' + lang]"></p>
-              </div>
-            </div>
+            <!-- Справка для СЭЗ инфы и ИЗ инфы -->
+            <reference
+              v-for="republic, key in republics"
+              v-if="active_level.id == 1 && zone_filter[key].checked"
+              :menu="[{
+                title_ru: 'Преимущества ' + republic['title_' + lang] + ' РК',
+                title_en: 'Преимущества ' + republic['title_' + lang] + ' РК',
+                title_kz: 'Преимущества ' + republic['title_' + lang] + ' РК',
+              }, {
+                title_ru: 'Описание ' + republic['title_' + lang] + ' РК',
+                title_en: 'Описание ' + republic['title_' + lang] + ' РК',
+                title_kz: 'Описание ' + republic['title_' + lang] + ' РК',
+              }, {
+                title_ru: 'Общие положения ' + republic['title_' + lang] + ' РК',
+                title_en: 'Общие положения ' + republic['title_' + lang] + ' РК',
+                title_kz: 'Общие положения ' + republic['title_' + lang] + ' РК',
+              }, {
+                title_ru: 'Маркетинговые материалы ' + republic['title_' + lang] + ' РК',
+                title_en: 'Маркетинговые материалы ' + republic['title_' + lang] + ' РК',
+                title_kz: 'Маркетинговые материалы ' + republic['title_' + lang] + ' РК',
+              }, {
+                title_ru: 'Контакты ' + republic['title_' + lang] + ' РК',
+                title_en: 'Контакты ' + republic['title_' + lang] + ' РК',
+                title_kz: 'Контакты ' + republic['title_' + lang] + ' РК',
+              }]"
+            ></reference>
+            <!-- Справка о СЭЗах или ИЗах -->
+            <reference
+              v-if="active_level.id == 2"
+              :menu="[{
+                title_ru: 'О ' + selected_zone['title_' + lang],
+                title_en: 'О ' + selected_zone['title_' + lang],
+                title_kz: 'О ' + selected_zone['title_' + lang],
+              }, {
+                title_ru: 'Описание ' + selected_zone['title_' + lang] + ' РК',
+                title_en: 'Описание ' + selected_zone['title_' + lang] + ' РК',
+                title_kz: 'Описание ' + selected_zone['title_' + lang] + ' РК',
+              }, {
+                title_ru: 'Галерея зоны ' + selected_zone['title_' + lang] + ' РК',
+                title_en: 'Галерея зоны ' + selected_zone['title_' + lang] + ' РК',
+                title_kz: 'Галерея зоны ' + selected_zone['title_' + lang] + ' РК',
+              }, {
+                title_ru: 'Маркетинговые материалы',
+                title_en: 'Маркетинговые материалы',
+                title_kz: 'Маркетинговые материалы',
+              }, {
+                title_ru: 'Контакты',
+                title_en: 'Контакты',
+                title_kz: 'Контакты',
+              }]"
+            />
+            <reference
+              v-if="active_level.id == 3"
+              :menu="[{
+                title_ru: 'Общая информация',
+                title_en: 'Общая информация',
+                title_kz: 'Общая информация',
+              }, {
+                title_ru: 'Галерея сектора',
+                title_en: 'Галерея сектора',
+                title_kz: 'Галерея сектора',
+              }, {
+                title_ru: 'Маркетинговые материалы',
+                title_en: 'Маркетинговые материалы',
+                title_kz: 'Маркетинговые материалы',
+              }, {
+                title_ru: 'Контакты',
+                title_en: 'Контакты',
+                title_kz: 'Контакты',
+              }]"
+            />
           </div>
+
+
+
           <div slot="tab_1">
             <div class="sidebar-item"
               v-for="zone in zones"
@@ -124,13 +309,28 @@
                 v-text="sector['title_project_' + lang] || '-'"></span>
             </div>
           </div>
+
+
+
+
           <div slot="tab_2">
-            <piechart
+            <!--<piechart
               :sectors="[
                 { key: 'Потребность', val: 3203333 },
                 { key: 'Выделено', val: 2321321 },
               ]"
-            ></piechart>
+            ></piechart>-->
+            <reference
+              :menu="[{
+                title_ru: 'Цифровые показатели',
+                title_en: 'Цифровые показатели',
+                title_kz: 'Цифровые показатели',
+              }, {
+                title_ru: 'Диаграммы',
+                title_en: 'Диаграммы',
+                title_kz: 'Диаграммы',
+              }]"
+            />
           </div>
         </tabs>
       </div>
@@ -167,6 +367,9 @@
     overflow: hidden;
     margin: 0 5px 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+  }
+  .sidebar-section--main_content {
+    min-height: 300px;
   }
   .sidebar-item {
     border-bottom: 1px solid #eee;

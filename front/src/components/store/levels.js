@@ -38,6 +38,7 @@ export default {
       let updated_levels = state.levels.slice();
       switch (level.id) {
         case 2:
+          this.dispatch('set_selected_zone', level.properties);
           updated_levels = updated_levels.slice(0, 1);
           this.dispatch('set_sectors', level.properties.id);
           break;
@@ -60,6 +61,7 @@ export default {
       }
       switch (level.id) {
         case 1:
+          this.dispatch('set_selected_zone', null);
           this.dispatch('change_ui_visibility', {
             ui_component: 'sector_passport',
             ui_component_state: false,

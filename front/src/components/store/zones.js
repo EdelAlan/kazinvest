@@ -3,6 +3,7 @@ import fetcher from '../../util/fetcher';
 export default {
   state: () => ({
     zones: [],
+    selected_zone: null,
   }),
 
   mutations: {
@@ -12,14 +13,21 @@ export default {
     set_zones (state, zones) {
       state.zones = zones;
     },
+    set_selected_zone (state, selected_zone) {
+      state.selected_zone = selected_zone;
+    },
   },
 
   getters: {
     zone_type: state => state.zone_type,
     zones: state => state.zones,
+    selected_zone: state => state.selected_zone,
   },
 
   actions: {
+    set_selected_zone ({ commit }, zone) {
+      commit('set_selected_zone', zone);
+    },
     async set_zones({ commit }) {
       this.dispatch('change_ui_visibility', {
         ui_component: 'sector_passport',

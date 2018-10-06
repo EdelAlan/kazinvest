@@ -93,7 +93,7 @@
 		position: absolute;
 		bottom: 0;
 		left: 0;
-		height: 6px;
+		height: 3px;
 		width: 100%;
 		background: #FF9C40;
 	}

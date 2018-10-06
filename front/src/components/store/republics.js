@@ -16,7 +16,7 @@ export default {
   },
 
   actions: {
-    set_republics ({ commit, dispatch }) {
+    set_republics ({ commit }) {
       return fetcher({
         path: this.getters.api_path + '/back/api/republics',
       }).then(republics => {
