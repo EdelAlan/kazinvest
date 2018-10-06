@@ -2,7 +2,7 @@
 
 ## Разработка
 
-Запуск фронта:
+### Запуск фронта
 
 ```
 make f
@@ -10,16 +10,20 @@ make f
 http://localhost:8080
 
 
-Запуск бэка (nodemon):
-
+### Запуск бэка (nodemon)
 ```
 make b
 ```
 http://localhost:5000
 
 
-Обновить все node_modules:
+### Обновить все node_modules
+```
+make nodeup
+```
 
+### Деплой
+Нужно изменить api_path из стора, затем выполнить команду
 ```
 make nodeup
 ```
@@ -37,15 +41,12 @@ make nodeup
 
 
 ### База и данные
-
 1 Уровень - Казахстан (инфа про СЭЗ/ИЗ):
   - таблица: republics
   - store: republics
-
 2 Уровень - СЭЗы/ИЗы:
   - таблица: zones
   - store: zones
-
 3 Уровень - объекты/сектора/фирмы(ТООшки):
   - таблица: sectors
   - store: sectors
