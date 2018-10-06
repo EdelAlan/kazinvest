@@ -43,22 +43,22 @@
     </div>
 
     <passport class="sidebar-passport"
-      v-if="sector_passport"></passport>
+      v-if="sector_passport && sidebar_expanded"></passport>
 
     <div class="sidebar-scroll_section">
-    <!--
-      <div class="sidebarepublicsr-section">
+      <div class="sidebar-section">
         <treenode
+          class="sidebar-treenode"
           :model="{
             name: 'Земельные участки',
             children: [{
               name: 'Объекты',
               children: [{ 
-                name: 'hello',
+                name: 'Объект 1',
                 selected: true,
                 color: 'orange',
               },{ 
-                name: 'wat',
+                name: 'Объект 2',
                 selected: false,
                 color: 'blue',
               }],
@@ -66,7 +66,6 @@
           }"
         ></treenode>
       </div>
-      -->
 
 
       <div class="sidebar-section">
@@ -125,8 +124,12 @@
                   properties: zone
                 })
               ">
-              <span class="sidebar-item_title"v-text="zone['title_' + lang]"></span>
-              <span class="sidebar-item_count"v-text="zone.object_count + ' объектов'"></span>
+              <span class="sidebar-item_title" 
+                :title="zone['title_' + lang]"
+                v-text="zone['title_' + lang]"></span>
+              <span class="sidebar-item_desc" 
+                :title="zone.object_count + ' объектов'"
+                v-text="zone.object_count + ' объектов'"></span>
             </div>
 
             <div class="sidebar-item"
@@ -142,8 +145,12 @@
                   properties: sector
                 })
               ">
-              <span class="sidebar-item_title"v-text="sector['title_' + lang]"></span>
-              <span class="sidebar-item_count"v-text="sector['title_project_' + lang]"></span>
+              <span class="sidebar-item_title"
+                :title="sector['title_' + lang]"
+                v-text="sector['title_' + lang]"></span>
+              <span class="sidebar-item_desc"
+                :title="sector['title_project_' + lang]"
+                v-text="sector['title_project_' + lang] || '-'"></span>
             </div>
           </div>
 
@@ -205,12 +212,19 @@
   .sidebar-item_title {
     font-size: 16px;
     color: #03A0E3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
   }
-  .sidebar-item_count {
+  .sidebar-item_desc {
     font-size: 14px;
     margin-top: 5px;
     color: #888;
     display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .sidebar-info_wrap {
     padding: 0 15px;
@@ -221,7 +235,7 @@
   .sidebar-item--active .sidebar-item_title {
     color: #fff;
   }
-  .sidebar-item--active .sidebar-item_count {
+  .sidebar-item--active .sidebar-item_desc {
     color: #fff;
   }
   .sidebar-item--active:hover {

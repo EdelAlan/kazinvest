@@ -22,7 +22,19 @@ export default {
   },
 
   actions: {
-    set_level({ commit, state}, level) {
+    set_level({ commit, state }, level) {
+      const show_active_element = () => {
+        let item_count = 0;
+        for (let i = 0; i < this.getters.sectors.length; i++) {
+          if (this.getters.sectors[i].id == level.properties.id) {
+            let scrl_section = document.querySelector('.sidebar-scroll_section');
+            let treenode = document.querySelector('.sidebar-treenode');
+            scrl_section.scrollTop = 67 * item_count + 39 + treenode.clientHeight + 5;
+            return;
+          }
+          item_count++;
+        }
+      }
       let updated_levels = state.levels.slice();
       switch (level.id) {
         case 2:
@@ -30,6 +42,7 @@ export default {
           this.dispatch('set_sectors', level.properties.id);
           break;
         case 3:
+          show_active_element();
           updated_levels = updated_levels.slice(0, 2);
           this.dispatch('set_selected_sector', level.properties);
           this.dispatch('change_ui_visibility', {
