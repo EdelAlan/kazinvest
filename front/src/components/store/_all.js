@@ -18,6 +18,15 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
 	modules: {
+		api_path: {
+			state: () => ({
+				api_path: 'http://localhost:5000',
+				// api_path: _ => '',
+			}),
+			getters: {
+				api_path: state => state.api_path,
+			},
+		},
 		signup,
 		ui_visibility,
 		map,

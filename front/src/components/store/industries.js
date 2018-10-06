@@ -18,7 +18,7 @@ export default {
   actions: {
     set_industries ({ commit, dispatch }) {
       return fetcher({
-        path: 'http://localhost:5000/back/api/industries',
+        path: this.getters.api_path + '/back/api/industries',
       }).then(industries => {
         this.dispatch('set_industries_filter', 
           industries.map(({ id, title_ru, title_kz, title_en }) => {

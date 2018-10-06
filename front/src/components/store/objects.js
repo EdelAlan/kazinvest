@@ -20,7 +20,7 @@ export default {
     set_objects ({ commit }, zone_id) {
       console.log(zone_id)
       return fetcher({
-        path: 'http://localhost:5000/back/api/objects' 
+        path: this.getters.api_path + '/back/api/objects' 
           + (zone_id ? '?zone_id=' + zone_id : ''),
       }).then(objects => {
         commit('set_objects', objects);

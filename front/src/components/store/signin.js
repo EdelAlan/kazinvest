@@ -28,7 +28,7 @@ export default {
     }) {
       return fetcher({
         method: 'post',
-        path: 'http://localhost:5000/back/signin',
+        path: this.getters.api_path + '/back/signin',
         body: {
           userid,
           password,

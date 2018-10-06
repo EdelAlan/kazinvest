@@ -18,7 +18,7 @@ export default {
   actions: {
     set_republics ({ commit, dispatch }) {
       return fetcher({
-        path: 'http://localhost:5000/back/api/republics',
+        path: this.getters.api_path + '/back/api/republics',
       }).then(republics => {
         this.dispatch('set_zone_filter', 
           republics.map(({ id, title_ru, title_kz, title_en }) => {

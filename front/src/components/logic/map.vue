@@ -481,6 +481,7 @@ export default {
     "zones",
     "sectors",
     "lang",
+    "api_path",
   ]),
 
   watch: {
@@ -961,8 +962,7 @@ export default {
           });
 
           // ОБЪЕКТЫ И ИНФРАСТРУКТУРА
-          fetch(
-            'http://localhost:5000/back/api/objects?zone_id=' +
+          fetch(this.api_path + '/back/api/objects?zone_id=' +
               this.active_level.properties.id
           )
             .then(res => {
