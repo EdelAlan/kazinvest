@@ -1,5 +1,16 @@
 const router = require('express-async-router').AsyncRouter();
 const db_query = require('../util/db_query');
+const zone_type_str = [{
+  "id": 1,
+  "title_ru": "СЭЗ",
+  "title_en": "SEZ",
+  "title_kz": "СЭЗ"
+}, {
+  "id": 2,
+  "title_ru": "ИЗ",
+  "title_en": "IZ",
+  "title_kz": "ИЗ"
+}];
 
 const FIELDS = `
   id,
@@ -52,7 +63,15 @@ router.get('/', async (req, res) => {
   console.log(lang);
   console.log('zone_filter: ' + zone_filter);
   console.log('industries_filter: ' + industries_filter);
-  return res.send(await db_query(sql, params));
+
+  let result = await db_query(sql, params);
+  result = result.map(it => ({
+    ...it,
+    title_ru: zone_type_str[it.zone_type - 1].title_ru + ' ' + (it.title_ru || 'нет названия'),
+    title_kz: zone_type_str[it.zone_type - 1].title_kz + ' ' + (it.title_kz || it.title_ru),
+    title_en: zone_type_str[it.zone_type - 1].title_en + ' ' + (it.title_en || it.title_ru),
+  }));
+  res.send(result);
 });
 
 router.get('/:id', async (req, res) => {

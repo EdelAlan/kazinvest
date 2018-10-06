@@ -185,7 +185,7 @@
   }
 
   .home-main_btn_logo {
-    height: 78px;
+    height: 100px;
     background: url('../../assets/images/logo-blue-black.svg') no-repeat center;
     background-size: contain;
     margin-bottom: 20px;
