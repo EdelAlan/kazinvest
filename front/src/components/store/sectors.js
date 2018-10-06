@@ -33,8 +33,6 @@ export default {
     },
     // Повторный запрос на сектор нужен для того, чтобы в будущем была возможность делать джоин
     set_selected_sector ({ commit }, selected_sector) {
-      console.log(selected_sector)
-      console.log(selected_sector.id)
       return fetcher({
         path: `http://localhost:5000/back/api/sectors/${selected_sector.id}`,
       }).then(sector => {

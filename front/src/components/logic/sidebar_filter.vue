@@ -26,6 +26,7 @@
       'set_search_string',
       
       'set_level_b',
+      'set_zones',
     ]),
 
     mounted () {
@@ -90,17 +91,22 @@
           }"
         />
       </div>
-     
 
       <!-- ошибка дизайна, тоглить сайдбар лучше в sidebar_header -->
       <div class="sidebar_filter-collapse" 
-        @click="toggle_sidebar">Свернуть</div>
+        @click="toggle_sidebar"
+        v-text="{
+          'title_ru': 'Свернуть', 
+          'title_kz': 'Жасыру', 
+          'title_en': 'Collapse'
+        }['title_' + lang]">
+      </div>
 
       <button class="sidebar_filter-find"
-        @click="set_level_b({
-          id: 1,
-          // для первого уровня прописывать тайтлы не обязательно
-        })"
+        @click="
+          set_zones(),
+          set_level_b({ id: 1 })
+        "
         v-text="{
           'title_ru': 'Найти', 
           'title_kz': 'Іздеу', 
@@ -115,21 +121,17 @@
 
 
 <style>
-
   .sidebar_filter-filter {
     width: calc(50% - 5px);
     margin-bottom: 5px;
   }
-
   .sidebar_filter-container {
     padding: 10px 5px 5px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-
   }
-
   .sidebar_filter-input {
     background: white;
     border: 1px solid #fff;
@@ -141,17 +143,14 @@
     margin-bottom: 5px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, .3);
   }
-
   .sidebar_filter-input--search {
     width: 100%;
   }
-
   .sidebar_filter-collapse {
     font-size: 14px;
     color: #fff;
     cursor: pointer;
   }
-
   .sidebar_filter-find {
     padding: 5px 20px;
     background: #F7B06F;
@@ -160,5 +159,4 @@
     margin-bottom: 0;
     color: #fff;
   }
-
 </style>
