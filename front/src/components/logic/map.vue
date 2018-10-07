@@ -22,7 +22,7 @@ export default {
     };
   },
 
-  mounted() {
+  async mounted() {
     // ИНИЦИАЛИЗАЦИЯ КАРТЫ
 
     mapboxgl.accessToken =
@@ -48,10 +48,7 @@ export default {
       )
     );
 
-    this._mapboxgl_map.on('style.load', async () => {
-      await this.set_zones();
-      this._addObjects();
-    });
+    await this.set_zones();
 
     // ИВЭНТЫ НА КАРТЕ
 
@@ -487,13 +484,18 @@ export default {
   watch: {
     basemap: 'change_basemap',
     sidebar_expanded: 'move_map',
-    active_level: 'follow_level'
+    active_level: 'follow_level',
+    zones: 'update_map'
   },
 
   methods: {
     ...mapActions(['set_zones', 'set_sectors', 'set_level']),
 
-    _addObjects() {
+    update_map() {
+      this.first_level();
+    },
+
+    init_map() {
       this._mapboxgl_map.addLayer({
         id: 'astana',
         type: 'circle',
@@ -662,7 +664,7 @@ export default {
         filter: ['has', 'point_count'],
         paint: {
           'circle-color': '#2ECC71',
-          'circle-radius': 8,
+          'circle-radius': 11,
           'circle-stroke-color': '#fff',
           'circle-stroke-width': 3
         }
@@ -685,8 +687,9 @@ export default {
         filter: ['has', 'point_count'],
         paint: {
           'circle-color': '#F39C12',
-          'circle-radius': 10,
-          'circle-stroke-color': '#fff'
+          'circle-radius': 11,
+          'circle-stroke-color': '#fff',
+          'circle-stroke-width': 3
         }
       });
       this._mapboxgl_map.addLayer({
@@ -743,16 +746,7 @@ export default {
       this.popup.remove();
       switch (this.active_level.id) {
         case 1:
-          this._mapboxgl_map.setMaxBounds(null);
-          this._mapboxgl_map.scrollZoom.disable();
-          this._mapboxgl_map.dragPan.disable();
-          this._mapboxgl_map.setStyle(positron());
-          this._addObjects();
-          this._mapboxgl_map.flyTo({
-            center: [60.131017, 49.205201],
-            zoom: 4,
-            speed: 5
-          });
+          this.first_level();
           break;
         case 2:
           this._mapboxgl_map.setStyle(osm());
@@ -1077,6 +1071,19 @@ export default {
           });
           break;
       }
+    },
+
+    first_level() {
+      this._mapboxgl_map.setMaxBounds(null);
+      this._mapboxgl_map.scrollZoom.disable();
+      this._mapboxgl_map.dragPan.disable();
+      this._mapboxgl_map.setStyle(positron());
+      this.init_map();
+      this._mapboxgl_map.flyTo({
+        center: [60.131017, 49.205201],
+        zoom: 4,
+        speed: 5
+      });
     }
   }
 };
