@@ -290,15 +290,6 @@ export default () => ({
         }
     },
     {
-      'id': 'bing',
-      'type': 'raster',
-      'source': 'bing',
-      'paint': {},
-      'layout': {
-        'visibility': 'none'
-      }
-    },
-    {
         "id": "aeroway-polygon",
         "type": "fill",
         "source": "composite",
@@ -358,6 +349,15 @@ export default () => ({
                 16,
                 1
             ]
+        }
+    },
+    {
+        'id': 'bing',
+        'type': 'raster',
+        'source': 'bing',
+        'paint': {},
+        'layout': {
+          'visibility': 'none'
         }
     },
     {
