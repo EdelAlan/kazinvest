@@ -200,6 +200,19 @@ export default {
       }
     });
 
+    this._mapboxgl_map.on('mouseleave', 'current-sector', e => {
+      this._mapboxgl_map.getCanvas().style.cursor = '';
+      this.popup.remove();
+    });
+    this._mapboxgl_map.on('mouseleave', 'processing-sector', e => {
+      this._mapboxgl_map.getCanvas().style.cursor = '';
+      this.popup.remove();
+    });
+    this._mapboxgl_map.on('mouseleave', 'free-sector', e => {
+      this._mapboxgl_map.getCanvas().style.cursor = '';
+      this.popup.remove();
+    });
+
     // mouseleave ПЕРВЫЙ УРОВЕНЬ ГОРОДА
 
     this._mapboxgl_map.on('mouseleave', 'astana', _ => {
@@ -515,6 +528,34 @@ export default {
     });
 
     this._mapboxgl_map.on('mouseleave', 'object-points', e => {
+      this._mapboxgl_map.getCanvas().style.cursor = '';
+      this.popup.remove();
+    });
+
+    this._mapboxgl_map.on('mouseenter', 'infrastructures', e => {
+      var features = this._mapboxgl_map.queryRenderedFeatures(e.point, {
+        layers: ['infrastructures']
+      });
+
+      this._mapboxgl_map.getCanvas().style.cursor = 'pointer';
+      this.popup
+        .setLngLat([e.lngLat.lng, e.lngLat.lat])
+        .setHTML(features[0].properties.type == 1 ? 'Водоснабжение' :
+                features[0].properties.type == 2 ? 'Канализация' :
+                features[0].properties.type == 3 ? 'Электроснабжение' :
+                features[0].properties.type == 4 ? 'Теплоснабжение' :
+                features[0].properties.type == 5 ? 'Газоснабжение' :
+                features[0].properties.type == 6 ? 'Пароснабжение' :
+                features[0].properties.type == 7 ? 'Телефонная связь' :
+                features[0].properties.type == 8 ? 'Интернет' :
+                features[0].properties.type == 9 ? 'Утилизация твердых отходов' :
+                features[0].properties.type == 10 ? 'Утилизация жидких отходов' :
+                features[0].properties.type == 11 ? 'Подъездной ж/д путь' :
+                features[0].properties.type == 12 ? 'Автодороги' : '')
+        .addTo(this._mapboxgl_map);
+    });
+
+    this._mapboxgl_map.on('mouseleave', 'infrastructures', e => {
       this._mapboxgl_map.getCanvas().style.cursor = '';
       this.popup.remove();
     });
