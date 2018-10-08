@@ -25,7 +25,12 @@ export default {
       return fetcher({
         path,
       }).then(infrastructures => {
-        commit('set_infrastructures', infrastructures);
+        commit('set_infrastructures', infrastructures.map(obj => ({
+          ...obj,
+          color: this.getters.infrastructures_list
+            .filter(legend_item => obj.type == legend_item.type)
+            .map(it => it.color)[0],
+        })));        
         return;
       });
     },

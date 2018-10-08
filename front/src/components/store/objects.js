@@ -25,7 +25,13 @@ export default {
       return fetcher({
         path,
       }).then(objects => {
-        commit('set_objects', objects);
+        
+        commit('set_objects', objects.map(obj => ({
+          ...obj,
+          color: this.getters.objects_list
+            .filter(legend_item => obj.type == legend_item.type)
+            .map(it => it.color)[0],
+        })));
         return;
       });
     },
