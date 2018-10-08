@@ -13,11 +13,13 @@ const FIELDS = `
 
 router.get('/', async (req, res) => {
   const { zone_id } = req.query;
-  console.log(`SELECT ${FIELDS} FROM objects ${zone_id ? 'WHERE zone_id = $1' : ''}`)
-  res.send(await db_query(
-    `SELECT ${FIELDS} FROM objects ${zone_id ? 'WHERE zone_id = $1' : ''}`,
-    zone_id ? [zone_id] : [],
-  ));
+  const sql = `SELECT ${FIELDS} FROM objects ${zone_id ? 'WHERE zone_id = $1' : ''}`;
+  const params = zone_id ? [zone_id] : [];
+  
+  console.log(sql);
+  console.log(params);
+  
+  res.send(await db_query(sql, params));
 });
 
 module.exports = router;

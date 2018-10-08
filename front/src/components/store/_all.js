@@ -13,6 +13,7 @@ import sectors from './sectors';
 import industries from './industries';
 import filters from './filters';
 import republics from './republics';
+import objects_handbook from './objects_handbook';
 
 Vue.use(Vuex);
 
@@ -36,5 +37,6 @@ export default new Vuex.Store({
 		industries,
 		filters,
 		republics,
+		objects_handbook,
 	},
 });

@@ -1,5 +1,6 @@
 <script>
   import checkbox from './checkbox';
+  import { mapGetters } from 'vuex';
 
   export default {
     name: 'treenode',
@@ -25,6 +26,9 @@
     },
 
     computed: {
+      ...mapGetters([
+        'lang',
+      ]),
       is_directory: function () {
         return this.model.children &&
           this.model.children.length
@@ -44,12 +48,12 @@
       }"
       @click="toggle">
       <span v-if="is_directory" 
-        v-text="model.name"></span>
+        v-text="model['title_' + lang]"></span>
       
       <checkbox 
         v-if="!is_directory"
         :selected="model.selected"
-        :text="model.name"
+        :text="model['title_' + lang]"
         :color="model.color"
       />
       
