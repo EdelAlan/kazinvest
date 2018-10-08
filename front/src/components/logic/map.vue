@@ -798,6 +798,7 @@ export default {
           break;
         case 2:
           this._mapboxgl_map.setStyle(osm());
+          this.change_basemap();
           await this.set_sectors(this.active_level.properties.id);
           this._mapboxgl_map.setMaxBounds(
             turf.bbox(
@@ -851,6 +852,7 @@ export default {
           this.hoveredStateId = '';
           break;
         case 3:
+          this.change_basemap();
           this._mapboxgl_map.fitBounds(
             turf.bbox(JSON.parse(this.active_level.properties.st_asgeojson)),
             {
