@@ -469,6 +469,56 @@ export default {
       this._mapboxgl_map.getCanvas().style.cursor = '';
       this.popup.remove();
     });
+
+    // ИВЭНТЫ ВТОРОГО УРОВНЯ (ОБЪЕКТЫ)
+
+    this._mapboxgl_map.on('mouseenter', 'object-points', e => {
+      var features = this._mapboxgl_map.queryRenderedFeatures(e.point, {
+        layers: ['object-points']
+      });
+
+      this._mapboxgl_map.getCanvas().style.cursor = 'pointer';
+      this.popup
+        .setLngLat(features[0].geometry.coordinates.slice())
+        .setHTML(features[0].properties.type == 13 ? 'Пожарное депо' :
+                features[0].properties.type == 14 ? 'Готовые производственные помещения для дальнейшего предоставленя участникам в аренду' :
+                features[0].properties.type == 16 ? 'Склады' :
+                features[0].properties.type == 17 ? 'Жилищный комплекс для временного размещения' :
+                features[0].properties.type == 18 ? 'Социальный объект' :
+                features[0].properties.type == 19 ? 'Административное здание' :
+                features[0].properties.type == 20 ? 'Контрольно-пропускной пункт' :
+                features[0].properties.type == 22 ? 'Полигон тбо' :
+                features[0].properties.type == 23 ? 'КПП для таможенного контроля 2шт' :
+
+                features[0].properties.type == 24 ? 'Автовесовая' :
+                features[0].properties.type == 25 ? 'Ренгеноустановка' :
+                features[0].properties.type == 26 ? 'Пруд-испаритель' :
+                features[0].properties.type == 27 ? 'Интегририрующий сервис технологический центр' :
+                features[0].properties.type == 28 ? 'Очистное сооружение' :
+                features[0].properties.type == 29 ? 'Воздушные линии элеткропередачи' :
+                features[0].properties.type == 30 ? 'Распределительный пункт' :
+                features[0].properties.type == 31 ? 'Канализационная насосная станция' :
+                features[0].properties.type == 32 ? 'Подстанция' :
+                features[0].properties.type == 33 ? 'Газораспределительный пункт' :
+                features[0].properties.type == 35 ? 'Железно-дорожная станция' :
+                features[0].properties.type == 36 ? 'Водопроводный узел' :
+                features[0].properties.type == 37 ? 'Подстанция "ИПМ"' :
+                features[0].properties.type == 38 ? 'Станция очистки хозяйственно-бытовых стоков' :
+                features[0].properties.type == 39 ? 'Водопроводное сооружение' :
+                features[0].properties.type == 40 ? 'Водоподготовительная  станция' :
+                features[0].properties.type == 41 ? 'Автостоянка' :
+                features[0].properties.type == 42 ? 'Гараж' :
+                features[0].properties.type == 43 ? 'Хозяйственно-бытовые стоки' :
+                features[0].properties.type == 45 ? 'Пруд-накопитель' :
+                features[0].properties.type == 46 ? 'Промышленные стоки' : '')
+        .addTo(this._mapboxgl_map);
+    });
+
+    this._mapboxgl_map.on('mouseleave', 'object-points', e => {
+      this._mapboxgl_map.getCanvas().style.cursor = '';
+      this.popup.remove();
+    });
+
   },
 
   computed: mapGetters([
