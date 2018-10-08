@@ -529,17 +529,27 @@ export default {
     "sectors",
     "lang",
     "api_path",
+    "infrastructures",
+    "objects",
   ]),
 
   watch: {
     basemap: 'change_basemap',
     sidebar_expanded: 'move_map',
     active_level: 'follow_level',
-    zones: 'update_map'
+    zones: 'update_map',
+    objects: 'move_map',
+    // infrastructures: 'move_map',
   },
 
   methods: {
-    ...mapActions(['set_zones', 'set_sectors', 'set_level']),
+    ...mapActions([
+      'set_zones', 
+      'set_sectors', 
+      'set_level',
+      'set_infrastructures',
+      'set_objects',
+    ]),
 
     update_map() {
       this.first_level();
@@ -1006,13 +1016,8 @@ export default {
           });
 
           // ОБЪЕКТЫ И ИНФРАСТРУКТУРА
-          fetch(this.api_path + '/back/api/infrastructures?zone_id=' +
-              this.active_level.properties.id
-          )
-          .then(res => {
-              return res.json();
-          })
-          .then(res => {
+          this.set_infrastructures()
+          .then(() => {
             var source_infrastructures = {
                 "type": 'geojson',
                 'data': {
@@ -1020,7 +1025,7 @@ export default {
                   'features': []
                 }
             };
-            res.forEach(el => {
+            this.infrastructures.forEach(el => {
               if (el.st_asgeojson) {
                 source_infrastructures.data.features.push({
                   'type': 'Feature',
@@ -1063,13 +1068,8 @@ export default {
               console.log(e);
           });
 
-          fetch(this.api_path + '/back/api/objects?zone_id=' +
-              this.active_level.properties.id
-          )
-          .then(res => {
-              return res.json();
-          })
-          .then(res => {
+          this.set_objects()
+          .then(() => {
             var source_points = {
                 "type": 'geojson',
                 'data': {
@@ -1077,7 +1077,8 @@ export default {
                   'features': []
                 }
             };
-            res.forEach(el => {
+            console.log(this.objects)
+            this.objects.forEach(el => {
                 if (el.st_asgeojson) {
                   switch (JSON.parse(el.st_asgeojson).type) {
                     case 'Point':

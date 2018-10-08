@@ -22,7 +22,7 @@ export default {
   },
 
   actions: {
-    set_level({ commit, state }, level) {
+    async set_level({ commit, state }, level) {
       const show_active_element = () => {
         let item_count = 0;
         for (let i = 0; i < this.getters.sectors.length; i++) {
@@ -38,7 +38,9 @@ export default {
       let updated_levels = state.levels.slice();
       switch (level.id) {
         case 2:
-          this.dispatch('set_selected_zone', level.properties);
+          await this.dispatch('set_selected_zone', level.properties);
+          this.dispatch('set_infrastructures_list');
+          this.dispatch('set_objects_list');
           updated_levels = updated_levels.slice(0, 1);
           this.dispatch('set_sectors', level.properties.id);
           break;

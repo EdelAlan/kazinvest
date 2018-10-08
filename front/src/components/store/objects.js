@@ -5,23 +5,25 @@ export default {
     objects: [],
   }),
 
-  mutations: {
-    set_objects(state, objects) {
-      state.objects = objects;
-    },
-  },
-
   getters: {
     objects: state => state.objects,
   },
 
-  actions: {
+  mutations: {
+    set_objects (state, objects) {
+      state.objects = objects;
+    },
+  },
 
-    set_objects ({ commit }, zone_id) {
-      console.log(zone_id)
+  actions: {
+    set_objects ({ commit }) {
+      const path = this.getters.api_path + '/back/api/objects?zone_id=' +
+        this.getters.selected_zone.id +
+        (this.getters.objects_list.filter(it => it.selected).length > 0
+        ? ('&legend_filter=[' + this.getters.objects_list.filter(it => it.selected).map(it => it.type) + ']') : '');
+      console.log('>>>>', path)
       return fetcher({
-        path: this.getters.api_path + '/back/api/objects' 
-          + (zone_id ? '?zone_id=' + zone_id : ''),
+        path,
       }).then(objects => {
         commit('set_objects', objects);
         return;

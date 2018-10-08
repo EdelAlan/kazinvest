@@ -6,20 +6,34 @@ const FIELDS = `
   zone_id,
   status,
   type,
-  dotted_coord,
   created_date,
-  ST_AsGeoJson(objects.geom)
+  ST_AsGeoJson(geom)
 `;
 
 router.get('/', async (req, res) => {
-  const { zone_id } = req.query;
-  const sql = `SELECT ${FIELDS} FROM objects ${zone_id ? 'WHERE zone_id = $1' : ''}`;
-  const params = zone_id ? [zone_id] : [];
-  
-  console.log(sql);
-  console.log(params);
-  
+  const { zone_id, legend_filter } = req.query;
+
+  const sql = `
+    SELECT ${FIELDS} FROM objects 
+    ${zone_id ? 'WHERE zone_id = $1' : ''}
+    ${legend_filter ? ('AND type IN (' +
+      JSON.parse(legend_filter)
+        .map((_, key) => '$' + (++key + 1))
+      + ')') : ''}
+  `;
+
+  const params =
+    zone_id && !legend_filter
+      ? [zone_id] :
+      zone_id && legend_filter
+        ? [zone_id, ...JSON.parse(legend_filter)]
+        : [];
+
+  console.log(sql)
+  console.log(params)
+
   res.send(await db_query(sql, params));
 });
 
 module.exports = router;
+

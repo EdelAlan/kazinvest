@@ -8,8 +8,9 @@ const sectors = require('./src/api/sectors'); // 3 level
 const industries = require('./src/api/industries'); // for filter
 const objects = require('./src/api/objects'); // for legend
 const infrastructures = require('./src/api/infrastructures'); // for legend
-const objects_handbook = require('./src/api/objects_handbook'); // for legend
-const earth_sectors = require('./src/api/earth_sectors'); // for legend
+const objects_list = require('./src/api/objects_list'); // for legend
+const infrastructures_list = require('./src/api/infrastructures_list'); // for legend
+const earth_list = require('./src/api/earth_list'); // for legend
 
 app
   .use((_, res, next) => {
@@ -26,8 +27,9 @@ app
   .use('/back/api/industries', industries)
   .use('/back/api/objects', objects)
   .use('/back/api/infrastructures', infrastructures)
-  .use('/back/api/republics', republics)
-  .use('/back/api/objects_handbook', objects_handbook)
-  .use('/back/api/earth_sectors', earth_sectors)
+
+  .use('/back/api/objects_list', objects_list)
+  .use('/back/api/infrastructures_list', infrastructures_list)
+  .use('/back/api/earth_list', earth_list)
 
   .listen(5000, () => console.log('Listen on 5000'));

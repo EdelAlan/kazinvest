@@ -1,5 +1,6 @@
 <script>
-  import checkbox from './checkbox';
+  import checkbox_line from './checkbox_line';
+  import checkbox_object from './checkbox_object';
   import { mapGetters } from 'vuex';
 
   export default {
@@ -8,7 +9,8 @@
     props: ['model'],
     
     components: {
-      checkbox,
+      checkbox_line,
+      checkbox_object,
     },
 
     data () {
@@ -18,9 +20,9 @@
     },
 
     methods: {
-      toggle: function () {
+      toggle () {
         if (this.is_directory) {
-          this.open = !this.open
+          this.open = !this.open;
         }
       },
     },
@@ -29,9 +31,8 @@
       ...mapGetters([
         'lang',
       ]),
-      is_directory: function () {
-        return this.model.children &&
-          this.model.children.length
+      is_directory () {
+        return this.model.children;
       }
     },
   };
@@ -48,13 +49,17 @@
       }"
       @click="toggle">
       <span v-if="is_directory" 
+        class="treenode-title"
         v-text="model['title_' + lang]"></span>
+        
+      <checkbox_line
+        v-if="!is_directory && model.objects_type == 'line'"
+        :model="model"
+      />
       
-      <checkbox 
-        v-if="!is_directory"
-        :selected="model.selected"
-        :text="model['title_' + lang]"
-        :color="model.color"
+      <checkbox_object
+        v-if="!is_directory && model.objects_type == 'circle'"
+        :model="model"
       />
       
     </div>
@@ -81,9 +86,14 @@
   .treenode-child {
     padding-left: 15px;
   }
+  .treenode-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   .treenode-item {
     font-size: 14px;
-    padding: 8px 25px;
+    padding: 8px 15px 8px 25px;
     position: relative;
     cursor: pointer;
     color: #777;

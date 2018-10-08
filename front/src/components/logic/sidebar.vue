@@ -28,6 +28,8 @@
       'republics',
       'active_level',
       'selected_zone',
+
+      //legend
     ]),
 
     methods: mapActions([
@@ -165,7 +167,8 @@
 
 
     <div class="sidebar-scroll_section">
-      <div class="sidebar-section">
+      <div class="sidebar-section"
+        v-if="active_level.id == 2">
         <legends class="sidebar-legends"></legends>
       </div>
 
