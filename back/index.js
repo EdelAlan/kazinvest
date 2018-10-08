@@ -7,6 +7,7 @@ const zones = require('./src/api/zones'); // 2 level
 const sectors = require('./src/api/sectors'); // 3 level
 const industries = require('./src/api/industries'); // for filter
 const objects = require('./src/api/objects'); // for legend
+const infrastructures = require('./src/api/infrastructures'); // for legend
 
 app
   .use((_, res, next) => {
@@ -21,6 +22,7 @@ app
   .use('/back/api/sectors', sectors)
   .use('/back/api/industries', industries)
   .use('/back/api/objects', objects)
+  .use('/back/api/infrastructures', infrastructures)
   .use('/back/api/republics', republics)
 
   .listen(5000, () => console.log('Listen on 5000'));

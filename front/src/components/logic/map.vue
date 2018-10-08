@@ -31,8 +31,8 @@ export default {
     this._mapboxgl_map = new mapboxgl.Map({
       container: 'map',
       style: positron(),
-      zoom: 4.7,
-      center: [67.04020349, 47.898657],
+      zoom: 4.82,
+      center: [67.5, 48.51],
       interactive: false
     });
 
@@ -42,11 +42,11 @@ export default {
       offset: { bottom: [0, -13] }
     });
 
-    this._mapboxgl_map.fitBounds(
-      turf.bbox(
-        turf.lineString([[86.357452, 39.389153], [47.722955, 56.408161]])
-      )
-    );
+    // this._mapboxgl_map.fitBounds(
+    //   turf.bbox(
+    //     turf.lineString([[86.357452, 39.389153], [47.722955, 56.408161]])
+    //   )
+    // );
 
     await this.set_zones();
 
@@ -495,7 +495,7 @@ export default {
       this.first_level();
     },
 
-    init_map() {
+    async init_map() {
       this._mapboxgl_map.addLayer({
         id: 'astana',
         type: 'circle',
@@ -720,12 +720,12 @@ export default {
             this._mapboxgl_map.fitBounds(
               turf.bbox(
                 turf.lineString([
-                  [34.309517, 52.990292],
-                  [86.383498, 41.286791]
+                  [35.347314, 56.822160],
+                  [87.318661, 38.872502]
                 ])
               ),
               {
-                padding: 70
+                padding: 50
               }
             );
           } else {
@@ -956,35 +956,149 @@ export default {
           });
 
           // ОБЪЕКТЫ И ИНФРАСТРУКТУРА
+          fetch(this.api_path + '/back/api/infrastructures?zone_id=' +
+              this.active_level.properties.id
+          )
+          .then(res => {
+              return res.json();
+          })
+          .then(res => {
+            var source_infrastructures = {
+                "type": 'geojson',
+                'data': {
+                  'type': 'FeatureCollection',
+                  'features': []
+                }
+            };
+            res.forEach(el => {
+              if (el.st_asgeojson) {
+                source_infrastructures.data.features.push({
+                  'type': 'Feature',
+                  'geometry': JSON.parse(el.st_asgeojson),
+                  'properties': {
+                    'type': el.type
+                  }
+                });
+              }
+            });
+
+            this._mapboxgl_map.addSource('infrastructures', source_infrastructures);
+            this._mapboxgl_map.addLayer({
+                "id": "infrastructures",
+                "type": "line",
+                "source": "infrastructures",
+                "layout": {
+                  "line-join": "round",
+                  "line-cap": "round"
+                },
+                "paint": {
+                  "line-color": [
+                    'match',
+                    ['get', 'type'],
+                    1, '#15DCAD',
+                    2, '#E676E6',
+                    3, '#9544D4',
+                    5, '#0277BD',
+                    7, '#F59E1C',
+                    8, '#B91313',
+                    11, '#006A2A',
+                    12, '#3D15DC',
+                    '#ccc'
+                  ],
+                  "line-width": 3
+                }
+            });
+          })
+          .catch(e =>{
+              console.log(e);
+          });
+
           fetch(this.api_path + '/back/api/objects?zone_id=' +
               this.active_level.properties.id
           )
-            .then(res => {
+          .then(res => {
               return res.json();
-            })
-            .then(res => {
-              console.log(res);
-
-              var source = {
-                type: 'geojson',
-                data: {
-                  type: 'FeatureCollection',
-                  features: []
+          })
+          .then(res => {
+            var source_points = {
+                "type": 'geojson',
+                'data': {
+                  'type': 'FeatureCollection',
+                  'features': []
                 }
-              };
-
-              res.forEach(el => {
+            };
+            res.forEach(el => {
                 if (el.st_asgeojson) {
                   switch (JSON.parse(el.st_asgeojson).type) {
                     case 'Point':
-                      source.data.features.push(JSON.parse(el.st_asgeojson));
+                      source_points.data.features.push({
+                        'type': 'Feature',
+                        'geometry': JSON.parse(el.st_asgeojson),
+                        'properties': {
+                          'type': el.type,
+                        }
+                      });
                       break;
                     case 'LineString':
+                      turf.explode(JSON.parse(el.st_asgeojson)).features.forEach( obj => {
+                        source_points.data.features.push({
+                          'type': 'Feature',
+                          'geometry': obj.geometry,
+                          'properties': {
+                            'type': el.type,
+                          }
+                        });
+                      });
                       break;
                   }
                 }
-              });
             });
+            this._mapboxgl_map.addSource('object-points', source_points);
+            this._mapboxgl_map.addLayer({
+                "id": "object-points",
+                "type": "circle",
+                "source": "object-points",
+                "paint": {
+                  'circle-color': '#fff',
+                  'circle-radius': 6,
+                  'circle-stroke-width': 5,
+                  'circle-stroke-color': [
+                    'match',
+                    ['get', 'type'],
+                    13, '#fbb03b',
+                    16, '#223b53',
+                    17, '#e55e5e',
+                    19, '#3bb2d0',
+                    20, '#15DCAD',
+                    23, '#878DA1',
+                    24, '#E676E6',
+                    25, '#9544D4',
+                    26, '#0277BD',
+                    28, '#00BCC6',
+                    31, '#F59E1C',
+                    32, '#24A3FF',
+                    33, '#A48C10',
+                    34, '#006A2A',
+                    35, '#004F71',
+                    36, '#FFE15A',
+                    37, '#2E7B93',
+                    38, '#5C4C00',
+                    39, '#AA6220',
+                    40, '#918FF5',
+                    41, '#41BE22',
+                    42, '#A0D2F0',
+                    43, '#DDEEB8',
+                    44, '#2F619D',
+                    45, '#0A7177',
+                    46, '#3D15DC',
+                    '#ccc'
+                  ]
+                }
+            });
+          })
+          .catch(e =>{
+              console.log(e);
+          });
 
           this.hoveredStateId = '';
           break;
@@ -1079,11 +1193,7 @@ export default {
       this._mapboxgl_map.dragPan.disable();
       this._mapboxgl_map.setStyle(positron());
       this.init_map();
-      this._mapboxgl_map.flyTo({
-        center: [60.131017, 49.205201],
-        zoom: 4,
-        speed: 5
-      });
+      this.move_map();
     }
   }
 };
