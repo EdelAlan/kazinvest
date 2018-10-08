@@ -23,7 +23,7 @@
   >
     <div class="checkbox-window"
       :style="{
-        'background': is_selected ? color : '#aaa',
+        'background': '#aaa',
       }"
       :class="{ 
         'checkbox-window--selected': is_selected 
