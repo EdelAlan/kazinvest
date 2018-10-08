@@ -2,19 +2,17 @@ const router = require('express-async-router').AsyncRouter();
 const db_query = require('../util/db_query');
 
 const COLORS = [
-  'rgba(69, 139, 116, 1)',
-  'rgba(205, 197, 191, 1)',
-  'rgba(113, 113, 198, 1)',
-  'rgba(237, 145, 33, 1)',
-  'rgba(205, 179, 139, 1)',
-  'rgba(238, 201, 0, 1)',
-  'rgba(139, 137, 112, 1)',
+  '#8BC34A',
+  '#448AFF',
+  '#FF5722',
+  '#00796B',
+  '#FF4081',
+  '#E040FB',
+  '#5D4037',
   'rgba(255, 193, 37, 1)',
-  'rgba(238, 238, 0, 1)',
   'rgba(238, 238, 0, 1)',
   'rgba(118, 238, 0, 1)',
   'rgba(78, 238, 148, 1)',
-  'rgba(252, 230, 201, 1)',
 ];
 
 const FIELDS = `
