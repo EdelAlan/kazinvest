@@ -168,7 +168,7 @@
 
     <div class="sidebar-scroll_section">
       <div class="sidebar-section"
-        v-if="active_level.id == 2">
+        v-if="active_level.id == 2 || active_level.id == 3">
         <legends class="sidebar-legends"></legends>
       </div>
 
