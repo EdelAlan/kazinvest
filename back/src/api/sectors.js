@@ -34,24 +34,6 @@ const FIELDS = `
   sectors.indicators_ru,
   sectors.indicators_kz,
   sectors.indicators_en,
-  sectors.meta_title_ru,
-  sectors.meta_title_kz,
-  sectors.meta_title_en,
-  sectors.meta_description_ru,
-  sectors.meta_description_kz,
-  sectors.meta_description_en,
-  sectors.meta_keywords_ru,
-  sectors.meta_keywords_kz,
-  sectors.meta_keywords_en,
-  sectors.og_title_ru,
-  sectors.og_title_kz,
-  sectors.og_title_en,
-  sectors.og_description_ru,
-  sectors.og_description_kz,
-  sectors.og_description_en,
-  sectors.og_keywords_ru,
-  sectors.og_keywords_kz,
-  sectors.og_keywords_en,
   sectors.count_participant_current_project,
   sectors.count_participant_underway_project,
   sectors.count_participant_problem_project,
@@ -66,12 +48,28 @@ const FIELDS = `
 `;
 
 router.get('/', async (req, res) => {
-  const { zone_id } = req.query;
-  console.log(`SELECT ${FIELDS} FROM sectors ${zone_id ? 'WHERE zone_id = $1' : ''}`)
-  res.send(await db_query(
-    `SELECT ${FIELDS} FROM sectors ${zone_id ? 'WHERE zone_id = $1' : ''} ORDER BY LENGTH(title_project_ru) DESC`,
-    zone_id ? [zone_id] : [],
-  ));
+  const { zone_id, legend_filter } = req.query;
+  
+  const sql = `
+    SELECT ${FIELDS} FROM sectors 
+    ${zone_id ? 'WHERE zone_id = $1' : ''}
+    ${legend_filter ? ('AND project_type NOT IN (' +
+      JSON.parse(legend_filter)
+        .map((_, key) => '$' + (++key + 1))
+      + ')') : ''}
+    ORDER BY LENGTH(title_project_ru) DESC
+  `;
+
+  const params =
+    zone_id && !legend_filter
+      ? [zone_id] :
+      zone_id && legend_filter
+        ? [zone_id, ...JSON.parse(legend_filter)]
+        : [];
+
+  console.log(sql);
+  console.log(params);
+  res.send(await db_query(sql, params));
 });
 
 router.get('/:id', async (req, res) => {

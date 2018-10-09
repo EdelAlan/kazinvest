@@ -42,11 +42,11 @@ router.get('/', async (req, res) => {
       WHERE zone.id = sectors.zone_id
     ) FROM zone
     ${zone_filter ?
-      'WHERE zone_type IN (' +
+      'WHERE zone_type NOT IN (' +
       JSON.parse(zone_filter)
       .map((_, key) => '$' + ++key) + ')' : ''}
     ${industries_filter ?
-      ((zone_filter ? 'AND ' : 'WHERE ') + 'industries_id IN (' + 
+      ((zone_filter ? 'AND ' : 'WHERE ') + 'industries_id NOT IN (' + 
       JSON.parse(industries_filter)
       .map((_, key) => '$' + (++key + (zone_filter ?  + JSON.parse(zone_filter).length : 0) )) + ')') : ''}
     ${search_string ?

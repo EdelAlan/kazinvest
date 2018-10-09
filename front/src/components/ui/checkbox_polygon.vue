@@ -6,43 +6,46 @@
 
     methods: {
       ...mapActions([
-        'set_new_objects',
-        'set_objects',
+        'set_new_earth',
+        'set_sectors',
       ]),
 
       async change () {
-        await this.set_new_objects(this.objects_list
-          .map(it => this.model.type == it.type 
+        console.log(this.model.project_type)
+        await this.set_new_earth(this.earth_list
+          .map(it => this.model.project_type == it.project_type 
           ? ({ ...it, selected: it.selected == true ? false : true}) 
           : it)
         );
-        this.set_objects();
-      },
+        this.set_sectors();
+      }
     },
 
     computed: mapGetters([
       'lang',
-      'objects_list',
+      'earth_list',
     ]),
   };
 </script>
 
 
 <template>
-  <div class="checkbox_object"
+  <div class="checkbox_polygon"
     @click="change"
   >
-    <div class="checkbox_object-window"
+  
+    <div class="checkbox_polygon-window"
       :class="{ 
-        'checkbox_object-window--selected': model.selected 
+        'checkbox_polygon-window--selected': model.selected 
       }">
     </div>
-    <span class="checkbox_object-title"
+    <span class="checkbox_polygon-title"
       :title="model['title_' + lang]"
       v-text="model['title_' + lang]"></span>
-    <span class="checkbox_object-badge"
+    <span class="checkbox_polygon-badge"
       :style="{
-        'border': '4px solid ' + model.color
+        'border': '2px dashed ' + model.color,
+        'background': model.color + '50'
       }"
     ></span>
   </div>
@@ -50,17 +53,17 @@
 
 
 <style>
-  .checkbox_object {
+  .checkbox_polygon {
     position: relative;
   }
-  .checkbox_object-title {
+  .checkbox_polygon-title {
     white-space: nowrap;
     overflow: hidden;
     display: block;
     text-overflow: ellipsis;
     padding-right: 40px;
   }
-  .checkbox_object-window {
+  .checkbox_polygon-window {
     width: 17px;
     background: #03A0E3;
     height: 17px;
@@ -70,22 +73,18 @@
     left: -25px;
     top: 1px;
   }
-
-  .checkbox_object-badge {
+  .checkbox_polygon-badge {
     box-sizing: border-box;
     display: block;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     right: 0;
-    width: 15px;
-    height: 15px;
-    border-radius: 100%;
+    width: 30px;
+    height: 10px;
     background: #fff;
   }
-
-
-  .checkbox_object-window--selected::after {
+  .checkbox_polygon-window--selected::after {
     content: '';
     position: absolute;
     top: 4px;

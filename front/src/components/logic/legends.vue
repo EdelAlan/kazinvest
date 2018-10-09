@@ -11,6 +11,7 @@
       'lang',
       'infrastructures_list',
       'objects_list',
+      'earth_list',
     ]),
     
     methods: mapActions([
@@ -22,13 +23,13 @@
 
 <template>
   <div class="legends">
-
     <treenode
       :model="{
         title_ru: 'Земельные участки',
-        children: [],
+        children: earth_list,
       }"
     ></treenode>
+    
     <div class="legends-treenode_separator"></div>
 
     <treenode

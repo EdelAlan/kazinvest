@@ -42,7 +42,7 @@
       v-text="model['title_' + lang]"></span>
     <span class="checkbox_line-badge"
       :style="{
-        'border': '4px solid ' + model.color
+        'border': '2px solid ' + model.color
       }"
     ></span>
   </div>
@@ -62,7 +62,7 @@
   }
   .checkbox_line-window {
     width: 17px;
-    background: #aaa;
+    background: #03A0E3;
     height: 17px;
     float: left;
     position: absolute;
