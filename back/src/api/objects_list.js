@@ -15,18 +15,10 @@ const COLORS = [
   'rgba(78, 238, 148, 1)',
 ];
 
-const FIELDS = `
-  id,
-  title_ru,
-  title_kz,
-  title_en
-`;
-
 router.get('/', async (req, res) => {
   const { zone_id } = req.query;
   const sql = `
-    SELECT type, title_ru  
-    FROM (
+    SELECT type, title_ru FROM (
       SELECT objects.type, objects_handbook.title_ru
       FROM objects
       JOIN objects_handbook ON objects.type = objects_handbook.id

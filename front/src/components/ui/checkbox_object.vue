@@ -62,7 +62,7 @@
   }
   .checkbox_object-window {
     width: 17px;
-    background: #aaa;
+    background: #03A0E3;
     height: 17px;
     float: left;
     position: absolute;

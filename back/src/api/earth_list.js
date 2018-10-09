@@ -1,10 +1,45 @@
 const router = require('express-async-router').AsyncRouter();
 const db_query = require('../util/db_query');
 
+
+
 router.get('/', async (req, res) => {
-  res.send(await db_query(
-    `SELECT project_type FROM sectors GROUP BY project_type`,
-  ));
+  const { zone_id } = req.query;
+  const sql = `
+    SELECT project_type 
+    FROM  sectors 
+    WHERE zone_id = $1
+    GROUP BY project_type 
+    ORDER BY project_type
+  `;
+
+  const result = await db_query(sql, [zone_id]);
+  
+  res.send(result.map(it => {
+    if (it.project_type == 1) {
+      it.title_ru = 'Действующий проект'
+      it.title_en = 'Действующий проект'
+      it.title_kz = 'Действующий проект'
+      it.color = '#10C6FF';
+    }
+    if (it.project_type == 2) {
+      it.title_ru = 'Проект на стадии реализации'
+      it.title_en = 'Проект на стадии реализации'
+      it.title_kz = 'Проект на стадии реализации'
+      it.color = '#FFE03B';
+    }
+    if (it.project_type == 3) {
+      it.title_ru = 'Свободный участок'
+      it.title_en = 'Свободный участок'
+      it.title_kz = 'Свободный участок'
+      it.color = '#03E334';
+    }
+    return {
+      ...it,
+      selected: true,
+    };
+  }).slice(0, 3));
+
 });
 
 module.exports = router;
