@@ -39,10 +39,10 @@ export default {
       switch (level.id) {
         case 2:
           await this.dispatch('set_selected_zone', level.properties);
-          this.dispatch('set_infrastructures_list');
-          this.dispatch('set_objects_list');
-          this.dispatch('set_earth_list');
-          updated_levels = updated_levels.slice(0, 1);
+          await this.dispatch('set_infrastructures_list');
+          await this.dispatch('set_objects_list');
+          await this.dispatch('set_earth_list');
+          updated_levels = await updated_levels.slice(0, 1);
           this.dispatch('set_sectors', level.properties.id);
           break;
         case 3:
