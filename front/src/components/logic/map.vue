@@ -51,10 +51,10 @@ export default {
         switch (this.active_level.id) {
           case 1:
             var zones = this._mapboxgl_map.queryRenderedFeatures(e.point, {
-              layers: ['sez', 'iz']
+              layers: ['zones']
             });
             var clusters = this._mapboxgl_map.queryRenderedFeatures(e.point, {
-              layers: ['sez-clusters', 'iz-clusters']
+              layers: ['zone-clusters']
             });
             var provinces = this._mapboxgl_map.queryRenderedFeatures(e.point, {
               layers: [
@@ -89,7 +89,7 @@ export default {
             }
 
             if (provinces[0] && !zones[0] && !clusters[0]) {
-              this.set_maptip({ 
+              this.set_tip({ 
                 pageX: e.originalEvent.pageX,
                 pageY: e.originalEvent.pageY,
                 layer: provinces[0].layer.id
@@ -286,7 +286,7 @@ export default {
 
     // mouseleave ПЕРВЫЙ УРОВЕНЬ ДЛЯ ОБЛАСТЕЙ (ЗАРЕФАКТОРИТЬ)
 
-    this._mapboxgl_map.on('mouseleave', 'akm-obl', _ => {
+    this._mapboxgl_map.on('mouseleave', 'akm-obl', _ => { 
       if (this.active_level.id == 1) {
         this._mapboxgl_map.setPaintProperty('akm-obl', 'fill-color', '#accad7');
         this.hoveredStateId = null;
@@ -387,15 +387,15 @@ export default {
       }
     });
 
-    // ИВЭНТЫ ПЕРВОГО УРОВНЯ (СЭЗ) – КЛАСТЕРЫ, МАРКЕРЫ
+    // ИВЭНТЫ ПЕРВОГО УРОВНЯ – КЛАСТЕРЫ, МАРКЕРЫ
 
-    this._mapboxgl_map.on('click', 'sez-clusters', e => {
+    this._mapboxgl_map.on('click', 'zone-clusters', e => {
       var features = this._mapboxgl_map.queryRenderedFeatures(e.point, {
-        layers: ['sez-clusters']
+        layers: ['zone-clusters']
       });
 
       this._mapboxgl_map
-        .getSource('sez')
+        .getSource('zones')
         .getClusterExpansionZoom(
           features[0].properties.cluster_id,
           (err, zoom) => {
@@ -409,31 +409,18 @@ export default {
         );
     });
 
-    this._mapboxgl_map.on('mouseenter', 'sez-clusters', e => {
-      var features = this._mapboxgl_map.queryRenderedFeatures(e.point, {
-        layers: ['sez-clusters']
-      });
-
-      this._mapboxgl_map
-        .getSource('sez')
-        .getClusterChildren(
-          features[0].properties.cluster_id,
-          (err, cl_features) => {
-            if (err) return;
-          }
-        );
-
+    this._mapboxgl_map.on('mouseenter', 'zone-clusters', e => {
       this._mapboxgl_map.getCanvas().style.cursor = 'pointer';
     });
 
-    this._mapboxgl_map.on('mouseleave', 'sez-clusters', e => {
+    this._mapboxgl_map.on('mouseleave', 'zone-clusters', e => {
       this._mapboxgl_map.getCanvas().style.cursor = '';
       this.popup.remove();
     });
 
-    this._mapboxgl_map.on('mouseenter', 'sez', e => {
+    this._mapboxgl_map.on('mouseenter', 'zones', e => {
       var features = this._mapboxgl_map.queryRenderedFeatures(e.point, {
-        layers: ['sez']
+        layers: ['zones']
       });
 
       this._mapboxgl_map.getCanvas().style.cursor = 'pointer';
@@ -443,68 +430,11 @@ export default {
         .addTo(this._mapboxgl_map);
     });
 
-    this._mapboxgl_map.on('mouseleave', 'sez', e => {
+    this._mapboxgl_map.on('mouseleave', 'zones', e => {
       this._mapboxgl_map.getCanvas().style.cursor = '';
       this.popup.remove();
     });
 
-    // ИВЭНТЫ ПЕРВОГО УРОВНЯ (ИЗ) – КЛАСТЕРЫ, МАРКЕРЫ
-
-    this._mapboxgl_map.on('click', 'iz-clusters', e => {
-      var features = this._mapboxgl_map.queryRenderedFeatures(e.point, {
-        layers: ['iz-clusters']
-      });
-
-      this._mapboxgl_map
-        .getSource('iz')
-        .getClusterExpansionZoom(
-          features[0].properties.cluster_id,
-          (err, zoom) => {
-            if (err) return;
-
-            this._mapboxgl_map.easeTo({
-              center: features[0].geometry.coordinates,
-              zoom: zoom
-            });
-          }
-        );
-    });
-
-    this._mapboxgl_map.on('mouseenter', 'iz-clusters', e => {
-      var features = this._mapboxgl_map.queryRenderedFeatures(e.point, {
-        layers: ['iz-clusters']
-      });
-
-      this._mapboxgl_map
-        .getSource('iz')
-        .getClusterChildren(
-          features[0].properties.cluster_id,
-          (err, cl_features) => {
-            if (err) return;
-          }
-        );
-
-      this._mapboxgl_map.getCanvas().style.cursor = 'pointer';
-    });
-
-    this._mapboxgl_map.on('mouseleave', 'iz-clusters', e => {
-      this._mapboxgl_map.getCanvas().style.cursor = '';
-      this.popup.remove();
-    });
-
-    this._mapboxgl_map.on('mouseenter', 'iz', e => {
-      var features = this._mapboxgl_map.queryRenderedFeatures(e.point);
-      this._mapboxgl_map.getCanvas().style.cursor = 'pointer';
-      this.popup
-        .setLngLat(features[0].geometry.coordinates.slice())
-        .setHTML(features[0].properties['title_' + this.lang])
-        .addTo(this._mapboxgl_map);
-    });
-
-    this._mapboxgl_map.on('mouseleave', 'iz', e => {
-      this._mapboxgl_map.getCanvas().style.cursor = '';
-      this.popup.remove();
-    });
   },
 
   computed: mapGetters([
@@ -536,7 +466,7 @@ export default {
       'set_level',
       'set_infrastructures',
       'set_objects',
-      'set_maptip'
+      'set_tip'
     ]),
 
     update_map() {
@@ -620,130 +550,73 @@ export default {
         }
       });
 
-      var sez_source = {
+      var source = {
         type: 'geojson',
         data: {
           type: 'FeatureCollection',
           features: []
         },
         cluster: true,
-        clusterRadius: 20,
-        clusterMaxZoom: 9
-      };
-      var iz_source = {
-        type: 'geojson',
-        data: {
-          type: 'FeatureCollection',
-          features: []
-        },
-        cluster: true,
-        clusterRadius: 10,
+        clusterRadius: 15,
         clusterMaxZoom: 9
       };
 
       this.zones.forEach(el => {
         if (el.st_asgeojson) {
           if (JSON.parse(el.st_asgeojson).type == 'Polygon') {
-            if (el.zone_type == 1) {
-              sez_source.data.features.push({
-                type: 'Feature',
-                geometry: {
-                  type: 'Point',
-                  properties: {},
-                  coordinates: turf.centerOfMass(JSON.parse(el.st_asgeojson))
-                    .geometry.coordinates
-                },
-                properties: {
-                  title_ru: el.title_ru,
-                  title_en: el.title_en,
-                  title_kz: el.title_kz,
-                  zone_id: el.id
-                }
-              });
-            }
-            if (el.zone_type == 2) {
-              iz_source.data.features.push({
-                type: 'Feature',
-                geometry: {
-                  type: 'Point',
-                  properties: {},
-                  coordinates: turf.centerOfMass(JSON.parse(el.st_asgeojson))
-                    .geometry.coordinates
-                },
-                properties: {
-                  title_ru: el.title_ru,
-                  title_en: el.title_en,
-                  title_kz: el.title_kz,
-                  zone_id: el.id
-                }
-              });
-            }
+            source.data.features.push({
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                properties: {},
+                coordinates: turf.centerOfMass(JSON.parse(el.st_asgeojson))
+                  .geometry.coordinates
+              },
+              properties: {
+                title_ru: el.title_ru,
+                title_en: el.title_en,
+                title_kz: el.title_kz,
+                zone_id: el.id,
+                type: el.zone_type
+              }
+            });
           }
         }
       });
 
-      this._mapboxgl_map.addSource('sez', sez_source);
-      this._mapboxgl_map.addSource('iz', iz_source);
+      this._mapboxgl_map.addSource('zones', source);
 
       this._mapboxgl_map.addLayer({
-        id: 'iz',
+        id: 'zones',
         type: 'symbol',
-        source: 'iz',
+        source: 'zones',
         filter: ['!', ['has', 'point_count']],
         layout: {
-          'icon-image': 'marker2',
+          'icon-image': 
+            ['case', 
+              ["==", ['get', 'type'], 1 ], 'marker',
+              ["==", ['get', 'type'], 2 ], 'marker2',
+              ''
+            ],
           'icon-allow-overlap': true
         }
       });
       this._mapboxgl_map.addLayer({
-        id: 'sez',
-        type: 'symbol',
-        source: 'sez',
-        filter: ['!', ['has', 'point_count']],
-        layout: {
-          'icon-image': 'marker',
-          'icon-allow-overlap': true
-        }
-      });
-      this._mapboxgl_map.addLayer({
-        id: 'sez-clusters',
+        id: 'zone-clusters',
         type: 'circle',
-        source: 'sez',
+        source: 'zones',
         filter: ['has', 'point_count'],
         paint: {
-          'circle-color': '#2ECC71',
+          'circle-color': '#03A0E3',
           'circle-radius': 11,
           'circle-stroke-color': '#fff',
           'circle-stroke-width': 3
         }
       });
       this._mapboxgl_map.addLayer({
-        id: 'sez-cluster-count',
+        id: 'clusters-count',
         type: 'symbol',
-        source: 'sez',
-        filter: ['has', 'point_count'],
-        layout: {
-          'text-field': '{point_count_abbreviated}',
-          'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-          'text-size': 12
-        }
-      });
-      this._mapboxgl_map.addLayer({
-        id: 'iz-clusters',
-        type: 'circle',
-        source: 'iz',
-        filter: ['has', 'point_count'],
-        paint: {
-          'circle-color': '#F39C12',
-          'circle-radius': 11,
-          'circle-stroke-color': '#fff',
-          'circle-stroke-width': 3
-        }
-      });
-      this._mapboxgl_map.addLayer({
-        id: 'iz-cluster-count',
-        type: 'symbol',
-        source: 'iz',
+        source: 'zones',
         filter: ['has', 'point_count'],
         layout: {
           'text-field': '{point_count_abbreviated}',
