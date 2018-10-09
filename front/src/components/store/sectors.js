@@ -32,8 +32,8 @@ export default {
       // });
         const path = this.getters.api_path + '/back/api/sectors'
           + (this.getters.selected_zone ? '?zone_id=' + this.getters.selected_zone.id : '') +
-          (this.getters.earth_list.filter(it => it.selected).length > 0
-            ? ('&legend_filter=[' + this.getters.earth_list.filter(it => it.selected).map(it => it.project_type) + ']') : '');
+          (this.getters.earth_list.filter(it => !it.selected).length > 0
+            ? ('&legend_filter=[' + this.getters.earth_list.filter(it => !it.selected).map(it => it.project_type) + ']') : '');
         console.log('>>>>', path)
         return fetcher({
           path,

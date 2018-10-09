@@ -53,7 +53,7 @@ router.get('/', async (req, res) => {
   const sql = `
     SELECT ${FIELDS} FROM sectors 
     ${zone_id ? 'WHERE zone_id = $1' : ''}
-    ${legend_filter ? ('AND project_type IN (' +
+    ${legend_filter ? ('AND project_type NOT IN (' +
       JSON.parse(legend_filter)
         .map((_, key) => '$' + (++key + 1))
       + ')') : ''}

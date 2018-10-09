@@ -36,8 +36,8 @@ export default {
       this.dispatch('reset_sector');
       const { lang } = this.state.lang;
       const { search_string } = this.state.filters;
-      const industries_filter = this.state.filters.industries_filter.filter(it => it.checked).map(it => it.id);
-      const zone_filter = this.state.filters.zone_filter.filter(it => it.checked).map(it => it.id);
+      const industries_filter = this.state.filters.industries_filter.filter(it => !it.checked).map(it => it.id);
+      const zone_filter = this.state.filters.zone_filter.filter(it => !it.checked).map(it => it.id);
       const path = this.getters.api_path + '/back/api/zones?' +
         (zone_filter.length != 0 ? `zone_filter=[${zone_filter}]` : '') +
         (industries_filter.length != 0 ? `&industries_filter=[${industries_filter}]` : '') +

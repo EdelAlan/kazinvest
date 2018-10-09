@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
   const sql = `
     SELECT ${FIELDS} FROM infrastructures 
     ${zone_id ? 'WHERE zone_id = $1' : ''}
-    ${legend_filter ? ('AND type IN (' + 
+    ${legend_filter ? ('AND type NOT IN (' + 
       JSON.parse(legend_filter)
       .map((_, key) => '$' + (++key + 1))
     + ')') : ''}
