@@ -45,9 +45,9 @@
         class="sidebar_filter-input sidebar_filter-input--search"
         @input="set_search_string" 
         :placeholder="{
-          'title_ru': 'СЭЗ, ИЗ', 
-          'title_kz': 'СЭЗ, ИЗ', 
-          'title_en': 'SEZ, IZ'
+          'title_ru': 'Поиск...', 
+          'title_kz': 'Search', 
+          'title_en': 'Поиск...'
         }['title_' + lang]"
       />
       
@@ -56,9 +56,9 @@
         <filter_checker
           :list="zone_filter"
           :title="{
-            'title_ru': 'СЭЗ, ИЗ', 
-            'title_kz': 'СЭЗ, ИЗ', 
-            'title_en': 'SEZ, IZ'
+            'title_ru': zone_filter.filter(it => it.checked).map(it => it.title_ru).join(','), 
+            'title_kz': zone_filter.filter(it => it.checked).map(it => it.title_kz).join(','), 
+            'title_en': zone_filter.filter(it => it.checked).map(it => it.title_en).join(','),
           }"
           v-on:select="set_zone_filter"
           :styles="{

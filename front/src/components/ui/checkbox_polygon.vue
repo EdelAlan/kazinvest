@@ -29,20 +29,22 @@
 
 
 <template>
-  <div class="checkbox_line"
+  <div class="checkbox_polygon"
     @click="change"
   >
-    <div class="checkbox_line-window"
+  <!--
+    <div class="checkbox_polygon-window"
       :class="{ 
-        'checkbox_line-window--selected': model.selected 
+        'checkbox_polygon-window--selected': model.selected 
       }">
-    </div>
-    <span class="checkbox_line-title"
+    </div>-->
+    <span class="checkbox_polygon-title"
       :title="model['title_' + lang]"
       v-text="model['title_' + lang]"></span>
-    <span class="checkbox_line-badge"
+    <span class="checkbox_polygon-badge"
       :style="{
-        'border': '2px solid ' + model.color
+        'border': '2px dashed ' + model.color,
+        'background': model.color + '50'
       }"
     ></span>
   </div>
@@ -50,17 +52,17 @@
 
 
 <style>
-  .checkbox_line {
+  .checkbox_polygon {
     position: relative;
   }
-  .checkbox_line-title {
+  .checkbox_polygon-title {
     white-space: nowrap;
     overflow: hidden;
     display: block;
     text-overflow: ellipsis;
     padding-right: 40px;
   }
-  .checkbox_line-window {
+  .checkbox_polygon-window {
     width: 17px;
     background: #aaa;
     height: 17px;
@@ -70,7 +72,7 @@
     left: -25px;
     top: 1px;
   }
-  .checkbox_line-badge {
+  .checkbox_polygon-badge {
     box-sizing: border-box;
     display: block;
     position: absolute;
@@ -78,9 +80,10 @@
     transform: translateY(-50%);
     right: 0;
     width: 30px;
+    height: 10px;
     background: #fff;
   }
-  .checkbox_line-window--selected::after {
+  .checkbox_polygon-window--selected::after {
     content: '';
     position: absolute;
     top: 4px;

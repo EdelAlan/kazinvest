@@ -1,6 +1,7 @@
 <script>
   import checkbox_line from './checkbox_line';
   import checkbox_object from './checkbox_object';
+  import checkbox_polygon from './checkbox_polygon';
   import { mapGetters } from 'vuex';
 
   export default {
@@ -11,6 +12,7 @@
     components: {
       checkbox_line,
       checkbox_object,
+      checkbox_polygon,
     },
 
     data () {
@@ -51,6 +53,11 @@
       <span v-if="is_directory" 
         class="treenode-title"
         v-text="model['title_' + lang]"></span>
+        
+      <checkbox_polygon
+        v-if="!is_directory && model.objects_type == 'polygon'"
+        :model="model"
+      />
         
       <checkbox_line
         v-if="!is_directory && model.objects_type == 'line'"
