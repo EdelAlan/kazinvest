@@ -310,6 +310,10 @@
                 properties: sector
               })">
               <span class="sidebar-item_title"
+                :style="{ 
+                  'color': sector.color,
+                  'filter': 'brightness(80%)',
+                }"
                 :title="sector['title_' + lang]"
                 v-text="sector['title_' + lang]"></span>
               <span class="sidebar-item_desc"
@@ -412,7 +416,8 @@
     background: #50C7F9;
   }
   .sidebar-item--active .sidebar-item_title {
-    color: #fff;
+    color: #fff !important;
+    filter: none !important;
   }
   .sidebar-item--active .sidebar-item_desc {
     color: #fff;
