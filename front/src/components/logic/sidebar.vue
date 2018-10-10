@@ -220,12 +220,17 @@
                 title_ru: 'Маркетинговые материалы ' + republic['title_' + lang] + ' РК',
                 title_en: 'Маркетинговые материалы ' + republic['title_' + lang] + ' РК',
                 title_kz: 'Маркетинговые материалы ' + republic['title_' + lang] + ' РК',
-              }, {
-                title_ru: 'Контакты ' + republic['title_' + lang] + ' РК',
-                title_en: 'Контакты ' + republic['title_' + lang] + ' РК',
-                title_kz: 'Контакты ' + republic['title_' + lang] + ' РК',
               }]"
-            ></reference>
+            />
+
+            <reference
+            :menu="[{
+                title_ru: 'Контакты АО «НК «KAZAKH INVEST»',
+                title_en: 'Контакты АО «НК «KAZAKH INVEST»',
+                title_kz: 'Контакты АО «НК «KAZAKH INVEST»',
+              }]"
+            />
+
             <!-- Справка о СЭЗах или ИЗах -->
             <reference
               v-if="active_level.id == 2"

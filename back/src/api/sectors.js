@@ -57,7 +57,7 @@ router.get('/', async (req, res) => {
       JSON.parse(legend_filter)
         .map((_, key) => '$' + (++key + 1))
       + ')') : ''}
-    ORDER BY LENGTH(title_project_ru) DESC
+    ORDER BY title_ru ASC
   `;
 
   const params =
