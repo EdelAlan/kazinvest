@@ -12,6 +12,7 @@
     data () {
       return {
         list_is_shown: false,
+        selected_all: true,
       }
     },
 
@@ -23,19 +24,27 @@
         })));
       },
 
-      select_all () {
+      // select_all () {
+      //   this.$emit('select', this.list.map(it => ({
+      //     ...it,
+      //     checked: true,
+      //   })));
+      // },
+
+      toggle_selection () {
+        this.selected_all = !this.selected_all
         this.$emit('select', this.list.map(it => ({
           ...it,
-          checked: true,
+          checked: this.selected_all,
         })));
       },
 
-      unselect_all () {
-        this.$emit('select', this.list.map(it => ({
-          ...it,
-          checked: false,
-        })));
-      },
+      // unselect_all () {
+      //   this.$emit('select', this.list.map(it => ({
+      //     ...it,
+      //     checked: false,
+      //   })));
+      // },
 
       toggle () {
         this.list_is_shown = !this.list_is_shown;
@@ -67,11 +76,10 @@
       v-if="list_is_shown">
       
       <button class="filters-btn"
-        v-on:click="select_all"
-      >Выбрать все</button>
-      <button class="filters-btn"
-        v-on:click="unselect_all"
-      >Убрать все</button>
+        v-on:click="toggle_selection"
+        v-text="selected_all ? 'Убрать все' : 'Выбрать все'"
+      ></button>
+  
 
       <div class="filter-item"
         v-for="item, key in list">

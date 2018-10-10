@@ -31,7 +31,6 @@ export default {
         path: this.getters.api_path + '/back/api/infrastructures_list?zone_id=' + this.getters.selected_zone.id,
       }).then(spec_zone_infrastructures => {
         commit('set_infrastructures_list', spec_zone_infrastructures);
-        this.dispatch('set_infrastructures');
         return;
       });
     },
@@ -39,28 +38,24 @@ export default {
       return fetcher({
         path: this.getters.api_path + '/back/api/objects_list?zone_id=' + this.getters.selected_zone.id,
       }).then(spec_zone_objects => {
-        commit('set_objects_list', spec_zone_objects);
-        this.dispatch('set_objects');
-        return;
+        return commit('set_objects_list', spec_zone_objects);
       });
     },
     set_earth_list ({ commit }) {
       return fetcher({
         path: this.getters.api_path + '/back/api/earth_list?zone_id=' + this.getters.selected_zone.id,
       }).then(spec_zone_earths => {
-        commit('set_earth_list', spec_zone_earths);
-        // this.dispatch('set_objects');
-        return;
+        return commit('set_earth_list', spec_zone_earths);
       });
     },
 
-    set_new_infrastructures ({ commit }, updated_list) {
+    set_new_infrastructures_list ({ commit }, updated_list) {
       commit('set_infrastructures_list', updated_list);
     }, 
-    set_new_objects ({ commit }, updated_list) {
+    set_new_objects_list ({ commit }, updated_list) {
       commit('set_objects_list', updated_list);
     }, 
-    set_new_earth ({ commit }, updated_list) {
+    set_new_earth_list ({ commit }, updated_list) {
       commit('set_earth_list', updated_list);
     }, 
   },

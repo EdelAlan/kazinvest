@@ -24,10 +24,10 @@
 					password: this.user_model.password,
 				}).then(msg => {
 					if (msg == 'user enter') {
-						return this.$router.push('/map')
+						return this.$router.push('/map');
 					}
-					return console.log(msg)
-				})
+					return console.log(msg);
+				});
 			},
 
 			toggle_password_visibility () {
