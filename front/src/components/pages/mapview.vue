@@ -94,13 +94,11 @@
   .mapview-breadcrumb {
     position: absolute;
     z-index: 20;
-    left: 327px;
+    left: 150px;
     transition: all .5s ease-in-out;
-    top: -60px;
+    top: 0;
   }
   .mapview-breadcrumb--expanded {
     left: 327px;
-    top: 0;
   }
-
 </style>
