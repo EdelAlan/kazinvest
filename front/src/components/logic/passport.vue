@@ -54,6 +54,11 @@
 		max-height: calc(100vh - 130px);
 		overflow: scroll;
 	}
+	
+	.passport-body h3,
+	.passport-body p {
+		margin: 5px 0;
+	}
 	/*
 	.passport-body_item {
 		margin-bottom: 25px;
