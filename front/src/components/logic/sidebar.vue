@@ -29,6 +29,8 @@
       'active_level',
       'selected_zone',
 
+      'passport_content',
+
       //legend
     ]),
 
@@ -88,18 +90,22 @@
                 title_ru: 'Преимущества ' + republic['title_' + lang] + ' РК',
                 title_en: 'Преимущества ' + republic['title_' + lang] + ' РК',
                 title_kz: 'Преимущества ' + republic['title_' + lang] + ' РК',
+                passport_content: key == 0 ? 'sez_advantages' : 'iz_advantages',
               }, {
                 title_ru: 'Описание ' + republic['title_' + lang] + ' РК',
                 title_en: 'Описание ' + republic['title_' + lang] + ' РК',
                 title_kz: 'Описание ' + republic['title_' + lang] + ' РК',
+                passport_content: key == 0 ? 'sez_common' : 'iz_common',
               }, {
                 title_ru: 'Общие положения ' + republic['title_' + lang] + ' РК',
                 title_en: 'Общие положения ' + republic['title_' + lang] + ' РК',
                 title_kz: 'Общие положения ' + republic['title_' + lang] + ' РК',
+                passport_content: key == 0 ? 'sez_polozh' : 'iz_polozh',
               }, {
                 title_ru: 'Маркетинговые материалы ' + republic['title_' + lang] + ' РК',
                 title_en: 'Маркетинговые материалы ' + republic['title_' + lang] + ' РК',
                 title_kz: 'Маркетинговые материалы ' + republic['title_' + lang] + ' РК',
+                passport_content: key == 0 ? 'sez_market' : 'iz_market',
               }]"
             />
 
@@ -108,6 +114,7 @@
                 title_ru: 'Контакты АО «НК «KAZAKH INVEST»',
                 title_en: 'Контакты АО «НК «KAZAKH INVEST»',
                 title_kz: 'Контакты АО «НК «KAZAKH INVEST»',
+                passport_content: 'sez_iz_contacts',
               }]"
             />
 
@@ -240,66 +247,47 @@
       <!--
         passport должен быть  единтсвенном экземпляре
         его видимость зависит от состояния passport и sidebar_expanded
-        
       -->
 
-      <!-- Общая инфа о секторе -->
-      <div slot="body" v-if="selected_sector">
-        <div class="passport-body_item">
-          <span class="passport-body_item_key">Название компании участника</span>
-          <span class="passport-body_item_val" 
-            v-text="selected_sector['title_' + lang]"></span>
+      <!-- Общая инфа о СЭЗ или ИЗ 1 уровнь -->
+      <template
+        v-if="active_level.id == 1"
+      >
+        <div slot="body" v-if="passport_content == 'sez_advantages'">
+          <div v-html="republics[0]['advantages_' + lang]"></div>
         </div>
-        <div class="passport-body_item">
-          <span class="passport-body_item_key">Описание</span>
-          <span class="passport-body_item_val" 
-            v-text="selected_sector['title_project_' + lang]"></span>
+        <div slot="body" v-if="passport_content == 'sez_common'">
+          <div v-html="republics[0]['common_' + lang]"></div>
         </div>
-        <div class="passport-body_item">
-          <span class="passport-body_item_key">Стоимость проекта</span>
-          <span class="passport-body_item_val" 
-            v-text="selected_sector.project_price"></span>
+        <div slot="body" v-if="passport_content == 'sez_polozh'">
+          <div v-html="'Раздел в разработке'"></div>
         </div>
-        <div class="passport-body_item">
-          <span class="passport-body_item_key">Площадь занимаемого участка</span>
-          <span class="passport-body_item_val" 
-            v-text="selected_sector.area"></span>
+        <div slot="body" v-if="passport_content == 'sez_market'">
+          <div v-html="'Раздел в разработке'"></div>
         </div>
-        <div class="passport-body_item">
-          <span class="passport-body_item_key">Текущий статус</span>
-          <span class="passport-body_item_val" 
-            v-text="selected_sector['current_status_' + lang]"></span>
+
+        <div slot="body" v-if="passport_content == 'iz_advantages'">
+          <div v-html="republics[1]['advantages_' + lang]"></div>
         </div>
-        <div class="passport-body_item">
-          <span class="passport-body_item_key">Год</span>
-          <span class="passport-body_item_val" 
-            v-text="selected_sector.project_date"></span>
+        <div slot="body" v-if="passport_content == 'iz_common'">
+          <div v-html="republics[1]['common_' + lang]"></div>
         </div>
-        <div class="passport-body_item">
-          <span class="passport-body_item_key">Продукция</span>
-          <span class="passport-body_item_val" 
-            v-text="selected_sector['products_' + lang]"></span>
+        <div slot="body" v-if="passport_content == 'iz_polozh'">
+          <div v-html="'Раздел в разработке'"></div>
         </div>
-        <div class="passport-body_item">
-          <span class="passport-body_item_key">Сроки реализации</span>
-          <span class="passport-body_item_val" 
-            v-text="selected_sector['time_realization_' + lang]"></span>
+        <div slot="body" v-if="passport_content == 'iz_market'">
+          <div v-html="'Раздел в разработке'"></div>
         </div>
-        <div class="passport-body_item">
-          <span class="passport-body_item_key">План работы</span>
-          <span class="passport-body_item_val" 
-            v-text="selected_sector.plan_jobs"></span>
+
+    
+        <div slot="body" v-if="passport_content == 'sez_iz_contacts'">
+          <div v-html="republics[0]['contacts_' + lang]"></div>
         </div>
-        <div class="passport-body_item">
-          <span class="passport-body_item_key">Мощность</span>
-          <span class="passport-body_item_val" 
-            v-text="selected_sector.power"></span>
-        </div>
-      </div>
+      </template>
 
 
       <!-- Общая инфа о секторе -->
-      <div slot="body" v-if="selected_sector">
+      <div slot="body" v-if="selected_sector && active_level.id == 3">
         <div class="passport-body_item">
           <span class="passport-body_item_key">Название компании участника</span>
           <span class="passport-body_item_val" 
