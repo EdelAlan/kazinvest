@@ -767,6 +767,11 @@ export default {
     },
 
     first_level() {
+      this._mapboxgl_map.jumpTo({
+          zoom: 4,
+          center: [67.5, 48.51],
+        }
+      );
       this._mapboxgl_map.setMaxBounds(null);
       this._mapboxgl_map.scrollZoom.disable();
       this._mapboxgl_map.dragPan.disable();

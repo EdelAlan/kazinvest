@@ -86,8 +86,10 @@
                     title_en: zone.title_en,
                     title_kz: zone.title_kz,
                     properties: zone,
-                  })">
-                {{ zone['title_' + lang] }}
+                  })"
+                  :title="zone['title_' + lang]"
+                  v-text="zone['title_' + lang]"
+                  >
             </a>
         </li>
     </ul>
@@ -101,8 +103,10 @@
                     title_en: zone.title_en,
                     title_kz: zone.title_kz,
                     properties: zone,
-                  })">
-                {{ zone['title_' + lang] }}
+                  })"
+                  :title="zone['title_' + lang]"
+                  v-text="zone['title_' + lang]"
+                  >
             </a>
         </li>
     </ul>
@@ -139,6 +143,7 @@
   .maptip-dropdown {
     position: absolute;
     top: 100%;
+    max-width: 400px;
     padding: 0 0;
     font-size: 14px;
     background-color: #fff;
@@ -154,6 +159,9 @@
     color: #03A0E3;
     white-space: nowrap;
     border-radius: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .maptip-dropdown > li > a:hover {
