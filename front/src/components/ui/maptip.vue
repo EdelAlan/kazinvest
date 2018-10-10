@@ -66,12 +66,12 @@
 
   <div class="maptip" :style="{ left: model.pageX-80 + 'px', top: model.pageY-45 + 'px' }">
     <button class="maptip-zone"
-      v-bind:class="{ active: show_sez }"
+      v-bind:class="{ 'maptip-zone--active': show_sez }"
       v-on:click="dropdown_menu(1)" v-text="'СЭЗ'"
     >
     </button>
     <button class="maptip-zone"
-      v-bind:class="{ active: show_iz }"
+      v-bind:class="{ 'maptip-zone--active': show_iz }"
       v-on:click="dropdown_menu(2)" v-text="'ИЗ'"
     >
     </button>
@@ -168,7 +168,7 @@
     cursor: pointer;
   }
 
-  .active {
+  .maptip-zone--active {
     background: #EE933F;
     color: #FFFFFF;
   }
