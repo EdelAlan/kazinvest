@@ -53,12 +53,13 @@
       
 
       <div class="sidebar_filter-filter">
+
         <filter_checker
           :list="zone_filter"
           :title="{
-            'title_ru': zone_filter.filter(it => it.checked).map(it => it.title_ru).join(','), 
-            'title_kz': zone_filter.filter(it => it.checked).map(it => it.title_kz).join(','), 
-            'title_en': zone_filter.filter(it => it.checked).map(it => it.title_en).join(','),
+            'title_ru': zone_filter.filter(it => it.checked).length ? zone_filter.filter(it => it.checked).map(it => it.title_ru).join(',') : 'Не выбрано', 
+            'title_kz': zone_filter.filter(it => it.checked).length ? zone_filter.filter(it => it.checked).map(it => it.title_kz).join(',') : 'Не выбрано', 
+            'title_en': zone_filter.filter(it => it.checked).length ? zone_filter.filter(it => it.checked).map(it => it.title_en).join(',') : 'Не выбрано',
           }"
           v-on:select="set_zone_filter"
           :styles="{
