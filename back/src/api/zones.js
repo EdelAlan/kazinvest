@@ -13,7 +13,7 @@ const zone_type_str = [{
 }];
 
 const FIELDS = `
-  id,
+  zone.id,
   status,
   zone_type,
   zone_time,
@@ -30,6 +30,7 @@ const FIELDS = `
   budget_allocated,
   user_id,
   map,
+  provinces.provincename,
   ST_AsGeoJson(zone.geom)
 `;
 
@@ -41,6 +42,8 @@ router.get('/', async (req, res) => {
       FROM sectors
       WHERE zone.id = sectors.zone_id
     ) FROM zone
+    left join provinces
+    ON zone.province_id = provinces.id
     ${zone_filter ?
       'WHERE zone_type NOT IN (' +
       JSON.parse(zone_filter)
@@ -78,6 +81,8 @@ router.get('/:id', async (req, res) => {
   res.send(await db_query(`
       SELECT ${FIELDS} 
       FROM zone 
+      left join provinces
+      ON zone.province_id = provinces.id
       WHERE id = $1
     `,
     [req.params.id],

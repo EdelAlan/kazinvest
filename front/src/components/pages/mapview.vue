@@ -1,16 +1,26 @@
 <script>
+  import Vue from 'vue';
   import sidebar from '../logic/sidebar';
   import breadcrumb from '../logic/breadcrumb';
   import basemaps from '../logic/basemaps'
   import xmap from '../logic/map';
+  import maptip from '../ui/maptip';
   import { mapGetters, mapActions } from 'vuex';  
 
   export default {
+
+    data () {
+      return {
+        is_maptip: false,
+      };
+    },
+
     components: {
       sidebar,
       xmap,
       breadcrumb,
       basemaps,
+      maptip,
     },
 
     computed: mapGetters([
@@ -18,12 +28,31 @@
       'levels',
       'basemap',
       'active_level',
+      'tip',
     ]),
 
-    methods: mapActions([
-      'toggle_sidebar',
-      'set_basemap',
-    ]),
+    watch: {
+      tip: 'show_maptip',
+      active_level: 'hide_maptip'
+    },
+
+    methods: {
+      ...mapActions([
+        'toggle_sidebar',
+        'set_basemap',
+        'show_tip',
+      ]),
+
+      show_maptip() {
+        this.is_maptip = !this.is_maptip;
+      }, 
+
+      hide_maptip() {
+        if (this.active_level != 1) {
+          this.show_tip();
+        }
+      }, 
+    },
   }
 </script>
 
@@ -44,6 +73,13 @@
       :active_crumb="active_level"
     />
     <xmap />
+    <maptip v-if="tip"
+      :model="{
+        pageX: this.tip.pageX,
+        pageY: this.tip.pageY,
+        selected: this.tip.layer
+      }"
+    ></maptip>
     <basemaps v-on:click="set_basemap"
       v-if="active_level.id != 1"
     />
