@@ -59,7 +59,7 @@
 	.passport-body p {
 		margin: 5px 0;
 	}
-	/*
+	
 	.passport-body_item {
 		margin-bottom: 25px;
 	}
@@ -74,7 +74,6 @@
 	.passport-body_item_val {
 		font-size: 14px;
 	}
-*/
 	.passport-close {
 		cursor: pointer;
 		outline: none;

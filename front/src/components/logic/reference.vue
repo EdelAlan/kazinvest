@@ -13,10 +13,17 @@
       async select (item) {
         await this.set_passport_content(item.passport_content);
         await this.set_passport_title(item['title_' + this.lang]);
-        this.change_ui_visibility({
-          ui_component: 'passport',
-          ui_component_state: true,
-        });
+        if (item.passport_content == '9999') {
+          this.change_ui_visibility({
+            ui_component: 'passport',
+            ui_component_state: false,
+          });
+        } else {
+          this.change_ui_visibility({
+            ui_component: 'passport',
+            ui_component_state: true,
+          });
+        }
         console.log(item.passport_content);
       }
     },
@@ -31,7 +38,7 @@
 <template>
 	<div class="reference">
     <div class="reference-item"
-      :class="{ 'reference-item--active': passport_content == item.passport_content }"
+      :class="{ 'reference-item--active': passport_content ? false : passport_content == item.passport_content }"
       v-for="item in menu"
       @click="select(item)"
       v-text="item['title_' + lang]"></div>

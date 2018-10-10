@@ -36,6 +36,7 @@
 
     methods: mapActions([
       'set_level',
+      'set_passport_title',
     ]),
 
   }
@@ -110,6 +111,7 @@
             />
 
             <reference
+              v-if="active_level.id == 1"
               :menu="[{
                 title_ru: 'Контакты АО «НК «KAZAKH INVEST»',
                 title_en: 'Контакты АО «НК «KAZAKH INVEST»',
@@ -124,22 +126,27 @@
                 title_ru: 'О ' + selected_zone['title_' + lang],
                 title_en: 'О ' + selected_zone['title_' + lang],
                 title_kz: 'О ' + selected_zone['title_' + lang],
+                passport_content: '9999',
               }, {
                 title_ru: 'Описание ' + selected_zone['title_' + lang] + ' РК',
                 title_en: 'Описание ' + selected_zone['title_' + lang] + ' РК',
                 title_kz: 'Описание ' + selected_zone['title_' + lang] + ' РК',
+                passport_content: '9999',
               }, {
                 title_ru: 'Галерея зоны ' + selected_zone['title_' + lang] + ' РК',
                 title_en: 'Галерея зоны ' + selected_zone['title_' + lang] + ' РК',
                 title_kz: 'Галерея зоны ' + selected_zone['title_' + lang] + ' РК',
+                passport_content: '9999',
               }, {
                 title_ru: 'Маркетинговые материалы',
                 title_en: 'Маркетинговые материалы',
                 title_kz: 'Маркетинговые материалы',
+                passport_content: '9999',
               }, {
                 title_ru: 'Контакты',
                 title_en: 'Контакты',
                 title_kz: 'Контакты',
+                passport_content: '9999',
               }]"
             />
 
@@ -150,18 +157,22 @@
                 title_ru: 'Общая информация',
                 title_en: 'Общая информация',
                 title_kz: 'Общая информация',
+                passport_content: '9999',
               }, {
                 title_ru: 'Галерея сектора',
                 title_en: 'Галерея сектора',
                 title_kz: 'Галерея сектора',
+                passport_content: '9999',
               }, {
                 title_ru: 'Маркетинговые материалы',
                 title_en: 'Маркетинговые материалы',
                 title_kz: 'Маркетинговые материалы',
+                passport_content: '9999',
               }, {
                 title_ru: 'Контакты',
                 title_en: 'Контакты',
                 title_kz: 'Контакты',
+                passport_content: '9999',
               }]"
             />
           </div>
@@ -172,13 +183,15 @@
             <div class="sidebar-item"
               v-for="zone in zones"
               v-if="!sectors"
-              @click="zone.object_count > 0 ? set_level({
-                id: 2,
-                title_ru: zone.title_ru,
-                title_en: zone.title_en,
-                title_kz: zone.title_kz,
-                properties: zone
-              }) : null">
+              @click="
+                zone.object_count > 0 ? set_level({
+                  id: 2,
+                  title_ru: zone.title_ru,
+                  title_en: zone.title_en,
+                  title_kz: zone.title_kz,
+                  properties: zone
+                }) : null
+              ">
               <span class="sidebar-item_title" 
                 :title="zone['title_' + lang]"
                 v-text="zone['title_' + lang]"></span>
@@ -190,7 +203,10 @@
               v-if="sectors"
               v-for="sector in sectors"
               :class="{ 'sidebar-item--active': selected_sector && selected_sector.id == sector.id  }"
-              @click="set_level({
+              @click="
+                set_passport_title(sector.title_ru),
+              
+              set_level({
                 id: 3,
                 title_ru: sector.title_ru,
                 title_en: sector.title_en,
