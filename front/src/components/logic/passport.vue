@@ -1,11 +1,14 @@
 <script>
-  import { mapActions } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
 
 	export default {
-		props: ['title'],
-
 		methods: mapActions([
 			'change_ui_visibility'
+		]),
+
+		computed: mapGetters([
+			'lang',
+			'passport_title',
 		]),
 	}
 </script>
@@ -13,14 +16,17 @@
 <template>
 	<div class="passport">
 		<div class="passport-header">
-			<span class="passport-header_title"></span>
+			<span class="passport-header_title"
+				v-text="passport_title"></span>
 			<span class="passport-close"
 				@click="change_ui_visibility({
 					ui_component: 'passport',
 					ui_component_state: false,
 			})"></span>
 		</div>
-		<slot name="body"></slot>
+		<div class="passport-body">
+			<slot name="body"></slot>
+		</div>
 	</div>
 </template>
 
@@ -39,15 +45,21 @@
 	}
 	.passport-header_title {
 		margin: 0;
+		display: block;
 		padding: 15px 10px;
 		font-size: 16px;
 	}
-	/*
 	.passport-body {
 		padding: 10px;
 		max-height: calc(100vh - 130px);
 		overflow: scroll;
 	}
+	
+	.passport-body h3,
+	.passport-body p {
+		margin: 5px 0;
+	}
+	
 	.passport-body_item {
 		margin-bottom: 25px;
 	}
@@ -62,7 +74,6 @@
 	.passport-body_item_val {
 		font-size: 14px;
 	}
-*/
 	.passport-close {
 		cursor: pointer;
 		outline: none;

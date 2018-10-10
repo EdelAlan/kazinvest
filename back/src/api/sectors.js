@@ -48,7 +48,7 @@ const FIELDS = `
 `;
 
 router.get('/', async (req, res) => {
-  const { zone_id, legend_filter } = req.query;
+  const { zone_id, legend_filter, lang } = req.query;
   
   const sql = `
     SELECT ${FIELDS} FROM sectors 
@@ -57,7 +57,7 @@ router.get('/', async (req, res) => {
       JSON.parse(legend_filter)
         .map((_, key) => '$' + (++key + 1))
       + ')') : ''}
-    ORDER BY project_type ASC
+    ORDER BY project_type ASC, title_${lang}
   `;
 
   const params =

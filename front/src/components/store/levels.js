@@ -35,6 +35,10 @@ export default {
           item_count++;
         }
       }
+      this.dispatch('change_ui_visibility', {
+        ui_component: 'passport',
+        ui_component_state: false,
+      });
       let updated_levels = state.levels.slice();
       switch (level.id) {
         case 2:

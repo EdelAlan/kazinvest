@@ -24,27 +24,13 @@
         })));
       },
 
-      // select_all () {
-      //   this.$emit('select', this.list.map(it => ({
-      //     ...it,
-      //     checked: true,
-      //   })));
-      // },
-
       toggle_selection () {
-        this.selected_all = !this.selected_all
+        this.selected_all = !this.selected_all;
         this.$emit('select', this.list.map(it => ({
           ...it,
           checked: this.selected_all,
         })));
       },
-
-      // unselect_all () {
-      //   this.$emit('select', this.list.map(it => ({
-      //     ...it,
-      //     checked: false,
-      //   })));
-      // },
 
       toggle () {
         this.list_is_shown = !this.list_is_shown;
