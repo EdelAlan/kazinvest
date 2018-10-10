@@ -106,7 +106,7 @@ export default {
             break;
           case 2:
             var sectors = this._mapboxgl_map.queryRenderedFeatures(e.point, {
-              layers: ['current-sector', 'processing-sector', 'free-sector']
+              layers: ['current-sector', 'processing-sector', 'free-sector', 'current-sector-multi', 'processing-sector-multi', 'free-sector-multi']
             });
             if (sectors[0]) {
               this.sectors.forEach(el => {
@@ -213,7 +213,7 @@ export default {
             break;
           case 2:
             var sectors = this._mapboxgl_map.queryRenderedFeatures(e.point, {
-              layers: ['current-sector', 'processing-sector', 'free-sector']
+              layers: ['current-sector', 'processing-sector', 'free-sector', 'current-sector-multi', 'processing-sector-multi', 'free-sector-multi']
             });
             if (sectors[0]) {
               this._mapboxgl_map.getCanvas().style.cursor = 'pointer';
@@ -651,7 +651,7 @@ export default {
 
       this.zones.forEach(el => {
         if (el.st_asgeojson) {
-          if (JSON.parse(el.st_asgeojson).type == 'Polygon') {
+          if (JSON.parse(el.st_asgeojson).type == 'Polygon' || JSON.parse(el.st_asgeojson).type == 'MultiPolygon') {
             source.data.features.push({
               type: 'Feature',
               geometry: {
@@ -844,6 +844,28 @@ export default {
                 type: this.active_level.properties.project_type
             }
           });
+          this._mapboxgl_map.getSource('sector-multi').setData({
+            type: "Feature",
+            geometry: JSON.parse(this.active_level.properties.st_asgeojson),
+            properties: {
+              title_ru: this.active_level.properties.title_ru,
+              title_en: this.active_level.properties.title_en,
+              title_kz: this.active_level.properties.title_kz,
+              type: this.active_level.properties.project_type
+            }
+          });
+          this._mapboxgl_map.getSource('sector-line-multi').setData({
+            type: 'Feature',
+            geometry: turf.polygonToLine(
+              JSON.parse(this.active_level.properties.st_asgeojson)
+            ).features[0].geometry,
+            properties: {
+                title_ru: this.active_level.properties.title_ru,
+                title_kz: this.active_level.properties.title_kz,
+                title_en: this.active_level.properties.title_en,
+                type: this.active_level.properties.project_type
+            }
+          });
           break;
       }
     },
@@ -872,6 +894,21 @@ export default {
           }
         };
         var sector_line = {
+              type: 'geojson',
+              data: {
+                type: 'FeatureCollection',
+                features: []
+              }
+        };
+
+        var sector_multi = {
+              type: 'geojson',
+              data: {
+                type: 'FeatureCollection',
+                features: []
+              }
+        };
+        var sector_line_multi = {
               type: 'geojson',
               data: {
                 type: 'FeatureCollection',
@@ -931,10 +968,37 @@ export default {
                     }
                   });
                 }
+                if (JSON.parse(el.st_asgeojson).type == 'MultiPolygon') {
+                  sector_multi.data.features.push({
+                    type: 'Feature',
+                    geometry: JSON.parse(el.st_asgeojson),
+                    properties: {
+                      title_ru: el.title_ru,
+                      title_kz: el.title_kz,
+                      title_en: el.title_en,
+                      type: el.project_type,
+                      id: el.id
+                    }
+                  });
+                  sector_line_multi.data.features.push({
+                    type: 'Feature',
+                    geometry: turf.polygonToLine(JSON.parse(el.st_asgeojson)).features[0].geometry,
+                    properties: {
+                      title_ru: el.title_ru,
+                      title_kz: el.title_kz,
+                      title_en: el.title_en,                    
+                      type: el.project_type,
+                      id: el.id
+                    }
+                  });
+                }
               }
         });
 
         if (!this._mapboxgl_map.getSource('sector')) {
+          this._mapboxgl_map.addSource('sector-multi', sector_multi);
+          this._mapboxgl_map.addSource('sector-line-multi', sector_line_multi); 
+
           this._mapboxgl_map.addSource('sector', sector);
           this._mapboxgl_map.addSource('sector-line', sector_line); 
 
@@ -1015,7 +1079,88 @@ export default {
                 },
                 filter: ['==', 'type', 3]
           });
+
+
+          this._mapboxgl_map.addLayer({
+              id: 'current-sector-multi',
+              type: 'fill',
+              source: 'sector-multi',
+              paint: {
+                'fill-color': 'rgba(19, 150, 214, 0.5)',
+                'fill-opacity': 0.8
+              },
+              filter: ['==', 'type', 1]
+          });
+          this._mapboxgl_map.addLayer({
+                id: 'current-sector-stroke-multi',
+                type: 'line',
+                source: 'sector-line-multi',
+                layout: {
+                  'line-join': 'round',
+                  'line-cap': 'round'
+                },
+                paint: {
+                  'line-color': '#3585AD',
+                  'line-width': 3,
+                  'line-dasharray': [2.5, 2.5]
+                },
+                filter: ['==', 'type', 1]
+          });
+
+          this._mapboxgl_map.addLayer({
+                id: 'processing-sector-multi',
+                type: 'fill',
+                source: 'sector-multi',
+                paint: {
+                  'fill-color': 'rgba(229, 208, 12, 0.4)',
+                  'fill-opacity': 0.8
+                },
+                filter: ['==', 'type', 2]
+          });
+          this._mapboxgl_map.addLayer({
+                id: 'processing-sector-stroke-multi',
+                type: 'line',
+                source: 'sector-line-multi',
+                layout: {
+                  'line-join': 'round',
+                  'line-cap': 'round'
+                },
+                paint: {
+                  'line-color': '#A48C10',
+                  'line-width': 3,
+                  'line-dasharray': [2.5, 2.5]
+                },
+                filter: ['==', 'type', 2]
+          });
+
+          this._mapboxgl_map.addLayer({
+                id: 'free-sector-multi',
+                type: 'fill',
+                source: 'sector-multi',
+                paint: {
+                  'fill-color': 'rgba(6, 178, 23, 0.4)',
+                  'fill-opacity': 0.8
+                },
+                filter: ['==', 'type', 3]
+          });
+          this._mapboxgl_map.addLayer({
+                id: 'free-sector-stroke-multi',
+                type: 'line',
+                source: 'sector-line-multi',
+                layout: {
+                  'line-join': 'round',
+                  'line-cap': 'round'
+                },
+                paint: {
+                  'line-color': '#149541',
+                  'line-width': 3,
+                  'line-dasharray': [2.5, 2.5]
+                },
+                filter: ['==', 'type', 3]
+          });
         }
+
+        this._mapboxgl_map.getSource('sector-multi').setData(sector_multi.data);
 
         this._mapboxgl_map.getSource('sector').setData(sector.data);
         this._mapboxgl_map.getSource('sector-line').setData(sector_line.data);
