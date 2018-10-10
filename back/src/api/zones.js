@@ -54,7 +54,7 @@ router.get('/', async (req, res) => {
       .map((_, key) => '$' + (++key + (zone_filter ?  + JSON.parse(zone_filter).length : 0) )) + ')') : ''}
     ${search_string ?
       ((zone_filter || industries_filter ? 'AND ' : 'WHERE ') + 'title_' + lang + ' LIKE ' + '\'%' + search_string + '%\' OR description_' + lang + ' LIKE \'%' + search_string + '%\'') : ''} 
-      ORDER BY object_count DESC
+      ORDER BY zone_type ASC, object_count DESC
   `;
   const params = 
     (zone_filter && industries_filter) ? 
