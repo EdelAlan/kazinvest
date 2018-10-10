@@ -89,11 +89,15 @@ export default {
             }
 
             if (provinces[0] && !zones[0] && !clusters[0]) {
-              this.set_tip({ 
-                pageX: e.originalEvent.pageX,
-                pageY: e.originalEvent.pageY,
-                layer: provinces[0].layer.id
-              });
+              if (this.tip) {
+                this.show_tip();  
+              } else {
+                this.show_tip({ 
+                  pageX: e.originalEvent.pageX,
+                  pageY: e.originalEvent.pageY,
+                  layer: provinces[0].layer.id
+                });
+              }
             }
             break;
           case 2:
@@ -390,9 +394,7 @@ export default {
     // ИВЭНТЫ ПЕРВОГО УРОВНЯ – КЛАСТЕРЫ, МАРКЕРЫ
 
     this._mapboxgl_map.on('click', 'zone-clusters', e => {
-      var features = this._mapboxgl_map.queryRenderedFeatures(e.point, {
-        layers: ['zone-clusters']
-      });
+      var features = this._mapboxgl_map.queryRenderedFeatures(e.point);
 
       this._mapboxgl_map
         .getSource('zones')
@@ -447,6 +449,7 @@ export default {
     "api_path",
     "infrastructures",
     "objects",
+    "tip",
   ]),
 
   watch: {
@@ -466,7 +469,7 @@ export default {
       'set_level',
       'set_infrastructures',
       'set_objects',
-      'set_tip'
+      'show_tip'
     ]),
 
     update_map() {
@@ -557,8 +560,7 @@ export default {
           features: []
         },
         cluster: true,
-        clusterRadius: 15,
-        clusterMaxZoom: 9
+        clusterRadius: 20,
       };
 
       this.zones.forEach(el => {
