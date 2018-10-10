@@ -46,6 +46,10 @@ export default {
 
     // ИВЭНТЫ НА КАРТЕ
 
+    this._mapboxgl_map.on('move', e => {
+      this.show_tip();
+    });
+
     this._mapboxgl_map.on('click', e => {
       if (this._mapboxgl_map.isStyleLoaded()) {
         switch (this.active_level.id) {

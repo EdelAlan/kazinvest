@@ -63,6 +63,9 @@ export default {
 
     set_level_b ({commit, state}, level) {
       if (level.id == this.getters.active_level.id) {
+        if (level.id == 1) {
+          commit('set_level', [LEVEL_1]);
+        }
         return;
       }
       switch (level.id) {

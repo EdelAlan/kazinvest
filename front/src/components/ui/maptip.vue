@@ -65,13 +65,20 @@
 <template>
 
   <div class="maptip" :style="{ left: model.pageX-80 + 'px', top: model.pageY-45 + 'px' }">
-    <div class="maptip-zone" v-on:click="dropdown_menu(1)">
-        <span>СЭЗ</span>
-    </div>
-    <div class="maptip-zone" v-on:click="dropdown_menu(2)">
-        <span>ИЗ</span>
-    </div>
-    <ul class="maptip-dropdown" v-if="show_sez">
+    <button class="maptip-zone"
+      v-bind:class="{ active: show_sez }"
+      v-on:click="dropdown_menu(1)" v-text="'СЭЗ'"
+    >
+    </button>
+    <button class="maptip-zone"
+      v-bind:class="{ active: show_iz }"
+      v-on:click="dropdown_menu(2)" v-text="'ИЗ'"
+    >
+    </button>
+    <ul class="maptip-dropdown"
+      :style="{ right: '85px' }"
+      v-if="show_sez"
+      >
         <li v-for="zone in sez_zones">
             <a v-on:click="set_level({
                     id: 2,
@@ -84,7 +91,9 @@
             </a>
         </li>
     </ul>
-    <ul class="maptip-dropdown" v-if="show_iz">
+    <ul class="maptip-dropdown" 
+      :style="{ left: '85px' }"
+      v-if="show_iz">
         <li v-for="zone in iz_zones">
             <a v-on:click="set_level({
                     id: 2,
@@ -117,58 +126,51 @@
     box-sizing: border-box;
     box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.25);
     border-radius: 2px;
+    outline: none;
+    font-size: 18px;
   }
 
   .maptip-zone:hover {
     background: #EE933F;
-    border: 0.5px solid #EE933F;
     cursor: pointer;
+    color: #FFFFFF;
   }
 
   .maptip-dropdown {
     position: absolute;
     top: 100%;
-    left: 0;
-    z-index: 1000;
-    float: left;
-    min-width: 160px;
-    padding: 5px 0;
-    margin: 2px 0 0;
-    list-style: none;
+    padding: 0 0;
     font-size: 14px;
-    text-align: left;
     background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-    background-clip: padding-box;
+    border-radius: 2px;
+    margin: 0;
   }
 
   .maptip-dropdown > li > a {
-    padding: 10px 30px;
+    padding: 5px 15px;
     display: block;
-    clear: both;
-    font-weight: normal;
-    line-height: 1.6;
-    color: #333333;
+    font-size: 18px;
+    line-height: 40px;
+    color: #03A0E3;
     white-space: nowrap;
-    text-decoration: none;
+    border-radius: 2px;
   }
 
   .maptip-dropdown > li > a:hover {
-    background: #efefef;
-    color: #409FCB;
+    background: #E2F6FF;
   }
 
   .maptip-dropdown > li {
     overflow: hidden;
-    width: 100%;
-    position: relative;
-    margin: 0;
   }
 
   .maptip-dropdown:hover {
     cursor: pointer;
+  }
+
+  .active {
+    background: #EE933F;
+    color: #FFFFFF;
   }
 
 </style>
