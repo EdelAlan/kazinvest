@@ -21,7 +21,7 @@ export default {
         this.getters.selected_zone.id +
         (this.getters.infrastructures_list.filter(it => !it.selected).length > 0
         ? ('&legend_filter=[' + this.getters.infrastructures_list.filter(it => !it.selected).map(it => it.type) + ']') : '');
-      console.log('>>>>', path)
+      console.log(path);
       return fetcher({
         path,
       }).then(infrastructures => {

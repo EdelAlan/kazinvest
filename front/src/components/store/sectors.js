@@ -23,30 +23,20 @@ export default {
   actions: {
 
     set_sectors ({ commit }, zone_id) {
-      // return fetcher({
-      //   path: this.getters.api_path + '/back/api/sectors' 
-      //     + (zone_id ? '?zone_id=' + zone_id : ''),
-      // }).then(sectors => {
-      //   commit('set_sectors', sectors);
-      //   return;
-      // });
-        const path = this.getters.api_path + '/back/api/sectors'
-          + (this.getters.selected_zone ? '?zone_id=' + this.getters.selected_zone.id : '') +
-          (this.getters.earth_list.filter(it => !it.selected).length > 0
-            ? ('&legend_filter=[' + this.getters.earth_list.filter(it => !it.selected).map(it => it.project_type) + ']') : '');
-        console.log('>>>>', path)
-        return fetcher({
-          path,
-        }).then(sectors => {
-        commit('set_sectors', sectors.map(sector => ({
+      const path = this.getters.api_path + '/back/api/sectors' +
+        (this.getters.selected_zone ? '?zone_id=' + this.getters.selected_zone.id : '') +
+        (this.getters.earth_list.filter(it => !it.selected).length > 0
+        ? ('&legend_filter=[' + this.getters.earth_list.filter(it => !it.selected).map(it => it.project_type) + ']') : '');
+      console.log(path);
+      return fetcher({
+        path,
+      }).then(sectors => {
+        return commit('set_sectors', sectors.map(sector => ({
           ...sector,
           color: this.getters.earth_list
             .filter(earth_item => sector.project_type == earth_item.project_type)
             .map(it => it.color)[0],
         })));
-          console.log(this.getters.sectors)
-
-        return;
       });
     },
 

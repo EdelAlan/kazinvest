@@ -6,12 +6,12 @@
 
     methods: {
       ...mapActions([
-        'set_new_infrastructures',
+        'set_new_infrastructures_list',
         'set_infrastructures',
       ]),
 
       async change () {
-        await this.set_new_infrastructures(this.infrastructures_list
+        await this.set_new_infrastructures_list(this.infrastructures_list
           .map(it => this.model.type == it.type 
           ? ({ ...it, selected: it.selected == true ? false : true}) 
           : it)

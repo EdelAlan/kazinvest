@@ -43,14 +43,13 @@ export default {
           await this.dispatch('set_objects_list');
           await this.dispatch('set_earth_list');
           updated_levels = await updated_levels.slice(0, 1);
-          this.dispatch('set_sectors', level.properties.id);
           break;
         case 3:
           show_active_element();
           updated_levels = updated_levels.slice(0, 2);
           this.dispatch('set_selected_sector', level.properties);
           this.dispatch('change_ui_visibility', {
-            ui_component: 'sector_passport',
+            ui_component: 'passport',
             ui_component_state: true,
           });
       }
@@ -66,7 +65,7 @@ export default {
         case 1:
           this.dispatch('set_selected_zone', null);
           this.dispatch('change_ui_visibility', {
-            ui_component: 'sector_passport',
+            ui_component: 'passport',
             ui_component_state: false,
           });
           this.dispatch('reset_sector');
@@ -76,7 +75,7 @@ export default {
         case 2:
           this.commit('set_selected_sector', {});
           this.dispatch('change_ui_visibility', {
-            ui_component: 'sector_passport',
+            ui_component: 'passport',
             ui_component_state: false,
           });
           commit('set_level', state.levels.slice(0, level.id));

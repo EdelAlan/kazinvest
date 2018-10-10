@@ -6,13 +6,12 @@
 
     methods: {
       ...mapActions([
-        'set_new_earth',
+        'set_new_earth_list',
         'set_sectors',
       ]),
 
       async change () {
-        console.log(this.model.project_type)
-        await this.set_new_earth(this.earth_list
+        await this.set_new_earth_list(this.earth_list
           .map(it => this.model.project_type == it.project_type 
           ? ({ ...it, selected: it.selected == true ? false : true}) 
           : it)

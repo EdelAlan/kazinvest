@@ -15,7 +15,7 @@
     ]),
     
     methods: mapActions([
-      'set_new_infrastructures',
+      'set_new_infrastructures_list',
     ]),
   };
 </script>

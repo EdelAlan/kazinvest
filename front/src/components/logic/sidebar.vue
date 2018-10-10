@@ -23,7 +23,7 @@
       'sectors',
       'lang',
       'selected_sector',
-      'sector_passport',
+      'passport',
       'zone_filter',
       'republics',
       'active_level',
@@ -43,126 +43,7 @@
 <template>
   <div class="sidebar" 
     :class="{'sidebar--expanded': sidebar_expanded}">
-    <div class="sidebar-header">
-      <sidebar_header></sidebar_header>
-    </div>
-
-
-
-    <passport class="sidebar-passport"
-      :title="selected_sector"
-      v-if="sector_passport && sidebar_expanded">
-
-
-      <!-- Общая инфа о секторе -->
-      <div slot="body" v-if="selected_sector">
-        <div class="passport-body_item">
-          <span class="passport-body_item_key">Название компании участника</span>
-          <span class="passport-body_item_val" 
-            v-text="selected_sector['title_' + lang]"></span>
-        </div>
-        <div class="passport-body_item">
-          <span class="passport-body_item_key">Описание</span>
-          <span class="passport-body_item_val" 
-            v-text="selected_sector['title_project_' + lang]"></span>
-        </div>
-        <div class="passport-body_item">
-          <span class="passport-body_item_key">Стоимость проекта</span>
-          <span class="passport-body_item_val" 
-            v-text="selected_sector.project_price"></span>
-        </div>
-        <div class="passport-body_item">
-          <span class="passport-body_item_key">Площадь занимаемого участка</span>
-          <span class="passport-body_item_val" 
-            v-text="selected_sector.area"></span>
-        </div>
-        <div class="passport-body_item">
-          <span class="passport-body_item_key">Текущий статус</span>
-          <span class="passport-body_item_val" 
-            v-text="selected_sector['current_status_' + lang]"></span>
-        </div>
-        <div class="passport-body_item">
-          <span class="passport-body_item_key">Год</span>
-          <span class="passport-body_item_val" 
-            v-text="selected_sector.project_date"></span>
-        </div>
-        <div class="passport-body_item">
-          <span class="passport-body_item_key">Продукция</span>
-          <span class="passport-body_item_val" 
-            v-text="selected_sector['products_' + lang]"></span>
-        </div>
-        <div class="passport-body_item">
-          <span class="passport-body_item_key">Сроки реализации</span>
-          <span class="passport-body_item_val" 
-            v-text="selected_sector['time_realization_' + lang]"></span>
-        </div>
-        <div class="passport-body_item">
-          <span class="passport-body_item_key">План работы</span>
-          <span class="passport-body_item_val" 
-            v-text="selected_sector.plan_jobs"></span>
-        </div>
-        <div class="passport-body_item">
-          <span class="passport-body_item_key">Мощность</span>
-          <span class="passport-body_item_val" 
-            v-text="selected_sector.power"></span>
-        </div>
-      </div>
-
-
-      <!-- Общая инфа о секторе -->
-      <div slot="body" v-if="selected_sector">
-        <div class="passport-body_item">
-          <span class="passport-body_item_key">Название компании участника</span>
-          <span class="passport-body_item_val" 
-            v-text="selected_sector['title_' + lang]"></span>
-        </div>
-        <div class="passport-body_item">
-          <span class="passport-body_item_key">Описание</span>
-          <span class="passport-body_item_val" 
-            v-text="selected_sector['title_project_' + lang]"></span>
-        </div>
-        <div class="passport-body_item">
-          <span class="passport-body_item_key">Стоимость проекта</span>
-          <span class="passport-body_item_val" 
-            v-text="selected_sector.project_price"></span>
-        </div>
-        <div class="passport-body_item">
-          <span class="passport-body_item_key">Площадь занимаемого участка</span>
-          <span class="passport-body_item_val" 
-            v-text="selected_sector.area"></span>
-        </div>
-        <div class="passport-body_item">
-          <span class="passport-body_item_key">Текущий статус</span>
-          <span class="passport-body_item_val" 
-            v-text="selected_sector['current_status_' + lang]"></span>
-        </div>
-        <div class="passport-body_item">
-          <span class="passport-body_item_key">Год</span>
-          <span class="passport-body_item_val" 
-            v-text="selected_sector.project_date"></span>
-        </div>
-        <div class="passport-body_item">
-          <span class="passport-body_item_key">Продукция</span>
-          <span class="passport-body_item_val" 
-            v-text="selected_sector['products_' + lang]"></span>
-        </div>
-        <div class="passport-body_item">
-          <span class="passport-body_item_key">Сроки реализации</span>
-          <span class="passport-body_item_val" 
-            v-text="selected_sector['time_realization_' + lang]"></span>
-        </div>
-        <div class="passport-body_item">
-          <span class="passport-body_item_key">План работы</span>
-          <span class="passport-body_item_val" 
-            v-text="selected_sector.plan_jobs"></span>
-        </div>
-        <div class="passport-body_item">
-          <span class="passport-body_item_key">Мощность</span>
-          <span class="passport-body_item_val" 
-            v-text="selected_sector.power"></span>
-        </div>
-      </div>
-    </passport>
+    <sidebar_header class="sidebar-header"></sidebar_header>
 
 
 
@@ -200,10 +81,9 @@
 
 
           <div slot="tab_0">
-            <!-- Справка для СЭЗ инфы и ИЗ инфы -->
             <reference
-              v-for="republic, key in republics"
               v-if="active_level.id == 1 && zone_filter[key].checked"
+              v-for="republic, key in republics"
               :menu="[{
                 title_ru: 'Преимущества ' + republic['title_' + lang] + ' РК',
                 title_en: 'Преимущества ' + republic['title_' + lang] + ' РК',
@@ -224,14 +104,13 @@
             />
 
             <reference
-            :menu="[{
+              :menu="[{
                 title_ru: 'Контакты АО «НК «KAZAKH INVEST»',
                 title_en: 'Контакты АО «НК «KAZAKH INVEST»',
                 title_kz: 'Контакты АО «НК «KAZAKH INVEST»',
               }]"
             />
 
-            <!-- Справка о СЭЗах или ИЗах -->
             <reference
               v-if="active_level.id == 2"
               :menu="[{
@@ -256,6 +135,8 @@
                 title_kz: 'Контакты',
               }]"
             />
+
+
             <reference
               v-if="active_level.id == 3"
               :menu="[{
@@ -347,6 +228,139 @@
         </tabs>
       </div>
     </div>
+
+
+
+
+
+    <passport class="sidebar-passport"
+      :title="3232"
+      v-if="passport && sidebar_expanded">
+
+      <!--
+        passport должен быть  единтсвенном экземпляре
+        его видимость зависит от состояния passport и sidebar_expanded
+        
+      -->
+
+      <!-- Общая инфа о секторе -->
+      <div slot="body" v-if="selected_sector">
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Название компании участника</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector['title_' + lang]"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Описание</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector['title_project_' + lang]"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Стоимость проекта</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector.project_price"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Площадь занимаемого участка</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector.area"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Текущий статус</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector['current_status_' + lang]"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Год</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector.project_date"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Продукция</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector['products_' + lang]"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Сроки реализации</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector['time_realization_' + lang]"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">План работы</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector.plan_jobs"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Мощность</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector.power"></span>
+        </div>
+      </div>
+
+
+      <!-- Общая инфа о секторе -->
+      <div slot="body" v-if="selected_sector">
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Название компании участника</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector['title_' + lang]"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Описание</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector['title_project_' + lang]"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Стоимость проекта</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector.project_price"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Площадь занимаемого участка</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector.area"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Текущий статус</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector['current_status_' + lang]"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Год</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector.project_date"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Продукция</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector['products_' + lang]"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Сроки реализации</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector['time_realization_' + lang]"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">План работы</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector.plan_jobs"></span>
+        </div>
+        <div class="passport-body_item">
+          <span class="passport-body_item_key">Мощность</span>
+          <span class="passport-body_item_val" 
+            v-text="selected_sector.power"></span>
+        </div>
+      </div>
+
+
+
+    
+
+    </passport>
+
+
+
+
   </div>
 </template>
 

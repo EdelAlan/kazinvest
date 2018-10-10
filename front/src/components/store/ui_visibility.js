@@ -1,7 +1,7 @@
 export default {
   state: () => ({
     signup_signin_modal: false,
-    sector_passport: false,// паспорт объекта, "sector" - название из базы
+    passport: false,// паспорт объекта, "sector" - название из базы
   }),
 
   mutations: {
@@ -12,7 +12,7 @@ export default {
 
   getters: {
     signup_signin_modal: state => state.signup_signin_modal,
-    sector_passport: state => state.sector_passport,
+    passport: state => state.passport,
   },
 
   actions: {

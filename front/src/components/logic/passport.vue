@@ -1,5 +1,5 @@
 <script>
-  import { mapActions, mapGetters } from 'vuex';
+  import { mapActions } from 'vuex';
 
 	export default {
 		props: ['title'],
@@ -7,29 +7,20 @@
 		methods: mapActions([
 			'change_ui_visibility'
 		]),
-
-		computed: mapGetters([
-			'lang',
-		]),
 	}
 </script>
 
 <template>
 	<div class="passport">
 		<div class="passport-header">
+			<span class="passport-header_title"></span>
 			<span class="passport-close"
 				@click="change_ui_visibility({
-					ui_component: 'sector_passport',
+					ui_component: 'passport',
 					ui_component_state: false,
-				})"></span>
-			<h4 class="passport-header_title"
-				v-text="title['title_' + lang]"></h4>	
+			})"></span>
 		</div>
-		<div class="passport-body">
-
-			<slot name="body"></slot>
-
-		</div>
+		<slot name="body"></slot>
 	</div>
 </template>
 
@@ -41,6 +32,7 @@
 		border-radius: 3px;
 		box-shadow: 0 0 10px rgba(0, 0, 0, .2);
 	}
+	
 	.passport-header {
 		position: relative;
 		border-bottom: 1px solid #eee;
@@ -50,6 +42,7 @@
 		padding: 15px 10px;
 		font-size: 16px;
 	}
+	/*
 	.passport-body {
 		padding: 10px;
 		max-height: calc(100vh - 130px);
@@ -58,7 +51,7 @@
 	.passport-body_item {
 		margin-bottom: 25px;
 	}
-	.passport-body_item p { /* Временно, пока поля не очистят от тегов p*/
+	.passport-body_item p { 
 		margin: 0;
 	}
 	.passport-body_item_key {
@@ -69,7 +62,7 @@
 	.passport-body_item_val {
 		font-size: 14px;
 	}
-
+*/
 	.passport-close {
 		cursor: pointer;
 		outline: none;
