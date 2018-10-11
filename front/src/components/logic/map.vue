@@ -1307,8 +1307,16 @@ export default {
             "source": "object-points",
             "paint": {
               'circle-color': '#fff',
-              'circle-radius': 6,
-              'circle-stroke-width': 5,
+              'circle-radius': [
+                "interpolate", ["linear"], ["zoom"],
+                13, 2,
+                14, 6
+              ],
+              'circle-stroke-width': [
+                "interpolate", ["linear"], ["zoom"],
+                13, 2,
+                14, 5
+              ],
               'circle-stroke-color': ["get", "color"],
             }
         });
