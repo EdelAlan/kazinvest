@@ -221,19 +221,51 @@
                 { key: 'Выделено', val: 2321321 },
               ]"
             ></piechart>-->
+
             <reference
+              v-if="zone_filter[key].checked && active_level.id == 1"
+              v-for="republic, key in republics"
               :menu="[{
-                title_ru: 'Цифровые показатели',
-                title_en: 'Цифровые показатели',
-                title_kz: 'Цифровые показатели',
-                passport_content: 'all_levels:numeric',
+                title_ru: 'Цифровые показатели 1 ' + republic['title_' + lang],
+                title_en: 'Цифровые показатели 1 ' + republic['title_' + lang],
+                title_kz: 'Цифровые показатели 1 ' + republic['title_' + lang],
+                passport_content: 'level_1:' + republic.type + ':numeric',
               }, {
-                title_ru: 'Диаграммы',
-                title_en: 'Диаграммы',
-                title_kz: 'Диаграммы',
-                passport_content: 'all_levels:diagramm',
+                title_ru: 'Диаграммы 1' + republic['title_' + lang],
+                title_en: 'Диаграммы 1' + republic['title_' + lang],
+                title_kz: 'Диаграммы 1' + republic['title_' + lang],
+                passport_content: 'level_1:' + republic.type + ':diagramm',
               }]"
             />
+            <reference
+              v-if="active_level.id == 2"
+              :menu="[{
+                title_ru: 'Цифровые показатели 2',
+                title_en: 'Цифровые показатели 2',
+                title_kz: 'Цифровые показатели 2',
+                passport_content: 'level_2:zone:numeric',
+              }, {
+                title_ru: 'Диаграммы 2',
+                title_en: 'Диаграммы 2',
+                title_kz: 'Диаграммы 2',
+                passport_content: 'level_2:zone:diagramm',
+              }]"
+            />
+            <reference
+              v-if="active_level.id == 3"
+              :menu="[{
+                title_ru: 'Цифровые показатели 3',
+                title_en: 'Цифровые показатели 3',
+                title_kz: 'Цифровые показатели 3',
+                passport_content: 'level_3:sector:numeric',
+              }, {
+                title_ru: 'Диаграммы 3',
+                title_en: 'Диаграммы 3',
+                title_kz: 'Диаграммы 3',
+                passport_content: 'level_3:sector:diagramm',
+              }]"
+            />
+
           </div>
         </tabs>
       </div>
@@ -313,8 +345,10 @@
         && passport_content != 'level_3:sector_gallery'
         && passport_content != 'level_3:sector_market'
         && passport_content != 'level_3:sector_contacts'
-        && passport_content != 'all_levels:numeric'
-        && passport_content != 'all_levels:diagramm'
+        && passport_content != 'level_1:sez:numeric'
+        && passport_content != 'level_1:sez:diagramm'
+        && passport_content != 'level_1:sez:numeric'
+        && passport_content != 'level_1:iz:diagramm'
       ">
         <div class="passport-body_item">
           <span class="passport-body_item_key">Название компании участника</span>
@@ -371,32 +405,62 @@
 
 
       <!-- Показатели -->
-      <div slot="body" v-if="passport_content == 'all_levels:numeric'">
+      <div slot="body" v-if="passport_content == 'level_1:sez:numeric'">
         <reference
           :menu="[{
-            title_ru: 'Некие данные',
-            title_en: 'Некие данные',
-            title_kz: 'Некие данные',
+            title_ru: 'СЭЗ данные цифровые показатели',
+            title_en: 'СЭЗ данные цифровые показатели',
+            title_kz: 'СЭЗ данные цифровые показатели',
             passport_content: '',
           }, {
-            title_ru: 'Некие данные',
-            title_en: 'Некие данные',
-            title_kz: 'Некие данные',
+            title_ru: 'СЭЗ данные цифровые показатели',
+            title_en: 'СЭЗ данные цифровые показатели',
+            title_kz: 'СЭЗ данные цифровые показатели',
             passport_content: '',
           }]"
         />
       </div>
-      <div slot="body" v-if="passport_content == 'all_levels:diagramm'">
+      <div slot="body" v-if="passport_content == 'level_1:iz:numeric'">
         <reference
           :menu="[{
-            title_ru: 'Некие данные',
-            title_en: 'Некие данные',
-            title_kz: 'Некие данные',
+            title_ru: 'ИЗ данные цифровые показатели',
+            title_en: 'ИЗ данные цифровые показатели',
+            title_kz: 'ИЗ данные цифровые показатели',
             passport_content: '',
           }, {
-            title_ru: 'Некие данные',
-            title_en: 'Некие данные',
-            title_kz: 'Некие данные',
+            title_ru: 'ИЗ данные цифровые показатели',
+            title_en: 'ИЗ данные цифровые показатели',
+            title_kz: 'ИЗ данные цифровые показатели',
+            passport_content: '',
+          }]"
+        />
+      </div>
+      <div slot="body" v-if="passport_content == 'level_1:sez:diagramm'">
+        <reference
+          :menu="[{
+            title_ru: 'СЭЗ диаграммные данные',
+            title_en: 'СЭЗ диаграммные данные',
+            title_kz: 'СЭЗ диаграммные данные',
+            passport_content: '',
+          }, {
+            title_ru: 'СЭЗ диаграммные данные',
+            title_en: 'СЭЗ диаграммные данные',
+            title_kz: 'СЭЗ диаграммные данные',
+            passport_content: '',
+          }]"
+        />
+      </div>
+      <div slot="body" v-if="passport_content == 'level_1:iz:diagramm'">
+        <reference
+          :menu="[{
+            title_ru: 'ИЗ диаграммные данные',
+            title_en: 'ИЗ диаграммные данные',
+            title_kz: 'ИЗ диаграммные данные',
+            passport_content: '',
+          }, {
+            title_ru: 'ИЗ диаграммные данные',
+            title_en: 'ИЗ диаграммные данные',
+            title_kz: 'ИЗ диаграммные данные',
             passport_content: '',
           }]"
         />
