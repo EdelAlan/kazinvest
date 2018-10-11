@@ -65,9 +65,9 @@
           :styles="{
             'border': '1px solid #fff',
             'border-radius': '3px',
-            'height': '40px',
+            'height': '31px',
             'font-size': '14px',
-            'padding': '10px',
+            'padding': '5px 10px',
             'line-height': '18px'
           }"
         />
@@ -85,9 +85,9 @@
           :styles="{
             'border': '1px solid #fff',
             'border-radius': '3px',
-            'height': '40px',
+            'height': '31px',
             'font-size': '14px',
-            'padding': '10px',
+            'padding': '5px 10px',
             'line-height': '18px'
           }"
         />
@@ -140,7 +140,7 @@
     font-size: 14px;
     font-weight: normal;
     border-radius: 3px;
-    padding: 10px;
+    padding: 5px 10px;
     margin-bottom: 5px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, .3);
   }
@@ -148,7 +148,7 @@
     width: 100%;
   }
   .sidebar_filter-collapse {
-    font-size: 14px;
+    font-size: 12px;
     color: #fff;
     cursor: pointer;
   }

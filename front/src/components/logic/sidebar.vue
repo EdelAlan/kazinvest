@@ -28,17 +28,13 @@
       'republics',
       'active_level',
       'selected_zone',
-
       'passport_content',
-
-      //legend
     ]),
 
     methods: mapActions([
       'set_level',
       'set_passport_title',
     ]),
-
   }
 </script>
 
@@ -47,8 +43,6 @@
   <div class="sidebar" 
     :class="{'sidebar--expanded': sidebar_expanded}">
     <sidebar_header class="sidebar-header"></sidebar_header>
-
-
 
     <div class="sidebar-scroll_section">
       <div class="sidebar-section"
@@ -81,75 +75,68 @@
             </span>        
           </span>
 
-
-
           <div slot="tab_0">
-            <reference
-              v-if="active_level.id == 1 && zone_filter[key].checked"
-              v-for="republic, key in republics"
-              :menu="[{
-                title_ru: 'Преимущества ' + republic['title_' + lang] + ' РК',
-                title_en: 'Преимущества ' + republic['title_' + lang] + ' РК',
-                title_kz: 'Преимущества ' + republic['title_' + lang] + ' РК',
-                passport_content: key == 0 ? 'sez_advantages' : 'iz_advantages',
-              }, {
-                title_ru: 'Описание ' + republic['title_' + lang] + ' РК',
-                title_en: 'Описание ' + republic['title_' + lang] + ' РК',
-                title_kz: 'Описание ' + republic['title_' + lang] + ' РК',
-                passport_content: key == 0 ? 'sez_common' : 'iz_common',
-              }, {
-                title_ru: 'Общие положения ' + republic['title_' + lang] + ' РК',
-                title_en: 'Общие положения ' + republic['title_' + lang] + ' РК',
-                title_kz: 'Общие положения ' + republic['title_' + lang] + ' РК',
-                passport_content: key == 0 ? 'sez_polozh' : 'iz_polozh',
-              }, {
-                title_ru: 'Маркетинговые материалы ' + republic['title_' + lang] + ' РК',
-                title_en: 'Маркетинговые материалы ' + republic['title_' + lang] + ' РК',
-                title_kz: 'Маркетинговые материалы ' + republic['title_' + lang] + ' РК',
-                passport_content: key == 0 ? 'sez_market' : 'iz_market',
-              }]"
-            />
-
-            <reference
-              v-if="active_level.id == 1"
-              :menu="[{
-                title_ru: 'Контакты АО «НК «KAZAKH INVEST»',
-                title_en: 'Контакты АО «НК «KAZAKH INVEST»',
-                title_kz: 'Контакты АО «НК «KAZAKH INVEST»',
-                passport_content: 'sez_iz_contacts',
-              }]"
-            />
+            <template 
+              v-if="active_level.id == 1"> 
+              <reference
+                v-if="zone_filter[key].checked"
+                v-for="republic, key in republics"
+                :menu="[{
+                  title_ru: 'Преимущества ' + republic['title_' + lang] + ' РК',
+                  title_en: 'Преимущества ' + republic['title_' + lang] + ' РК',
+                  title_kz: 'Преимущества ' + republic['title_' + lang] + ' РК',
+                  passport_content: key == 0 ? 'level_1_sez_advantages' : 'level_1_iz_advantages',
+                }, {
+                  title_ru: 'Описание ' + republic['title_' + lang] + ' РК',
+                  title_en: 'Описание ' + republic['title_' + lang] + ' РК',
+                  title_kz: 'Описание ' + republic['title_' + lang] + ' РК',
+                  passport_content: key == 0 ? 'level_1_sez_common' : 'level_1_iz_common',
+                }, {
+                  title_ru: 'Общие положения ' + republic['title_' + lang] + ' РК',
+                  title_en: 'Общие положения ' + republic['title_' + lang] + ' РК',
+                  title_kz: 'Общие положения ' + republic['title_' + lang] + ' РК',
+                  passport_content: key == 0 ? 'level_1_sez_polozh' : 'level_1_iz_polozh',
+                }, {
+                  title_ru: 'Маркетинговые материалы ' + republic['title_' + lang] + ' РК',
+                  title_en: 'Маркетинговые материалы ' + republic['title_' + lang] + ' РК',
+                  title_kz: 'Маркетинговые материалы ' + republic['title_' + lang] + ' РК',
+                  passport_content: key == 0 ? 'level_1_sez_market' : 'level_1_iz_market',
+                }]"
+              />
+              <reference
+                :menu="[{
+                  title_ru: 'Контакты АО «НК «KAZAKH INVEST»',
+                  title_en: 'Контакты АО «НК «KAZAKH INVEST»',
+                  title_kz: 'Контакты АО «НК «KAZAKH INVEST»',
+                  passport_content: 'level_1_sez_iz_contacts',
+                }]"
+              />
+            </template>
 
             <reference
               v-if="active_level.id == 2"
               :menu="[{
-                title_ru: 'О ' + selected_zone['title_' + lang],
-                title_en: 'О ' + selected_zone['title_' + lang],
-                title_kz: 'О ' + selected_zone['title_' + lang],
-                passport_content: '9999',
-              }, {
                 title_ru: 'Описание ' + selected_zone['title_' + lang] + ' РК',
                 title_en: 'Описание ' + selected_zone['title_' + lang] + ' РК',
                 title_kz: 'Описание ' + selected_zone['title_' + lang] + ' РК',
-                passport_content: '9999',
+                passport_content: 'level_2_zone_description',
               }, {
                 title_ru: 'Галерея зоны ' + selected_zone['title_' + lang] + ' РК',
                 title_en: 'Галерея зоны ' + selected_zone['title_' + lang] + ' РК',
                 title_kz: 'Галерея зоны ' + selected_zone['title_' + lang] + ' РК',
-                passport_content: '9999',
+                passport_content: 'level_2_zone_gallery',
               }, {
                 title_ru: 'Маркетинговые материалы',
                 title_en: 'Маркетинговые материалы',
                 title_kz: 'Маркетинговые материалы',
-                passport_content: '9999',
+                passport_content: 'level_2_zone_market',
               }, {
                 title_ru: 'Контакты',
                 title_en: 'Контакты',
                 title_kz: 'Контакты',
-                passport_content: '9999',
+                passport_content: 'level_2_zone_contacts',
               }]"
             />
-
 
             <reference
               v-if="active_level.id == 3"
@@ -157,27 +144,25 @@
                 title_ru: 'Общая информация',
                 title_en: 'Общая информация',
                 title_kz: 'Общая информация',
-                passport_content: '9999',
+                passport_content: 'level_3:sector_common',
               }, {
                 title_ru: 'Галерея сектора',
                 title_en: 'Галерея сектора',
                 title_kz: 'Галерея сектора',
-                passport_content: '9999',
+                passport_content: 'level_3:sector_gallery',
               }, {
                 title_ru: 'Маркетинговые материалы',
                 title_en: 'Маркетинговые материалы',
                 title_kz: 'Маркетинговые материалы',
-                passport_content: '9999',
+                passport_content: 'level_3:sector_market',
               }, {
                 title_ru: 'Контакты',
                 title_en: 'Контакты',
                 title_kz: 'Контакты',
-                passport_content: '9999',
+                passport_content: 'level_3:sector_contacts',
               }]"
             />
           </div>
-
-
 
           <div slot="tab_1">
             <div class="sidebar-item"
@@ -205,14 +190,14 @@
               :class="{ 'sidebar-item--active': selected_sector && selected_sector.id == sector.id  }"
               @click="
                 set_passport_title(sector.title_ru),
-              
-              set_level({
-                id: 3,
-                title_ru: sector.title_ru,
-                title_en: sector.title_en,
-                title_kz: sector.title_kz,
-                properties: sector
-              })">
+                set_level({
+                  id: 3,
+                  title_ru: sector.title_ru,
+                  title_en: sector.title_en,
+                  title_kz: sector.title_kz,
+                  properties: sector
+                })
+              ">
               <span class="sidebar-item_title"
                 :style="{ 
                   'color': sector.color,
@@ -226,9 +211,6 @@
             </div>
           </div>
 
-
-
-
           <div slot="tab_2">
             <!--<piechart
               :sectors="[
@@ -241,10 +223,12 @@
                 title_ru: 'Цифровые показатели',
                 title_en: 'Цифровые показатели',
                 title_kz: 'Цифровые показатели',
+                passport_content: '9999',
               }, {
                 title_ru: 'Диаграммы',
                 title_en: 'Диаграммы',
                 title_kz: 'Диаграммы',
+                passport_content: '9999',
               }]"
             />
           </div>
@@ -252,58 +236,79 @@
       </div>
     </div>
 
-
-
-
-
     <passport class="sidebar-passport"
       :title="3232"
       v-if="passport && sidebar_expanded">
-
-      <!--
-        passport должен быть  единтсвенном экземпляре
-        его видимость зависит от состояния passport и sidebar_expanded
-      -->
-
-      <!-- Общая инфа о СЭЗ или ИЗ 1 уровнь -->
-      <template
-        v-if="active_level.id == 1"
-      >
-        <div slot="body" v-if="passport_content == 'sez_advantages'">
+      <!-- Инфа о СЭЗ или ИЗ 1 уровнь -->
+      <template v-if="active_level.id == 1">
+        <div slot="body" v-if="passport_content == 'level_1_sez_advantages'">
           <div v-html="republics[0]['advantages_' + lang]"></div>
         </div>
-        <div slot="body" v-if="passport_content == 'sez_common'">
+        <div slot="body" v-if="passport_content == 'level_1_sez_common'">
           <div v-html="republics[0]['common_' + lang]"></div>
         </div>
-        <div slot="body" v-if="passport_content == 'sez_polozh'">
-          <div v-html="'Раздел в разработке'"></div>
+        <div slot="body" v-if="passport_content == 'level_1_sez_polozh'">
+          <div v-html="'Данных пока нет'"></div>
         </div>
-        <div slot="body" v-if="passport_content == 'sez_market'">
-          <div v-html="'Раздел в разработке'"></div>
+        <div slot="body" v-if="passport_content == 'level_1_sez_market'">
+          <div v-html="'Данных пока нет'"></div>
         </div>
-
-        <div slot="body" v-if="passport_content == 'iz_advantages'">
+        <div slot="body" v-if="passport_content == 'level_1_iz_advantages'">
           <div v-html="republics[1]['advantages_' + lang]"></div>
         </div>
-        <div slot="body" v-if="passport_content == 'iz_common'">
+        <div slot="body" v-if="passport_content == 'level_1_iz_common'">
           <div v-html="republics[1]['common_' + lang]"></div>
         </div>
-        <div slot="body" v-if="passport_content == 'iz_polozh'">
-          <div v-html="'Раздел в разработке'"></div>
+        <div slot="body" v-if="passport_content == 'level_1_iz_polozh'">
+          <div v-html="'Данных пока нет'"></div>
         </div>
-        <div slot="body" v-if="passport_content == 'iz_market'">
-          <div v-html="'Раздел в разработке'"></div>
+        <div slot="body" v-if="passport_content == 'level_1_iz_market'">
+          <div v-html="'Данных пока нет'"></div>
         </div>
-
-    
-        <div slot="body" v-if="passport_content == 'sez_iz_contacts'">
+        <div slot="body" v-if="passport_content == 'level_1_sez_iz_contacts'">
           <div v-html="republics[0]['contacts_' + lang]"></div>
+        </div>
+      </template>
+
+      <!-- Инфа о конкретном СЭЗ или ИЗ 2 уровнь -->
+      <template v-if="active_level.id == 2">
+        <div slot="body" v-if="passport_content == 'level_2_zone_description'">
+          <div v-html="selected_zone['description_' + lang]"></div>
+        </div>
+        <div slot="body" v-if="passport_content == 'level_2_zone_gallery'">
+          <div v-html="'Данных пока нет'"></div>
+        </div>
+        <div slot="body" v-if="passport_content == 'level_2_zone_market'">
+          <div v-html="'Данных пока нет'"></div>
+        </div>
+        <div slot="body" v-if="passport_content == 'level_2_zone_contacts'">
+          <div v-html="selected_zone['contacts_' + lang]"></div>
+        </div>
+      </template>
+
+      <!-- Инфа о конкретном Сектор 3 уровнь -->
+      <template v-if="active_level.id == 3">
+        <!-- общая инфа -->
+        <div slot="body" v-if="passport_content == 'level_3:sector_gallery'">
+          <div v-html="'Данных пока нет'"></div>
+        </div>
+        <div slot="body" v-if="passport_content == 'level_3:sector_market'">
+          <div v-html="'Данных пока нет'"></div>
+        </div>
+        <div slot="body" v-if="passport_content == 'level_3:sector_contacts'">
+          <div v-html="selected_sector['contacts_' + lang]"></div>
         </div>
       </template>
 
 
       <!-- Общая инфа о секторе -->
-      <div slot="body" v-if="selected_sector && active_level.id == 3">
+      <div slot="body" v-if="
+        selected_sector 
+        && active_level.id == 3 
+        && passport_content != 'level_3:sector_gallery'
+        && passport_content != 'level_3:sector_market'
+        && passport_content != 'level_3:sector_contacts'
+      ">
         <div class="passport-body_item">
           <span class="passport-body_item_key">Название компании участника</span>
           <span class="passport-body_item_val" 
@@ -357,14 +362,7 @@
       </div>
 
 
-
-    
-
     </passport>
-
-
-
-
   </div>
 </template>
 

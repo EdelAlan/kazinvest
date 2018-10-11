@@ -148,7 +148,7 @@
     z-index: 10;
     max-height: 12em;
     overflow-y: auto;
-    border-radius: 2px;
+    border-radius: 3px;
   }
   .filter-item {
     color: #333;
