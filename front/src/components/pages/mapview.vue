@@ -135,6 +135,6 @@
     top: 0;
   }
   .mapview-breadcrumb--expanded {
-    left: 327px;
+    left: 322px;
   }
 </style>

@@ -2,6 +2,7 @@ export default {
   state: () => ({
     signup_signin_modal: false,
     passport: false,// паспорт объекта, "sector" - название из базы
+    passport_anal: false,
     passport_content: '',// временно
     passport_title: '',// временно
   }),
@@ -23,6 +24,7 @@ export default {
     passport: state => state.passport,
     passport_content: state => state.passport_content,
     passport_title: state => state.passport_title,
+    passport_anal: state => state.passport_anal,
   },
 
   actions: {

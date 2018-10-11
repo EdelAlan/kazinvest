@@ -1,82 +1,65 @@
 <script>
   import { mapActions, mapGetters } from 'vuex';
+  import piechart from '../ui/piechart';
 
 	export default {
+		components: {
+			piechart,
+		},
+
 		methods: mapActions([
 			'change_ui_visibility'
 		]),
 
 		computed: mapGetters([
 			'lang',
-			'passport_title',
 		]),
 	}
 </script>
 
 <template>
-	<div class="passport">
-		<div class="passport-header">
-			<span class="passport-header_title"
-				v-text="passport_title"></span>
-			<span class="passport-close"
+	<div class="passport_anal">
+		<div class="passport_anal-header">
+			<span class="passport_anal-close"
 				@click="change_ui_visibility({
-					ui_component: 'passport',
-					ui_component_state: false,
-				}), change_ui_visibility({
 					ui_component: 'passport_anal',
 					ui_component_state: false,
-				})"></span>
+			})"></span>
 		</div>
-		<div class="passport-body">
-			<slot name="body"></slot>
+		<div class="passport_anal-body">
+			<piechart
+				:sectors="[
+					{ key: 'Потребность', val: 3203333 },
+					{ key: 'Выделено', val: 2321321 },
+				]"
+			></piechart>
 		</div>
 	</div>
 </template>
 
 
 <style>
-	.passport {
+	.passport_anal {
 		width: 300px;
 		background: #fff;
 		border-radius: 3px;
 		box-shadow: 0 0 10px rgba(0, 0, 0, .2);
 	}
 	
-	.passport-header {
+	.passport_anal-header {
 		position: relative;
-		border-bottom: 1px solid #eee;
 	}
-	.passport-header_title {
+	.passport_anal-header_title {
 		margin: 0;
 		display: block;
 		padding: 15px 10px;
 		font-size: 16px;
 	}
-	.passport-body {
+	.passport_anal-body {
 		max-height: calc(100vh - 130px);
 		overflow-y: auto;
 	}
-	
-	.passport-body h3,
-	.passport-body p {
-		margin: 5px 0;
-	}
-	
-	.passport-body_item {
-		margin-bottom: 25px;
-	}
-	.passport-body_item p { 
-		margin: 0;
-	}
-	.passport-body_item_key {
-		font-size: 16px;
-		color: #999;
-		display: block;
-	}
-	.passport-body_item_val {
-		font-size: 14px;
-	}
-	.passport-close {
+	.passport_anal-close {
 		cursor: pointer;
 		outline: none;
 		height: 13px;
@@ -88,6 +71,7 @@
 		position: absolute;
 		top: 5px;
 		right: 5px;
+		z-index: 100;
 	}
 
 </style>

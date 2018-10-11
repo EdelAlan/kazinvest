@@ -1,20 +1,20 @@
 <script>
-  import piechart from '../ui/piechart';
   import sidebar_header from './sidebar_header';
   import tabs from '../ui/tabs';
   import passport from './passport';
   import legends from './legends';
   import reference from './reference';
+  import passport_anal from './passport_anal';
   import { mapGetters, mapActions } from 'vuex';  
 
   export default {
     components: {
-      piechart,
       tabs,
       sidebar_header,
       legends,
       passport,
       reference,
+      passport_anal,
     },
 
     computed: mapGetters([
@@ -23,6 +23,7 @@
       'sectors',
       'lang',
       'selected_sector',
+      'passport_anal',
       'passport',
       'zone_filter',
       'republics',
@@ -35,6 +36,7 @@
       'set_level',
       'set_passport_title',
       'set_passport_content',
+      'change_ui_visibility',
     ]),
   }
 </script>
@@ -215,12 +217,7 @@
           </div>
 
           <div slot="tab_2">
-            <!--<piechart
-              :sectors="[
-                { key: 'Потребность', val: 3203333 },
-                { key: 'Выделено', val: 2321321 },
-              ]"
-            ></piechart>-->
+
 
             <reference
               v-if="zone_filter[key].checked && active_level.id == 1"
@@ -272,7 +269,6 @@
     </div>
 
     <passport class="sidebar-passport"
-      :title="3232"
       v-if="passport && sidebar_expanded">
       <!-- Инфа о СЭЗ или ИЗ 1 уровнь -->
       <template v-if="active_level.id == 1">
@@ -406,68 +402,92 @@
 
       <!-- Показатели -->
       <div slot="body" v-if="passport_content == 'level_1:sez:numeric'">
-        <reference
-          :menu="[{
+        <div class="reference-item"
+          @click="change_ui_visibility({
+            ui_component: 'passport_anal',
+            ui_component_state: true,
+          })"
+          :class="{ 'reference-item--active': !passport_content ? false : passport_content == item.passport_content }"
+          v-for="item in [{
             title_ru: 'СЭЗ цифровые показатели',
             title_en: 'СЭЗ цифровые показатели',
             title_kz: 'СЭЗ цифровые показатели',
-            passport_content: '',
           }, {
             title_ru: 'СЭЗ цифровые показатели',
             title_en: 'СЭЗ цифровые показатели',
             title_kz: 'СЭЗ цифровые показатели',
-            passport_content: '',
           }]"
-        />
-      </div>
-      <div slot="body" v-if="passport_content == 'level_1:iz:numeric'">
-        <reference
-          :menu="[{
-            title_ru: 'ИЗ цифровые показатели',
-            title_en: 'ИЗ цифровые показатели',
-            title_kz: 'ИЗ цифровые показатели',
-            passport_content: '',
-          }, {
-            title_ru: 'ИЗ цифровые показатели',
-            title_en: 'ИЗ цифровые показатели',
-            title_kz: 'ИЗ цифровые показатели',
-            passport_content: '',
-          }]"
-        />
-      </div>
-      <div slot="body" v-if="passport_content == 'level_1:sez:diagramm'">
-        <reference
-          :menu="[{
-            title_ru: 'СЭЗ диаграммные данные',
-            title_en: 'СЭЗ диаграммные данные',
-            title_kz: 'СЭЗ диаграммные данные',
-            passport_content: '',
-          }, {
-            title_ru: 'СЭЗ диаграммные данные',
-            title_en: 'СЭЗ диаграммные данные',
-            title_kz: 'СЭЗ диаграммные данные',
-            passport_content: '',
-          }]"
-        />
-      </div>
-      <div slot="body" v-if="passport_content == 'level_1:iz:diagramm'">
-        <reference
-          :menu="[{
-            title_ru: 'ИЗ диаграммные данные',
-            title_en: 'ИЗ диаграммные данные',
-            title_kz: 'ИЗ диаграммные данные',
-            passport_content: '',
-          }, {
-            title_ru: 'ИЗ диаграммные данные',
-            title_en: 'ИЗ диаграммные данные',
-            title_kz: 'ИЗ диаграммные данные',
-            passport_content: '',
-          }]"
-        />
+          v-text="item['title_' + lang]"
+        ></div>
       </div>
 
+      <div slot="body" v-if="passport_content == 'level_1:iz:numeric'">
+        <div class="reference-item"
+          @click="change_ui_visibility({
+            ui_component: 'passport_anal',
+            ui_component_state: true,
+          })"
+          :class="{ 'reference-item--active': !passport_content ? false : passport_content == item.passport_content }"
+          v-for="item in [{
+            title_ru: 'ИЗ цифровые показатели',
+            title_en: 'ИЗ цифровые показатели',
+            title_kz: 'ИЗ цифровые показатели',
+          }, {
+            title_ru: 'ИЗ цифровые показатели',
+            title_en: 'ИЗ цифровые показатели',
+            title_kz: 'ИЗ цифровые показатели',
+          }]"
+          v-text="item['title_' + lang]"
+        ></div>
+      </div>
+
+      <div slot="body" v-if="passport_content == 'level_1:sez:diagramm'">
+        <div class="reference-item"
+          @click="change_ui_visibility({
+            ui_component: 'passport_anal',
+            ui_component_state: true,
+          })"
+          :class="{ 'reference-item--active': !passport_content ? false : passport_content == item.passport_content }"
+          v-for="item in [{
+            title_ru: 'СЭЗ диаграммные данные',
+            title_en: 'СЭЗ диаграммные данные',
+            title_kz: 'СЭЗ диаграммные данные',
+          }, {
+            title_ru: 'СЭЗ диаграммные данные',
+            title_en: 'СЭЗ диаграммные данные',
+            title_kz: 'СЭЗ диаграммные данные',
+          }]"
+          v-text="item['title_' + lang]"
+        ></div>
+      </div>
+
+      <div slot="body" v-if="passport_content == 'level_1:iz:diagramm'">
+        <div class="reference-item"
+          @click="change_ui_visibility({
+            ui_component: 'passport_anal',
+            ui_component_state: true,
+          })"
+          :class="{ 'reference-item--active': !passport_content ? false : passport_content == item.passport_content }"
+          v-for="item in [{
+            title_ru: 'ИЗ диаграммные данные',
+            title_en: 'ИЗ диаграммные данные',
+            title_kz: 'ИЗ диаграммные данные',
+          }, {
+            title_ru: 'ИЗ диаграммные данные',
+            title_en: 'ИЗ диаграммные данные',
+            title_kz: 'ИЗ диаграммные данные',
+          }]"
+          v-text="item['title_' + lang]"
+        ></div>
+      </div>
 
     </passport>
+
+
+    <passport_anal
+      class="sidebar-passport_analytics"
+      v-if="passport_anal && sidebar_expanded"
+    />
   </div>
 </template>
 
@@ -486,7 +506,12 @@
   }
   .sidebar-passport {
     position: absolute;
-    left: 330px;
+    left: 325px;
+    top: 60px;
+  }
+  .sidebar-passport_analytics {
+    position: absolute;
+    left: 640px;
     top: 60px;
   }
   .sidebar-header {
