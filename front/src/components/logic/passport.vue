@@ -50,9 +50,8 @@
 		font-size: 16px;
 	}
 	.passport-body {
-		padding: 10px;
 		max-height: calc(100vh - 130px);
-		overflow: scroll;
+		overflow-y: auto;
 	}
 	
 	.passport-body h3,

@@ -12,6 +12,7 @@
       'infrastructures_list',
       'objects_list',
       'earth_list',
+      'active_level',
     ]),
     
     methods: mapActions([
@@ -24,6 +25,7 @@
 <template>
   <div class="legends">
     <treenode
+      v-if="active_level.id != 3"
       :model="{
         title_ru: 'Земельные участки',
         children: earth_list,
