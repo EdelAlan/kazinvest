@@ -37,7 +37,7 @@
 <template>
 	<div class="reference">
     <div class="reference-item"
-      :class="{ 'reference-item--active': passport_content == item.passport_content }"
+      :class="{ 'reference-item--active': !passport_content ? false : passport_content == item.passport_content }"
       v-for="item in menu"
       @click="select(item)"
       v-text="item['title_' + lang]"></div>
