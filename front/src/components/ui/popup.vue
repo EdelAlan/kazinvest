@@ -78,6 +78,7 @@
     <div class="popup-zone">{{ model.feature.properties.title_ru }}</div>
     <div class="popup-zone-type">{{ this.type }}</div>
     <piechart_popup
+      v-if="model.is_piechart"
       :sectors="[
                 { key: 'Потребность', val: 3203333 },
                 { key: 'Выделено', val: 2321321 },

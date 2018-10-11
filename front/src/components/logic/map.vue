@@ -48,6 +48,7 @@ export default {
 
     this._mapboxgl_map.on('move', e => {
       this.show_tip();
+      this.show_popup();
     });
 
     this._mapboxgl_map.on('click', e => {
@@ -218,13 +219,20 @@ export default {
             if (sectors[0]) {
               this._mapboxgl_map.getCanvas().style.cursor = 'pointer';
 
-              this.popupm
-                .setLngLat(
-                  sectors[0].geometry.type == 'Polygon' ? turf.centerOfMass(turf.polygon(sectors[0].geometry.coordinates)).geometry.coordinates :
-                  turf.centerOfMass(turf.polygon(sectors[0].geometry.coordinates[0])).geometry.coordinates
-                )
-                .setHTML(sectors[0].properties['title_' + this.lang])
-                .addTo(this._mapboxgl_map);
+              // this.popupm
+              //   .setLngLat(
+              //     sectors[0].geometry.type == 'Polygon' ? turf.centerOfMass(turf.polygon(sectors[0].geometry.coordinates)).geometry.coordinates :
+              //     turf.centerOfMass(turf.polygon(sectors[0].geometry.coordinates[0])).geometry.coordinates
+              //   )
+              //   .setHTML(sectors[0].properties['title_' + this.lang])
+              //   .addTo(this._mapboxgl_map);
+              
+              this.show_popup({
+                is_piechart: false,
+                pageX: e.originalEvent.pageX,
+                pageY: e.originalEvent.pageY,
+                feature: sectors[0]
+              });
             }
             break;
         }
@@ -233,15 +241,18 @@ export default {
 
     this._mapboxgl_map.on('mouseleave', 'current-sector', e => {
       this._mapboxgl_map.getCanvas().style.cursor = '';
-      this.popupm.remove();
+      // this.popupm.remove();
+      this.show_popup();
     });
     this._mapboxgl_map.on('mouseleave', 'processing-sector', e => {
       this._mapboxgl_map.getCanvas().style.cursor = '';
-      this.popupm.remove();
+      // this.popupm.remove();
+      this.show_popup();
     });
     this._mapboxgl_map.on('mouseleave', 'free-sector', e => {
       this._mapboxgl_map.getCanvas().style.cursor = '';
-      this.popupm.remove();
+      // this.popupm.remove();
+      this.show_popup();
     });
 
     // mouseleave ПЕРВЫЙ УРОВЕНЬ ГОРОДА
@@ -435,7 +446,8 @@ export default {
       //   .addTo(this._mapboxgl_map);
 
 
-      this.show_popup({ 
+      this.show_popup({
+        is_piechart: true,
         pageX: e.originalEvent.pageX,
         pageY: e.originalEvent.pageY,
         feature: features[0]
