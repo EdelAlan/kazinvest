@@ -79,9 +79,9 @@
 </script>
 
 <template>
-	<div class="piechart">
-    <span class="piechart-total" v-text="separated_num(total)"></span>
-    <svg class="piechart-svg" :width="size * 1.1" :height="size * 1.1">
+	<div class="piechart_popup">
+    <span class="piechart_popup-total" v-text="separated_num(total)"></span>
+    <svg class="piechart_popup-svg" :width="size * 1.1" :height="size * 1.1">
       <defs>
         <mask id="circleClip" >
           <rect fill="white" width="100%" height="100%" />
@@ -89,25 +89,26 @@
         </mask>
       </defs>
       <g mask="url(#circleClip)">
-        <g class="piechart-piece"
+        <g class="piechart_popup-piece"
           v-for="s in processed_sectors">
           <path :fill="s.color" :d="s.d" :transform="s.transform" />
         </g>
       </g>
-      <circle class="piechart-circle" fill="none" :cx="size * 0.55" :cy="size * 0.55" :r="size * 0.2" />
+      <circle class="piechart_popup-circle" fill="none" :cx="size * 0.55" :cy="size * 0.55" :r="size * 0.2" />
     </svg>
 	</div>
 </template>
 
 <style>
 
-  .piechart {
+  .piechart_popup {
     position: absolute;
-    right: 15px;
+    right: 5px;
     overflow: hidden;
+    top: 0;
   }
 
-  .piechart-total {
+  .piechart_popup-total {
     position: absolute;
     left: 50%;
     font-size: 18px;
@@ -116,21 +117,21 @@
     transform: translateX(-50%);
   }
 
-  .piechart-svg {
-    margin: 15px auto;
+  .piechart_popup-svg {
+    margin: 6px auto;
     display: block;
   }
 
-  .piechart-piece {
+  .piechart_popup-piece {
     transition: all 200ms;
     transform-origin: 50% 50%;
   }
 
-  .piechart-circle {
+  .piechart_popup-circle {
     pointer-events: all;
   }
 
-  .piechart-tooltip {
+  .piechart_popup-tooltip {
     position: absolute;
     color: #fff;
     background: #334;
@@ -141,7 +142,7 @@
     border-radius: .1em;
   }
 
-  .piechart-piece--hovered {
+  .piechart_popup-piece--hovered {
     transform: scale(1.05);
   }
 
