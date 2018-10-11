@@ -5,6 +5,7 @@
   import basemaps from '../logic/basemaps'
   import xmap from '../logic/map';
   import maptip from '../ui/maptip';
+  import popup from '../ui/popup';
   import { mapGetters, mapActions } from 'vuex';  
 
   export default {
@@ -12,6 +13,7 @@
     data () {
       return {
         is_maptip: false,
+        is_popup: false,
       };
     },
 
@@ -21,6 +23,7 @@
       breadcrumb,
       basemaps,
       maptip,
+      popup,
     },
 
     computed: mapGetters([
@@ -29,10 +32,12 @@
       'basemap',
       'active_level',
       'tip',
+      'popup',
     ]),
 
     watch: {
       tip: 'show_maptip',
+      popup: 'show_popup',
       active_level: 'hide_maptip'
     },
 
@@ -45,6 +50,10 @@
 
       show_maptip() {
         this.is_maptip = !this.is_maptip;
+      }, 
+
+      show_popup() {
+        this.is_popup = !this.is_popup;
       }, 
 
       hide_maptip() {
@@ -80,6 +89,13 @@
         selected: this.tip.layer
       }"
     ></maptip>
+    <popup v-if="popup"
+      :model="{
+        pageX: this.popup.pageX,
+        pageY: this.popup.pageY,
+        feature: this.popup.feature
+      }"
+    ></popup>
     <basemaps v-on:click="set_basemap"
       v-if="active_level.id != 1"
     />
