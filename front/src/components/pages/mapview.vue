@@ -91,6 +91,7 @@
     ></maptip>
     <popup v-if="popup"
       :model="{
+        is_piechart: this.popup.is_piechart,
         pageX: this.popup.pageX,
         pageY: this.popup.pageY,
         feature: this.popup.feature
