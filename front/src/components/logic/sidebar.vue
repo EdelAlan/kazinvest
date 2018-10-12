@@ -95,11 +95,6 @@
                   title_kz: 'Описание ' + republic['title_' + lang] + ' РК',
                   passport_content: key == 0 ? 'level_1:sez_common' : 'level_1:iz_common',
                 }, {
-                  title_ru: 'Общие положения ' + republic['title_' + lang] + ' РК',
-                  title_en: 'Общие положения ' + republic['title_' + lang] + ' РК',
-                  title_kz: 'Общие положения ' + republic['title_' + lang] + ' РК',
-                  passport_content: key == 0 ? 'level_1:sez_polozh' : 'level_1:iz_polozh',
-                }, {
                   title_ru: 'Маркетинговые материалы ' + republic['title_' + lang] + ' РК',
                   title_en: 'Маркетинговые материалы ' + republic['title_' + lang] + ' РК',
                   title_kz: 'Маркетинговые материалы ' + republic['title_' + lang] + ' РК',
@@ -112,6 +107,14 @@
                   title_en: 'Контакты АО «НК «KAZAKH INVEST»',
                   title_kz: 'Контакты АО «НК «KAZAKH INVEST»',
                   passport_content: 'level_1:sez_iz_contacts',
+                }]"
+              />
+              <reference
+                :menu="[{
+                  title_ru: 'Общие положения ИЗ/СЭЗ РК',
+                  title_kz: 'Общие положения ИЗ/СЭЗ РК',
+                  title_en: 'Общие положения ИЗ/СЭЗ РК',
+                  passport_content: 'level_1:sez_iz_polozh',
                 }]"
               />
             </template>
@@ -278,9 +281,6 @@
         <div class="sidebar-passport_padding" slot="body" v-if="passport_content == 'level_1:sez_common'">
           <div v-html="republics[0]['common_' + lang]"></div>
         </div>
-        <div class="sidebar-passport_padding" slot="body" v-if="passport_content == 'level_1:sez_polozh'">
-          <div v-html="'Данных пока нет'"></div>
-        </div>
         <div class="sidebar-passport_padding" slot="body" v-if="passport_content == 'level_1:sez_market'">
           <div v-html="'Данных пока нет'"></div>
         </div>
@@ -290,8 +290,20 @@
         <div class="sidebar-passport_padding" slot="body" v-if="passport_content == 'level_1:iz_common'">
           <div v-html="republics[1]['common_' + lang]"></div>
         </div>
-        <div class="sidebar-passport_padding" slot="body" v-if="passport_content == 'level_1:iz_polozh'">
-          <div v-html="'Данных пока нет'"></div>
+        <div class="sidebar-passport_padding" slot="body" v-if="passport_content == 'level_1:sez_iz_polozh'">
+          <h3>Законодательная база СЭЗ РК</h3>
+          <a href="http://adilet.zan.kz/rus/docs/Z1100000469" target="_blank">
+            <h4>Закон о СЭЗ</h4>
+            <p>
+              Настоящий Закон регулирует общественные отношения, возникающие при создании, функционировании и упразднении специальных экономических зон на территории Республики Казахстан
+            </p>
+          </a>
+          <a href="http://adilet.zan.kz/rus/docs/K1700000120" target="_blank">
+            <h4>Налоговый кодекс</h4>
+            <p>
+              Глава 79. НАЛОГООБЛОЖЕНИЕ ЛИЦ, ОСУЩЕСТВЛЯЮЩИХ ДЕЯТЕЛЬНОСТЬ НА ТЕРРИТОРИЯХ СПЕЦИАЛЬНЫХ ЭКОНОМИЧЕСКИХ ЗОН
+            </p>
+          </a>
         </div>
         <div class="sidebar-passport_padding" slot="body" v-if="passport_content == 'level_1:iz_market'">
           <div v-html="'Данных пока нет'"></div>
