@@ -255,6 +255,19 @@ export default {
       this.show_popup();
     });
 
+    this._mapboxgl_map.on('mouseleave', 'current-sector-multi', e => {
+      this._mapboxgl_map.getCanvas().style.cursor = '';
+      this.show_popup();
+    });
+    this._mapboxgl_map.on('mouseleave', 'processing-sector-multi', e => {
+      this._mapboxgl_map.getCanvas().style.cursor = '';
+      this.show_popup();
+    });
+    this._mapboxgl_map.on('mouseleave', 'free-sector-multi', e => {
+      this._mapboxgl_map.getCanvas().style.cursor = '';
+      this.show_popup();
+    });
+
     // mouseleave ПЕРВЫЙ УРОВЕНЬ ГОРОДА
 
     this._mapboxgl_map.on('mouseleave', 'astana', _ => {
