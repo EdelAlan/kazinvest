@@ -76,7 +76,7 @@
     >
     </button>
     <ul class="maptip-dropdown"
-      :style="{ right: '85px' }"
+      :style="{ right: '75px' }"
       v-if="show_sez"
       >
         <li v-for="zone in sez_zones">
@@ -94,7 +94,7 @@
         </li>
     </ul>
     <ul class="maptip-dropdown" 
-      :style="{ left: '85px' }"
+      :style="{ left: '75px' }"
       v-if="show_iz">
         <li v-for="zone in iz_zones">
             <a v-on:click="set_level({
@@ -122,8 +122,8 @@
   }
 
   .maptip-zone {
-    width: 70px;
-    height: 35px;
+    width: 60px;
+    height: 30px;
     margin: 5px;
     background: #fff;
     border: 0.5px solid #EAEAEA;
@@ -131,7 +131,7 @@
     box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.25);
     border-radius: 2px;
     outline: none;
-    font-size: 18px;
+    font-size: 16px;
   }
 
   .maptip-zone:hover {
@@ -145,17 +145,19 @@
     top: 100%;
     max-width: 400px;
     padding: 0 0;
-    font-size: 14px;
+    font-size: 12px;
     background-color: #fff;
     border-radius: 2px;
     margin: 0;
+    overflow-y: auto;
+    max-height: 120px;
   }
 
   .maptip-dropdown > li > a {
     padding: 5px 15px;
     display: block;
-    font-size: 18px;
-    line-height: 40px;
+    font-size: 16px;
+    line-height: 30px;
     color: #03A0E3;
     white-space: nowrap;
     border-radius: 2px;
