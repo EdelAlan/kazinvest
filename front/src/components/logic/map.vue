@@ -18,6 +18,7 @@ export default {
     return {
       hoveredStateId: null,
       hoveredFeature: null,
+      clicked_province: null,
       popupm: null
     };
   },
@@ -92,7 +93,6 @@ export default {
                 }
               });
             }
-
             if (provinces[0] && !zones[0] && !clusters[0]) {
               if (this.tip) {
                 this.show_tip();  
@@ -153,8 +153,11 @@ export default {
               ]
             });
 
+            var zones = this._mapboxgl_map.queryRenderedFeatures(e.point, {
+              layers: ['zones']
+            });
+
             if (provinces[0]) {
-              this.mouseover = provinces[0].layer.id;
               if (this.hoveredStateId) {
                 this._mapboxgl_map.setPaintProperty(
                   this.hoveredStateId,
@@ -211,6 +214,16 @@ export default {
                 '#C30D0D'
               );
             }
+            if (zones[0]) {
+              this._mapboxgl_map.getCanvas().style.cursor = 'pointer';
+                this.show_popup({
+                  is_piechart: true,
+                  pageX: e.originalEvent.pageX,
+                  pageY: e.originalEvent.pageY,
+                  feature: zones[0]
+                });
+            }
+            
             break;
           case 2:
             var sectors = this._mapboxgl_map.queryRenderedFeatures(e.point, {
@@ -219,14 +232,6 @@ export default {
             if (sectors[0]) {
               this._mapboxgl_map.getCanvas().style.cursor = 'pointer';
 
-              // this.popupm
-              //   .setLngLat(
-              //     sectors[0].geometry.type == 'Polygon' ? turf.centerOfMass(turf.polygon(sectors[0].geometry.coordinates)).geometry.coordinates :
-              //     turf.centerOfMass(turf.polygon(sectors[0].geometry.coordinates[0])).geometry.coordinates
-              //   )
-              //   .setHTML(sectors[0].properties['title_' + this.lang])
-              //   .addTo(this._mapboxgl_map);
-              
               this.show_popup({
                 is_piechart: false,
                 pageX: e.originalEvent.pageX,
@@ -445,26 +450,6 @@ export default {
 
     this._mapboxgl_map.on('mouseleave', 'zone-clusters', e => {
       this._mapboxgl_map.getCanvas().style.cursor = '';
-    });
-
-    this._mapboxgl_map.on('mouseenter', 'zones', e => {
-      var features = this._mapboxgl_map.queryRenderedFeatures(e.point, {
-        layers: ['zones']
-      });
-
-      this._mapboxgl_map.getCanvas().style.cursor = 'pointer';
-      // this.popupm
-      //   .setLngLat(features[0].geometry.coordinates.slice())
-      //   .setHTML(features[0].properties['title_' + this.lang])
-      //   .addTo(this._mapboxgl_map);
-
-
-      this.show_popup({
-        is_piechart: true,
-        pageX: e.originalEvent.pageX,
-        pageY: e.originalEvent.pageY,
-        feature: features[0]
-      });
     });
 
     this._mapboxgl_map.on('mouseleave', 'zones', e => {
