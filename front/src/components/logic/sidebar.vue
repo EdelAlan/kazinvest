@@ -304,6 +304,9 @@
               Глава 79. НАЛОГООБЛОЖЕНИЕ ЛИЦ, ОСУЩЕСТВЛЯЮЩИХ ДЕЯТЕЛЬНОСТЬ НА ТЕРРИТОРИЯХ СПЕЦИАЛЬНЫХ ЭКОНОМИЧЕСКИХ ЗОН
             </p>
           </a>
+          <a href="http://adilet.zan.kz" target="_blank">
+            <p>Ссылка на закон</p>
+          </a>
         </div>
         <div class="sidebar-passport_padding" slot="body" v-if="passport_content == 'level_1:iz_market'">
           <div v-html="'Данных пока нет'"></div>
