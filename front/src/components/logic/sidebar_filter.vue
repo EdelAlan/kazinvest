@@ -46,8 +46,8 @@
         @input="set_search_string" 
         :placeholder="{
           'title_ru': 'Поиск...', 
-          'title_kz': 'Search', 
-          'title_en': 'Поиск...'
+          'title_kz': 'Іздеу...',
+          'title_en': 'Search...', 
         }['title_' + lang]"
       />
       

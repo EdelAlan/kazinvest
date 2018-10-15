@@ -118,7 +118,7 @@
                     <p class="title">Специальные экономические зоны (СЭЗ)</p>
                 </a>
                 <a href="#" class="btn category">
-                    <div class="count">28</div>
+                    <div class="count">24</div>
                     <p class="title">Индустриальные зоны (ИЗ)</p>
                 </a>
                 <a href="#" class="btn category">
