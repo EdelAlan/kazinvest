@@ -4,12 +4,12 @@ const zone_type_str = [{
   "id": 1,
   "title_ru": "СЭЗ",
   "title_en": "SEZ",
-  "title_kz": "СЭЗ"
+  "title_kz": "АЭА"
 }, {
   "id": 2,
   "title_ru": "ИЗ",
   "title_en": "IZ",
-  "title_kz": "ИЗ"
+  "title_kz": "ИА"
 }];
 
 const FIELDS = `
@@ -17,9 +17,9 @@ const FIELDS = `
   status,
   zone_type,
   zone_time,
-  title_ru,
-  title_en,
-  title_kz,
+  zone.title_ru,
+  zone.title_en,
+  zone.title_kz,
   industries_id,
   description_ru,
   description_kz,
