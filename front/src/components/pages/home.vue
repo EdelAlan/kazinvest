@@ -2,6 +2,7 @@
   import modal from '../ui/modal.vue';
   import tabs from '../ui/tabs.vue';
   import selector from '../ui/selector.vue';
+  import filter_checker from '../logic/filter_checker.vue';
 
   import signup from '../logic/signup.vue';
   import signin from '../logic/signin.vue';
@@ -14,6 +15,7 @@
       tabs,
       signup,
       selector,
+      filter_checker,
       signin,
     },
 
@@ -25,16 +27,27 @@
 
     computed: mapGetters([
       'signup_signin_modal',
+      'industries_filter',
+      'provinces_filter',
     ]),
 
 		methods: {
       ...mapActions([
         'change_ui_visibility',
+        'set_provinces',
+        'set_industries',
+        'set_industries_filter',
+        'set_provinces_filter',
       ]),
 			toggleMenu() {
 				this.menu = !this.menu;
 			},
 		},
+
+    async mounted () {
+      await this.set_provinces();
+      await this.set_industries();
+    },
 
 	}
 </script>
@@ -93,20 +106,16 @@
               >Войти</a>
 
             <div class="filter_line">
-            <!--
-                <select id="type" class="field">
-                    <option value="сэз">СЭЗ</option>
-                    <option value="из">ИЗ</option>
-                </select>-->
+
                 <selector style="margin: 5px"
                   :list="[{
-                    'title_ru': 'sdfaadsf',
-                    'title_kz': 'sdfaadsf',
-                    'title_en': 'sdfaadsf',
+                    title_ru: 'СЭЗ',
+                    title_en: 'SEZ',
+                    title_kz: 'СЭЗ',
                   }, {
-                    'title_ru': 'sdfaadsf',
-                    'title_kz': 'sdfaadsf',
-                    'title_en': 'sdfaadsf',
+                    title_ru: 'ИЗ',
+                    title_en: 'IZ',
+                    title_kz: 'ИЗ',
                   }]"
                   :title="{
                     'title_ru': 'СЭЗ/ИЗ', 
@@ -114,18 +123,56 @@
                     'title_en': 'СЭЗ/ИЗ', 
                   }"
                   :placeholder="'СЭЗ/ИЗ'"
-                  v-on:select="null"
                   :styles="{
                     'border': '1px solid #fff',
                     'border-radius': '3px',
                     'height': '35px',
-                    'font-size': '14px',
+                    'font-size': '16px',
                     'padding': '5px 10px',
+                    'color': '#777',
                     'line-height': '18px'
                   }"
                 />
-                <input type="text" id="territory" class="field" placeholder="Регионы">
-                <input type="text" id="search" class="field" placeholder="Отрасль">
+
+                <filter_checker
+                  style="margin: 5px; width: 100%"
+                  :list="provinces_filter"
+                  :title="{
+                    'title_ru': 'Отрасли', 
+                    'title_kz': 'Салалары', 
+                    'title_en': 'Industries'
+                  }"
+                  v-on:select="set_provinces_filter"
+                  :styles="{
+                    'border': '1px solid #fff',
+                    'border-radius': '3px',
+                    'height': '35px',
+                    'font-size': '16px',
+                    'color': '#777',
+                    'padding': '5px 10px',
+                    'line-height': '23px'
+                  }"
+                />
+
+                <filter_checker
+                  style="margin: 5px; width: 250px"
+                  :list="industries_filter"
+                  :title="{
+                    'title_ru': 'Отрасли', 
+                    'title_kz': 'Салалары', 
+                    'title_en': 'Industries'
+                  }"
+                  v-on:select="set_industries_filter"
+                  :styles="{
+                    'border': '1px solid #fff',
+                    'border-radius': '3px',
+                    'height': '35px',
+                    'font-size': '16px',
+                    'color': '#777',
+                    'padding': '5px 10px',
+                    'line-height': '23px'
+                  }"
+                />
                 <button id="find" class="field btn">Найти</button>
             </div>
 
