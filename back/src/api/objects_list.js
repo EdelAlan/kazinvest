@@ -24,12 +24,12 @@ const COLORS = [
 router.get('/', async (req, res) => {
   const { zone_id } = req.query;
   const sql = `
-    SELECT type, title_ru FROM (
-      SELECT objects.type, objects_handbook.title_ru
+    SELECT type, title_ru, title_kz, title_en FROM (
+      SELECT objects.type, objects_handbook.title_ru, objects_handbook.title_kz, objects_handbook.title_en
       FROM objects
       JOIN objects_handbook ON objects.type = objects_handbook.id
       WHERE zone_id = $1
-    ) AS agg GROUP BY title_ru, type ORDER BY type
+    ) AS agg GROUP BY title_ru, title_kz, title_en, type ORDER BY type
   `;
 
   const result = await db_query(sql, [zone_id]);

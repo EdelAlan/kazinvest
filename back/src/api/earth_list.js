@@ -18,20 +18,20 @@ router.get('/', async (req, res) => {
   res.send(result.map(it => {
     if (it.project_type == 1) {
       it.title_ru = 'Действующий проект'
-      it.title_en = 'Действующий проект'
-      it.title_kz = 'Действующий проект'
+      it.title_en = 'Ongoing project'
+      it.title_kz = 'Ағымдағы жоба'
       it.color = '#10C6FF';
     }
     if (it.project_type == 2) {
       it.title_ru = 'Проект на стадии реализации'
-      it.title_en = 'Проект на стадии реализации'
-      it.title_kz = 'Проект на стадии реализации'
+      it.title_en = 'The project is underway'
+      it.title_kz = 'Жоба іске асырылуда'
       it.color = '#FFE03B';
     }
     if (it.project_type == 3) {
       it.title_ru = 'Свободный участок'
-      it.title_en = 'Свободный участок'
-      it.title_kz = 'Свободный участок'
+      it.title_en = 'Free land'
+      it.title_kz = 'Бос жер телімі'
       it.color = '#03E334';
     }
     return {

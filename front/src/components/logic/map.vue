@@ -502,7 +502,7 @@ export default {
           this.popupm
           .setLngLat(features[0].geometry.coordinates.slice())
           .setHTML(features[0].properties.type == 13 ? 'Fire station' :
-                  features[0].properties.type == 14 ? 'Готовые производственные помещения для дальнейшего предоставленя участникам в аренду' :
+                  features[0].properties.type == 14 ? 'Industrial premises for participants rental' :
                   features[0].properties.type == 16 ? 'Storehouse' :
                   features[0].properties.type == 17 ? 'Temporary accommodation' :
                   features[0].properties.type == 18 ? 'Social object' :
@@ -700,8 +700,8 @@ export default {
             },
             properties: {
               title_ru: "Астана",
-              title_kz: "Astana",
-              title_en: "Астана",
+              title_kz: "Астана",
+              title_en: "Astana",
             }
           }
         },
