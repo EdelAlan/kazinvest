@@ -537,36 +537,38 @@ export default {
         case 'kz':
           this.popupm
           .setLngLat(features[0].geometry.coordinates.slice())
-          .setHTML(features[0].properties.type == 13 ? 'Пожарное депо' :
-                  features[0].properties.type == 14 ? 'Готовые производственные помещения для дальнейшего предоставленя участникам в аренду' :
-                  features[0].properties.type == 16 ? 'Склады' :
-                  features[0].properties.type == 17 ? 'Жилищный комплекс для временного размещения' :
-                  features[0].properties.type == 18 ? 'Социальный объект' :
-                  features[0].properties.type == 19 ? 'Административное здание' :
-                  features[0].properties.type == 20 ? 'Контрольно-пропускной пункт' :
-                  features[0].properties.type == 22 ? 'Полигон тбо' :
-                  features[0].properties.type == 23 ? 'КПП для таможенного контроля 2шт' :
+          .setHTML(features[0].properties.type == 13 ? 'Өрт сөндіру станциясы' :
+                  features[0].properties.type == 14 ? 'Қатысушыларды жалға беру үшін қосымша дайындық бөлмелері' :
+                  features[0].properties.type == 16 ? 'Қоймалар' :
+                  features[0].properties.type == 17 ? 'Тұрғын үй кешені уақытша орналастыру' :
+                  features[0].properties.type == 18 ? 'Әлеуметтік нысан' :
+                  features[0].properties.type == 19 ? 'Әкімшілік ғимарат' :
+                  features[0].properties.type == 20 ? 'Бақылау-өткізу пункті' :
+                  features[0].properties.type == 22 ? 'тбо полигоны' :
+                  features[0].properties.type == 23 ? 'бақылау-өткізу пункті, кедендік бақылау' :
                   features[0].properties.type == 24 ? 'Автовесовая' :
-                  features[0].properties.type == 25 ? 'Ренгеноустановка' :
-                  features[0].properties.type == 26 ? 'Пруд-испаритель' :
-                  features[0].properties.type == 27 ? 'Интегририрующий сервис технологический центр' :
-                  features[0].properties.type == 28 ? 'Очистное сооружение' :
-                  features[0].properties.type == 29 ? 'Воздушные линии элеткропередачи' :
-                  features[0].properties.type == 30 ? 'Распределительный пункт' :
-                  features[0].properties.type == 31 ? 'Канализационная насосная станция' :
-                  features[0].properties.type == 32 ? 'Подстанция' :
-                  features[0].properties.type == 33 ? 'Газораспределительный пункт' :
-                  features[0].properties.type == 35 ? 'Железно-дорожная станция' :
-                  features[0].properties.type == 36 ? 'Водопроводный узел' :
-                  features[0].properties.type == 37 ? 'Подстанция "ИПМ"' :
-                  features[0].properties.type == 38 ? 'Станция очистки хозяйственно-бытовых стоков' :
-                  features[0].properties.type == 39 ? 'Водопроводное сооружение' :
-                  features[0].properties.type == 40 ? 'Водоподготовительная  станция' :
-                  features[0].properties.type == 41 ? 'Автостоянка' :
+                  features[0].properties.type == 25 ? 'Рентгендік қондырғы' :
+                  features[0].properties.type == 26 ? 'Бу тоған' :
+                  features[0].properties.type == 27 ? 'Қызмет көрсету технологиясының орталық' :
+                  features[0].properties.type == 28 ? 'Тазарту құрылыстары' :
+                  features[0].properties.type == 29 ? 'Электр желісі' :
+                  features[0].properties.type == 30 ? 'Бөлу пункті' :
+                  features[0].properties.type == 31 ? 'Кәріздік сорғы станциясы' :
+                  features[0].properties.type == 32 ? 'Қосалқы станция' :
+                  features[0].properties.type == 33 ? 'Газ тарату пункті' :
+                  features[0].properties.type == 34 ? 'Белгісіз' :
+                  features[0].properties.type == 35 ? 'Темір жол станциясы' :
+                  features[0].properties.type == 36 ? 'Су құбыры' :
+                  features[0].properties.type == 37 ? '"ИПМ" қосалқы станция' :
+                  features[0].properties.type == 38 ? 'Тұрмыстық қалдықтарды тазарту қондырғысы' :
+                  features[0].properties.type == 39 ? 'Су құрылыс' :
+                  features[0].properties.type == 40 ? 'Су тазарту станциясы' :
+                  features[0].properties.type == 41 ? 'Автотұрақ' :
                   features[0].properties.type == 42 ? 'Гараж' :
-                  features[0].properties.type == 43 ? 'Хозяйственно-бытовые стоки' :
-                  features[0].properties.type == 45 ? 'Пруд-накопитель' :
-                  features[0].properties.type == 46 ? 'Промышленные стоки' : '')
+                  features[0].properties.type == 43 ? 'Тұрмыстық сарқынды сулар' :
+                  features[0].properties.type == 44 ? 'Белгісіз тип' :
+                  features[0].properties.type == 45 ? 'Сақтау тоғаны' :
+                  features[0].properties.type == 46 ? 'Өнеркәсіптік сарқынды сулар' : '')
           .addTo(this._mapboxgl_map);
           break;
       }
@@ -622,18 +624,18 @@ export default {
         case 'kz':
           this.popupm
           .setLngLat([e.lngLat.lng, e.lngLat.lat])
-          .setHTML(features[0].properties.type == 1 ? 'Водоснабжение' :
-                  features[0].properties.type == 2 ? 'Канализация' :
-                  features[0].properties.type == 3 ? 'Электроснабжение' :
-                  features[0].properties.type == 4 ? 'Теплоснабжение' :
-                  features[0].properties.type == 5 ? 'Газоснабжение' :
-                  features[0].properties.type == 6 ? 'Пароснабжение' :
-                  features[0].properties.type == 7 ? 'Телефонная связь' :
+          .setHTML(features[0].properties.type == 1 ? 'Су' :
+                  features[0].properties.type == 2 ? 'Кәріз' :
+                  features[0].properties.type == 3 ? 'Электр' :
+                  features[0].properties.type == 4 ? 'Жылу' :
+                  features[0].properties.type == 5 ? 'Газ' :
+                  features[0].properties.type == 6 ? 'Бу' :
+                  features[0].properties.type == 7 ? 'Телефон байланысы' :
                   features[0].properties.type == 8 ? 'Интернет' :
-                  features[0].properties.type == 9 ? 'Утилизация твердых отходов' :
-                  features[0].properties.type == 10 ? 'Утилизация жидких отходов' :
-                  features[0].properties.type == 11 ? 'Подъездной ж/д путь' :
-                  features[0].properties.type == 12 ? 'Автодороги' : '')
+                  features[0].properties.type == 9 ? 'Қатты қалдықтарды кәдеге жарату' :
+                  features[0].properties.type == 10 ? 'Сұйық қалдықтарды жою' :
+                  features[0].properties.type == 11 ? 'Темір жол' :
+                  features[0].properties.type == 12 ? 'Автожол' : '')
           .addTo(this._mapboxgl_map);
           break;
       }
