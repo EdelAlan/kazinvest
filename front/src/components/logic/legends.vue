@@ -28,6 +28,8 @@
       v-if="active_level.id != 3"
       :model="{
         title_ru: 'Земельные участки',
+        title_kz: 'Жер учаскелері',
+        title_en: 'Land areas',
         children: earth_list,
       }"
     ></treenode>
@@ -37,11 +39,17 @@
     <treenode
       :model="{
         title_ru: 'Инфраструктура',
+        title_kz: 'Инфрақұрылым',
+        title_en: 'Infrastructure',
         children: [{
           title_ru: 'Инфраструктура',
+          title_kz: 'Инфрақұрылым',
+          title_en: 'Infrastructure',
           children: infrastructures_list,
         }, {
           title_ru: 'Объекты',
+          title_kz: 'Объектілер',
+          title_en: 'Objects',
           children: objects_list,
         }],
       }"

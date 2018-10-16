@@ -20,157 +20,12 @@ export default () => ({
       'tileSize': 256,
       'tiles': ['//ecn.t2.tiles.virtualearth.net/tiles/a{quadkey}.jpeg?g=414'],
     },
-    'symbols': {
-      type: 'geojson',
-      data: {
-        type: 'FeatureCollection',
-        features: [{
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: [69.159995, 54.472108]
-            },
-            properties: {
-              title: 'СКО'
-            }
-          },
-          {
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: [76.484217, 52.469523]
-            },
-            properties: {
-              title: 'Павлодарская'
-            }
-          },
-          {
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: [82.217746, 48.970037]
-            },
-            properties: {
-              title: 'ВКО'
-            }
-          },
-          {
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: [77.851468, 45.140789]
-            },
-            properties: {
-              title: 'Алматинская'
-            }
-          },
-          {
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: [72.144071, 44.66465]
-            },
-            properties: {
-              title: 'Жамбылская'
-            }
-          },
-          {
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: [68.680888, 42.416407]
-            },
-            properties: {
-              title: 'ЮКО'
-            }
-          },
-          {
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: [63.418783, 45.236046]
-            },
-            properties: {
-              title: 'Кызылординская'
-            }
-          },
-          {
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: [58.810698, 48.619783]
-            },
-            properties: {
-              title: 'Актюбинская'
-            }
-          },
-          {
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: [53.776071, 44.05414]
-            },
-            properties: {
-              title: 'Мангыстауская'
-            }
-          },
-          {
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: [52.176394, 47.822386]
-            },
-            properties: {
-              title: 'Атырауская'
-            }
-          },
-          {
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: [63.496522, 52.509224]
-            },
-            properties: {
-              title: 'Костанайская'
-            }
-          },
-          {
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: [70.298717, 52.006681]
-            },
-            properties: {
-              title: 'Акмолинская'
-            }
-          },
-          {
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: [71.518106, 48.516465]
-            },
-            properties: {
-              title: 'Карагандинская'
-            }
-          },
-          {
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: [50.905113, 50.19334]
-            },
-            properties: {
-              title: 'ЗКО'
-            }
-          }
-        ]
-      }
-    },
     'openmaptiles': {
-      'type': 'vector',
-      'url': 'https://free.tilehosting.com/data/v3.json?key=hWWfWrAiWGtv68r8wA6D'
-    },
+        'type': 'vector',
+        'tiles': ['https://tile.kagis.kz/openmaptiles/data/v3/{z}/{x}/{y}.pbf?key=egrA25FNSYcFuvl6Lb8Y'],
+        'minzoom': 0,
+        'maxzoom': 14,
+    },  
     'composite': {
       'url': 'mapbox://mapbox.mapbox-streets-v7',
       'type': 'vector'
@@ -1046,332 +901,773 @@ export default () => ({
         }
     },
     {
-        "id": "road-label",
-        "type": "symbol",
-        "source": "composite",
-        "source-layer": "road_label",
-        "minzoom": 12,
-        "filter": [
-            "in",
-            "class",
-            "link",
-            "motorway",
-            "pedestrian",
-            "primary",
-            "secondary",
-            "street",
-            "street_limited",
-            "tertiary",
-            "trunk"
+        'id': 'waterway-name',
+        'type': 'symbol',
+        'source': 'openmaptiles',
+        'source-layer': 'waterway',
+        'minzoom': 13,
+        'filter': [
+          'all',
+          [
+            '==',
+            '$type',
+            'LineString'
+          ],
+          [
+            'has',
+            'name'
+          ]
         ],
-        "layout": {
-            "text-size": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                9,
-                [
-                    "match",
-                    ["get", "class"],
-                    "motorway",
-                    10,
-                    "trunk",
-                    10,
-                    "primary",
-                    10,
-                    "secondary",
-                    10,
-                    "tertiary",
-                    10,
-                    9
-                ],
-                20,
-                [
-                    "match",
-                    ["get", "class"],
-                    "motorway",
-                    15,
-                    "trunk",
-                    15,
-                    "primary",
-                    15,
-                    "secondary",
-                    15,
-                    "tertiary",
-                    15,
-                    14
-                ]
-            ],
-            "text-max-angle": 30,
-            "text-font": ["Roboto Regular", "Arial Unicode MS Regular"],
-            "symbol-placement": "line",
-            "text-padding": 1,
-            "text-rotation-alignment": "map",
-            "text-pitch-alignment": "viewport",
-            "text-field": ["get", "name_en"]
+        'layout': {
+          'text-font': [
+            'Noto Sans Italic'
+          ],
+          'text-size': 14,
+          'text-field': '{name:latin} {name:nonlatin}',
+          'text-max-width': 5,
+          'text-rotation-alignment': 'map',
+          'symbol-placement': 'line',
+          'text-letter-spacing': 0.2,
+          'symbol-spacing': 350
         },
-        "paint": {
-            "text-color": "hsl(0, 0%, 0%)",
-            "text-halo-color": "hsl(0, 0%, 100%)",
-            "text-halo-width": 1
+        'paint': {
+          'text-color': '#74aee9',
+          'text-halo-width': 1.5,
+          'text-halo-color': 'rgba(255,255,255,0.7)'
         }
-    },
-    {
-        "id": "airport-label",
-        "type": "symbol",
-        "source": "composite",
-        "source-layer": "airport_label",
-        "filter": ["<=", "scalerank", 2],
-        "layout": {
-            "text-line-height": 1.1,
-            "text-size": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                10,
-                12,
-                18,
-                18
-            ],
-            "icon-image": [
-                "step",
-                ["zoom"],
-                ["concat", ["get", "maki"], "-11"],
-                13,
-                ["concat", ["get", "maki"], "-15"]
-            ],
-            "text-font": ["Roboto Regular", "Arial Unicode MS Regular"],
-            "text-padding": 2,
-            "text-offset": [0, 0.75],
-            "text-anchor": "top",
-            "text-field": [
-                "step",
-                ["zoom"],
-                ["get", "ref"],
-                14,
-                ["get", "name_en"]
-            ],
-            "text-max-width": 9
+      },
+      {
+        'id': 'water-name-lakeline',
+        'type': 'symbol',
+        'source': 'openmaptiles',
+        'source-layer': 'water_name',
+        'filter': [
+          '==',
+          '$type',
+          'LineString'
+        ],
+        'layout': {
+          'text-font': [
+            'Noto Sans Italic'
+          ],
+          'text-size': 14,
+          'text-field': '{name:latin}\n{name:nonlatin}',
+          'text-max-width': 5,
+          'text-rotation-alignment': 'map',
+          'symbol-placement': 'line',
+          'symbol-spacing': 350,
+          'text-letter-spacing': 0.2
         },
-        "paint": {
-            "text-color": "hsl(38, 19%, 29%)",
-            "text-halo-color": "hsl(0, 0%, 100%)",
-            "text-halo-width": 1
+        'paint': {
+          'text-color': '#74aee9',
+          'text-halo-width': 1.5,
+          'text-halo-color': 'rgba(255,255,255,0.7)'
         }
-    },
-    {
-        "id": "place-neighborhood-suburb-label",
-        "type": "symbol",
-        "source": "composite",
-        "source-layer": "place_label",
-        "minzoom": 12,
-        "maxzoom": 15,
-        "filter": ["in", "type", "neighbourhood", "suburb"],
-        "layout": {
-            "text-field": ["get", "name_en"],
-            "text-transform": "uppercase",
-            "text-letter-spacing": 0.15,
-            "text-max-width": 8,
-            "text-font": ["Roboto Regular", "Arial Unicode MS Regular"],
-            "text-padding": 3,
-            "text-size": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                12,
-                11,
-                16,
-                16
+      },
+      {
+        'id': 'water-name-other',
+        'type': 'symbol',
+        'source': 'openmaptiles',
+        'source-layer': 'water_name',
+        'filter': [
+          'all',
+          [
+            '==',
+            '$type',
+            'Point'
+          ],
+          [
+            '!in',
+            'class',
+            'ocean'
+          ]
+        ],
+        'layout': {
+          'text-font': [
+            'Noto Sans Italic'
+          ],
+          'text-size': {
+            'stops': [
+              [
+                0,
+                10
+              ],
+              [
+                6,
+                14
+              ]
             ]
+          },
+          'text-field': '{name:latin}\n{name:nonlatin}',
+          'text-max-width': 5,
+          'text-rotation-alignment': 'map',
+          'symbol-placement': 'point',
+          'symbol-spacing': 350,
+          'text-letter-spacing': 0.2,
+          'visibility': 'visible'
         },
-        "paint": {
-            "text-halo-color": "hsl(0, 0%, 100%)",
-            "text-halo-width": 1,
-            "text-color": "hsl(38, 62%, 21%)"
+        'paint': {
+          'text-color': '#74aee9',
+          'text-halo-width': 1.5,
+          'text-halo-color': 'rgba(255,255,255,0.7)'
         }
-    },
-    {
-        "id": "place-town-village-hamlet-label",
-        "type": "symbol",
-        "source": "composite",
-        "source-layer": "place_label",
-        "minzoom": 6,
-        "maxzoom": 14,
-        "filter": ["in", "type", "hamlet", "town", "village"],
-        "layout": {
-            "text-size": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                5,
-                ["match", ["get", "type"], "town", 9.5, 8],
-                16,
-                ["match", ["get", "type"], "town", 20, 16]
-            ],
-            "text-font": [
-                "step",
-                ["zoom"],
-                ["literal", ["Roboto Regular", "Arial Unicode MS Regular"]],
-                12,
-                [
-                    "match",
-                    ["get", "type"],
-                    "town",
-                    [
-                        "literal",
-                        ["Roboto Medium", "Arial Unicode MS Regular"]
-                    ],
-                    [
-                        "literal",
-                        ["Roboto Regular", "Arial Unicode MS Regular"]
-                    ]
-                ]
-            ],
-            "text-max-width": 7,
-            "text-field": ["get", "name_en"]
+      },
+      {
+        'id': 'road_oneway',
+        'type': 'symbol',
+        'source': 'openmaptiles',
+        'source-layer': 'transportation',
+        'minzoom': 15,
+        'filter': [
+          'all',
+          [
+            '==',
+            'oneway',
+            1
+          ],
+          [
+            'in',
+            'class',
+            'motorway',
+            'trunk',
+            'primary',
+            'secondary',
+            'tertiary',
+            'minor',
+            'service'
+          ]
+        ],
+        'layout': {
+          'symbol-placement': 'line',
+          'icon-image': 'oneway',
+          'symbol-spacing': 75,
+          'icon-padding': 2,
+          'icon-rotation-alignment': 'map',
+          'icon-rotate': 90,
+          'icon-size': {
+            'stops': [
+              [
+                15,
+                0.5
+              ],
+              [
+                19,
+                1
+              ]
+            ]
+          }
         },
-        "paint": {
-            "text-color": "hsl(0, 0%, 0%)",
-            "text-halo-blur": 0.5,
-            "text-halo-color": "hsl(0, 0%, 100%)",
-            "text-halo-width": 1
+        'paint': {
+          'icon-opacity': 0.5
         }
-    },
-    {
-        "id": "place-city-label-minor",
-        "type": "symbol",
-        "source": "composite",
-        "source-layer": "place_label",
-        "minzoom": 1,
-        "maxzoom": 14,
-        "filter": ["all", ["!has", "scalerank"], ["==", "type", "city"]],
-        "layout": {
-            "text-size": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                5,
-                12,
-                16,
-                22
-            ],
-            "text-font": [
-                "literal",
-                ["Roboto Medium", "Arial Unicode MS Regular"]
-            ],
-            "text-max-width": 10,
-            "text-field": ["get", "name_en"]
+      },
+      {
+        'id': 'road_oneway_opposite',
+        'type': 'symbol',
+        'source': 'openmaptiles',
+        'source-layer': 'transportation',
+        'minzoom': 15,
+        'filter': [
+          'all',
+          [
+            '==',
+            'oneway',
+            -1
+          ],
+          [
+            'in',
+            'class',
+            'motorway',
+            'trunk',
+            'primary',
+            'secondary',
+            'tertiary',
+            'minor',
+            'service'
+          ]
+        ],
+        'layout': {
+          'symbol-placement': 'line',
+          'icon-image': 'oneway',
+          'symbol-spacing': 75,
+          'icon-padding': 2,
+          'icon-rotation-alignment': 'map',
+          'icon-rotate': -90,
+          'icon-size': {
+            'stops': [
+              [
+                15,
+                0.5
+              ],
+              [
+                19,
+                1
+              ]
+            ]
+          }
         },
-        "paint": {
-            "text-color": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                5,
-                "hsl(0, 0%, 33%)",
-                6,
-                "hsl(0, 0%, 0%)"
-            ],
-            "text-halo-blur": 0.5,
-            "text-halo-color": "hsl(0, 0%, 100%)",
-            "text-halo-width": 1.25
+        'paint': {
+          'icon-opacity': 0.5
         }
-    },
-    {
-        "id": "place-city-label-major",
-        "type": "symbol",
-        "source": "composite",
-        "source-layer": "place_label",
-        "minzoom": 1,
-        "maxzoom": 14,
-        "filter": ["all", ["==", "type", "city"], ["has", "scalerank"]],
-        "layout": {
-            "text-size": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                5,
-                ["step", ["get", "scalerank"], 14, 4, 12],
-                16,
-                ["step", ["get", "scalerank"], 30, 4, 22]
-            ],
-            "text-font": [
-                "step",
-                ["zoom"],
-                ["literal", ["Roboto Medium", "Arial Unicode MS Regular"]],
+      },
+      {
+        'id': 'highway-name-path',
+        'type': 'symbol',
+        'source': 'openmaptiles',
+        'source-layer': 'transportation_name',
+        'minzoom': 15.5,
+        'filter': [
+          '==',
+          'class',
+          'path'
+        ],
+        'layout': {
+          'text-size': {
+            'base': 1,
+            'stops': [
+              [
+                13,
+                12
+              ],
+              [
+                14,
+                13
+              ]
+            ]
+          },
+          'text-font': [
+            'Noto Sans Regular'
+          ],
+          'text-field': '{name:latin} {name:nonlatin}',
+          'symbol-placement': 'line',
+          'text-rotation-alignment': 'map'
+        },
+        'paint': {
+          'text-halo-color': '#f8f4f0',
+          'text-color': 'hsl(30, 23%, 62%)',
+          'text-halo-width': 0.5
+        }
+      },
+      {
+        'id': 'highway-name-minor',
+        'type': 'symbol',
+        'source': 'openmaptiles',
+        'source-layer': 'transportation_name',
+        'minzoom': 15,
+        'filter': [
+          'all',
+          [
+            '==',
+            '$type',
+            'LineString'
+          ],
+          [
+            'in',
+            'class',
+            'minor',
+            'service',
+            'track'
+          ]
+        ],
+        'layout': {
+          'text-size': {
+            'base': 1,
+            'stops': [
+              [
+                13,
+                12
+              ],
+              [
+                14,
+                13
+              ]
+            ]
+          },
+          'text-font': [
+            'Noto Sans Regular'
+          ],
+          'text-field': '{name:latin} {name:nonlatin}',
+          'symbol-placement': 'line',
+          'text-rotation-alignment': 'map'
+        },
+        'paint': {
+          'text-halo-blur': 0.5,
+          'text-color': '#765',
+          'text-halo-width': 1
+        }
+      },
+      {
+        'id': 'highway-name-major',
+        'type': 'symbol',
+        'source': 'openmaptiles',
+        'source-layer': 'transportation_name',
+        'minzoom': 12.2,
+        'filter': [
+          'in',
+          'class',
+          'primary',
+          'secondary',
+          'tertiary',
+          'trunk'
+        ],
+        'layout': {
+          'text-size': {
+            'base': 1,
+            'stops': [
+              [
+                13,
+                12
+              ],
+              [
+                14,
+                13
+              ]
+            ]
+          },
+          'text-font': [
+            'Noto Sans Regular'
+          ],
+          'text-field': '{name:latin} {name:nonlatin}',
+          'symbol-placement': 'line',
+          'text-rotation-alignment': 'map'
+        },
+        'paint': {
+          'text-halo-blur': 0.5,
+          'text-color': '#765',
+          'text-halo-width': 1
+        }
+      },
+      {
+        'id': 'highway-shield',
+        'type': 'symbol',
+        'source': 'openmaptiles',
+        'source-layer': 'transportation_name',
+        'minzoom': 8,
+        'filter': [
+          'all',
+          [
+            '<=',
+            'ref_length',
+            6
+          ],
+          [
+            '==',
+            '$type',
+            'LineString'
+          ],
+          [
+            '!in',
+            'network',
+            'us-interstate',
+            'us-highway',
+            'us-state'
+          ]
+        ],
+        'layout': {
+          'text-size': 10,
+          'icon-image': 'road_{ref_length}',
+          'icon-rotation-alignment': 'viewport',
+          'symbol-spacing': 200,
+          'text-font': [
+            'Noto Sans Regular'
+          ],
+          'symbol-placement': {
+            'base': 1,
+            'stops': [
+              [
                 10,
-                [
-                    "step",
-                    ["get", "scalerank"],
-                    ["literal", ["Roboto Bold", "Arial Unicode MS Bold"]],
-                    5,
-                    [
-                        "literal",
-                        ["Roboto Medium", "Arial Unicode MS Regular"]
-                    ]
-                ]
-            ],
-            "text-max-width": 10,
-            "text-field": ["get", "name_en"]
+                'point'
+              ],
+              [
+                11,
+                'line'
+              ]
+            ]
+          },
+          'text-rotation-alignment': 'viewport',
+          'icon-size': 1,
+          'text-field': '{ref}'
         },
-        "paint": {
-            "text-color": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                5,
-                "hsl(0, 0%, 33%)",
-                6,
-                "hsl(0, 0%, 0%)"
-            ],
-            "text-halo-blur": 0.5,
-            "text-halo-color": "hsl(0, 0%, 100%)",
-            "text-halo-width": 1.25
-        }
-    },
-    {
-        "id": "state-label",
-        "type": "symbol",
-        "source": "composite",
-        "source-layer": "state_label",
-        "minzoom": 4,
-        "maxzoom": 8,
-        "layout": {
-            "text-line-height": 1.2,
-            "text-size": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                4,
-                ["step", ["get", "area"], 8, 20000, 9, 80000, 10],
-                9,
-                ["step", ["get", "area"], 14, 20000, 18, 80000, 23]
-            ],
-            "text-transform": "uppercase",
-            "text-font": ["Roboto Black", "Arial Unicode MS Bold"],
-            "text-padding": 1,
-            "text-field": [
-                "step",
-                ["zoom"],
-                [
-                    "step",
-                    ["get", "area"],
-                    ["get", "abbr"],
-                    80000,
-                    ["get", "name_en"]
-                ],
-                5,
-                ["get", "name_en"]
-            ],
-            "text-letter-spacing": 0.2,
-            "text-max-width": 6
+        'paint': {}
+      },
+      {
+        'id': 'highway-shield-us-interstate',
+        'type': 'symbol',
+        'source': 'openmaptiles',
+        'source-layer': 'transportation_name',
+        'minzoom': 7,
+        'filter': [
+          'all',
+          [
+            '<=',
+            'ref_length',
+            6
+          ],
+          [
+            '==',
+            '$type',
+            'LineString'
+          ],
+          [
+            'in',
+            'network',
+            'us-interstate'
+          ]
+        ],
+        'layout': {
+          'text-size': 10,
+          'icon-image': '{network}_{ref_length}',
+          'icon-rotation-alignment': 'viewport',
+          'symbol-spacing': 200,
+          'text-font': [
+            'Noto Sans Regular'
+          ],
+          'symbol-placement': {
+            'base': 1,
+            'stops': [
+              [
+                7,
+                'point'
+              ],
+              [
+                7,
+                'line'
+              ],
+              [
+                8,
+                'line'
+              ]
+            ]
+          },
+          'text-rotation-alignment': 'viewport',
+          'icon-size': 1,
+          'text-field': '{ref}'
         },
-        "paint": {
-            "text-color": "hsl(38, 7%, 64%)",
-            "text-halo-width": 1,
-            "text-halo-color": "hsl(0, 0%, 100%)"
+        'paint': {
+          'text-color': 'rgba(0, 0, 0, 1)'
         }
-    }
+      },
+      {
+        'id': 'highway-shield-us-other',
+        'type': 'symbol',
+        'source': 'openmaptiles',
+        'source-layer': 'transportation_name',
+        'minzoom': 9,
+        'filter': [
+          'all',
+          [
+            '<=',
+            'ref_length',
+            6
+          ],
+          [
+            '==',
+            '$type',
+            'LineString'
+          ],
+          [
+            'in',
+            'network',
+            'us-highway',
+            'us-state'
+          ]
+        ],
+        'layout': {
+          'text-size': 10,
+          'icon-image': '{network}_{ref_length}',
+          'icon-rotation-alignment': 'viewport',
+          'symbol-spacing': 200,
+          'text-font': [
+            'Noto Sans Regular'
+          ],
+          'symbol-placement': {
+            'base': 1,
+            'stops': [
+              [
+                10,
+                'point'
+              ],
+              [
+                11,
+                'line'
+              ]
+            ]
+          },
+          'text-rotation-alignment': 'viewport',
+          'icon-size': 1,
+          'text-field': '{ref}'
+        },
+        'paint': {
+          'text-color': 'rgba(0, 0, 0, 1)'
+        }
+      },
+      {
+        'id': 'airport-label-major',
+        'type': 'symbol',
+        'source': 'openmaptiles',
+        'source-layer': 'aerodrome_label',
+        'minzoom': 10,
+        'filter': [
+          'all',
+          [
+            'has',
+            'iata'
+          ]
+        ],
+        'layout': {
+          'text-padding': 2,
+          'text-font': [
+            'Noto Sans Regular'
+          ],
+          'text-anchor': 'top',
+          'icon-image': 'airport_11',
+          'text-field': '{name:latin}\n{name:nonlatin}',
+          'text-offset': [
+            0,
+            0.6
+          ],
+          'text-size': 12,
+          'text-max-width': 9,
+          'visibility': 'visible',
+          'icon-size': 1,
+          'text-optional': true
+        },
+        'paint': {
+          'text-halo-blur': 0.5,
+          'text-color': '#666',
+          'text-halo-width': 1,
+          'text-halo-color': '#ffffff'
+        }
+      },
+      {
+        'id': 'place-other',
+        'type': 'symbol',
+        'metadata': {
+          'mapbox:group': '1444849242106.713'
+        },
+        'source': 'openmaptiles',
+        'source-layer': 'place',
+        'filter': [
+          '!in',
+          'class',
+          'city',
+          'town',
+          'village',
+          'country',
+          'continent'
+        ],
+        'layout': {
+          'text-letter-spacing': 0.1,
+          'text-size': {
+            'base': 1.2,
+            'stops': [
+              [
+                12,
+                10
+              ],
+              [
+                15,
+                14
+              ]
+            ]
+          },
+          'text-font': [
+            'Noto Sans Bold'
+          ],
+          'text-field': '{name:latin}\n{name:nonlatin}',
+          'text-transform': 'uppercase',
+          'text-max-width': 9,
+          'visibility': 'visible'
+        },
+        'paint': {
+          'text-color': '#633',
+          'text-halo-width': 1.2,
+          'text-halo-color': 'rgba(255,255,255,0.8)'
+        }
+      },
+      {
+        'id': 'place-village',
+        'type': 'symbol',
+        'metadata': {
+          'mapbox:group': '1444849242106.713'
+        },
+        'source': 'openmaptiles',
+        'source-layer': 'place',
+        'filter': [
+          '==',
+          'class',
+          'village'
+        ],
+        'layout': {
+          'text-font': [
+            'Noto Sans Regular'
+          ],
+          'text-size': {
+            'base': 1.2,
+            'stops': [
+              [
+                10,
+                12
+              ],
+              [
+                15,
+                22
+              ]
+            ]
+          },
+          'text-field': '{name:latin}\n{name:nonlatin}',
+          'text-max-width': 8,
+          'visibility': 'visible'
+        },
+        'paint': {
+          'text-color': '#333',
+          'text-halo-width': 1.2,
+          'text-halo-color': 'rgba(255,255,255,0.8)'
+        }
+      },
+      {
+        'id': 'place-town',
+        'type': 'symbol',
+        'metadata': {
+          'mapbox:group': '1444849242106.713'
+        },
+        'source': 'openmaptiles',
+        'source-layer': 'place',
+        'filter': [
+          '==',
+          'class',
+          'town'
+        ],
+        'layout': {
+          'text-font': [
+            'Noto Sans Regular'
+          ],
+          'text-size': {
+            'base': 1.2,
+            'stops': [
+              [
+                10,
+                14
+              ],
+              [
+                15,
+                24
+              ]
+            ]
+          },
+          'text-field': '{name:latin}\n{name:nonlatin}',
+          'text-max-width': 8,
+          'visibility': 'visible'
+        },
+        'paint': {
+          'text-color': '#333',
+          'text-halo-width': 1.2,
+          'text-halo-color': 'rgba(255,255,255,0.8)'
+        }
+      },
+      {
+        'id': 'place-city',
+        'type': 'symbol',
+        'metadata': {
+          'mapbox:group': '1444849242106.713'
+        },
+        'source': 'openmaptiles',
+        'source-layer': 'place',
+        'filter': [
+          'all',
+          [
+            '!=',
+            'capital',
+            2
+          ],
+          [
+            '==',
+            'class',
+            'city'
+          ]
+        ],
+        'layout': {
+          'text-font': [
+            'Noto Sans Regular'
+          ],
+          'text-size': {
+            'base': 1.2,
+            'stops': [
+              [
+                7,
+                14
+              ],
+              [
+                11,
+                24
+              ]
+            ]
+          },
+          'text-field': '{name:latin}\n{name:nonlatin}',
+          'text-max-width': 8,
+          'visibility': 'visible'
+        },
+        'paint': {
+          'text-color': '#333',
+          'text-halo-width': 1.2,
+          'text-halo-color': 'rgba(255,255,255,0.8)'
+        }
+      },
+      {
+        'id': 'place-city-capital',
+        'type': 'symbol',
+        'metadata': {
+          'mapbox:group': '1444849242106.713'
+        },
+        'source': 'openmaptiles',
+        'source-layer': 'place',
+        'filter': [
+          'all',
+          [
+            '==',
+            'capital',
+            2
+          ],
+          [
+            '==',
+            'class',
+            'city'
+          ]
+        ],
+        'layout': {
+          'text-font': [
+            'Noto Sans Regular'
+          ],
+          'text-size': {
+            'base': 1.2,
+            'stops': [
+              [
+                7,
+                14
+              ],
+              [
+                11,
+                24
+              ]
+            ]
+          },
+          'text-field': '{name:latin}\n{name:nonlatin}',
+          'text-max-width': 8,
+          'icon-image': 'star_11',
+          'text-offset': [
+            0.4,
+            0
+          ],
+          'icon-size': 0.8,
+          'text-anchor': 'left',
+          'visibility': 'visible'
+        },
+        'paint': {
+          'text-color': '#333',
+          'text-halo-width': 1.2,
+          'text-halo-color': 'rgba(255,255,255,0.8)'
+        }
+      }  
   ],
   'created': '2018-09-19T10:20:07.260Z',
   'id': 'cjm8zxhak2s1i2sn29k3p7b8n',

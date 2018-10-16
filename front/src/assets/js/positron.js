@@ -30,7 +30,9 @@ export default () => ({
               coordinates: [69.159995, 54.472108]
             },
             properties: {
-              title: 'СКО'
+              title_ru: 'СКО',
+              title_en: 'North-Kazakhstan\nregion',
+              title_kz: 'СҚО'
             }
           },
           {
@@ -40,7 +42,9 @@ export default () => ({
               coordinates: [76.484217, 52.469523]
             },
             properties: {
-              title: 'Павлодарская\nобласть'
+              title_ru: 'Павлодарская\nобласть',
+              title_en: 'Pavlodar\nregion',
+              title_kz: 'Павлодар\nоблысы'
             }
           },
           {
@@ -50,7 +54,9 @@ export default () => ({
               coordinates: [82.217746, 48.970037]
             },
             properties: {
-              title: 'ВКО'
+              title_ru: 'ВКО',
+              title_en: 'East-Kazakhstan\nregion',
+              title_kz: 'ШҚО'
             }
           },
           {
@@ -60,7 +66,9 @@ export default () => ({
               coordinates: [77.851468, 45.140789]
             },
             properties: {
-              title: 'Алматинская\nобласть'
+              title_ru: 'Алматинская\nобласть',
+              title_en: 'Almaty\nregion',
+              title_kz: 'Алматы\nоблысы'
             }
           },
           {
@@ -70,7 +78,9 @@ export default () => ({
               coordinates: [72.144071, 44.66465]
             },
             properties: {
-              title: 'Жамбылская\nобласть'
+              title_ru: 'Жамбылская\nобласть',
+              title_en: 'Jambyl\nregion',
+              title_kz: 'Жамбыл\nоблысы'
             }
           },
           {
@@ -80,7 +90,9 @@ export default () => ({
               coordinates: [68.491775, 44.629086]
             },
             properties: {
-              title: 'ТО'
+              title_ru: 'ТО',
+              title_en: 'Turkistan\nregion',
+              title_kz: 'Түркістан\nоблысы'
             }
           },
           {
@@ -90,7 +102,9 @@ export default () => ({
               coordinates: [63.418783, 45.236046]
             },
             properties: {
-              title: 'Кызылординская\nобласть'
+              title_ru: 'Кызылординская\nобласть',
+              title_en: 'Kyzylorda\nregion',
+              title_kz: 'Қызылорда\nоблысы'
             }
           },
           {
@@ -100,7 +114,9 @@ export default () => ({
               coordinates: [58.810698, 48.619783]
             },
             properties: {
-              title: 'Актюбинская\nобласть'
+              title_ru: 'Актюбинская\nобласть',
+              title_en: 'Aktobe\nregion',
+              title_kz: 'Ақтөбе\nоблысы'
             }
           },
           {
@@ -110,7 +126,9 @@ export default () => ({
               coordinates: [53.776071, 44.05414]
             },
             properties: {
-              title: 'Мангыстауская\nоблать'
+              title_ru: 'Мангыстауская\nоблать',
+              title_en: 'Mangystau\nregion',
+              title_kz: 'Маңғыстау\nоблысы'
             }
           },
           {
@@ -120,7 +138,9 @@ export default () => ({
               coordinates: [52.176394, 47.822386]
             },
             properties: {
-              title: 'Атырауская\nобласть'
+              title_ru: 'Атырауская\nобласть',
+              title_en: 'Atyrau\nregion',
+              title_kz: 'Атырау\nоблысы'
             }
           },
           {
@@ -130,7 +150,9 @@ export default () => ({
               coordinates: [63.496522, 52.509224]
             },
             properties: {
-              title: 'Костанайская\nобласть'
+              title_ru: 'Костанайская\nобласть',
+              title_en: 'Kostanay\nregion',
+              title_kz: 'Қостанай\nоблысы'
             }
           },
           {
@@ -140,7 +162,9 @@ export default () => ({
               coordinates: [70.298717, 52.006681]
             },
             properties: {
-              title: 'Акмолинская\nобласть'
+              title_ru: 'Акмолинская\nобласть',
+              title_en: 'Akmola\nregion',
+              title_kz: 'Ақмола\nоблысы'
             }
           },
           {
@@ -150,7 +174,9 @@ export default () => ({
               coordinates: [71.518106, 48.516465]
             },
             properties: {
-              title: 'Карагандинская\nобласть'
+              title_ru: 'Карагандинская\nобласть',
+              title_en: 'Karagandy\nregion',
+              title_kz: 'Қарағанды\nоблысы'
             }
           },
           {
@@ -160,7 +186,9 @@ export default () => ({
               coordinates: [50.905113, 50.19334]
             },
             properties: {
-              title: 'ЗКО'
+              title_ru: 'ЗКО',
+              title_en: 'West-Kazakhstan\nregion',
+              title_kz: 'БҚО'
             }
           }
         ]
@@ -177,7 +205,8 @@ export default () => ({
               coordinates: [71.463959, 51.154918]
             },
             properties: {
-              title: 'Астана'
+              title: 'Астана',
+              title_en: 'Astana'
             }
           },
           {
@@ -187,7 +216,8 @@ export default () => ({
               coordinates: [76.904369, 43.237110]
             },
             properties: {
-              title: 'Алматы'
+              title: 'Алматы',
+              title_en: 'Almaty'
             }
           },
           {
@@ -197,7 +227,8 @@ export default () => ({
               coordinates: [69.591172, 42.335432]
             },
             properties: {
-              title: 'Шымкент'
+              title: 'Шымкент',
+              title_en: 'Shymkent'
             }
           }
         ]
@@ -426,7 +457,7 @@ export default () => ({
       type: 'symbol',
       source: 'symbols',
       layout: {
-        'text-field': '{title}',
+        'text-field': '{title_kz}',
         'text-font': ['Proxima Nova'],
         'text-size': 14,
         'text-allow-overlap': true,
