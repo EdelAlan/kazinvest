@@ -435,7 +435,7 @@ export default {
 
             this._mapboxgl_map.easeTo({
               center: features[0].geometry.coordinates,
-              zoom: zoom
+              zoom: zoom+2
             });
           }
         );
@@ -770,7 +770,8 @@ export default {
           features: []
         },
         cluster: true,
-        clusterRadius: 20,
+        clusterRadius: 10,
+        clusterMaxZoom: 14
       };
 
       this.zones.forEach(el => {
