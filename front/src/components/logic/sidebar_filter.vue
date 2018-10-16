@@ -29,9 +29,8 @@
       'set_zones',
     ]),
 
-    mounted () {
-      this.set_industries();
-      this.set_republics();
+    async mounted () {
+      await this.set_industries();
     },
 
   }

@@ -149,6 +149,10 @@
 		margin: 20px auto;
 	}
 
+	#sign_in {
+		font-size: 16px;
+	}
+
 	.signin-control {
 		width: 130px;
 		cursor: pointer;
@@ -163,6 +167,7 @@
 
 	.signin-control.signin-control--primary {
 		background: #03A0E3;
+		font-size: 14px;
 		color: #fff;
 	}
 	

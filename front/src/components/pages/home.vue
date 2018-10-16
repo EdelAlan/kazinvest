@@ -1,6 +1,7 @@
 <script>
   import modal from '../ui/modal.vue';
   import tabs from '../ui/tabs.vue';
+  import selector from '../ui/selector.vue';
 
   import signup from '../logic/signup.vue';
   import signin from '../logic/signin.vue';
@@ -12,6 +13,7 @@
       modal,
       tabs,
       signup,
+      selector,
       signin,
     },
 
@@ -91,37 +93,63 @@
               >Войти</a>
 
             <div class="filter_line">
+            <!--
                 <select id="type" class="field">
                     <option value="сэз">СЭЗ</option>
                     <option value="из">ИЗ</option>
-                </select>
+                </select>-->
+                <selector style="margin: 5px"
+                  :list="[{
+                    'title_ru': 'sdfaadsf',
+                    'title_kz': 'sdfaadsf',
+                    'title_en': 'sdfaadsf',
+                  }, {
+                    'title_ru': 'sdfaadsf',
+                    'title_kz': 'sdfaadsf',
+                    'title_en': 'sdfaadsf',
+                  }]"
+                  :title="{
+                    'title_ru': 'СЭЗ/ИЗ', 
+                    'title_kz': 'СЭЗ/ИЗ', 
+                    'title_en': 'СЭЗ/ИЗ', 
+                  }"
+                  :placeholder="'СЭЗ/ИЗ'"
+                  v-on:select="null"
+                  :styles="{
+                    'border': '1px solid #fff',
+                    'border-radius': '3px',
+                    'height': '35px',
+                    'font-size': '14px',
+                    'padding': '5px 10px',
+                    'line-height': '18px'
+                  }"
+                />
                 <input type="text" id="territory" class="field" placeholder="Регионы">
                 <input type="text" id="search" class="field" placeholder="Отрасль">
                 <button id="find" class="field btn">Найти</button>
             </div>
+
             <router-link to="/map">
-
-
               <div class="home-main_btn_layer">
                 <div class="home-main_btn">
                   <div class="home-main_btn_logo"></div>
                   <span class="home-main_btn_title">Интерактивная карта Специальных экономических и Индустриальных зон Республики Казахстан</span>
                 </div>
               </div>
-
-
-
             </router-link>
+
             <div class="btn_group">
-                <a href="#" class="btn category">
-                    <div class="count">11</div>
-                    <p class="title">Специальные экономические зоны (СЭЗ)</p>
-                </a>
-                <a href="#" class="btn category">
-                    <div class="count">24</div>
-                    <p class="title">Индустриальные зоны (ИЗ)</p>
-                </a>
-                <a href="#" class="btn category">
+                <router-link class="btn category" to="/map?zone_filter=[2]">
+                  <div class="count">11</div>
+                  <p class="title">Специальные экономические зоны (СЭЗ)</p>
+                </router-link>
+
+                <router-link class="btn category" to="/map?zone_filter=[1]">
+                  <div class="count">24</div>
+                  <p class="title">Индустриальные зоны (ИЗ)</p>
+                </router-link>
+
+                <a href="/invest_opportunities.pdf" target="_blank" class="btn category">
                     <p class="title" style="text-align: center">Инвестиционные возможности</p>
                 </a>
             </div>

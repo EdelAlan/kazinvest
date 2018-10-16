@@ -12,16 +12,15 @@
   }
 </script>
 
-
 <template>
   <div class="lang">
     <div class="lang-container">
       <span class="lang-item"
-        :class="{'lang-item--active': lang == 'ru' }"
-        @click="select_lang('ru')">RUS</span>
-      <span class="lang-item"
         :class="{'lang-item--active': lang == 'kz' }"
-        @click="select_lang('kz')">KAZ</span>
+        @click="select_lang('kz')">ҚАЗ</span>
+      <span class="lang-item"
+        :class="{'lang-item--active': lang == 'ru' }"
+        @click="select_lang('ru')">РУС</span>
       <span class="lang-item"
         :class="{'lang-item--active': lang == 'en' }"
         @click="select_lang('en')">ENG</span>
