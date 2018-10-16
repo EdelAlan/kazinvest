@@ -93,17 +93,17 @@
                 :menu="[{
                   title_ru: 'Преимущества ' + republic['title_' + lang] + ' РК',
                   title_en: 'Benefits ' + republic['title_' + lang] + ' RK',
-                  title_kz: 'Преимущества ' + republic['title_' + lang] + ' РК',
+                  title_kz: 'Артықшылық ' + republic['title_' + lang] + ' ҚР',
                   passport_content: key == 0 ? 'level_1:sez_advantages' : 'level_1:iz_advantages',
                 }, {
                   title_ru: 'Описание ' + republic['title_' + lang] + ' РК',
                   title_en: 'Description ' + republic['title_' + lang] + ' RK',
-                  title_kz: 'Описание ' + republic['title_' + lang] + ' РК',
+                  title_kz: 'Сипаттама ' + republic['title_' + lang] + ' ҚР',
                   passport_content: key == 0 ? 'level_1:sez_common' : 'level_1:iz_common',
                 }, {
                   title_ru: 'Маркетинговые материалы ' + republic['title_' + lang] + ' РК',
                   title_en: 'Marketing materials ' + republic['title_' + lang] + ' RK',
-                  title_kz: 'Маркетинговые материалы ' + republic['title_' + lang] + ' РК',
+                  title_kz: 'Маркетингтік материалдар ' + republic['title_' + lang] + ' ҚР',
                   passport_content: key == 0 ? 'level_1:sez_market' : 'level_1:iz_market',
                 }]"
               />
@@ -111,14 +111,14 @@
                 :menu="[{
                   title_ru: 'Контакты АО «НК «KAZAKH INVEST»',
                   title_en: 'JSC «НК «KAZAKH INVEST» contacts',
-                  title_kz: 'Контакты АО «НК «KAZAKH INVEST»',
+                  title_kz: 'АҚ «НК «KAZAKH INVEST» байланыстары',
                   passport_content: 'level_1:sez_iz_contacts',
                 }]"
               />
               <reference
                 :menu="[{
                   title_ru: 'Общие положения ИЗ/СЭЗ РК',
-                  title_kz: 'Общие положениялар ИЗ/СЭЗ РК',
+                  title_kz: 'Жалпы ережелер ИА/АЭА ҚР',
                   title_en: 'General provisions of IZ/SEZ RK',
                   passport_content: 'level_1:sez_iz_polozh',
                 }]"
@@ -130,22 +130,22 @@
               :menu="[{
                 title_ru: 'Описание ' + selected_zone['title_' + lang] + ' РК',
                 title_en: 'Description ' + selected_zone['title_' + lang] + ' RK',
-                title_kz: 'Описание ' + selected_zone['title_' + lang] + ' РК',
+                title_kz: 'Сипаттама ' + selected_zone['title_' + lang] + ' ҚР',
                 passport_content: 'level_2:zone_description',
               }, {
                 title_ru: 'Галерея зоны ' + selected_zone['title_' + lang] + ' РК',
                 title_en: 'Zone gallery ' + selected_zone['title_' + lang] + ' RK',
-                title_kz: 'Галерея зоны ' + selected_zone['title_' + lang] + ' РК',
+                title_kz: 'Аумақ галереясы ' + selected_zone['title_' + lang] + ' ҚР',
                 passport_content: 'level_2:zone_gallery',
               }, {
                 title_ru: 'Маркетинговые материалы',
                 title_en: 'Marketing materials',
-                title_kz: 'Маркетинговые материалы',
+                title_kz: 'Маркетингтік материалдар',
                 passport_content: 'level_2:zone_market',
               }, {
                 title_ru: 'Контакты',
                 title_en: 'Contacts',
-                title_kz: 'Контакты',
+                title_kz: 'Байланыс',
                 passport_content: 'level_2:zone_contacts',
               }]"
             />
@@ -155,22 +155,22 @@
               :menu="[{
                 title_ru: 'Общая информация',
                 title_en: 'General information',
-                title_kz: 'Общая информация',
+                title_kz: 'Жалпы ақпарат',
                 passport_content: 'level_3:sector_common',
               }, {
                 title_ru: 'Галерея сектора',
                 title_en: 'Sector gallery',
-                title_kz: 'Галерея сектора',
+                title_kz: 'Сектор галереясы',
                 passport_content: 'level_3:sector_gallery',
               }, {
                 title_ru: 'Маркетинговые материалы',
                 title_en: 'Marketing materials',
-                title_kz: 'Маркетинговые материалы',
+                title_kz: 'Маркетингтік материалдар',
                 passport_content: 'level_3:sector_market',
               }, {
                 title_ru: 'Контакты',
                 title_en: 'Contacts',
-                title_kz: 'Контакты',
+                title_kz: 'Байланыс',
                 passport_content: 'level_3:sector_contacts',
               }]"
             />
@@ -234,12 +234,12 @@
               :menu="[{
                 title_ru: 'Цифровые показатели 1 ' + republic['title_' + lang],
                 title_en: 'Digital indicators 1 ' + republic['title_' + lang],
-                title_kz: 'Цифровые показатели 1 ' + republic['title_' + lang],
+                title_kz: 'Сандық көрсеткіштер 1 ' + republic['title_' + lang],
                 passport_content: 'level_1:' + republic.type + ':numeric',
               }, {
                 title_ru: 'Диаграммы 1' + republic['title_' + lang],
                 title_en: 'Diagrams 1' + republic['title_' + lang],
-                title_kz: 'Диаграммы 1' + republic['title_' + lang],
+                title_kz: 'Диаграммалар 1' + republic['title_' + lang],
                 passport_content: 'level_1:' + republic.type + ':diagramm',
               }]"
             />
@@ -248,12 +248,12 @@
               :menu="[{
                 title_ru: 'Цифровые показатели 2',
                 title_en: 'Digital indicators 2',
-                title_kz: 'Цифровые показатели 2',
+                title_kz: 'Сандық көрсеткіштер 2',
                 passport_content: 'level_2:zone:numeric',
               }, {
                 title_ru: 'Диаграммы 2',
                 title_en: 'Diagrams 2',
-                title_kz: 'Диаграммы 2',
+                title_kz: 'Диаграммалар 2',
                 passport_content: 'level_2:zone:diagramm',
               }]"
             />
@@ -262,12 +262,12 @@
               :menu="[{
                 title_ru: 'Цифровые показатели 3',
                 title_en: 'Digital indicators 3',
-                title_kz: 'Цифровые показатели 3',
+                title_kz: 'Сандық көрсеткіштер 3',
                 passport_content: 'level_3:sector:numeric',
               }, {
                 title_ru: 'Диаграммы 3',
                 title_en: 'Diagrams 3',
-                title_kz: 'Диаграммы 3',
+                title_kz: 'Диаграммалар 3',
                 passport_content: 'level_3:sector:diagramm',
               }]"
             />
@@ -432,11 +432,11 @@
           v-for="item in [{
             title_ru: 'СЭЗ цифровые показатели',
             title_en: 'SEZ digital indicators',
-            title_kz: 'СЭЗ цифровые показатели',
+            title_kz: 'АЭА сандық көрсеткіштер',
           }, {
             title_ru: 'СЭЗ цифровые показатели',
             title_en: 'SEZ digital indicators',
-            title_kz: 'СЭЗ цифровые показатели',
+            title_kz: 'АЭА сандық көрсеткіштер',
           }]"
           v-text="item['title_' + lang]"
         ></div>
@@ -452,11 +452,11 @@
           v-for="item in [{
             title_ru: 'ИЗ цифровые показатели',
             title_en: 'IZ digital indicators',
-            title_kz: 'ИЗ цифровые показатели',
+            title_kz: 'ИА сандық көрсеткіштер',
           }, {
             title_ru: 'ИЗ цифровые показатели',
             title_en: 'IZ digital indicators',
-            title_kz: 'ИЗ цифровые показатели',
+            title_kz: 'ИА сандық көрсеткіштер',
           }]"
           v-text="item['title_' + lang]"
         ></div>
@@ -472,11 +472,11 @@
           v-for="item in [{
             title_ru: 'СЭЗ диаграммные данные',
             title_en: 'SEZ diagram information',
-            title_kz: 'СЭЗ диаграммные данные',
+            title_kz: 'АЭА диаграммные данные',
           }, {
             title_ru: 'СЭЗ диаграммные данные',
             title_en: 'SEZ diagram information',
-            title_kz: 'СЭЗ диаграммные данные',
+            title_kz: 'АЭА диаграмма деректері',
           }]"
           v-text="item['title_' + lang]"
         ></div>
@@ -492,11 +492,11 @@
           v-for="item in [{
             title_ru: 'ИЗ диаграммные данные',
             title_en: 'IZ diagram information',
-            title_kz: 'ИЗ диаграммные данные',
+            title_kz: 'ИА диаграмма деректері',
           }, {
             title_ru: 'ИЗ диаграммные данные',
             title_en: 'IZ diagram information',
-            title_kz: 'ИЗ диаграммные данные',
+            title_kz: 'ИА диаграмма деректері',
           }]"
           v-text="item['title_' + lang]"
         ></div>
