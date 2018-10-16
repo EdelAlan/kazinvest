@@ -173,7 +173,9 @@
                     'line-height': '23px'
                   }"
                 />
-                <button id="find" class="field btn">Найти</button>
+                <router-link id="find"  class="btn category field btn" to="/map">
+                  Найти
+                </router-link>
             </div>
 
             <router-link to="/map">
@@ -358,6 +360,9 @@
     padding: 10px 25px;
     background: #F7B06F;
     border: none;
+    width: 150px;
+    text-align: center;
+    display: block;
     box-shadow: 0 3px 5px #0003;
     color: #fff;
     line-height: 17px;
