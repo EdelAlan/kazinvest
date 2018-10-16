@@ -217,12 +217,12 @@ export default {
             }
             if (zones[0]) {
               this._mapboxgl_map.getCanvas().style.cursor = 'pointer';
-                this.show_popup({
-                  is_piechart: true,
-                  pageX: e.originalEvent.pageX,
-                  pageY: e.originalEvent.pageY,
-                  feature: zones[0]
-                });
+              this.show_popup({
+                is_piechart: true,
+                pageX: e.originalEvent.pageX,
+                pageY: e.originalEvent.pageY,
+                feature: zones[0]
+              });
             }
             
             break;
