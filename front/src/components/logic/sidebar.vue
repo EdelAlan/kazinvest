@@ -82,23 +82,53 @@
             <template 
               v-if="active_level.id == 1"> 
               <reference
-                v-if="zone_filter[key].checked"
-                v-for="republic, key in republics"
+                v-if="zone_filter.length ? zone_filter[0].checked : null"
                 :menu="[{
-                  title_ru: 'Преимущества ' + republic['title_' + lang] + ' РК',
-                  title_en: 'Преимущества ' + republic['title_' + lang] + ' РК',
-                  title_kz: 'Преимущества ' + republic['title_' + lang] + ' РК',
-                  passport_content: key == 0 ? 'level_1:sez_advantages' : 'level_1:iz_advantages',
+                  title_ru: 'Преимущества ' + republics[0]['title_' + lang] + ' РК',
+                  title_en: 'Преимущества ' + republics[0]['title_' + lang] + ' РК',
+                  title_kz: 'Преимущества ' + republics[0]['title_' + lang] + ' РК',
+                  passport_content: 'level_1:sez_advantages',
+                }]"
+              />
+              <reference
+                :menu="[{
+                  title_ru: 'Общие положения СЭЗ/ИЗ РК',
+                  title_kz: 'Общие положения СЭЗ/ИЗ РК',
+                  title_en: 'Общие положения СЭЗ/ИЗ РК',
+                  passport_content: 'level_1:sez_iz_polozh',
+                }]"
+              />
+              <reference
+                v-if="zone_filter.length ? zone_filter[0].checked : null"
+                :menu="[{
+                  title_ru: 'Описание ' + republics[0]['title_' + lang] + ' РК',
+                  title_en: 'Описание ' + republics[0]['title_' + lang] + ' РК',
+                  title_kz: 'Описание ' + republics[0]['title_' + lang] + ' РК',
+                  passport_content: 'level_1:sez_common',
                 }, {
-                  title_ru: 'Описание ' + republic['title_' + lang] + ' РК',
-                  title_en: 'Описание ' + republic['title_' + lang] + ' РК',
-                  title_kz: 'Описание ' + republic['title_' + lang] + ' РК',
-                  passport_content: key == 0 ? 'level_1:sez_common' : 'level_1:iz_common',
+                  title_ru: 'Маркетинговые материалы ' + republics[0]['title_' + lang] + ' РК',
+                  title_en: 'Маркетинговые материалы ' + republics[0]['title_' + lang] + ' РК',
+                  title_kz: 'Маркетинговые материалы ' + republics[0]['title_' + lang] + ' РК',
+                  passport_content: 'level_1:sez_market',
+                }]"
+              />
+              <reference
+                v-if="zone_filter.length ? zone_filter[1].checked : null"
+                :menu="[{
+                  title_ru: 'Преимущества ' + republics[1]['title_' + lang] + ' РК',
+                  title_en: 'Преимущества ' + republics[1]['title_' + lang] + ' РК',
+                  title_kz: 'Преимущества ' + republics[1]['title_' + lang] + ' РК',
+                  passport_content: 'level_1:iz_advantages',
                 }, {
-                  title_ru: 'Маркетинговые материалы ' + republic['title_' + lang] + ' РК',
-                  title_en: 'Маркетинговые материалы ' + republic['title_' + lang] + ' РК',
-                  title_kz: 'Маркетинговые материалы ' + republic['title_' + lang] + ' РК',
-                  passport_content: key == 0 ? 'level_1:sez_market' : 'level_1:iz_market',
+                  title_ru: 'Описание ' + republics[1]['title_' + lang] + ' РК',
+                  title_en: 'Описание ' + republics[1]['title_' + lang] + ' РК',
+                  title_kz: 'Описание ' + republics[1]['title_' + lang] + ' РК',
+                  passport_content: 'level_1:iz_common',
+                }, {
+                  title_ru: 'Маркетинговые материалы ' + republics[1]['title_' + lang] + ' РК',
+                  title_en: 'Маркетинговые материалы ' + republics[1]['title_' + lang] + ' РК',
+                  title_kz: 'Маркетинговые материалы ' + republics[1]['title_' + lang] + ' РК',
+                  passport_content: 'level_1:iz_market',
                 }]"
               />
               <reference
@@ -107,14 +137,6 @@
                   title_en: 'Контакты АО «НК «KAZAKH INVEST»',
                   title_kz: 'Контакты АО «НК «KAZAKH INVEST»',
                   passport_content: 'level_1:sez_iz_contacts',
-                }]"
-              />
-              <reference
-                :menu="[{
-                  title_ru: 'Общие положения ИЗ/СЭЗ РК',
-                  title_kz: 'Общие положения ИЗ/СЭЗ РК',
-                  title_en: 'Общие положения ИЗ/СЭЗ РК',
-                  passport_content: 'level_1:sez_iz_polozh',
                 }]"
               />
             </template>
@@ -292,19 +314,19 @@
         </div>
         <div class="sidebar-passport_padding" slot="body" v-if="passport_content == 'level_1:sez_iz_polozh'">
           <h3>Законодательная база СЭЗ РК</h3>
-          <a href="http://adilet.zan.kz/rus/docs/Z1100000469" target="_blank">
+          <a :href="'http://adilet.zan.kz/' + (lang == 'ru' ? 'rus' : lang == 'kz' ? 'kaz' : 'eng') + '/docs/Z1100000469'" target="_blank">
             <h4>Закон о СЭЗ</h4>
             <p>
               Настоящий Закон регулирует общественные отношения, возникающие при создании, функционировании и упразднении специальных экономических зон на территории Республики Казахстан
             </p>
           </a>
-          <a href="http://adilet.zan.kz/rus/docs/K1700000120" target="_blank">
+          <a :href="'http://adilet.zan.kz/' + (lang == 'ru' ? 'rus' : lang == 'kz' ? 'kaz' : 'eng') + '/docs/K1700000120'" target="_blank">
             <h4>Налоговый кодекс</h4>
             <p>
               Глава 79. НАЛОГООБЛОЖЕНИЕ ЛИЦ, ОСУЩЕСТВЛЯЮЩИХ ДЕЯТЕЛЬНОСТЬ НА ТЕРРИТОРИЯХ СПЕЦИАЛЬНЫХ ЭКОНОМИЧЕСКИХ ЗОН
             </p>
           </a>
-          <a href="http://adilet.zan.kz" target="_blank">
+          <a :href="'http://adilet.zan.kz?lang=' + (lang == 'ru' ? 'rus' : lang == 'kz' ? 'kaz' : 'eng')" target="_blank">
             <p>Ссылка на закон</p>
           </a>
         </div>
