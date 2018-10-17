@@ -152,11 +152,11 @@
 
                 <filter_checker
                   style="margin: 5px; width: 20%"
-                  :list="zone_filter"                  
+                  :list="zone_filter"
                   :title="{
-                    'title_ru': zone_filter.filter(it => it.checked).length ? zone_filter.filter(it => it.checked).map(it => it.title_ru).join(', ') : 'Не выбрано', 
-                    'title_kz': zone_filter.filter(it => it.checked).length ? zone_filter.filter(it => it.checked).map(it => it.title_kz).join(', ') : 'Не выбрано', 
-                    'title_en': zone_filter.filter(it => it.checked).length ? zone_filter.filter(it => it.checked).map(it => it.title_en).join(', ') : 'Не выбрано',
+                    'title_ru': zone_filter.filter(it => it.checked).length ? zone_filter.filter(it => it.checked).map(it => it.title_ru).join(', ') : 'СЭЗ/ИЗ', 
+                    'title_kz': zone_filter.filter(it => it.checked).length ? zone_filter.filter(it => it.checked).map(it => it.title_kz).join(', ') : 'СЭЗ/ИЗ', 
+                    'title_en': zone_filter.filter(it => it.checked).length ? zone_filter.filter(it => it.checked).map(it => it.title_en).join(', ') : 'СЭЗ/ИЗ',
                   }"
                   v-on:select="set_zone_filter"
                   :styles="{
@@ -173,9 +173,9 @@
                   style="margin: 5px; width: 25%"
                   :list="provinces_filter"
                   :title="{
-                    'title_ru': provinces_filter.filter(it => it.checked).length ? provinces_filter.filter(it => it.checked).map(it => it.title_ru).join(', ') : 'Не выбрано', 
-                    'title_kz': provinces_filter.filter(it => it.checked).length ? provinces_filter.filter(it => it.checked).map(it => it.title_kz).join(', ') : 'Не выбрано', 
-                    'title_en': provinces_filter.filter(it => it.checked).length ? provinces_filter.filter(it => it.checked).map(it => it.title_en).join(', ') : 'Не выбрано',
+                    'title_ru': provinces_filter.filter(it => it.checked).length ? provinces_filter.filter(it => it.checked).map(it => it.title_ru).join(', ') : 'Регион', 
+                    'title_kz': provinces_filter.filter(it => it.checked).length ? provinces_filter.filter(it => it.checked).map(it => it.title_kz).join(', ') : 'Регион', 
+                    'title_en': provinces_filter.filter(it => it.checked).length ? provinces_filter.filter(it => it.checked).map(it => it.title_en).join(', ') : 'Регион',
                   }"
                   v-on:select="set_provinces_filter"
                   :styles="{
@@ -192,9 +192,9 @@
                   style="margin: 5px; width: 25%"
                   :list="industries_filter"
                   :title="{
-                    'title_ru': industries_filter.filter(it => it.checked).length ? industries_filter.filter(it => it.checked).map(it => it.title_ru).join(', ') : 'Не выбрано', 
-                    'title_kz': industries_filter.filter(it => it.checked).length ? industries_filter.filter(it => it.checked).map(it => it.title_kz).join(', ') : 'Не выбрано', 
-                    'title_en': industries_filter.filter(it => it.checked).length ? industries_filter.filter(it => it.checked).map(it => it.title_en).join(', ') : 'Не выбрано',
+                    'title_ru': industries_filter.filter(it => it.checked).length ? industries_filter.filter(it => it.checked).map(it => it.title_ru).join(', ') : 'Отрасль', 
+                    'title_kz': industries_filter.filter(it => it.checked).length ? industries_filter.filter(it => it.checked).map(it => it.title_kz).join(', ') : 'Отрасль', 
+                    'title_en': industries_filter.filter(it => it.checked).length ? industries_filter.filter(it => it.checked).map(it => it.title_en).join(', ') : 'Отрасль',
                   }"
                   v-on:select="set_industries_filter"
                   :styles="{
@@ -212,9 +212,9 @@
                   :value="search_string"
                   @input="set_search_string" 
                   :placeholder="{
-                    'title_ru': 'Поиск по названию...', 
-                    'title_kz': 'Іздеу...',
-                    'title_en': 'Search...', 
+                    'title_ru': 'Поиск', 
+                    'title_kz': 'Іздеу',
+                    'title_en': 'Search', 
                   }['title_' + lang]"
                 />
                 <a href="#" id="find" class="btn category field btn" 
@@ -228,7 +228,7 @@
                 </a>
             </div>
 
-            <router-link class="home-main_btn_layer_link" to="/map">
+            <div class="home-main_btn_layer_link" to="/map">
               <div class="home-main_btn_layer">
                 <div class="home-main_btn">
                   <div class="home-main_btn_logo"></div>
@@ -241,7 +241,7 @@
                   </span>
                 </div>
               </div>
-            </router-link>
+            </div>
 
             <div class="btn_group">
                 <router-link class="btn category" to="/map?zone_filter=[2]">
@@ -374,6 +374,7 @@
   .home-main_btn_title {
     font-size: 18px;
     color: #666;
+    font-weight: bold;
     text-decoration: none;
   }
 

@@ -28,7 +28,7 @@ export default {
               title_ru,
               title_kz,
               title_en,
-              checked: industries_filter ? (industries_filter.includes(id) ? false : true) : true,
+              checked: industries_filter ? (industries_filter.includes(id) ? false : true) : false,
             };
           }));
         commit('set_industries', industries);

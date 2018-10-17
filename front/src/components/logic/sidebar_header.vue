@@ -14,7 +14,6 @@
     ]),
     methods: {
       async back () {
-        console.log(32432432432432432432)
         await this.set_level_b(this.levels[0])
         this.$router.push('/?' + this.search_query)
       },

@@ -28,7 +28,7 @@ export default {
               title_ru,
               title_kz,
               title_en,
-              checked: provinces_filter ? (provinces_filter.includes(id) ? false : true) : true,
+              checked: provinces_filter ? (provinces_filter.includes(id) ? false : true) : false,
             };
           }));
         commit('set_provinces', provinces);

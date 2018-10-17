@@ -29,7 +29,7 @@ export default {
               title_ru,
               title_kz,
               title_en,
-              checked: zone_filter ? (zone_filter.includes(id) ? false : true) : true,
+              checked: zone_filter ? (zone_filter.includes(id) ? false : true) : false,
             };
           }));
       });
