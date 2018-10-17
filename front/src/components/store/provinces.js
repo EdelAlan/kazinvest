@@ -17,7 +17,6 @@ export default {
 
   actions: {
     set_provinces ({ commit }, { query, not_selected }) {
-      console.log(not_selected)
       const provinces_filter = (query && query.provinces_filter) ? JSON.parse(query.provinces_filter) : null;
       return fetcher({
         path: this.getters.api_path + '/back/api/provinces',
