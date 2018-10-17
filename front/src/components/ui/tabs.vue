@@ -2,12 +2,16 @@
 
 	export default {
 
-		props: ['titles_style'],
+		props: ['titles_style', 'active_page'],
 
 		data () {
 			return {
 				active_page_num: 0,
 			};
+		},
+
+		mounted() {
+			this.active_page_num = this.active_page;
 		},
 
 		methods: {

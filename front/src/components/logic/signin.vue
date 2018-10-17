@@ -1,5 +1,5 @@
 <script>
-  import { mapActions } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
 
 	export default {
 
@@ -12,6 +12,10 @@
 				password_visibility: false,
 			};
 		},
+
+		computed: mapGetters([
+			'lang',
+		]),
 
 		methods: {
 			...mapActions([
@@ -52,7 +56,11 @@
 
 			<div class="signin-input_container">
 				<div class="signin-input_title"
-					v-text="'Пароль'">
+					v-text="{
+						'title_ru': 'Пароль', 
+						'title_kz': 'Құпия сөз', 
+						'title_en': 'Password'
+					}['title_' + lang]">
 				</div>
 				<input class="signin-input"
 					:type="password_visibility ? 'text' : 'password'"
@@ -61,15 +69,15 @@
 					@click="toggle_password_visibility"></span>
 			</div>
 
-			<div class="signin-password_forgot">
-				<span class="signin-password_forgot_link" 
-					v-text="'Я забыл пароль'"></span>
-			</div>
-
 			<div class="signin-controls">
-				<button class="signin-control">Отмена</button>
 				<button class="signin-control signin-control--primary"
-					@click="signin">Войти</button>
+					@click="signin"
+					v-text="{
+						'title_ru': 'Войти', 
+						'title_kz': 'Кіру', 
+						'title_en': 'Sign in'
+					}['title_' + lang]">
+				</button>
 			</div>
 
 		</div>
@@ -145,7 +153,7 @@
 	}
 
 	.signin-controls {
-		width: 260px;
+		width: 130px;
 		margin: 20px auto;
 	}
 
@@ -154,7 +162,7 @@
 	}
 
 	.signin-control {
-		width: 130px;
+		width: 100%;
 		cursor: pointer;
 		padding: 10px;
 		color: #777;
