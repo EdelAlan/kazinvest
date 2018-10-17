@@ -28,25 +28,39 @@
     computed: mapGetters([
       'signup_signin_modal',
       'industries_filter',
+      'zone_filter',
       'provinces_filter',
+      'search_query',
+      'search_string',
+      'lang',
+      'levels',
     ]),
 
 		methods: {
       ...mapActions([
         'change_ui_visibility',
-        'set_provinces',
+        'set_republics',
         'set_industries',
+        'set_provinces',
+        'set_level',
+        'set_republics_filter',
+        'set_zone_filter',
         'set_industries_filter',
         'set_provinces_filter',
+        'set_search_string',
       ]),
+      async find() {
+        this.$router.push('/map?' + this.search_query);
+      },
 			toggleMenu() {
 				this.menu = !this.menu;
 			},
 		},
 
     async mounted () {
-      await this.set_provinces();
-      await this.set_industries();
+      await this.set_provinces(this.$route.query);
+      await this.set_republics(this.$route.query);
+      await this.set_industries(this.$route.query);
     },
 
 	}
@@ -107,40 +121,32 @@
 
             <div class="filter_line">
 
-                <selector style="margin: 5px"
-                  :list="[{
-                    title_ru: 'СЭЗ',
-                    title_en: 'SEZ',
-                    title_kz: 'СЭЗ',
-                  }, {
-                    title_ru: 'ИЗ',
-                    title_en: 'IZ',
-                    title_kz: 'ИЗ',
-                  }]"
+                <filter_checker
+                  style="margin: 5px; width: 20%"
+                  :list="zone_filter"                  
                   :title="{
-                    'title_ru': 'СЭЗ/ИЗ', 
-                    'title_kz': 'СЭЗ/ИЗ', 
-                    'title_en': 'СЭЗ/ИЗ', 
+                    'title_ru': zone_filter.filter(it => it.checked).length ? zone_filter.filter(it => it.checked).map(it => it.title_ru).join(', ') : 'Не выбрано', 
+                    'title_kz': zone_filter.filter(it => it.checked).length ? zone_filter.filter(it => it.checked).map(it => it.title_kz).join(', ') : 'Не выбрано', 
+                    'title_en': zone_filter.filter(it => it.checked).length ? zone_filter.filter(it => it.checked).map(it => it.title_en).join(', ') : 'Не выбрано',
                   }"
-                  :placeholder="'СЭЗ/ИЗ'"
+                  v-on:select="set_zone_filter"
                   :styles="{
                     'border': '1px solid #fff',
                     'border-radius': '3px',
                     'height': '35px',
                     'font-size': '16px',
-                    'padding': '5px 10px',
-                    'color': '#777',
-                    'line-height': '18px'
+                    'padding': '5px 40px 5px 10px',
+                    'line-height': '23px'
                   }"
                 />
 
                 <filter_checker
-                  style="margin: 5px; width: 100%"
+                  style="margin: 5px; width: 25%"
                   :list="provinces_filter"
                   :title="{
-                    'title_ru': 'Отрасли', 
-                    'title_kz': 'Салалары', 
-                    'title_en': 'Industries'
+                    'title_ru': provinces_filter.filter(it => it.checked).length ? provinces_filter.filter(it => it.checked).map(it => it.title_ru).join(', ') : 'Не выбрано', 
+                    'title_kz': provinces_filter.filter(it => it.checked).length ? provinces_filter.filter(it => it.checked).map(it => it.title_kz).join(', ') : 'Не выбрано', 
+                    'title_en': provinces_filter.filter(it => it.checked).length ? provinces_filter.filter(it => it.checked).map(it => it.title_en).join(', ') : 'Не выбрано',
                   }"
                   v-on:select="set_provinces_filter"
                   :styles="{
@@ -148,19 +154,18 @@
                     'border-radius': '3px',
                     'height': '35px',
                     'font-size': '16px',
-                    'color': '#777',
-                    'padding': '5px 10px',
+                    'padding': '5px 30px 5px 10px',
                     'line-height': '23px'
                   }"
                 />
 
                 <filter_checker
-                  style="margin: 5px; width: 250px"
+                  style="margin: 5px; width: 25%"
                   :list="industries_filter"
                   :title="{
-                    'title_ru': 'Отрасли', 
-                    'title_kz': 'Салалары', 
-                    'title_en': 'Industries'
+                    'title_ru': industries_filter.filter(it => it.checked).length ? industries_filter.filter(it => it.checked).map(it => it.title_ru).join(', ') : 'Не выбрано', 
+                    'title_kz': industries_filter.filter(it => it.checked).length ? industries_filter.filter(it => it.checked).map(it => it.title_kz).join(', ') : 'Не выбрано', 
+                    'title_en': industries_filter.filter(it => it.checked).length ? industries_filter.filter(it => it.checked).map(it => it.title_en).join(', ') : 'Не выбрано',
                   }"
                   v-on:select="set_industries_filter"
                   :styles="{
@@ -168,14 +173,27 @@
                     'border-radius': '3px',
                     'height': '35px',
                     'font-size': '16px',
-                    'color': '#777',
-                    'padding': '5px 10px',
+                    'padding': '5px 30px 5px 10px',
                     'line-height': '23px'
                   }"
                 />
-                <router-link id="find"  class="btn category field btn" to="/map">
+
+                <input type="text" 
+                  style="width: 20%; margin-top: 5px; height: 35px; line-height: 14px; padding: 0 10px 2px 10px"
+                  class="field"
+                  :value="search_string"
+                  @input="set_search_string" 
+                  :placeholder="{
+                    'title_ru': 'Поиск по названию...', 
+                    'title_kz': 'Іздеу...',
+                    'title_en': 'Search...', 
+                  }['title_' + lang]"
+                />
+                <a href="#" id="find" class="btn category field btn" 
+                  v-on:click="find"
+                >
                   Найти
-                </router-link>
+                </a>
             </div>
 
             <router-link to="/map">
@@ -333,7 +351,6 @@
   .field {
     height: 35px;
     font-size: 16px;
-    padding: 10px 15px;
     background: #fff;
     border: none;
     border-radius: 3px;

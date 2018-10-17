@@ -33,6 +33,7 @@
       'active_level',
       'tip',
       'popup',
+      'search_query',
     ]),
 
     watch: {
@@ -46,11 +47,17 @@
         'toggle_sidebar',
         'set_basemap',
         'show_tip',
+        'set_level_b',
       ]),
 
       show_maptip() {
         this.is_maptip = !this.is_maptip;
       }, 
+
+      async back () {
+        await this.set_level_b(this.levels[0])
+        this.$router.push('/?' + this.search_query)
+      },
 
       show_popup() {
         this.is_popup = !this.is_popup;
@@ -67,9 +74,8 @@
 
 <template>
   <div class="mapview">
-    <router-link to="/">
-      <div class="mapview-logo"></div>
-    </router-link>
+    <div class="mapview-logo"
+      v-on:click="back"></div>
     <button class="mapview-expand" v-on:click="toggle_sidebar"></button>
     <sidebar class="mapview-sidebar"
       :class="{

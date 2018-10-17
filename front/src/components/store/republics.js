@@ -16,8 +16,8 @@ export default {
   },
 
   actions: {
-    async set_republics ({ commit }, route) {
-      const zone_filter = route.query.zone_filter ? JSON.parse(route.query.zone_filter) : null;
+    async set_republics ({ commit }, query) {
+      const zone_filter = (query && query.zone_filter) ? JSON.parse(query.zone_filter) : null;
       return fetcher({
         path: this.getters.api_path + '/back/api/republics',
       }).then(republics => {

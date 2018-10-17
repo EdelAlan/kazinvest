@@ -43,7 +43,8 @@ export default {
       offset: { bottom: [0, -13] }
     });
 
-    await this.set_republics(this.$route);
+    await this.set_republics(this.$route.query);
+    await this.set_provinces(this.$route.query);
     await this.set_zones();
 
     // ИВЭНТЫ НА КАРТЕ
@@ -681,6 +682,7 @@ export default {
       'set_republics', 
       'set_level',
       'set_infrastructures',
+      'set_provinces',
       'set_objects',
       'show_tip',
       'show_popup',

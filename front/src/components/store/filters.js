@@ -13,6 +13,11 @@ export default {
     industries_filter: state => state.industries_filter,
     search_string: state => state.search_string,
     provinces_filter: state => state.provinces_filter,
+    search_query: state => (
+      (state.zone_filter.filter(it => !it.checked).length ? 'zone_filter=[' + state.zone_filter.filter(it => !it.checked).map(({ id }) => id).join(',') + ']' : '') + 
+      (state.industries_filter.filter(it => !it.checked).length ? '&industries_filter=[' + state.industries_filter.filter(it => !it.checked).map(({ id }) => id).join(',') + ']' : '') + 
+      (state.provinces_filter.filter(it => !it.checked).length ? '&provinces_filter=[' + state.provinces_filter.filter(it => !it.checked).map(({ id }) => id).join(',') + ']' : '') 
+    ),
   },
 
   mutations: {

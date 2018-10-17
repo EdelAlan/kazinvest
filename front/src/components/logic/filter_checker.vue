@@ -12,7 +12,7 @@
     data () {
       return {
         list_is_shown: false,
-        selected_all: true,
+        selected_all: this.list.length || false,
       }
     },
 
@@ -97,6 +97,9 @@
     outline: none;
     background: #fff;
     cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .filter-item_label {
     display: block;

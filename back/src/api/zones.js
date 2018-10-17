@@ -14,16 +14,16 @@ const zone_type_str = [{
 
 const FIELDS = `
   zone.id,
-  status,
+  zone.status,
   zone_type,
   zone_time,
   zone.title_ru,
   zone.title_en,
   zone.title_kz,
-  industries_id,
-  description_ru,
-  description_kz,
-  description_en,
+  zone.industries_id,
+  zone.description_ru,
+  zone.description_kz,
+  zone.description_en,
   contacts_ru,
   created_date,
   budget_need,
@@ -35,7 +35,17 @@ const FIELDS = `
 `;
 
 router.get('/', async (req, res) => {
-  const { zone_filter, industries_filter, search_string, lang } = req.query;
+  const { zone_filter, industries_filter, provinces_filter, search_string, lang } = req.query;
+
+  const zone_f = zone_filter ? JSON.parse(zone_filter) : undefined;
+  const industries_f = industries_filter ? JSON.parse(industries_filter) : undefined;
+  const provinces_f = provinces_filter ? JSON.parse(provinces_filter) : undefined;
+
+  const zone_l = zone_filter ? JSON.parse(zone_filter).length : 0;
+  const industries_l = industries_filter ? JSON.parse(industries_filter).length : 0;
+  const provinces_l = provinces_filter ? JSON.parse(provinces_filter).length : 0;
+
+
   const sql = `
     SELECT ${FIELDS}, (
       SELECT COUNT(*) AS object_count
@@ -44,28 +54,64 @@ router.get('/', async (req, res) => {
     ) FROM zone
     left join provinces
     ON zone.province_id = provinces.id
-    ${zone_filter ?
-      'WHERE zone_type NOT IN (' +
-      JSON.parse(zone_filter)
-      .map((_, key) => '$' + ++key) + ')' : ''}
-    ${industries_filter ?
-      ((zone_filter ? 'AND ' : 'WHERE ') + 'industries_id NOT IN (' + 
-      JSON.parse(industries_filter)
-      .map((_, key) => '$' + (++key + (zone_filter ?  + JSON.parse(zone_filter).length : 0) )) + ')') : ''}
-    ${search_string ?
-      ((zone_filter || industries_filter ? 'AND ' : 'WHERE ') + 'title_' + lang + ' LIKE ' + '\'%' + search_string + '%\' OR description_' + lang + ' LIKE \'%' + search_string + '%\'') : ''} 
-      ORDER BY zone_type ASC, object_count DESC
+    ${
+      zone_f || 
+      industries_filter || 
+      provinces_filter || 
+      search_string ?
+      'WHERE' : ''}
+    ${[
+      zone_f ?
+      ('zone_type NOT IN (' +
+      zone_f
+      .map((_, key) => '$' + ++key) + ')') : null,
+
+      industries_filter ?
+      ('industries_id NOT IN (' + 
+      industries_f
+      .map((_, key) => '$' + (++key + (zone_l) )) + ')') : null,
+  
+      provinces_filter ?
+      ('province_id NOT IN (' + 
+      provinces_f
+      .map((_, key) => '$' + (++key + (zone_l + industries_l) )) + ')') : null,
+  
+      search_string ?
+      ('zone.title_' + lang + ' LIKE ' + '\'%' + search_string + '%\'') : null
+
+    ].filter(it => it != null).join('\nAND\n')}
+
+    ORDER BY zone_type ASC, object_count DESC
   `;
+
   const params = 
-    (zone_filter && industries_filter) ? 
-      JSON.parse(zone_filter).concat(JSON.parse(industries_filter)) :
-    zone_filter ? JSON.parse(zone_filter) :
-    industries_filter ? JSON.parse(industries_filter) : [];
+    (zone_filter && industries_filter && provinces_filter) ? 
+      zone_f.concat(industries_f).concat(provinces_f) :
+    
+    (zone_f && industries_filter) ?   
+      zone_f.concat(industries_f) :
+    
+    (zone_f && provinces_filter) ? 
+      zone_f.concat(provinces_f) :
+    
+    (industries_filter && provinces_filter) ? 
+      industries_f.concat(provinces_f) :
+    
+    zone_filter ? zone_f : 
+    
+    industries_filter ? industries_f :
+    
+    provinces_filter ? provinces_f : 
+    
+    [];
     
   console.log(sql);
-  console.log(lang);
-  console.log('zone_filter: ' + zone_filter);
-  console.log('industries_filter: ' + industries_filter);
+  console.log(params);
+  console.log('lang:', lang);
+  console.log('zone_filter:', zone_filter);
+  console.log('industries_filter:', industries_filter);
+  console.log('provinces_filter:', provinces_filter);
+  console.log('search_string:', search_string);
 
   let result = await db_query(sql, params);
   result = result.map(it => ({

@@ -16,7 +16,8 @@ export default {
   },
 
   actions: {
-    set_provinces ({ commit }) {
+    set_provinces ({ commit }, query) {
+      const provinces_filter = (query && query.provinces_filter) ? JSON.parse(query.provinces_filter) : null;
       return fetcher({
         path: this.getters.api_path + '/back/api/provinces',
       }).then(provinces => {
@@ -27,7 +28,7 @@ export default {
               title_ru,
               title_kz,
               title_en,
-              checked: true
+              checked: provinces_filter ? (provinces_filter.includes(id) ? false : true) : true,
             };
           }));
         commit('set_provinces', provinces);

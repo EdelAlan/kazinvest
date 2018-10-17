@@ -12,6 +12,8 @@
       'sidebar',
       'zone_filter',
       'industries_filter',
+      'provinces_filter',
+      'search_string',
       'lang',
     ]),
 
@@ -20,6 +22,7 @@
 
       'set_zone_filter',
       'set_industries_filter',
+      'set_provinces_filter',
       
       'set_industries',
       'set_republics',
@@ -30,7 +33,7 @@
     ]),
 
     async mounted () {
-      await this.set_industries();
+      await this.set_industries(this.$route.query);
     },
 
   }
@@ -43,22 +46,42 @@
       <input type="text" 
         class="sidebar_filter-input sidebar_filter-input--search"
         @input="set_search_string" 
+        :value="search_string"
         :placeholder="{
-          'title_ru': 'Поиск...', 
+          'title_ru': 'Поиск по названию...', 
           'title_kz': 'Іздеу...',
           'title_en': 'Search...', 
         }['title_' + lang]"
       />
-      
+
+        <filter_checker
+          style="width: 100%; margin-bottom: 5px"
+          :list="provinces_filter"
+          :title="{
+            'title_ru': provinces_filter.filter(it => it.checked).length ? provinces_filter.filter(it => it.checked).map(it => it.title_ru).join(', ') : 'Не выбрано', 
+            'title_kz': provinces_filter.filter(it => it.checked).length ? provinces_filter.filter(it => it.checked).map(it => it.title_kz).join(', ') : 'Не выбрано', 
+            'title_en': provinces_filter.filter(it => it.checked).length ? provinces_filter.filter(it => it.checked).map(it => it.title_en).join(', ') : 'Не выбрано',
+          }"
+          v-on:select="set_provinces_filter"
+          :styles="{
+            'border': '1px solid #fff',
+            'border-radius': '3px',
+            'height': '31px',
+            'font-size': '14px',
+            'padding': '5px 35px 5px 10px',
+            'line-height': '18px'
+          }"
+        />
+
 
       <div class="sidebar_filter-filter">
 
         <filter_checker
           :list="zone_filter"
           :title="{
-            'title_ru': zone_filter.filter(it => it.checked).length ? zone_filter.filter(it => it.checked).map(it => it.title_ru).join(',') : 'Не выбрано', 
-            'title_kz': zone_filter.filter(it => it.checked).length ? zone_filter.filter(it => it.checked).map(it => it.title_kz).join(',') : 'Не выбрано', 
-            'title_en': zone_filter.filter(it => it.checked).length ? zone_filter.filter(it => it.checked).map(it => it.title_en).join(',') : 'Не выбрано',
+            'title_ru': zone_filter.filter(it => it.checked).length ? zone_filter.filter(it => it.checked).map(it => it.title_ru).join(', ') : 'Не выбрано', 
+            'title_kz': zone_filter.filter(it => it.checked).length ? zone_filter.filter(it => it.checked).map(it => it.title_kz).join(', ') : 'Не выбрано', 
+            'title_en': zone_filter.filter(it => it.checked).length ? zone_filter.filter(it => it.checked).map(it => it.title_en).join(', ') : 'Не выбрано',
           }"
           v-on:select="set_zone_filter"
           :styles="{
@@ -66,7 +89,7 @@
             'border-radius': '3px',
             'height': '31px',
             'font-size': '14px',
-            'padding': '5px 10px',
+            'padding': '5px 35px 5px 10px',
             'line-height': '18px'
           }"
         />
@@ -76,9 +99,9 @@
         <filter_checker
           :list="industries_filter"
           :title="{
-            'title_ru': 'Отрасли', 
-            'title_kz': 'Салалары', 
-            'title_en': 'Industries'
+            'title_ru': industries_filter.filter(it => it.checked).length ? industries_filter.filter(it => it.checked).map(it => it.title_ru).join(', ') : 'Не выбрано', 
+            'title_kz': industries_filter.filter(it => it.checked).length ? industries_filter.filter(it => it.checked).map(it => it.title_kz).join(', ') : 'Не выбрано', 
+            'title_en': industries_filter.filter(it => it.checked).length ? industries_filter.filter(it => it.checked).map(it => it.title_en).join(', ') : 'Не выбрано',
           }"
           v-on:select="set_industries_filter"
           :styles="{
@@ -86,7 +109,7 @@
             'border-radius': '3px',
             'height': '31px',
             'font-size': '14px',
-            'padding': '5px 10px',
+            'padding': '5px 35px 5px 10px',
             'line-height': '18px'
           }"
         />

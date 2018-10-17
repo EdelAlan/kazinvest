@@ -1,11 +1,26 @@
 <script>
   import lang from './lang';
   import sidebar_filter from './sidebar_filter';
+  import { mapGetters, mapActions } from 'vuex';
 
   export default {
     components: { 
       lang,
       sidebar_filter,
+    },
+    computed: mapGetters([
+      'search_query',
+      'levels',
+    ]),
+    methods: {
+      async back () {
+        console.log(32432432432432432432)
+        await this.set_level_b(this.levels[0])
+        this.$router.push('/?' + this.search_query)
+      },
+      ...mapActions([
+        'set_level_b',
+      ])
     },
   }
 </script>
@@ -16,9 +31,9 @@
     <div class="sidebar_header-container">
 
       <div class="sidebar_header-header">
-        <router-link to="/">
-          <div class="sidebar_header-logo"></div>
-        </router-link>
+        <div class="sidebar_header-logo"
+          @click="back"
+        ></div>
 
         <lang class="sidebar_header-lang"></lang>
       </div>
