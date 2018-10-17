@@ -29,6 +29,10 @@
 			};
 		},
 
+		computed: mapGetters([
+			'lang',
+		]),
+
 		methods: {
 			...mapActions([
 				'change_ui_visibility',
@@ -88,15 +92,31 @@
 				<div class="signup-role_select">
 					<button class="signup-role"
 						:class="{ 'signup-role--selected': user_model.role == 'member' }"
-						v-on:click="select_role('member')">Я участник</button>
+						v-on:click="select_role('member')"
+						v-text="{
+							'title_ru': 'Я участник', 
+							'title_kz': 'Мен қатысушымын', 
+							'title_en': 'I am a participant'
+						}['title_' + lang]">
+						</button>
 					<button class="signup-role"
 						:class="{ 'signup-role--selected': user_model.role == 'employee' }"
-						v-on:click="select_role('employee')">Я сотрудник</button>
+						v-on:click="select_role('employee')"
+						v-text="{
+							'title_ru': 'Я сотрудник', 
+							'title_kz': 'Мен қызметкермін', 
+							'title_en': 'I am an amployee'
+						}['title_' + lang]">
+						</button>
 				</div>
 			
 				<div class="signup-input_container">
 					<div class="signup-input_title"
-						v-text="'Имя'">
+						v-text="{
+							'title_ru': 'Имя', 
+							'title_kz': 'Есім', 
+							'title_en': 'Name'
+						}['title_' + lang]">
 					</div>
 					<input class="signup-input"
 						v-model="user_model.firstname" />
@@ -104,7 +124,11 @@
 
 				<div class="signup-input_container">
 					<div class="signup-input_title"
-						v-text="'Фамилия'">
+						v-text="{
+							'title_ru': 'Фамилия', 
+							'title_kz': 'Тегі', 
+							'title_en': 'Surname'
+						}['title_' + lang]">
 					</div>
 					<input class="signup-input"
 						v-model="user_model.lastname" />
@@ -120,13 +144,17 @@
 
 				<div class="signup-input_container">
 					<div class="signup-input_title"
-						v-text="'СЭЗ / ИЗ'">
+						v-text="{
+							'title_ru': 'СЭЗ / ИЗ', 
+							'title_kz': 'АЭА / ИА', 
+							'title_en': 'SEZ / IZ'
+						}['title_' + lang]">
 					</div>
 
 					<selector
 						:list="[
-							{ name: { ru: 'СЭЗ', kz: 'СЭЗ' } },
-							{ name: { ru: 'ИЗ', kz: 'ИЗ' } },
+							{ name: { ru: 'СЭЗ', kz: 'АЭА' } },
+							{ name: { ru: 'ИЗ', kz: 'ИА' } },
 						]"
 						v-on:select="select_department"
 						:styles="{
@@ -141,10 +169,14 @@
 				</div>
 
 				<div class="signup-controls">
-					<button class="signup-control"
-						@click="cancel">Отмена</button>
 					<button class="signup-control signup-control--primary"
-						v-on:click="save_user_model">Сохранить</button>
+						v-on:click="save_user_model"
+						v-text="{
+							'title_ru': 'Сохранить', 
+							'title_kz': 'Cақтау', 
+							'title_en': 'Save'
+						}['title_' + lang]">
+					</button>
 				</div>
 
 			</template>
@@ -155,7 +187,11 @@
 				
 				<div class="signup-input_container">
 					<div class="signup-input_title"
-						v-text="'Придумайте пароль'">
+						v-text="{
+								'title_ru': 'Придумайте пароль', 
+								'title_kz': 'Құпия сөз жасаңыз', 
+								'title_en': 'Create a password'
+							}['title_' + lang]">
 					</div>
 					<input class="signup-input"
 						:type="password_visibility ? 'text' : 'password'"
@@ -166,7 +202,11 @@
 
 				<div class="signup-input_container">
 					<div class="signup-input_title"
-						v-text="'Повторите пароль'">
+						v-text="{
+							'title_ru': 'Повторите пароль', 
+							'title_kz': 'Құпия сөзді қайталаңыз', 
+							'title_en': 'Confirm password'
+						}['title_' + lang]">
 					</div>
 					<input class="signup-input"
 						:type="password_visibility ? 'text' : 'password'"
@@ -179,8 +219,20 @@
 
 				<div class="signup-controls">
 					<button class="signup-control"
-						@click="cancel">Назад</button>
-					<button class="signup-control signup-control--primary">Сохранить</button>
+						@click="cancel"
+						v-text="{
+							'title_ru': 'Назад', 
+							'title_kz': 'Артқа', 
+							'title_en': 'Back'
+						}['title_' + lang]">
+					</button>
+					<button class="signup-control signup-control--primary"
+						v-text="{
+							'title_ru': 'Сохранить', 
+							'title_kz': 'Cақтау', 
+							'title_en': 'Save'
+						}['title_' + lang]">
+					</button>
 				</div>
 
 			</template>
@@ -227,12 +279,12 @@
 	}
 
 	.signup-controls {
-		width: 260px;
+		width: 130px;
 		margin: 40px auto;
 	}
 
 	.signup-control {
-		width: 130px;
+		width: 100%;
 		cursor: pointer;
 		padding: 10px;
 		color: #777;
@@ -240,6 +292,7 @@
 		border: none;
 		background: none;
 		transition: 200ms;
+		border-radius: 2px;
 	}
 
 	.signin-password_eye {

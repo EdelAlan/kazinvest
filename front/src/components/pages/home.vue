@@ -6,6 +6,7 @@
 
   import signup from '../logic/signup.vue';
   import signin from '../logic/signin.vue';
+  import lang_home from '../logic/lang_home.vue';
 
   import { mapGetters, mapActions } from 'vuex';
 
@@ -17,11 +18,13 @@
       selector,
       filter_checker,
       signin,
+      lang_home,
     },
 
     data() {
       return {
-        menu: false
+        menu: false,
+        activate_tab: 0,
       }
     },
 
@@ -29,6 +32,7 @@
       'signup_signin_modal',
       'industries_filter',
       'provinces_filter',
+      'lang',
     ]),
 
 		methods: {
@@ -41,7 +45,21 @@
       ]),
 			toggleMenu() {
 				this.menu = !this.menu;
-			},
+      },
+      call_signin() {
+        this.activate_tab = 0;
+        this.change_ui_visibility({
+          ui_component: 'signup_signin_modal',
+          ui_component_state: true,
+        })
+      },
+      call_signup() {
+        this.activate_tab = 1;
+        this.change_ui_visibility({
+          ui_component: 'signup_signin_modal',
+          ui_component_state: true,
+        });
+      },
 		},
 
     async mounted () {
@@ -69,10 +87,23 @@
           :titles_style="{
             'font-size': '20px',
             'padding': '22px',
-          }">
+          }"
+          :active_page="activate_tab">
           
-          <span slot="tab_title_0">Войти</span>
-          <span slot="tab_title_1">Регистрация</span>
+          <span slot="tab_title_0"
+            v-text="{
+              'title_ru': 'Войти', 
+              'title_kz': 'Кіру', 
+              'title_en': 'Sign in'
+            }['title_' + lang]">
+          ></span>
+          <span slot="tab_title_1"
+            v-text="{
+              'title_ru': 'Регистрация', 
+              'title_kz': 'Тіркелу', 
+              'title_en': 'Sign up'
+            }['title_' + lang]">
+          ></span>
           
           <div slot="tab_0">
             <signin></signin>
@@ -88,22 +119,21 @@
 
     <div class="background"></div>
 
-    <div class="lang_container">
-      <div id="kk" class="lang"></div>
-      <div id="ru" class="lang"></div>
-      <div id="en" class="lang"></div>
-    </div>
+    <lang_home class="lang_container">
+    </lang_home>
 
         <div class="content">
 
             <a href="#"
               id="sign_in"
               class="btn"
-              v-on:click="change_ui_visibility({
-                ui_component: 'signup_signin_modal',
-                ui_component_state: true,
-              })"
-              >Войти</a>
+              v-on:click="call_signin()"
+              v-text="{
+                'title_ru': 'Войти', 
+                'title_kz': 'Кіру', 
+                'title_en': 'Sign in'
+              }['title_' + lang]">
+              </a>
 
             <div class="filter_line">
 
@@ -111,18 +141,22 @@
                   :list="[{
                     title_ru: 'СЭЗ',
                     title_en: 'SEZ',
-                    title_kz: 'СЭЗ',
+                    title_kz: 'АЭА',
                   }, {
                     title_ru: 'ИЗ',
                     title_en: 'IZ',
-                    title_kz: 'ИЗ',
+                    title_kz: 'ИА',
                   }]"
                   :title="{
                     'title_ru': 'СЭЗ/ИЗ', 
-                    'title_kz': 'СЭЗ/ИЗ', 
-                    'title_en': 'СЭЗ/ИЗ', 
+                    'title_kz': 'АЭА/ИА', 
+                    'title_en': 'SEZ/IZ', 
                   }"
-                  :placeholder="'СЭЗ/ИЗ'"
+                  :placeholder="{
+                    'title_ru': 'СЭЗ/ИЗ', 
+                    'title_kz': 'АЭА/ИА', 
+                    'title_en': 'SEZ/IZ'
+                  }['title_' + lang]"
                   :styles="{
                     'border': '1px solid #fff',
                     'border-radius': '3px',
@@ -173,14 +207,26 @@
                     'line-height': '23px'
                   }"
                 />
-                <button id="find" class="field btn">Найти</button>
+                <button id="find" class="field btn"
+                  v-text="{
+                    'title_ru': 'Найти', 
+                    'title_kz': 'Іздеу', 
+                    'title_en': 'Find'
+                  }['title_' + lang]">
+                </button>
             </div>
 
-            <router-link to="/map">
+            <router-link class="home-main_btn_layer_link" to="/map">
               <div class="home-main_btn_layer">
                 <div class="home-main_btn">
                   <div class="home-main_btn_logo"></div>
-                  <span class="home-main_btn_title">Интерактивная карта Специальных экономических и Индустриальных зон Республики Казахстан</span>
+                  <span class="home-main_btn_title"
+                    v-text="{
+                      'title_ru': 'Интерактивная карта Специальных Экономических и Индустриальных Зон Республики Казахстан', 
+                      'title_kz': 'Қазақстан Республикасының Арнайы Экономикалық және Индустриалдық Аймақтарының интерактивті картасы', 
+                      'title_en': 'Interactive map of Special Economical and Industrial Zones of Republic of Kazakhstan'
+                    }['title_' + lang]">
+                  </span>
                 </div>
               </div>
             </router-link>
@@ -188,30 +234,73 @@
             <div class="btn_group">
                 <router-link class="btn category" to="/map?zone_filter=[2]">
                   <div class="count">11</div>
-                  <p class="title">Специальные экономические зоны (СЭЗ)</p>
+                  <p class="title"
+                    v-text="{
+                      'title_ru': 'Специальные экономические зоны (СЭЗ)', 
+                      'title_kz': 'Арнайы экономикалық аймақтар (АЭА)', 
+                      'title_en': 'Special economical zones (SEZ)'
+                    }['title_' + lang]">
+                  </p>
                 </router-link>
 
                 <router-link class="btn category" to="/map?zone_filter=[1]">
                   <div class="count">24</div>
-                  <p class="title">Индустриальные зоны (ИЗ)</p>
+                  <p class="title"
+                    v-text="{
+                      'title_ru': 'Индустриальные зоны (ИЗ)', 
+                      'title_kz': 'Индустриалдық аймақтар (ИА)', 
+                      'title_en': 'Industrial zones (IZ)'
+                    }['title_' + lang]">
+                  </p>
                 </router-link>
 
                 <a href="/invest_opportunities.pdf" target="_blank" class="btn category">
-                    <p class="title" style="text-align: center">Инвестиционные возможности</p>
+                    <p class="title" style="text-align: center"
+                      v-text="{
+                        'title_ru': 'Инвестиционные возможности', 
+                        'title_kz': 'Инвестициялық мүмкіндіктер', 
+                        'title_en': 'Investment opportunity'
+                      }['title_' + lang]">
+                      </p>
                 </a>
             </div>
         </div>
         <div class="assistant" :class="{'assistant--menu': menu}" @click="toggleMenu">
             <div class="welcome">
-                <div class="title">Добро пожаловать!</div>
+                <div class="title"
+                  v-text="{
+                    'title_ru': 'Добро пожаловать!', 
+                    'title_kz': 'Қош келдіңіз!', 
+                    'title_en': 'Welcome!'
+                  }['title_' + lang]"
+                ></div>
                 <div class="helper"></div>
             </div>
             <div class="menu" @click.stop>
                 <div class="close_btn" @click="toggleMenu"></div>
                 <div class="menu_body">
-                    <a href="#" class="btn">Хочу стать участником</a>
-                    <a href="#" class="btn">Я участник СЭЗ / ИЗ</a>
-                    <a href="#" class="btn">Задать вопрос</a>
+                    <a href="https://invest.gov.kz/cabinet/registration/" class="btn"
+                      v-text="{
+                        'title_ru': 'Хочу стать участником', 
+                        'title_kz': 'Мен қатысушы болғым келеді', 
+                        'title_en': 'I want to be a participant'
+                      }['title_' + lang]"
+                    ></a>
+                    <a href="#" class="btn"
+                      v-on:click="call_signup()"
+                      v-text="{
+                        'title_ru': 'Я участник СЭЗ / ИЗ', 
+                        'title_kz': 'Мен АЭА / ИА қатысушымын', 
+                        'title_en': 'I am a participant of SEZ / IZ'
+                      }['title_' + lang]"
+                    ></a>
+                    <a href="#" class="btn"
+                      v-text="{
+                        'title_ru': 'Задать вопрос', 
+                        'title_kz': 'Сұрақ қою', 
+                        'title_en': 'Ask question'
+                      }['title_' + lang]"
+                    ></a>
                 </div>
             </div>
         </div>
@@ -243,6 +332,10 @@
       justify-content: flex-end;
   }
 
+  .home-main_btn_layer_link {
+    width: 100%;
+  }
+
   .home-main_btn_layer {
     background: rgba(255,255,255,.5);
     overflow: hidden;
@@ -270,24 +363,6 @@
     font-size: 18px;
     color: #666;
     text-decoration: none;
-  }
-
-  .lang {
-    height: 22px;
-    width: 37px;
-    margin: 0 8px;
-  }
-
-  #kk.lang {
-    background: url('../../assets/images/lang-kk.svg') no-repeat center;
-  }
-
-  #ru.lang {
-    background: url('../../assets/images/lang-ru.svg') no-repeat center;
-  }
-
-  #en.lang {
-    background: url('../../assets/images/lang-en.svg') no-repeat center;
   }
 
   .content {
