@@ -80,7 +80,21 @@ export default {
                 'zko-obl',
                 'atyr-obl']
             });
+            var cities = this._mapboxgl_map.queryRenderedFeatures(e.point, {
+              layers: ['astana', 'almaty', 'shymkent']
+            });
 
+            if (cities[0]) {
+              if (this.tip) {
+                this.show_tip();  
+              } else {
+                this.show_tip({ 
+                  pageX: e.originalEvent.pageX,
+                  pageY: e.originalEvent.pageY,
+                  layer: cities[0].layer.id
+                });
+              }
+            }
             if (zones[0]) {
               this.zones.forEach(el => {
                 if (zones[0].properties.zone_id == el.id) {
@@ -94,7 +108,7 @@ export default {
                 }
               });
             }
-            if (provinces[0] && !zones[0] && !clusters[0]) {
+            if (provinces[0] && !zones[0] && !clusters[0] && !cities[0]) {
               if (this.tip) {
                 this.show_tip();  
               } else {
