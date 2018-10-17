@@ -113,7 +113,9 @@ export default {
                 }
               });
             }
-            if (provinces[0] && !zones[0] && !clusters[0] && !cities[0]) {
+            if (this.tip) {
+                this.show_tip();  
+            } else if (provinces[0] && !zones[0] && !clusters[0] && !cities[0]) {
               if (this.tip) {
                 this.show_tip();  
               } else {
@@ -816,6 +818,7 @@ export default {
                 zone_id: el.id,
                 type: el.zone_type,
                 industry: el.industries_id,
+                rnd_num: Math.floor(Math.random() * 100),
               }
             });
           }

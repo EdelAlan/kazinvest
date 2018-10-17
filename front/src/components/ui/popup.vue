@@ -121,8 +121,8 @@
     <piechart_popup
       v-if="is_piechart"
       :sectors="[
-                { key: 'Потребность', val: 3203333 },
-                { key: 'Выделено', val: 2321321 },
+                {val:model.feature.properties.rnd_num},
+                {val:100-model.feature.properties.rnd_num},
               ]"
     ></piechart_popup>
   </div>
