@@ -489,7 +489,6 @@
 
   .category .title {
     color: #fff;
-    font-family: 'ProximaNovaSemibold', sans-serif;
   }
 
   .assistant {
