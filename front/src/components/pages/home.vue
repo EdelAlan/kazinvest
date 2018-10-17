@@ -75,9 +75,18 @@
 		},
 
     async mounted () {
-      await this.set_provinces(this.$route.query);
-      await this.set_republics(this.$route.query);
-      await this.set_industries(this.$route.query);
+      await this.set_provinces({
+        query: this.$route.query, 
+        not_selected: true,
+      });
+      await this.set_republics({
+        query: this.$route.query, 
+        not_selected: true,
+      });
+      await this.set_industries({
+        query: this.$route.query, 
+        not_selected: true,
+      });
     },
 
 	}
@@ -209,7 +218,6 @@
                 <input type="text" 
                   style="width: 20%; margin-top: 5px; height: 35px; line-height: 14px; padding: 0 10px 2px 10px"
                   class="field"
-                  :value="search_string"
                   @input="set_search_string" 
                   :placeholder="{
                     'title_ru': 'Поиск', 

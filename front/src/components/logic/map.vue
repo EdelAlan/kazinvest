@@ -43,8 +43,12 @@ export default {
       offset: { bottom: [0, -13] }
     });
 
-    await this.set_republics(this.$route.query);
-    await this.set_provinces(this.$route.query);
+    await this.set_republics({
+      query: this.$route.query, 
+    });
+    await this.set_provinces({
+      query: this.$route.query, 
+    });
     await this.set_zones();
 
     // ИВЭНТЫ НА КАРТЕ

@@ -16,7 +16,9 @@ export default {
   },
 
   actions: {
-    async set_republics ({ commit }, query) {
+    async set_republics ({ commit }, { query, not_selected }) {
+      console.log(not_selected)
+
       const zone_filter = (query && query.zone_filter) ? JSON.parse(query.zone_filter) : null;
       return fetcher({
         path: this.getters.api_path + '/back/api/republics',
@@ -29,7 +31,7 @@ export default {
               title_ru,
               title_kz,
               title_en,
-              checked: zone_filter ? (zone_filter.includes(id) ? false : true) : false,
+              checked: not_selected ? false : (zone_filter ? (zone_filter.includes(id) ? false : true) : true),
             };
           }));
       });

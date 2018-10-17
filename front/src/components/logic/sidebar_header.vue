@@ -9,13 +9,12 @@
       sidebar_filter,
     },
     computed: mapGetters([
-      'search_query',
       'levels',
     ]),
     methods: {
       async back () {
         await this.set_level_b(this.levels[0])
-        this.$router.push('/?' + this.search_query)
+        this.$router.push('/')
       },
       ...mapActions([
         'set_level_b',

@@ -16,7 +16,9 @@ export default {
   },
 
   actions: {
-    set_industries ({ commit }, query) {
+    set_industries ({ commit }, { query, not_selected }) {
+      console.log(not_selected)
+
       const industries_filter = (query && query.industries_filter) ? JSON.parse(query.industries_filter) : null;
       return fetcher({
         path: this.getters.api_path + '/back/api/industries',
@@ -28,7 +30,7 @@ export default {
               title_ru,
               title_kz,
               title_en,
-              checked: industries_filter ? (industries_filter.includes(id) ? false : true) : false,
+              checked: not_selected ? false : (industries_filter ? (industries_filter.includes(id) ? false : true) : true),
             };
           }));
         commit('set_industries', industries);

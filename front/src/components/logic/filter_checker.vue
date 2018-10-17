@@ -12,7 +12,7 @@
     data () {
       return {
         list_is_shown: false,
-        selected_all: this.list.length || false,
+        selected_all: Boolean(this.list.filter(it => !it.checked).length),
       }
     },
 

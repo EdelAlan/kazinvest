@@ -33,7 +33,6 @@
       'active_level',
       'tip',
       'popup',
-      'search_query',
     ]),
 
     watch: {
@@ -55,8 +54,8 @@
       }, 
 
       async back () {
-        await this.set_level_b(this.levels[0])
-        this.$router.push('/?' + this.search_query)
+        await this.set_level_b(this.levels[0]);
+        this.$router.push('/');
       },
 
       show_popup() {

@@ -33,7 +33,9 @@
     ]),
 
     async mounted () {
-      await this.set_industries(this.$route.query);
+      await this.set_industries({
+        query: this.$route.query
+      });
     },
 
   }
