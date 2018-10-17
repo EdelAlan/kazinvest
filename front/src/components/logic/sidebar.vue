@@ -58,7 +58,9 @@
           :titles_style="{
             'font-size': '14px',
             'padding': '10px',
-          }">
+          }"
+          :active_page="0"
+          >
           <span slot="tab_title_0">
             <span class="sidebar-tab">
               <span class="sidebar-tab_icon"></span>
