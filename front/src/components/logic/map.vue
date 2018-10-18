@@ -1100,7 +1100,7 @@ export default {
     },
 
     add_sectors() {
-      if (this.sectors) {
+      if (this.sectors && this.active_level.id != 1) {
         var sector = {
           type: 'geojson',
           data: {

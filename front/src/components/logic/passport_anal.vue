@@ -25,21 +25,34 @@
 			]),
 
 			async change_data() {
-				console.log(this.passport_anal_data);
 				switch(this.active_level.id) {
 					case 1:
 						switch(this.passport_anal_data) {
 							case 'sez_bie':
-								this.diagram_data = [
-									{ key: 'Потребность', val: parseInt(this.republics[0].demand, 10) },
-									{ key: 'Выделено', val: parseInt(this.republics[0].allocated, 10) },
-								];
+								if (parseInt(this.republics[0].demand, 10) == 0 && parseInt(this.republics[0].allocated, 10) == 0) {
+									this.diagram_data = [
+										{ key: 'Потребность', val: 1 },
+										{ key: 'Выделено', val: 1 },
+									];
+								} else {
+									this.diagram_data = [
+										{ key: 'Потребность', val: parseInt(this.republics[0].demand, 10) },
+										{ key: 'Выделено', val: parseInt(this.republics[0].allocated, 10) },
+									];
+								}
 								break;
 							case 'iz_bie':
-								this.diagram_data = [
-									{ key: 'Потребность', val: parseInt(this.republics[1].demand,10) },
-									{ key: 'Выделено', val: parseInt(this.republics[1].allocated,10) },
-								];
+								if (parseInt(this.republics[1].demand, 10) == 0 && parseInt(this.republics[1].allocated, 10) == 0) {
+									this.diagram_data = [
+										{ key: 'Потребность', val: 1 },
+										{ key: 'Выделено', val: 1 },
+									];
+								} else {
+									this.diagram_data = [
+										{ key: 'Потребность', val: parseInt(this.republics[1].demand,10) },
+										{ key: 'Выделено', val: parseInt(this.republics[1].allocated,10) },
+									];
+								}
 								break;
 							case 'sez_sqi':
 								await this.set_sectors();
@@ -94,32 +107,47 @@
 						}
 						break;
 					case 2:
-						switch(this.passport_anal_data) {
-							case 'sez_bie':
-								console.log(this.active_level);
-								if (parseInt(this.active_level.properties.budget_need, 10) == 0 && parseInt(this.active_level.properties.budget_allocated, 10) == 0) {
-									this.diagram_data = [
-										{ key: 'Потребность', val: 0 },
-										{ key: 'Выделено', val: 0 },
-									];
-								} else if (parseInt(this.active_level.properties.budget_need, 10) == 0) {
-									this.diagram_data = [
-										{ key: 'Потребность', val: 0 },
-										{ key: 'Выделено', val: parseInt(this.active_level.properties.budget_allocated, 10) },
-									];
-								} else {
-									this.diagram_data = [
-										{ key: 'Потребность', val: parseInt(this.active_level.properties.budget_need, 10) },
-										{ key: 'Выделено', val: 0 },
-									];
+						if (this.passport_anal_data == 'sez_bie' || this.passport_anal_data == 'iz_bie') {
+							if (parseInt(this.active_level.properties.budget_need, 10) == 0 && parseInt(this.active_level.properties.budget_allocated, 10) == 0) {
+								this.diagram_data = [
+									{ key: 'Потребность', val: 1 },
+									{ key: 'Выделено', val: 1 },
+								];
+							} else if (parseInt(this.active_level.properties.budget_need, 10) == 0) {
+								this.diagram_data = [
+									{ key: 'Потребность', val: parseInt(this.active_level.properties.budget_allocated, 10)/100*0.1 },
+									{ key: 'Выделено', val: parseInt(this.active_level.properties.budget_allocated, 10) },
+								];
+							} else if (parseInt(this.active_level.properties.budget_allocated, 10) == 0) {
+								this.diagram_data = [
+									{ key: 'Потребность', val: parseInt(this.active_level.properties.budget_need, 10) },
+									{ key: 'Выделено', val: parseInt(this.active_level.properties.budget_need, 10)/100*0.1 },
+								];
+							} else {
+								this.diagram_data = [
+									{ key: 'Потребность', val: parseInt(this.active_level.properties.budget_need, 10) },
+									{ key: 'Выделено', val: parseInt(this.active_level.properties.budget_allocated, 10) },
+								];
+							}
+						} else if (this.passport_anal_data == 'sez_sqi' || this.passport_anal_data == 'iz_sqi') {
+							var ongoing=0, 
+								underway=0;
+							await this.sectors.forEach(sector => {
+								switch(sector.project_type) {
+									case 1:
+										ongoing++;
+										break;
+									case 2:
+										underway++;
+										break;
+									default:
+										break;
 								}
-								break;
-							case 'iz_bie':
-								break;
-							case 'sez_sqi':
-								break;
-							case 'iz_sqi':
-								break;
+							});
+							this.diagram_data = [
+								{ key: 'Действующие проекты', val: ongoing },
+								{ key: 'Проекты на стадии реализации', val: underway },
+							];
 						}
 						break;
 					default:
