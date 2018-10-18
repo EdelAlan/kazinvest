@@ -818,7 +818,9 @@ export default {
                 zone_id: el.id,
                 type: el.zone_type,
                 industry: el.industries_id,
-                rnd_num: Math.floor(Math.random() * 100),
+                budget_need: el.budget_need,
+                budget_allocated: el.budget_allocated,
+                diagram_level: (el.level <= 100 && el.level)  ? el.level : 0,
               }
             });
           }
