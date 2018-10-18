@@ -22,7 +22,7 @@
         const result = [];
         const l = this.size / 2;
         let rotation = 0;
-        this.sectors.forEach(({ val, key }, idx) => {
+        this.sectors.forEach(({ val }, idx) => {
           const angle = 360 * val / this.total;
           const aCalc = (angle > 180) ? 360 - angle : angle;
           const angleRad = aCalc * Math.PI / 180;
@@ -44,10 +44,7 @@
             arcSweep = 1;
           }
           result.push({
-            val,
-            key,
-            percentage: val / this.total,
-            color: this.colors[idx],
+            color: idx == 0 ? '#03A0E3' : '#7ED767',
             d: `M${l},${l} L${l},0 A${l},${l} 0 ${arcSweep},1 ${x}, ${y} z`,
             transform: `translate(${this.size * 0.05}, ${this.size * 0.05}) rotate(${rotation}, ${l}, ${l})`,
           });
@@ -80,15 +77,15 @@
 
 <template>
 	<div class="piechart_popup">
-    <span class="piechart_popup-total" v-text="separated_num(total)"></span>
+    <span class="piechart_popup-total" v-text="this.sectors[0].val + '%'"></span>
     <svg class="piechart_popup-svg" :width="size * 1.1" :height="size * 1.1">
       <defs>
-        <mask id="circleClip" >
+        <mask id="circle_clip" >
           <rect fill="white" width="100%" height="100%" />
           <circle fill="black" :cx="size * 0.55" :cy="size * 0.55" :r="size * 0.39" />
         </mask>
       </defs>
-      <g mask="url(#circleClip)">
+      <g mask="url(#circle_clip)">
         <g class="piechart_popup-piece"
           v-for="s in processed_sectors">
           <path :fill="s.color" :d="s.d" :transform="s.transform" />
@@ -112,8 +109,8 @@
     position: absolute;
     left: 50%;
     font-size: 18px;
-    top: 94px;
-    color: #949494;
+    top: 30%;
+    color: #878DA1;
     transform: translateX(-50%);
   }
 
