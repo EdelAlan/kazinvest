@@ -39,7 +39,7 @@
       },
       search (match) {
         this.filtered_list = this.list.filter(it => { // FIXME: lang
-          if (it['title_' + this.lang].indexOf(match) > -1) {
+          if (it['title_' + this.lang].toLowerCase().indexOf(match.toLowerCase()) > -1) {
             return it;
           }
         });
