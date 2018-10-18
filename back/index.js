@@ -1,7 +1,8 @@
 const app = require('express')();
-const signin = require('./src/signin');
 
 // api
+const signin = require('./src/api/signin');
+const signup = require('./src/api/signup');
 const republics = require('./src/api/republics'); // 1 level
 const zones = require('./src/api/zones'); // 2 level
 const sectors = require('./src/api/sectors'); // 3 level
@@ -20,8 +21,9 @@ app
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     next();
   })
-  .use('/back/signin', signin)
   // api
+  .use('/back/api/signin', signin)
+  .use('/back/api/signup', signup)
   .use('/back/api/republics', republics)
   .use('/back/api/zones', zones)
   .use('/back/api/sectors', sectors)

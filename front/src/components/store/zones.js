@@ -28,7 +28,7 @@ export default {
     set_selected_zone ({ commit }, zone) {
       commit('set_selected_zone', zone);
     },
-    async set_zones({ commit }) {
+    async set_zones({ commit }, { filter }) {
       this.dispatch('change_ui_visibility', {
         ui_component: 'passport',
         ui_component_state: false,
@@ -38,9 +38,10 @@ export default {
       const { search_string } = this.state.filters;
       const path = this.getters.api_path 
         + '/back/api/zones?'
-        + this.getters.search_query
+        + (filter ?
+          this.getters.search_query
         + (search_string != '' ? `&search_string=${search_string}` : '')
-        + (lang != '' ? `&lang=${lang}` : '');
+        + (lang != '' ? `&lang=${lang}` : '') : '');
       console.log(path);
       return fetcher({ path }).then(zones => commit('set_zones', zones));
     },

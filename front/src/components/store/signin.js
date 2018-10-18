@@ -22,13 +22,13 @@ export default {
   },
 
   actions: {
-    async sign_in ({ commit }, {
+    sign_in ({ commit }, {
       userid,
       password,
     }) {
       return fetcher({
         method: 'post',
-        path: this.getters.api_path + '/back/signin',
+        path: this.getters.api_path + '/back/api/signin',
         body: {
           userid,
           password,

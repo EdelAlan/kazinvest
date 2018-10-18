@@ -9,10 +9,6 @@
       'filter_name'
     ],
 
-    mounted () {
-      console.log(Boolean(this.list.filter(it => !it.checked)))
-    },
-
     data () {
       return {
         list_is_shown: false,

@@ -49,7 +49,9 @@ export default {
     await this.set_provinces({
       query: this.$route.query, 
     });
-    await this.set_zones();
+    await this.set_zones({
+      filter: true,
+    });
 
     // ИВЭНТЫ НА КАРТЕ
 

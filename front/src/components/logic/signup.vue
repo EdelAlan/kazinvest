@@ -11,12 +11,12 @@
 		data () {
 			return {
 				user_model: {
-					role: 'member', // member || employee
+					role: 'member',
 					firstname: '',
 					lastname: '',
-					email: '',
-					department: null,
-					//password
+					userid: '',
+					zoneid: null,
+					password: '',
 				},
 				password_confirmation: '',
 				
@@ -31,28 +31,32 @@
 
 		computed: mapGetters([
 			'lang',
+			'zones',
 		]),
+
+		async mounted () {
+			await this.set_zones({
+				filter: false,
+			});
+		},
 
 		methods: {
 			...mapActions([
 				'change_ui_visibility',
-				// здесь должен быть экшон отвечающий 
-				// за отправку user_model в базу
+				'set_zones',
+				'signup',
 			]),
-			select_role (role) {
-				this.user_model.role = role;
-			},
-			select_department (department) {
-				this.user_model.department = department;
+			select_zoneid (zone) {
+				this.user_model.zoneid = zone.id;
 			},
 			toggle_password_visibility () {
 				this.password_visibility = !this.password_visibility;
 			},
 
-			valid_empty_fields () {
-				for (let i = 0; i < Object.keys(this.user_model).length; i++) {
-					const field = Object.keys(this.user_model)[i];
-					if (this.user_model[field] == '' || this.user_model[field] == null) {
+			valid_empty_fields (obj) {
+				for (let i = 0; i < Object.keys(obj).length; i++) {
+					const field = Object.keys(obj)[i];
+					if (obj[field] == '' || obj[field] == null) {
 						return this.validation.empty_fields = true;
 					} else {
 						this.validation.empty_fields = false;
@@ -61,9 +65,11 @@
 			},
 
 			save_user_model () {
-				this.valid_empty_fields();
+				this.valid_empty_fields(JSON.parse(JSON.stringify({
+					...this.user_model,
+					password: undefined,
+				})));
 				if (this.validation.empty_fields == true) {
-					// выдать ошибку
 					this.select_password_state = false;
 				} else {
 					this.select_password_state = true;
@@ -89,27 +95,7 @@
 			<template
 				v-if="!select_password_state">
 
-				<div class="signup-role_select">
-					<button class="signup-role"
-						:class="{ 'signup-role--selected': user_model.role == 'member' }"
-						v-on:click="select_role('member')"
-						v-text="{
-							'title_ru': 'Я участник', 
-							'title_kz': 'Мен қатысушымын', 
-							'title_en': 'I am a participant'
-						}['title_' + lang]">
-						</button>
-					<button class="signup-role"
-						:class="{ 'signup-role--selected': user_model.role == 'employee' }"
-						v-on:click="select_role('employee')"
-						v-text="{
-							'title_ru': 'Я сотрудник', 
-							'title_kz': 'Мен қызметкермін', 
-							'title_en': 'I am an amployee'
-						}['title_' + lang]">
-						</button>
-				</div>
-			
+
 				<div class="signup-input_container">
 					<div class="signup-input_title"
 						v-text="{
@@ -139,7 +125,7 @@
 						v-text="'E-mail'">
 					</div>
 					<input class="signup-input"
-						v-model="user_model.email" />
+						v-model="user_model.userid" />
 				</div>
 
 				<div class="signup-input_container">
@@ -152,11 +138,8 @@
 					</div>
 
 					<selector
-						:list="[
-							{ name: { ru: 'СЭЗ', kz: 'АЭА' } },
-							{ name: { ru: 'ИЗ', kz: 'ИА' } },
-						]"
-						v-on:select="select_department"
+						:list="zones"
+						v-on:select="select_zoneid"
 						:styles="{
 							'border': '1px solid #aaa',
 							'border-radius': '2px',
@@ -218,15 +201,8 @@
 				{{password_confirmation == user_model.password}}
 
 				<div class="signup-controls">
-					<button class="signup-control"
-						@click="cancel"
-						v-text="{
-							'title_ru': 'Назад', 
-							'title_kz': 'Артқа', 
-							'title_en': 'Back'
-						}['title_' + lang]">
-					</button>
 					<button class="signup-control signup-control--primary"
+						v-on:click="signup(user_model)"
 						v-text="{
 							'title_ru': 'Сохранить', 
 							'title_kz': 'Cақтау', 

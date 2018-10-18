@@ -129,7 +129,9 @@
 
       <button class="sidebar_filter-find"
         @click="
-          set_zones(),
+          set_zones({
+            filter: true,
+          }),
           set_level_b({ id: 1 })
         "
         v-text="{
