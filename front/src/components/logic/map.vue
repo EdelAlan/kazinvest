@@ -89,17 +89,17 @@ export default {
               layers: ['astana', 'almaty', 'shymkent']
             });
 
-            if (cities[0]) {
-              if (this.tip) {
-                this.show_tip();  
-              } else {
-                this.show_tip({ 
-                  pageX: e.originalEvent.pageX,
-                  pageY: e.originalEvent.pageY,
-                  layer: cities[0].layer.id
-                });
-              }
-            }
+            // if (cities[0]) {
+            //   if (this.tip) {
+            //     this.show_tip();  
+            //   } else {
+            //     this.show_tip({ 
+            //       pageX: e.originalEvent.pageX,
+            //       pageY: e.originalEvent.pageY,
+            //       layer: cities[0].layer.id
+            //     });
+            //   }
+            // }
             if (zones[0]) {
               this.zones.forEach(el => {
                 if (zones[0].properties.zone_id == el.id) {
@@ -123,6 +123,16 @@ export default {
                   pageX: e.originalEvent.pageX,
                   pageY: e.originalEvent.pageY,
                   layer: provinces[0].layer.id
+                });
+              }
+            } else if (cities[0]) {
+              if (this.tip) {
+                this.show_tip();  
+              } else {
+                this.show_tip({ 
+                  pageX: e.originalEvent.pageX,
+                  pageY: e.originalEvent.pageY,
+                  layer: cities[0].layer.id
                 });
               }
             }
