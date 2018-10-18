@@ -179,7 +179,7 @@
                 />
 
                 <filter_checker
-                  style="margin: 5px; width: 25%"
+                  style="margin: 5px; width: 40%"
                   :list="provinces_filter"
                   :title="{
                     'title_ru': provinces_filter.filter(it => it.checked).length ? provinces_filter.filter(it => it.checked).map(it => it.title_ru).join(', ') : 'Регион', 
@@ -215,16 +215,17 @@
                     'line-height': '23px'
                   }"
                 />
+                <!--
                 <input type="text" 
                   style="width: 20%; margin-top: 5px; height: 35px; line-height: 14px; padding: 0 10px 2px 10px"
                   class="field"
                   @input="set_search_string" 
-                  :placeholder="{
+                   :placeholder="{
                     'title_ru': 'Поиск', 
                     'title_kz': 'Іздеу',
-                    'title_en': 'Search', 
+                    'title_en'  : 'Search', 
                   }['title_' + lang]"
-                />
+                />-->
                 <a href="#" id="find" class="btn category field btn" 
                   v-on:click="find"
                   v-text="{
@@ -236,7 +237,7 @@
                 </a>
             </div>
 
-            <div class="home-main_btn_layer_link" to="/map">
+            <router-link class="home-main_btn_layer_link" to="/map">
               <div class="home-main_btn_layer">
                 <div class="home-main_btn">
                   <div class="home-main_btn_logo"></div>
@@ -249,7 +250,7 @@
                   </span>
                 </div>
               </div>
-            </div>
+            </router-link>
 
             <div class="btn_group">
                 <router-link class="btn category" to="/map?zone_filter=[2]">
@@ -314,6 +315,7 @@
                         'title_en': 'I am a participant of SEZ / IZ'
                       }['title_' + lang]"
                     ></a>
+                    <!--
                     <a href="#" class="btn"
                       v-text="{
                         'title_ru': 'Задать вопрос', 
@@ -321,6 +323,7 @@
                         'title_en': 'Ask question'
                       }['title_' + lang]"
                     ></a>
+                    -->
                 </div>
             </div>
         </div>
