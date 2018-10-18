@@ -80,7 +80,7 @@
 
 <template>
 	<div class="piechart">
-    <span class="piechart-total" v-text="separated_num(total)"></span>
+    <span class="piechart-total" v-text="this.sectors[0].val == this.sectors[1].val/100*0.1 ? this.sectors[1].val : this.sectors[1].val == this.sectors[0].val/100*0.1 ? this.sectors[0].val : separated_num(total)"></span>
     <svg class="piechart-svg" :width="size * 1.1" :height="size * 1.1">
       <defs>
         <mask id="circleClip" >
@@ -106,7 +106,9 @@
           :style="{ 'border': '3px solid ' + colors[idx] }"></div>
         <div class="piechart-legend_item_key" v-text="key"></div>
         <div class="piechart-legend_item_val">
-          <span v-text="separated_num(val) + ' (' + (val * 100 / total).toFixed(0) + ' %)'"></span>
+          <span v-text="val == sectors[1].val/100*0.1 && val < sectors[1].val ? 0 + ' (0 %)' : 
+                        val == sectors[0].val/100*0.1 && val < sectors[0].val ? 0 + ' (0 %)' : 
+                        separated_num(val) + ' (' + (val * 100 / total).toFixed(0) + ' %)'"></span>
         </div>
       </div>
     </div>

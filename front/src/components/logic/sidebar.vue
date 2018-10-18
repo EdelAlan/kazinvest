@@ -37,6 +37,7 @@
       'set_passport_title',
       'set_passport_content',
       'change_ui_visibility',
+      'set_passport_anal_data'
     ]),
   }
 </script>
@@ -256,28 +257,28 @@
               v-if="zone_filter[key].checked && active_level.id == 1"
               v-for="republic, key in republics"
               :menu="[{
-                title_ru: 'Цифровые показатели 1 ' + republic['title_' + lang],
-                title_en: 'Digital indicators 1 ' + republic['title_' + lang],
-                title_kz: 'Сандық көрсеткіштер 1 ' + republic['title_' + lang],
+                title_ru: 'Цифровые показатели ' + republic['title_' + lang],
+                title_en: 'Digital indicators ' + republic['title_' + lang],
+                title_kz: 'Сандық көрсеткіштер ' + republic['title_' + lang],
                 passport_content: 'level_1:' + republic.type + ':numeric',
               }, {
-                title_ru: 'Диаграммы 1' + republic['title_' + lang],
-                title_en: 'Diagrams 1' + republic['title_' + lang],
-                title_kz: 'Диаграммалар 1' + republic['title_' + lang],
+                title_ru: 'Диаграммы ' + republic['title_' + lang],
+                title_en: 'Diagrams ' + republic['title_' + lang],
+                title_kz: 'Диаграммалар ' + republic['title_' + lang],
                 passport_content: 'level_1:' + republic.type + ':diagramm',
               }]"
             />
             <reference
               v-if="active_level.id == 2"
               :menu="[{
-                title_ru: 'Цифровые показатели 2',
-                title_en: 'Digital indicators 2',
-                title_kz: 'Сандық көрсеткіштер 2',
+                title_ru: 'Цифровые показатели',
+                title_en: 'Digital indicators',
+                title_kz: 'Сандық көрсеткіштер',
                 passport_content: 'level_2:zone:numeric',
               }, {
-                title_ru: 'Диаграммы 2',
-                title_en: 'Diagrams 2',
-                title_kz: 'Диаграммалар 2',
+                title_ru: 'Диаграммы',
+                title_en: 'Diagrams',
+                title_kz: 'Диаграммалар',
                 passport_content: 'level_2:zone:diagramm',
               }]"
             />
@@ -495,19 +496,23 @@
 
       <div slot="body" v-if="passport_content == 'level_1:sez:diagramm'">
         <div class="reference-item"
-          @click="change_ui_visibility({
+          @click="
+          set_passport_anal_data(item.id),
+          change_ui_visibility({
             ui_component: 'passport_anal',
             ui_component_state: true,
           })"
           :class="{ 'reference-item--active': !passport_content ? false : passport_content == item.passport_content }"
           v-for="item in [{
-            title_ru: 'СЭЗ диаграммные данные',
-            title_en: 'SEZ diagram information',
-            title_kz: 'АЭА диаграммные данные',
+            id: 'sez_bie',
+            title_ru: 'Объем затраченных средств из бюджета на инфаструктуру',
+            title_en: 'Budget infrastructural expenses',
+            title_kz: 'Бюджеттен инфрақұрылымға жұмсалған қаражаттар',
           }, {
-            title_ru: 'СЭЗ диаграммные данные',
-            title_en: 'SEZ diagram information',
-            title_kz: 'АЭА диаграмма деректері',
+            id: 'sez_sqi',
+            title_ru: 'Информация по количеству участков',
+            title_en: 'Sectors quantity information',
+            title_kz: 'Жер телімі сандық көрсеткіштер',
           }]"
           v-text="item['title_' + lang]"
         ></div>
@@ -515,19 +520,48 @@
 
       <div slot="body" v-if="passport_content == 'level_1:iz:diagramm'">
         <div class="reference-item"
-          @click="change_ui_visibility({
+          @click="
+          set_passport_anal_data(item.id),
+          change_ui_visibility({
             ui_component: 'passport_anal',
             ui_component_state: true,
           })"
           :class="{ 'reference-item--active': !passport_content ? false : passport_content == item.passport_content }"
           v-for="item in [{
-            title_ru: 'ИЗ диаграммные данные',
-            title_en: 'IZ diagram information',
-            title_kz: 'ИА диаграмма деректері',
+            id: 'iz_bie',
+            title_ru: 'Объем затраченных средств из бюджета на инфаструктуру',
+            title_en: 'Budget infrastructural expenses',
+            title_kz: 'Бюджеттен инфрақұрылымға жұмсалған қаражаттар',
           }, {
-            title_ru: 'ИЗ диаграммные данные',
-            title_en: 'IZ diagram information',
-            title_kz: 'ИА диаграмма деректері',
+            id: 'iz_sqi',
+            title_ru: 'Информация по количеству участков',
+            title_en: 'Sectors quantity information',
+            title_kz: 'Жер телімі сандық көрсеткіштер',
+          }]"
+          v-text="item['title_' + lang]"
+        ></div>
+      </div>
+
+
+      <div slot="body" v-if="passport_content == 'level_2:zone:diagramm'">
+        <div class="reference-item"
+          @click="
+          set_passport_anal_data(item.id),
+          change_ui_visibility({
+            ui_component: 'passport_anal',
+            ui_component_state: true,
+          })"
+          :class="{ 'reference-item--active': !passport_content ? false : passport_content == item.passport_content }"
+          v-for="item in [{
+            id: 'sez_bie',
+            title_ru: 'Объем затраченных средств из бюджета на инфаструктуру',
+            title_en: 'Budget infrastructural expenses',
+            title_kz: 'Бюджеттен инфрақұрылымға жұмсалған қаражаттар',
+          }, {
+            id: 'sez_sqi',
+            title_ru: 'Информация по количеству участков',
+            title_en: 'Sectors quantity information',
+            title_kz: 'Жер телімі сандық көрсеткіштер',
           }]"
           v-text="item['title_' + lang]"
         ></div>

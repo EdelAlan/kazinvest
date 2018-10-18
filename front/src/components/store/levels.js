@@ -39,6 +39,10 @@ export default {
         ui_component: 'passport',
         ui_component_state: false,
       });
+      this.dispatch('change_ui_visibility', {
+        ui_component: 'passport_anal',
+        ui_component_state: false,
+      });
       let updated_levels = state.levels.slice();
       switch (level.id) {
         case 2:
@@ -73,6 +77,10 @@ export default {
           this.dispatch('set_selected_zone', null);
           this.dispatch('change_ui_visibility', {
             ui_component: 'passport',
+            ui_component_state: false,
+          });
+          this.dispatch('change_ui_visibility', {
+            ui_component: 'passport_anal',
             ui_component_state: false,
           });
           this.dispatch('reset_sector');

@@ -121,9 +121,9 @@
     <piechart_popup
       v-if="is_piechart"
       :sectors="[
-                {val:model.feature.properties.rnd_num},
-                {val:100-model.feature.properties.rnd_num},
-              ]"
+        {val: model.feature.properties.diagram_level == 0 ? 0.1 : model.feature.properties.diagram_level},
+        {val: 100 - model.feature.properties.diagram_level },
+      ]"
     ></piechart_popup>
   </div>
 

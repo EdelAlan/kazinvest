@@ -30,6 +30,7 @@ const FIELDS = `
   budget_allocated,
   user_id,
   map,
+  level,
   provinces.provincename,
   ST_AsGeoJson(zone.geom)
 `;

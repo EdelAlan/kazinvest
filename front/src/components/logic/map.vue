@@ -91,17 +91,17 @@ export default {
               layers: ['astana', 'almaty', 'shymkent']
             });
 
-            if (cities[0]) {
-              if (this.tip) {
-                this.show_tip();  
-              } else {
-                this.show_tip({ 
-                  pageX: e.originalEvent.pageX,
-                  pageY: e.originalEvent.pageY,
-                  layer: cities[0].layer.id
-                });
-              }
-            }
+            // if (cities[0]) {
+            //   if (this.tip) {
+            //     this.show_tip();  
+            //   } else {
+            //     this.show_tip({ 
+            //       pageX: e.originalEvent.pageX,
+            //       pageY: e.originalEvent.pageY,
+            //       layer: cities[0].layer.id
+            //     });
+            //   }
+            // }
             if (zones[0]) {
               this.zones.forEach(el => {
                 if (zones[0].properties.zone_id == el.id) {
@@ -125,6 +125,16 @@ export default {
                   pageX: e.originalEvent.pageX,
                   pageY: e.originalEvent.pageY,
                   layer: provinces[0].layer.id
+                });
+              }
+            } else if (cities[0]) {
+              if (this.tip) {
+                this.show_tip();  
+              } else {
+                this.show_tip({ 
+                  pageX: e.originalEvent.pageX,
+                  pageY: e.originalEvent.pageY,
+                  layer: cities[0].layer.id
                 });
               }
             }
@@ -820,7 +830,9 @@ export default {
                 zone_id: el.id,
                 type: el.zone_type,
                 industry: el.industries_id,
-                rnd_num: Math.floor(Math.random() * 100),
+                budget_need: el.budget_need,
+                budget_allocated: el.budget_allocated,
+                diagram_level: (el.level <= 100 && el.level)  ? el.level : 0,
               }
             });
           }
@@ -1100,7 +1112,7 @@ export default {
     },
 
     add_sectors() {
-      if (this.sectors) {
+      if (this.sectors && this.active_level.id != 1) {
         var sector = {
           type: 'geojson',
           data: {

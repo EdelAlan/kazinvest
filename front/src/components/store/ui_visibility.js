@@ -3,6 +3,7 @@ export default {
     signup_signin_modal: false,
     passport: false,// паспорт объекта, "sector" - название из базы
     passport_anal: false,
+    passport_anal_data: null,
     passport_content: '',// временно
     passport_title: '',// временно
   }),
@@ -17,6 +18,9 @@ export default {
     set_passport_title (state, passport_title) {
       state.passport_title = passport_title;
     },
+    set_passport_anal_data (state, passport_anal_data) {
+      state.passport_anal_data = passport_anal_data;
+    },
   },
 
   getters: {
@@ -25,6 +29,7 @@ export default {
     passport_content: state => state.passport_content,
     passport_title: state => state.passport_title,
     passport_anal: state => state.passport_anal,
+    passport_anal_data: state => state.passport_anal_data,
   },
 
   actions: {
@@ -36,6 +41,9 @@ export default {
     },
     set_passport_title({ commit }, passport_title) {
       commit('set_passport_title', passport_title);
+    },
+    set_passport_anal_data({ commit }, passport_anal_data) {
+      commit('set_passport_anal_data', passport_anal_data);
     },
   },
 };

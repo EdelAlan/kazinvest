@@ -77,7 +77,7 @@
 
 <template>
 	<div class="piechart_popup">
-    <span class="piechart_popup-total" v-text="this.sectors[0].val + '%'"></span>
+    <span class="piechart_popup-total" v-text="this.sectors[0].val == 0.1 ? 0 + '%' : this.sectors[0].val + '%'"></span>
     <svg class="piechart_popup-svg" :width="size * 1.1" :height="size * 1.1">
       <defs>
         <mask id="circle_clip" >
