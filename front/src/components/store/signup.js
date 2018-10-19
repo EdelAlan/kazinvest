@@ -1,6 +1,4 @@
 import fetcher from '../../util/fetcher';
-// import bcrypt from 'bcrypt';
-
 export default {
   actions: {
     signup (_, user_model) {
