@@ -3,17 +3,12 @@ const bodyparser = require('body-parser');
 const db_query = require('../util/db_query');
 const bcrypt = require('bcrypt');
 
-router.post('/', bodyparser.json(), async (req, res) => {
+router.post('/', bodyparser.json(), (req, res) => {
   const { userid, password, firstname, lastname, zoneid, role } = req.body;
-  console.log(req.body);
-  
-  // salt = zoneid
   if (userid && password && firstname && lastname && zoneid && role) {
-    await bcrypt.hash(password, 10, async (err, hash) => {
-      if (err) {
-        return console.log(err);
-      }
-      const sql = `
+    return bcrypt.hash(password, 10)
+    .then(async hash => {
+      await db_query(`
         INSERT INTO member (
           member_id,
           member_password,
@@ -22,15 +17,13 @@ router.post('/', bodyparser.json(), async (req, res) => {
           member_zoneid,
           member_role
         ) VALUES ($1, $2, $3, $4, $5, $6)
-      `;
-      const paramms = [userid, hash, firstname, lastname, zoneid, role];
-      await db_query(sql, paramms);
-    });
-    return res.json({
-      msg: 'signup success',
+      `, [userid, hash, firstname, lastname, zoneid, role]);
+      res.json({
+        msg: 'signup success',
+      });
     });
   }
-  return res.status(404).json({
+  res.status(404).json({
     msg: 'signup error',
   });
 });

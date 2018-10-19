@@ -33,12 +33,15 @@ export default {
           userid,
           password,
         },
-      }).then(({ msg }) => {
-        if (msg == 'user not enter') {
-          return msg;
+      }).then(({ msg, sessiontoken }) => {
+        if (msg == 'userid and password aren\'t exists') {
+          return console.log(msg)
         }
-        commit('set_userid', userid);
-        commit('set_password', password);
+        if (msg == 'user not found') {
+          return console.log(msg)
+        }
+        console.log(msg)
+        localStorage.setItem('sessiontoken', sessiontoken);
         return msg;
       });
     }
