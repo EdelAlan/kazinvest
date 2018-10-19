@@ -1,26 +1,6 @@
 import fetcher from '../../util/fetcher';
 
 export default {
-  state: () => ({
-    user: {
-      userid: '',
-      password: '',
-    },
-  }),
-  
-  getters: {
-    user: state => state.user,
-  },
-
-  mutations: {
-    set_userid (state, password) {
-      state.user.password = password;
-    },
-    set_password (state, userid) {
-      state.user.userid = userid;
-    },
-  },
-
   actions: {
     sign_in ({ commit }, {
       userid,
@@ -40,9 +20,9 @@ export default {
         if (msg == 'user not found') {
           return console.log(msg)
         }
-        console.log(msg)
         localStorage.setItem('sessiontoken', sessiontoken);
-        return msg;
+        this.dispatch('set_profile');
+        return console.log(msg)
       });
     }
   },

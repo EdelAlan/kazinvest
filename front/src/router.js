@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 import home from './components/pages/home.vue'
 import mapview from './components/pages/mapview.vue'
+import store from './components/store/_all';
 
 Vue.use(Router);
 
@@ -16,13 +17,19 @@ export default new Router({
 		{
 			path: '/',
 			name: 'home',
+			beforeEnter: sessionverify,
 			component: home
 		},
-
 		{
 			path: '/map',
 			name: 'map',
+			beforeEnter: sessionverify,
 			component: mapview
 		}
 	]
-})
+});
+
+async function sessionverify (to, from, next) {
+	await store.dispatch('set_profile');
+	next();
+}

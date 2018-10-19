@@ -1,18 +1,18 @@
 const app = require('express')();
 
-// api
 const signin = require('./src/api/signin');
 const signup = require('./src/api/signup');
-const republics = require('./src/api/republics'); // 1 level
-const zones = require('./src/api/zones'); // 2 level
-const sectors = require('./src/api/sectors'); // 3 level
-const industries = require('./src/api/industries'); // for filter
-const objects = require('./src/api/objects'); // for legend
-const infrastructures = require('./src/api/infrastructures'); // for legend
-const objects_list = require('./src/api/objects_list'); // for legend
-const infrastructures_list = require('./src/api/infrastructures_list'); // for legend
-const earth_list = require('./src/api/earth_list'); // for legend
-const provinces = require('./src/api/provinces'); // for legend
+const sessionverification = require('./src/api/sessionverification');
+const republics = require('./src/api/republics');
+const zones = require('./src/api/zones');
+const sectors = require('./src/api/sectors');
+const industries = require('./src/api/industries');
+const objects = require('./src/api/objects'); 
+const infrastructures = require('./src/api/infrastructures'); 
+const objects_list = require('./src/api/objects_list'); 
+const infrastructures_list = require('./src/api/infrastructures_list'); 
+const earth_list = require('./src/api/earth_list'); 
+const provinces = require('./src/api/provinces'); 
 
 app
   .use((_, res, next) => {
@@ -21,9 +21,9 @@ app
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     next();
   })
-  // api
   .use('/back/api/signin', signin)
   .use('/back/api/signup', signup)
+  .use('/back/api/sessionverification', sessionverification)
   .use('/back/api/republics', republics)
   .use('/back/api/zones', zones)
   .use('/back/api/sectors', sectors)

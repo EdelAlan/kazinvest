@@ -30,6 +30,7 @@
       'active_level',
       'selected_zone',
       'passport_content',
+      'profile',
     ]),
 
     methods: mapActions([
@@ -78,14 +79,17 @@
               ></span>
             </span>        
           </span>
-          <span slot="tab_title_2">
-            <span class="sidebar-tab">
-              <span class="sidebar-tab_icon"></span>
-              <span class="sidebar-tab_title"
-                v-text="lang == 'ru' ? 'Показатели' : lang == 'en' ? 'Indicators': 'Көрсеткіштер'"
-              ></span>
-            </span>        
-          </span>
+          
+          <template v-if="profile">
+            <span slot="tab_title_2">
+              <span class="sidebar-tab">
+                <span class="sidebar-tab_icon"></span>
+                <span class="sidebar-tab_title"
+                  v-text="lang == 'ru' ? 'Показатели' : lang == 'en' ? 'Indicators': 'Көрсеткіштер'"
+                ></span>
+              </span>        
+            </span>
+          </template>
 
           <div slot="tab_0">
             <template 
@@ -250,54 +254,55 @@
             </div>
           </div>
 
-          <div slot="tab_2">
+          <template v-if="profile">
+            <div slot="tab_2">
+              <reference
+                v-if="zone_filter[key].checked && active_level.id == 1"
+                v-for="republic, key in republics"
+                :menu="[{
+                  title_ru: 'Цифровые показатели ' + republic['title_' + lang],
+                  title_en: 'Digital indicators ' + republic['title_' + lang],
+                  title_kz: 'Сандық көрсеткіштер ' + republic['title_' + lang],
+                  passport_content: 'level_1:' + republic.type + ':numeric',
+                }, {
+                  title_ru: 'Диаграммы ' + republic['title_' + lang],
+                  title_en: 'Diagrams ' + republic['title_' + lang],
+                  title_kz: 'Диаграммалар ' + republic['title_' + lang],
+                  passport_content: 'level_1:' + republic.type + ':diagramm',
+                }]"
+              />
+              <reference
+                v-if="active_level.id == 2"
+                :menu="[{
+                  title_ru: 'Цифровые показатели',
+                  title_en: 'Digital indicators',
+                  title_kz: 'Сандық көрсеткіштер',
+                  passport_content: 'level_2:zone:numeric',
+                }, {
+                  title_ru: 'Диаграммы',
+                  title_en: 'Diagrams',
+                  title_kz: 'Диаграммалар',
+                  passport_content: 'level_2:zone:diagramm',
+                }]"
+              />
+              <reference
+                v-if="active_level.id == 3"
+                :menu="[{
+                  title_ru: 'Цифровые показатели 3',
+                  title_en: 'Digital indicators 3',
+                  title_kz: 'Сандық көрсеткіштер 3',
+                  passport_content: 'level_3:sector:numeric',
+                }, {
+                  title_ru: 'Диаграммы 3',
+                  title_en: 'Diagrams 3',
+                  title_kz: 'Диаграммалар 3',
+                  passport_content: 'level_3:sector:diagramm',
+                }]"
+              />
 
+            </div>
+          </template>
 
-            <reference
-              v-if="zone_filter[key].checked && active_level.id == 1"
-              v-for="republic, key in republics"
-              :menu="[{
-                title_ru: 'Цифровые показатели ' + republic['title_' + lang],
-                title_en: 'Digital indicators ' + republic['title_' + lang],
-                title_kz: 'Сандық көрсеткіштер ' + republic['title_' + lang],
-                passport_content: 'level_1:' + republic.type + ':numeric',
-              }, {
-                title_ru: 'Диаграммы ' + republic['title_' + lang],
-                title_en: 'Diagrams ' + republic['title_' + lang],
-                title_kz: 'Диаграммалар ' + republic['title_' + lang],
-                passport_content: 'level_1:' + republic.type + ':diagramm',
-              }]"
-            />
-            <reference
-              v-if="active_level.id == 2"
-              :menu="[{
-                title_ru: 'Цифровые показатели',
-                title_en: 'Digital indicators',
-                title_kz: 'Сандық көрсеткіштер',
-                passport_content: 'level_2:zone:numeric',
-              }, {
-                title_ru: 'Диаграммы',
-                title_en: 'Diagrams',
-                title_kz: 'Диаграммалар',
-                passport_content: 'level_2:zone:diagramm',
-              }]"
-            />
-            <reference
-              v-if="active_level.id == 3"
-              :menu="[{
-                title_ru: 'Цифровые показатели 3',
-                title_en: 'Digital indicators 3',
-                title_kz: 'Сандық көрсеткіштер 3',
-                passport_content: 'level_3:sector:numeric',
-              }, {
-                title_ru: 'Диаграммы 3',
-                title_en: 'Diagrams 3',
-                title_kz: 'Диаграммалар 3',
-                passport_content: 'level_3:sector:diagramm',
-              }]"
-            />
-
-          </div>
         </tabs>
       </div>
     </div>

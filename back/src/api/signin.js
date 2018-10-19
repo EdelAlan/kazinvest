@@ -8,11 +8,11 @@ const cryptr = new Cryptr('myTotalySecretKey');
 router.post('/', bodyparser.json(), async (req, res) => {
   const { userid, password } = req.body;
   if (userid && password) {
-    const sql = `SELECT * FROM member WHERE member_id = $1`;
+    const sql = `SELECT * FROM member WHERE member_id = $1 AND member_verification = '1'`;
     const paramms = [userid];
     const user = (await db_query(sql, paramms))[0];
     if (!user) return res.status(404).json({
-      msg: 'user not found',
+      msg: 'user not found or not verified',
     });
     return bcrypt.compare(password, user.member_password)
     .then(bool => {
@@ -21,15 +21,14 @@ router.post('/', bodyparser.json(), async (req, res) => {
       });
       let ttl = new Date();
       const death_time = ttl.setDate(ttl.getDate() + 1);
-      const sessiontoken = cryptr.encrypt(`{
-        userid: ${userid},
-        password: ${password},
-        death_time: ${death_time},
-      }`);
-      // console.log(cryptr.decrypt(sessiontoken))
+      const sessiontoken = cryptr.encrypt(JSON.stringify({
+        userid,
+        password: user.member_password,
+        death_time,
+      }));
       return res.json({
         msg: 'user enter',
-        sessiontoken,
+        sessiontoken: sessiontoken,
       });
     });
   } 

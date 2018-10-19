@@ -20,19 +20,22 @@
 		methods: {
 			...mapActions([
 				'sign_in',
+				'set_profile',
 			]),
 
-			signin () {
-				this.sign_in({
-					userid: this.user_model.userid,
-					password: this.user_model.password,
-				}).then(msg => {
-					if (msg == 'user enter') {
-						return this.$router.push('/map');
-					}
-					return console.log(msg);
-				});
-			},
+			// signin () {
+			// 	this.sign_in({
+			// 		userid: this.user_model.userid,
+			// 		password: this.user_model.password,
+			// 	}).then(msg => {
+			// 		console.log(msg)
+			// 		if (msg == 'user enter') {
+			// 			// return this.$router.push('/map');
+			// 			return this.set_profile();
+			// 		}
+			// 		return console.log(msg);
+			// 	});
+			// },
 
 			toggle_password_visibility () {
 				this.password_visibility = !this.password_visibility;
@@ -71,7 +74,10 @@
 
 			<div class="signin-controls">
 				<button class="signin-control signin-control--primary"
-					@click="signin"
+					@click="sign_in({
+						userid: user_model.userid,
+						password: user_model.password,
+					})"
 					v-text="{
 						'title_ru': 'Войти', 
 						'title_kz': 'Кіру', 

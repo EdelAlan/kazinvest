@@ -17,6 +17,7 @@ import legends from './legends';
 import infrastructures from './infrastructures';
 import objects from './objects';
 import provinces from './provinces';
+import profile from './profile';
 
 Vue.use(Vuex);
 
@@ -44,5 +45,6 @@ export default new Vuex.Store({
 		infrastructures,
 		objects,
 		provinces,
+		profile,
 	},
 });

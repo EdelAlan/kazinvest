@@ -37,6 +37,7 @@
       'search_string',
       'lang',
       'levels',
+      'profile',
     ]),
 
 		methods: {
@@ -51,6 +52,7 @@
         'set_industries_filter',
         'set_provinces_filter',
         'set_search_string',
+        'signout',
       ]),
       async find() {
         this.$router.push('/map?' + this.search_query);
@@ -300,21 +302,31 @@
             <div class="menu" @click.stop>
                 <div class="close_btn" @click="toggleMenu"></div>
                 <div class="menu_body">
-                    <a href="https://invest.gov.kz/cabinet/registration/" class="btn"
-                      v-text="{
-                        'title_ru': 'Хочу стать участником', 
-                        'title_kz': 'Мен қатысушы болғым келеді', 
-                        'title_en': 'I want to be a participant'
-                      }['title_' + lang]"
-                    ></a>
-                    <a href="#" class="btn"
-                      v-on:click="call_signup()"
-                      v-text="{
-                        'title_ru': 'Я участник СЭЗ / ИЗ', 
-                        'title_kz': 'Мен АЭА / ИА қатысушымын', 
-                        'title_en': 'I am a participant of SEZ / IZ'
-                      }['title_' + lang]"
-                    ></a>
+                    <div v-if="profile">
+                      <div v-text="profile.member_id"></div>
+                      <span v-text="profile.member_firstname + ' '"></span>
+                      <span v-text="profile.member_lastname"></span>
+                      <p v-text="profile.member_zone['title_' + lang]"></p>
+                      <br>
+                      <button v-on:click="signout">Выйти</button>
+                    </div>
+                    <template v-else>
+                      <a href="https://invest.gov.kz/cabinet/registration/" class="btn"
+                        v-text="{
+                          'title_ru': 'Хочу стать участником', 
+                          'title_kz': 'Мен қатысушы болғым келеді', 
+                          'title_en': 'I want to be a participant'
+                        }['title_' + lang]"
+                      ></a>
+                      <a href="#" class="btn"
+                        v-on:click="call_signup()"
+                        v-text="{
+                          'title_ru': 'Я участник СЭЗ / ИЗ', 
+                          'title_kz': 'Мен АЭА / ИА қатысушымын', 
+                          'title_en': 'I am a participant of SEZ / IZ'
+                        }['title_' + lang]"
+                      ></a>
+                    </template>
                     <!--
                     <a href="#" class="btn"
                       v-text="{
@@ -529,6 +541,7 @@
   }
 
   .menu {
+    min-width: 200px;
     display: none;
     position: absolute;
     right: calc(100% + 20px);

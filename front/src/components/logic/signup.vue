@@ -15,7 +15,7 @@
 					firstname: '',
 					lastname: '',
 					userid: '',
-					zoneid: null,
+					zone: {},
 					password: '',
 				},
 				password_confirmation: '',
@@ -46,8 +46,9 @@
 				'set_zones',
 				'signup',
 			]),
-			select_zoneid (zone) {
-				this.user_model.zoneid = zone.id;
+			select_zone (zone) {
+				console.log(zone)
+				this.user_model.zone = zone;
 			},
 			toggle_password_visibility () {
 				this.password_visibility = !this.password_visibility;
@@ -139,7 +140,7 @@
 
 					<selector
 						:list="zones"
-						v-on:select="select_zoneid"
+						v-on:select="select_zone"
 						:styles="{
 							'border': '1px solid #aaa',
 							'border-radius': '2px',
