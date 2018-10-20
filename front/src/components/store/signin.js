@@ -14,15 +14,15 @@ export default {
           password,
         },
       }).then(({ msg, sessiontoken }) => {
-        if (msg == 'userid and password aren\'t exists') {
-          return console.log(msg)
-        }
-        if (msg == 'user not found') {
-          return console.log(msg)
+        console.log(msg);
+        if (
+          msg == 'userid and password aren\'t exists' ||
+          msg == 'user not found or not verified'
+        ) {
+          return ;
         }
         localStorage.setItem('sessiontoken', sessiontoken);
         this.dispatch('set_profile');
-        return console.log(msg)
       });
     }
   },
