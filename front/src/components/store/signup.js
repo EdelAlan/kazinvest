@@ -1,5 +1,17 @@
 import fetcher from '../../util/fetcher';
+
 export default {
+  state: () => ({
+    signup_success: false,
+  }),
+  getters: {
+    signup_success: state => state.signup_success,
+  },
+  mutations: {
+    set_success (state) {
+      state.signup_success = true;
+    },
+  },
   actions: {
     signup (_, user_model) {
       return fetcher({
@@ -9,6 +21,9 @@ export default {
       }).then(({ msg }) => {
         console.log(msg);
       });
+    },
+    set_success ({ commit }) {
+      commit('set_success');
     },
   },
 };

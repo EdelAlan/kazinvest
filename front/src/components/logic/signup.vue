@@ -32,6 +32,7 @@
 		computed: mapGetters([
 			'lang',
 			'zones',
+			'signup_success',
 		]),
 
 		async mounted () {
@@ -45,9 +46,9 @@
 				'change_ui_visibility',
 				'set_zones',
 				'signup',
+				'set_success',
 			]),
 			select_zone (zone) {
-				console.log(zone)
 				this.user_model.zone = zone;
 			},
 			toggle_password_visibility () {
@@ -200,16 +201,20 @@
 				</div>
 
 				{{password_confirmation == user_model.password}}
-
+	{{signup_success}}
 				<div class="signup-controls">
 					<button class="signup-control signup-control--primary"
-						v-on:click="signup(user_model)"
+						v-on:click="
+							set_success,
+							signup(user_model)
+						"
 						v-text="{
 							'title_ru': 'Сохранить', 
 							'title_kz': 'Cақтау', 
 							'title_en': 'Save'
 						}['title_' + lang]">
 					</button>
+		
 				</div>
 
 			</template>
@@ -288,6 +293,14 @@
 	.signup-control.signup-control--primary {
 		background: #03A0E3;
 		color: #fff;
+	}
+
+	.signup-control--notactive {
+		background: #eee;
+	}
+
+	.signup-control.signup-control--notactive:hover {
+		background: #eee;
 	}
 	
 	.signup-control:hover {

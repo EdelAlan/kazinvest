@@ -16,7 +16,7 @@ router.post('/', bodyparser.json(), (req, res) => {
           member_lastname,
           member_zone,
           member_role
-        ) VALUES ($1, $2, $3, $4, $5, $6)
+        ) VALUES (?)
       `, [userid, hash, firstname, lastname, zone, role]);
       res.json({
         msg: 'signup success',

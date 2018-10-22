@@ -11,9 +11,12 @@ router.post('/', bodyparser.json(), async (req, res) => {
     const sql = `SELECT * FROM member WHERE member_id = $1 AND member_verification = '1'`;
     const paramms = [userid];
     const user = (await db_query(sql, paramms))[0];
-    if (!user) return res.status(404).json({
-      msg: 'user not found or not verified',
-    });
+    if (!user) {
+      return res.status(404).json({
+        msg: 'user not found or not verified',
+      });
+    }
+    console.log(3242423)
     return bcrypt.compare(password, user.member_password)
     .then(bool => {
       if (!bool) return res.status(404).json({

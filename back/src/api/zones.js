@@ -55,8 +55,7 @@ router.get('/', async (req, res) => {
     ) FROM zone
     left join provinces
     ON zone.province_id = provinces.id
-    ${
-      zone_f || 
+    ${zone_f || 
       industries_filter || 
       provinces_filter || 
       search_string ?
@@ -70,14 +69,14 @@ router.get('/', async (req, res) => {
       industries_filter ?
       ('industries_id NOT IN (' + 
       industries_f
-      .map((_, key) => '$' + (++key + (zone_l) )) + ')') : null,
+      .map((_, key) => '$' + (++key + zone_l)) + ')') : null,
   
       provinces_filter ?
       ('province_id NOT IN (' + 
       provinces_f
-      .map((_, key) => '$' + (++key + (zone_l + industries_l) )) + ')') : null,
+      .map((_, key) => '$' + (++key + zone_l + industries_l)) + ')') : null,
   
-      search_string ?
+      search_string ? 
       ('zone.title_' + lang + ' LIKE ' + '\'%' + search_string + '%\'') : null
 
     ].filter(it => it != null).join('\nAND\n')}

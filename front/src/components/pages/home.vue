@@ -38,6 +38,7 @@
       'lang',
       'levels',
       'profile',
+      'signup_success',
     ]),
 
 		methods: {
@@ -105,7 +106,9 @@
         ui_component_state: false,
       })">
 
-      <div class="home-signup_signin_container">
+      <div v-if="signup_success" class="">Ждите одобрения</div>
+
+      <div v-else class="home-signup_signin_container">
 
         <tabs
           :titles_style="{
