@@ -311,7 +311,14 @@
                       <span v-text="profile.member_lastname"></span>
                       <p v-text="profile.member_zone['title_' + lang]"></p>
                       <br>
-                      <button v-on:click="signout">Выйти</button>
+                      <router-link v-if="profile" to="/editpanel" class="btn"
+                        v-text="{
+                          'title_ru': 'Панель редактирования', 
+                          'title_kz': 'Панель редактирования', 
+                          'title_en': 'Панель редактирования'
+                        }['title_' + lang]"
+                      ></router-link>
+                      <button  class="btn" v-on:click="signout">Выйти</button>
                     </div>
                     <template v-else>
                       <a href="https://invest.gov.kz/cabinet/registration/" class="btn"
@@ -329,6 +336,7 @@
                           'title_en': 'I am a participant of SEZ / IZ'
                         }['title_' + lang]"
                       ></a>
+
                     </template>
                     <!--
                     <a href="#" class="btn"

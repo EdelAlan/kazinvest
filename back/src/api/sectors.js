@@ -57,19 +57,23 @@ router.get('/', async (req, res) => {
       JSON.parse(legend_filter)
         .map((_, key) => '$' + (++key + 1))
       + ')') : ''}
-    ORDER BY project_type ASC, title_${lang}
+    ORDER BY project_type ASC, title_${lang || 'ru'} 
   `;
 
-  const params =
-    zone_id && !legend_filter
-      ? [zone_id] :
-      zone_id && legend_filter
-        ? [zone_id, ...JSON.parse(legend_filter)]
-        : [];
+  const params = zone_id && !legend_filter
+    ? [zone_id] : zone_id && legend_filter
+    ? [zone_id, ...JSON.parse(legend_filter)] : [];
 
   console.log(sql);
   console.log(params);
-  res.send(await db_query(sql, params));
+  const result = await db_query(sql, params);
+
+  res.send(result.map(it => ({ 
+    ...it, 
+    project_type_title_ru: it.project_type == 1 ? 'Действующий' : it.project_type == 2 ? 'На стадии реализации' : 'Свободный',
+    project_type_title_kz: it.project_type == 1 ? 'Действующий' : it.project_type == 2 ? 'На стадии реализации' : 'Свободный',
+    project_type_title_en: it.project_type == 1 ? 'Действующий' : it.project_type == 2 ? 'На стадии реализации' : 'Свободный',
+  })));
 });
 
 router.get('/:id', async (req, res) => {

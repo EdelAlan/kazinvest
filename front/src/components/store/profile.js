@@ -33,9 +33,9 @@ export default {
       });
     },
 
-    signout ({ commit }) {
-      localStorage.removeItem('sessiontoken');
-      commit('set_profile', null);
+    async signout ({ dispatch }) {
+      await localStorage.removeItem('sessiontoken');
+      dispatch('set_profile');
     },
 
   },

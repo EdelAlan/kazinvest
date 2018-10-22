@@ -16,7 +16,6 @@ router.post('/', bodyparser.json(), async (req, res) => {
         msg: 'user not found or not verified',
       });
     }
-    console.log(3242423)
     return bcrypt.compare(password, user.member_password)
     .then(bool => {
       if (!bool) return res.status(404).json({

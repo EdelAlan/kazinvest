@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 import home from './components/pages/home.vue'
 import mapview from './components/pages/mapview.vue'
+import editpanel from './components/pages/editpanel.vue'
 import store from './components/store/_all';
 
 Vue.use(Router);
@@ -25,11 +26,25 @@ export default new Router({
 			name: 'map',
 			beforeEnter: sessionverify,
 			component: mapview
+		},
+		{
+			path: '/editpanel',
+			name: 'editpanel',
+			beforeEnter: allow_only_member,
+			component: editpanel
 		}
 	]
 });
 
 async function sessionverify (to, from, next) {
 	await store.dispatch('set_profile');
+	next();
+}
+
+async function allow_only_member (to, from, next) {
+	await store.dispatch('set_profile');
+	if (!store.getters.profile) {
+		return next('/');
+	}
 	next();
 }

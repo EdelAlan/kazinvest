@@ -22,7 +22,7 @@ export default {
 
   actions: {
 
-    set_sectors ({ commit }, zone_id) {
+    set_sectors ({ commit }) {
       const path = this.getters.api_path + '/back/api/sectors?lang=' + this.getters.lang +
         (this.getters.selected_zone ? '&zone_id=' + this.getters.selected_zone.id : '') +
         (this.getters.earth_list.filter(it => !it.selected).length > 0
