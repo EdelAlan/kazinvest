@@ -8,7 +8,7 @@ router.post('/', bodyparser.json(), (req, res) => {
   if (userid && password && firstname && lastname && zone && role) {
     return bcrypt.hash(password, 10)
     .then(async hash => {
-      await db_query(`
+      return await db_query(`
         INSERT INTO member (
           member_id,
           member_password,
@@ -16,10 +16,15 @@ router.post('/', bodyparser.json(), (req, res) => {
           member_lastname,
           member_zone,
           member_role
-        ) VALUES (?)
-      `, [userid, hash, firstname, lastname, zone, role]);
-      res.json({
-        msg: 'signup success',
+        ) VALUES ($1, $2, $3, $4, $5, $6)
+      `, [userid, hash, firstname, lastname, zone, role])
+      .then(_ => res.json({
+          msg: 'signup success',
+      })).catch(err => {
+        console.err(err);
+        res.status(500).json({
+          msg: 'something broke',
+        });
       });
     });
   }

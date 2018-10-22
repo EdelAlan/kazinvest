@@ -20,7 +20,6 @@ export default {
     async set_profile ({ commit }) {
       const { sessiontoken } = localStorage;
       if (!sessiontoken) {
-        console.log('token is not exist, clear profile')
         return commit('set_profile', null);
       }
       await fetcher({
@@ -33,9 +32,18 @@ export default {
       });
     },
 
-    async signout ({ dispatch }) {
+    async signout({ dispatch, state }) {
       await localStorage.removeItem('sessiontoken');
-      dispatch('set_profile');
+      return fetcher({
+        method: 'post',
+        path: this.getters.api_path + '/back/api/signout',
+        body: {
+          userid: state.profile.member_id,
+        },
+      }).then(resp => {
+        console.log(resp);
+        return dispatch('set_profile');
+      });
     },
 
   },

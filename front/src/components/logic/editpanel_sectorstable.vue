@@ -28,7 +28,6 @@
     <div class="editpanel_sectorstable-table">
       <div class="editpanel_sectorstable-table_header">
         <div v-text="'Название'" class="editpanel_sectorstable-table_header_item"></div>
-        <div v-text="'Отрасль'" class="editpanel_sectorstable-table_header_item"></div>
         <div v-text="'Статус'" class="editpanel_sectorstable-table_header_item"></div>
         <div v-text="'Срок реализации'" class="editpanel_sectorstable-table_header_item"></div>
       </div>
@@ -41,9 +40,6 @@
           <span class="editpanel_sectorstable-sector_item_title editpanel_sectorstable-sector_item_title--leftpd" 
             :title="sector['title_' + lang]"
             v-text="sector['title_' + lang]"></span>
-        </div>
-        <div class="editpanel_sectorstable-sector_item">
-          <span class="editpanel_sectorstable-sector_item_title" v-text="'-'"></span>
         </div>
         <div class="editpanel_sectorstable-sector_item">
           <span class="editpanel_sectorstable-sector_item_title" 

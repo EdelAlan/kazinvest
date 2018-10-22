@@ -1,5 +1,18 @@
 const app = require('express')();
+const redis = require('./src/util/redis'); 
 
+// redis monitoring
+redis.keys('*', (_, keys) => {
+  if (keys.length) {
+    keys.forEach(it => {
+      redis.get(it, (_, reply) => {
+        console.log(it, ': ', reply.slice(0, 10));
+      });
+    });
+  }
+});
+
+const signout = require('./src/api/signout');
 const signin = require('./src/api/signin');
 const signup = require('./src/api/signup');
 const sessionverification = require('./src/api/sessionverification');
@@ -14,6 +27,8 @@ const infrastructures_list = require('./src/api/infrastructures_list');
 const earth_list = require('./src/api/earth_list'); 
 const provinces = require('./src/api/provinces'); 
 
+
+
 app
   .use((_, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -21,6 +36,7 @@ app
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     next();
   })
+  .use('/back/api/signout', signout)
   .use('/back/api/signin', signin)
   .use('/back/api/signup', signup)
   .use('/back/api/sessionverification', sessionverification)
