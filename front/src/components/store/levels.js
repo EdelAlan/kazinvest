@@ -43,6 +43,10 @@ export default {
         ui_component: 'passport_anal',
         ui_component_state: false,
       });
+      this.dispatch('change_ui_visibility', {
+        ui_component: 'passport_anal_bar',
+        ui_component_state: false,
+      });
       let updated_levels = state.levels.slice();
       switch (level.id) {
         case 2:
@@ -59,6 +63,10 @@ export default {
           this.dispatch('change_ui_visibility', {
             ui_component: 'passport',
             ui_component_state: true,
+          });
+          this.dispatch('change_ui_visibility', {
+            ui_component: 'passport_anal_bar',
+            ui_component_state: false,
           });
       }
       commit('set_level', [...updated_levels, level]);
@@ -83,14 +91,22 @@ export default {
             ui_component: 'passport_anal',
             ui_component_state: false,
           });
+          this.dispatch('change_ui_visibility', {
+            ui_component: 'passport_anal_bar',
+            ui_component_state: false,
+          });
           this.dispatch('reset_sector');
           this.dispatch('set_zones');
           commit('set_level', [LEVEL_1]);
           break;
         case 2:
-          this.commit('set_selected_sector', {});
+          this.commit('set_selected_sector', null);
           this.dispatch('change_ui_visibility', {
             ui_component: 'passport',
+            ui_component_state: false,
+          });
+          this.dispatch('change_ui_visibility', {
+            ui_component: 'passport_anal_bar',
             ui_component_state: false,
           });
           commit('set_level', state.levels.slice(0, level.id));

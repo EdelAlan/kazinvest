@@ -18,6 +18,7 @@ import infrastructures from './infrastructures';
 import objects from './objects';
 import provinces from './provinces';
 import profile from './profile';
+import investments from './investments';
 
 Vue.use(Vuex);
 
@@ -46,5 +47,6 @@ export default new Vuex.Store({
 		objects,
 		provinces,
 		profile,
+		investments,
 	},
 });

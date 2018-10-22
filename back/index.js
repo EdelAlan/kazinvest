@@ -14,6 +14,12 @@ const infrastructures_list = require('./src/api/infrastructures_list');
 const earth_list = require('./src/api/earth_list'); 
 const provinces = require('./src/api/provinces'); 
 
+const foreign_investments = require('./src/api/foreign_investments'); 
+const investments = require('./src/api/investments'); 
+const number_jobs = require('./src/api/number_jobs'); 
+const production = require('./src/api/production'); 
+const taxes = require('./src/api/taxes'); 
+
 app
   .use((_, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -34,5 +40,11 @@ app
   .use('/back/api/objects_list', objects_list)
   .use('/back/api/infrastructures_list', infrastructures_list)
   .use('/back/api/earth_list', earth_list)
+
+  .use('/back/api/foreign_investments', foreign_investments)
+  .use('/back/api/investments', investments)
+  .use('/back/api/number_jobs', number_jobs)
+  .use('/back/api/production', production)
+  .use('/back/api/taxes', taxes)
 
   .listen(5000, () => console.log('Listen on 5000'));

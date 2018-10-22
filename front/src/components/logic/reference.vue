@@ -39,7 +39,15 @@
     <div class="reference-item"
       :class="{ 'reference-item--active': !passport_content ? false : passport_content == item.passport_content }"
       v-for="item in menu"
-      @click="select(item)"
+      @click="select(item),
+      change_ui_visibility({
+        ui_component: 'passport_anal_bar',
+        ui_component_state: false,
+      }),
+      change_ui_visibility({
+        ui_component: 'passport_anal',
+        ui_component_state: false,
+      })"
       v-text="item['title_' + lang]"></div>
   </div>
 </template>
