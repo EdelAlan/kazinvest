@@ -111,13 +111,18 @@
 
 <template>
 
-  <div class="popup" :style="{ left: model.pageX + 'px', top: model.pageY-80 + 'px' }">
+  <div class="popup" :style="{ left: model.pageX + 'px', top: model.pageY-80 + 'px' }"
+    :class="{ 'popup-area' : !model.is_piechart }">
     <div class="popup-zone"
       :class="{ 'popup-sector' : !model.is_piechart }"
     >{{ model.feature.properties['title_' + this.lang] }}</div>
-    <div class="popup-zone-type"
-      :class="{ 'popup-sector' : !model.is_piechart }"
+    <div
+      :class="{ 'popup-zone-type' : model.is_piechart , 'popup-sector' : !model.is_piechart, 'popup-sector-type' : !model.is_piechart }"
     >{{ this['type_' + this.lang] }}</div>
+    <div class="popup-zone-area"
+      v-if="!model.is_piechart"
+      v-text="model.feature.properties.area + (this.lang == 'en' ? ' ha' : ' Га')">
+    </div>
     <piechart_popup
       v-if="is_piechart"
       :sectors="[
@@ -156,6 +161,19 @@
     max-width: 200px;
   }
 
+  .popup-sector-type {
+    position: absolute;
+    max-width: 160px;
+    bottom: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    display: block;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    color: #878DA1;
+    margin: 0 0 27px 10px;
+  }
+
   .popup-zone-type {
     position: absolute;
     max-width: 160px;
@@ -167,6 +185,23 @@
     font-size: 14px;
     color: #878DA1;
     margin: 0 0 10px 10px;
+  }
+
+  .popup-zone-area {
+    position: absolute;
+    max-width: 160px;
+    bottom: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    display: block;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    color: #878DA1;
+    margin: 0 0 5px 10px;
+  }
+
+  .popup-area {
+    height: 80px;
   }
 
 </style>
