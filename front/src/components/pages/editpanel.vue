@@ -38,15 +38,10 @@
 <template>
   <div class="editpanel">
     <editpanel_sidebar class="editpanel_sidebar-sidebar"></editpanel_sidebar>
-
     <div class="editpanel-content">
-    
       <div class="editpanel-content_item">
-        <span>Участки</span>
-      <editpanel_sectorstable />
-
+        <editpanel_sectorstable />
       </div>
-
     </div>
   </div>
 </template>

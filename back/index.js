@@ -4,6 +4,7 @@ const redis = require('./src/util/redis');
 // redis monitoring
 redis.keys('*', (_, keys) => {
   if (keys.length) {
+    console.log('USERS:')
     keys.forEach(it => {
       redis.get(it, (_, reply) => {
         console.log(it, ': ', reply.slice(0, 10));

@@ -2,7 +2,7 @@ import fetcher from '../../util/fetcher';
 
 export default {
   actions: {
-    sign_in ({ commit }, {
+    sign_in (_, {
       userid,
       password,
     }) {
@@ -16,10 +16,12 @@ export default {
       }).then(({ msg, sessiontoken }) => {
         if (
           msg == 'userid and password in body aren\'t exists' ||
-          msg == 'user not found or not verified'
+          msg == 'user not found or not verified' ||
+          msg == 'user wrong password'
         ) {
           return console.error(msg);
         }
+        console.log(msg);
         localStorage.setItem('sessiontoken', sessiontoken);
         this.dispatch('set_profile');
       });

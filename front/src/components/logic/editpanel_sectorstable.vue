@@ -69,7 +69,7 @@
   .editpanel_sectorstable-sectors {
     overflow-y: auto;
     padding: 0;
-    height: calc(100vh - 200px);
+    height: calc(100vh - 150px);
   }
   .editpanel_sectorstable-table_header {
     display: flex;
