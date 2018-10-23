@@ -5,6 +5,7 @@
   import legends from './legends';
   import reference from './reference';
   import passport_anal from './passport_anal';
+  import passport_anal_bar from './passport_anal_bar';
   import { mapGetters, mapActions } from 'vuex';  
 
   export default {
@@ -15,31 +16,78 @@
       passport,
       reference,
       passport_anal,
+      passport_anal_bar,
     },
 
-    computed: mapGetters([
-      'sidebar_expanded',
-      'zones',
-      'sectors',
-      'lang',
-      'selected_sector',
-      'passport_anal',
-      'passport',
-      'zone_filter',
-      'republics',
-      'active_level',
-      'selected_zone',
-      'passport_content',
-      'profile',
-    ]),
+    computed: {
+      ...mapGetters([
+        'sidebar_expanded',
+        'zones',
+        'sectors',
+        'lang',
+        'selected_sector',
+        'passport_anal',
+        'passport_anal_bar',
+        'passport',
+        'zone_filter',
+        'republics',
+        'active_level',
+        'selected_zone',
+        'passport_content',
+        'profile',
+        'investments_sum',
+        'production_sum',
+        'foreign_investments_sum',
+        'number_jobs_sum',
+        'taxes_sum',
+      ]),
 
-    methods: mapActions([
-      'set_level',
-      'set_passport_title',
-      'set_passport_content',
-      'change_ui_visibility',
-      'set_passport_anal_data'
-    ]),
+    },
+
+    methods: {
+      ...mapActions([
+        'set_level',
+        'set_passport_title',
+        'set_passport_content',
+        'change_ui_visibility',
+        'set_passport_anal_data',
+        'set_passport_anal_bar_data',
+        'set_sectors',
+        'set_foreign_investments',
+				'set_investments',
+				'set_number_jobs',
+				'set_production',
+				'set_taxes',
+      ]),
+
+      async get_investments() {
+        switch(this.passport_content) {
+          case 'level_1:sez:numeric':
+            await this.set_investments();
+            await this.set_foreign_investments();
+            await this.set_production();
+            await this.set_number_jobs();
+            await this.set_taxes();
+            console.log(this.investments_sum);
+            break;
+          case 'level_1:iz:numeric':
+            await this.set_investments();
+            await this.set_foreign_investments();
+            await this.set_production();
+            await this.set_number_jobs();
+            await this.set_taxes();
+            break;
+          case 'level_2:numeric':
+            break;
+          case 'level_3:numeric':
+            break;
+        }
+      }
+    },
+
+    watch: {
+      passport_content: 'get_investments',
+    }
   }
 </script>
 
@@ -277,31 +325,64 @@
                   title_ru: 'Цифровые показатели',
                   title_en: 'Digital indicators',
                   title_kz: 'Сандық көрсеткіштер',
-                  passport_content: 'level_2:zone:numeric',
+                  passport_content: 'level_2:numeric',
                 }, {
                   title_ru: 'Диаграммы',
                   title_en: 'Diagrams',
                   title_kz: 'Диаграммалар',
-                  passport_content: 'level_2:zone:diagramm',
+                  passport_content: 'level_2:diagramm',
                 }]"
               />
               <reference
                 v-if="active_level.id == 3"
                 :menu="[{
-                  title_ru: 'Цифровые показатели 3',
-                  title_en: 'Digital indicators 3',
-                  title_kz: 'Сандық көрсеткіштер 3',
-                  passport_content: 'level_3:sector:numeric',
-                }, {
-                  title_ru: 'Диаграммы 3',
-                  title_en: 'Diagrams 3',
-                  title_kz: 'Диаграммалар 3',
-                  passport_content: 'level_3:sector:diagramm',
+                  title_ru: 'Цифровые показатели',
+                  title_en: 'Digital indicators',
+                  title_kz: 'Сандық көрсеткіштер',
+                  passport_content: 'level_3:numeric',
                 }]"
               />
 
             </div>
           </template>
+            <reference
+              v-if="zone_filter[key].checked && active_level.id == 1"
+              v-for="republic, key in republics"
+              :menu="[{
+                title_ru: 'Цифровые показатели ' + republic['title_' + lang],
+                title_en: 'Digital indicators ' + republic['title_' + lang],
+                title_kz: 'Сандық көрсеткіштер ' + republic['title_' + lang],
+                passport_content: 'level_1:' + republic.type + ':numeric',
+              }, {
+                title_ru: 'Диаграммы ' + republic['title_' + lang],
+                title_en: 'Diagrams ' + republic['title_' + lang],
+                title_kz: 'Диаграммалар ' + republic['title_' + lang],
+                passport_content: 'level_1:' + republic.type + ':diagramm',
+              }]"
+            />
+            <reference
+              v-if="active_level.id == 2"
+              :menu="[{
+                title_ru: 'Цифровые показатели',
+                title_en: 'Digital indicators',
+                title_kz: 'Сандық көрсеткіштер',
+                passport_content: 'level_2:numeric',
+              }, {
+                title_ru: 'Диаграммы',
+                title_en: 'Diagrams',
+                title_kz: 'Диаграммалар',
+                passport_content: 'level_2:diagramm',
+              }]"
+            />
+            <reference
+              v-if="active_level.id == 3"
+              :menu="[{
+                title_ru: 'Цифровые показатели',
+                title_en: 'Digital indicators',
+                title_kz: 'Сандық көрсеткіштер',
+                passport_content: 'level_3:numeric',
+              }]"
+            />
 
         </tabs>
       </div>
@@ -396,6 +477,7 @@
       <div class="sidebar-passport_padding" slot="body" v-if="
         selected_sector 
         && active_level.id == 3 
+        && passport_content != 'level_3:numeric'
         && passport_content != 'level_3:sector_gallery'
         && passport_content != 'level_3:sector_market'
         && passport_content != 'level_3:sector_contacts'
@@ -461,19 +543,38 @@
       <!-- Показатели -->
       <div slot="body" v-if="passport_content == 'level_1:sez:numeric'">
         <div class="reference-item"
-          @click="change_ui_visibility({
-            ui_component: 'passport_anal',
+          @click="
+          set_passport_anal_bar_data(item.id),
+          change_ui_visibility({
+            ui_component: 'passport_anal_bar',
             ui_component_state: true,
           })"
           :class="{ 'reference-item--active': !passport_content ? false : passport_content == item.passport_content }"
           v-for="item in [{
-            title_ru: 'СЭЗ цифровые показатели',
-            title_en: 'SEZ digital indicators',
-            title_kz: 'АЭА сандық көрсеткіштер',
+            id: 'sez_iv',
+            title_ru: 'Объем вложанных инвестиций',
+            title_en: 'Investments volume',
+            title_kz: 'Объем вложанных инвестиций',
           }, {
-            title_ru: 'СЭЗ цифровые показатели',
-            title_en: 'SEZ digital indicators',
-            title_kz: 'АЭА сандық көрсеткіштер',
+            id: 'sez_pv',
+            title_ru: 'Объем производства',
+            title_en: 'Production volume',
+            title_kz: 'Объем производства',
+          }, {
+            id: 'sez_fdi',
+            title_ru: 'Прямые иностранные инвестиции',
+            title_en: 'Foreign direct investments',
+            title_kz: 'Прямые иностранные инвестиции',
+          }, {
+            id: 'sez_njc',
+            title_ru: 'Количество созданных рабочих мест',
+            title_en: 'Number of jobs created',
+            title_kz: 'Количество созданных рабочих мест',
+          }, {
+            id: 'sez_tv',
+            title_ru: 'Объем налоговых отчислений',
+            title_en: 'Tax volume',
+            title_kz: 'Объем налоговых отчислений',
           }]"
           v-text="item['title_' + lang]"
         ></div>
@@ -481,19 +582,38 @@
 
       <div slot="body" v-if="passport_content == 'level_1:iz:numeric'">
         <div class="reference-item"
-          @click="change_ui_visibility({
-            ui_component: 'passport_anal',
+          @click="
+            set_passport_anal_bar_data(item.id),
+            change_ui_visibility({
+            ui_component: 'passport_anal_bar',
             ui_component_state: true,
           })"
           :class="{ 'reference-item--active': !passport_content ? false : passport_content == item.passport_content }"
           v-for="item in [{
-            title_ru: 'ИЗ цифровые показатели',
-            title_en: 'IZ digital indicators',
-            title_kz: 'ИА сандық көрсеткіштер',
+            id: 'iz_iv',
+            title_ru: 'Объем вложанных инвестиций',
+            title_en: 'Investments volume',
+            title_kz: 'Объем вложанных инвестиций',
           }, {
-            title_ru: 'ИЗ цифровые показатели',
-            title_en: 'IZ digital indicators',
-            title_kz: 'ИА сандық көрсеткіштер',
+            id: 'iz_pv',
+            title_ru: 'Объем производства',
+            title_en: 'Production volume',
+            title_kz: 'Объем производства',
+          }, {
+            id: 'iz_fdi',
+            title_ru: 'Прямые иностранные инвестиции',
+            title_en: 'Foreign direct investments',
+            title_kz: 'Прямые иностранные инвестиции',
+          }, {
+            id: 'iz_njc',
+            title_ru: 'Количество созданных рабочих мест',
+            title_en: 'Number of jobs created',
+            title_kz: 'Количество созданных рабочих мест',
+          }, {
+            id: 'iz_tv',
+            title_ru: 'Объем налоговых отчислений',
+            title_en: 'Tax volume',
+            title_kz: 'Объем налоговых отчислений',
           }]"
           v-text="item['title_' + lang]"
         ></div>
@@ -548,7 +668,7 @@
       </div>
 
 
-      <div slot="body" v-if="passport_content == 'level_2:zone:diagramm'">
+      <div slot="body" v-if="passport_content == 'level_2:diagramm'">
         <div class="reference-item"
           @click="
           set_passport_anal_data(item.id),
@@ -572,12 +692,95 @@
         ></div>
       </div>
 
+      <div slot="body" v-if="passport_content == 'level_2:numeric'">
+        <div class="reference-item"
+          @click="
+            set_passport_anal_bar_data(item.id),
+            change_ui_visibility({
+            ui_component: 'passport_anal_bar',
+            ui_component_state: true,
+          })"
+          :class="{ 'reference-item--active': !passport_content ? false : passport_content == item.passport_content }"
+          v-for="item in [{
+            id: 'iv',
+            title_ru: 'Объем вложанных инвестиций',
+            title_en: 'Investments volume',
+            title_kz: 'Объем вложанных инвестиций',
+          }, {
+            id: 'pv',
+            title_ru: 'Объем производства',
+            title_en: 'Production volume',
+            title_kz: 'Объем производства',
+          }, {
+            id: 'fdi',
+            title_ru: 'Прямые иностранные инвестиции',
+            title_en: 'Foreign direct investments',
+            title_kz: 'Прямые иностранные инвестиции',
+          }, {
+            id: 'njc',
+            title_ru: 'Количество созданных рабочих мест',
+            title_en: 'Number of jobs created',
+            title_kz: 'Количество созданных рабочих мест',
+          }, {
+            id: 'tv',
+            title_ru: 'Объем налоговых отчислений',
+            title_en: 'Tax volume',
+            title_kz: 'Объем налоговых отчислений',
+          }]"
+          v-text="item['title_' + lang]"
+        ></div>
+      </div>
+
+
+      <div slot="body" v-if="passport_content == 'level_3:numeric'">
+        <div class="reference-item"
+          @click="set_passport_anal_bar_data(item.id),
+            change_ui_visibility({
+            ui_component: 'passport_anal_bar',
+            ui_component_state: true,
+          })"
+          :class="{ 'reference-item--active': !passport_content ? false : passport_content == item.passport_content }"
+          v-for="item in [{
+            id: 'iv',
+            title_ru: 'Объем вложанных инвестиций',
+            title_en: 'Investments volume',
+            title_kz: 'Объем вложанных инвестиций',
+          }, {
+            id: 'pv',
+            title_ru: 'Объем производства',
+            title_en: 'Production volume',
+            title_kz: 'Объем производства',
+          }, {
+            id: 'fdi',
+            title_ru: 'Прямые иностранные инвестиции',
+            title_en: 'Foreign direct investments',
+            title_kz: 'Прямые иностранные инвестиции',
+          }, {
+            id: 'njc',
+            title_ru: 'Количество созданных рабочих мест',
+            title_en: 'Number of jobs created',
+            title_kz: 'Количество созданных рабочих мест',
+          }, {
+            id: 'tv',
+            title_ru: 'Объем налоговых отчислений',
+            title_en: 'Tax volume',
+            title_kz: 'Объем налоговых отчислений',
+          }]"
+          v-text="item['title_' + lang]"
+        ></div>
+      </div>
+
     </passport>
 
 
     <passport_anal
       class="sidebar-passport_analytics"
       v-if="passport_anal && sidebar_expanded"
+    />
+
+    <passport_anal_bar
+      class="sidebar-passport_analytics"
+      v-if="passport_anal_bar && sidebar_expanded"
     />
   </div>
 </template>

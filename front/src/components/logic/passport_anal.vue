@@ -18,6 +18,19 @@
 			this.change_data();
 		},
 
+		computed: mapGetters([
+			'lang',
+			'passport_anal_data',
+			'active_level',
+			'republics',
+			'sectors',
+			'zones',
+		]),
+
+		watch: {
+			passport_anal_data: 'change_data',
+		},
+
 		methods: {
 			...mapActions([
 				'change_ui_visibility',
@@ -155,19 +168,6 @@
 				}
 			},
 		},
-
-		computed: mapGetters([
-			'lang',
-			'passport_anal_data',
-			'active_level',
-			'republics',
-			'sectors',
-			'zones',
-		]),
-
-		watch: {
-			passport_anal_data: 'change_data',
-		}
 	}
 </script>
 

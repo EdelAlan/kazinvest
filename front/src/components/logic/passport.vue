@@ -25,6 +25,9 @@
 				}), change_ui_visibility({
 					ui_component: 'passport_anal',
 					ui_component_state: false,
+				}), change_ui_visibility({
+					ui_component: 'passport_anal_bar',
+					ui_component_state: false,
 				})"></span>
 		</div>
 		<div class="passport-body">
