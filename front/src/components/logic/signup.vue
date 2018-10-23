@@ -200,8 +200,8 @@
 						v-on:click="toggle_password_visibility"></span>
 				</div>
 
-				{{password_confirmation == user_model.password}}
-	{{signup_success}}
+				{{!user_model.password.length && !password_confirmation.length ? 
+					'' : password_confirmation == user_model.password ? 'Пароли совпадают' : 'Пароли не совпадают'}}
 				<div class="signup-controls">
 					<button class="signup-control signup-control--primary"
 						v-on:click="

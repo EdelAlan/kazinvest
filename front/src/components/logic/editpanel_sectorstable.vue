@@ -23,7 +23,7 @@
 <template>
   <div class="editpanel_sectorstable">
     <div class="editpanel_sectorstable-header">
-      <h2 class="editpanel_sectorstable-header_title" v-text="selected_zone ? selected_zone['title_' + lang] : ''"></h2>
+      <h2 class="editpanel_sectorstable-header_title" v-text="selected_zone ? selected_zone['title_' + lang] : 'Все зоны'"></h2>
     </div>
     <div class="editpanel_sectorstable-table">
       <div class="editpanel_sectorstable-table_header">
