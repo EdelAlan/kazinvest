@@ -1,5 +1,19 @@
 const app = require('express')();
+const redis = require('./src/util/redis'); 
 
+// redis monitoring
+redis.keys('*', (_, keys) => {
+  if (keys.length) {
+    console.log('USERS:')
+    keys.forEach(it => {
+      redis.get(it, (_, reply) => {
+        console.log(it, ': ', reply.slice(0, 10));
+      });
+    });
+  }
+});
+
+const signout = require('./src/api/signout');
 const signin = require('./src/api/signin');
 const signup = require('./src/api/signup');
 const sessionverification = require('./src/api/sessionverification');
@@ -13,7 +27,6 @@ const objects_list = require('./src/api/objects_list');
 const infrastructures_list = require('./src/api/infrastructures_list'); 
 const earth_list = require('./src/api/earth_list'); 
 const provinces = require('./src/api/provinces'); 
-
 const foreign_investments = require('./src/api/foreign_investments'); 
 const investments = require('./src/api/investments'); 
 const number_jobs = require('./src/api/number_jobs'); 
@@ -27,6 +40,7 @@ app
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     next();
   })
+  .use('/back/api/signout', signout)
   .use('/back/api/signin', signin)
   .use('/back/api/signup', signup)
   .use('/back/api/sessionverification', sessionverification)
@@ -40,7 +54,6 @@ app
   .use('/back/api/objects_list', objects_list)
   .use('/back/api/infrastructures_list', infrastructures_list)
   .use('/back/api/earth_list', earth_list)
-
   .use('/back/api/foreign_investments', foreign_investments)
   .use('/back/api/investments', investments)
   .use('/back/api/number_jobs', number_jobs)

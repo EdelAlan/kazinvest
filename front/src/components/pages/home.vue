@@ -309,7 +309,7 @@
                       <div v-text="profile.member_id"></div>
                       <span v-text="profile.member_firstname + ' '"></span>
                       <span v-text="profile.member_lastname"></span>
-                      <p v-text="profile.member_zone['title_' + lang]"></p>
+                      <p v-text="profile.member_zone ? profile.member_zone['title_' + lang] : ''"></p>
                       <br>
                       <router-link v-if="profile" to="/editpanel" class="btn"
                         v-text="{

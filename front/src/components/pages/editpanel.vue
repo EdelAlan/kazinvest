@@ -27,8 +27,12 @@
 		},
 
     async mounted () {
-      await this.set_selected_zone(this.profile.member_zone);
-      this.set_sectors(this.profile.member_zone.id);
+      if (this.profile.member_role == 'superadmin') {
+        return this.set_sectors();
+      } else {
+        await this.set_selected_zone(this.profile.member_zone);
+        return this.set_sectors(this.profile.member_zone.id);
+      }
     },
 
 	}
@@ -38,15 +42,10 @@
 <template>
   <div class="editpanel">
     <editpanel_sidebar class="editpanel_sidebar-sidebar"></editpanel_sidebar>
-
     <div class="editpanel-content">
-    
       <div class="editpanel-content_item">
-        <span>Участки</span>
-      <editpanel_sectorstable />
-
+        <editpanel_sectorstable />
       </div>
-
     </div>
   </div>
 </template>

@@ -23,12 +23,11 @@
 <template>
   <div class="editpanel_sectorstable">
     <div class="editpanel_sectorstable-header">
-      <h2 class="editpanel_sectorstable-header_title" v-text="selected_zone ? selected_zone['title_' + lang] : ''"></h2>
+      <h2 class="editpanel_sectorstable-header_title" v-text="selected_zone ? selected_zone['title_' + lang] : 'Все зоны'"></h2>
     </div>
     <div class="editpanel_sectorstable-table">
       <div class="editpanel_sectorstable-table_header">
         <div v-text="'Название'" class="editpanel_sectorstable-table_header_item"></div>
-        <div v-text="'Отрасль'" class="editpanel_sectorstable-table_header_item"></div>
         <div v-text="'Статус'" class="editpanel_sectorstable-table_header_item"></div>
         <div v-text="'Срок реализации'" class="editpanel_sectorstable-table_header_item"></div>
       </div>
@@ -41,9 +40,6 @@
           <span class="editpanel_sectorstable-sector_item_title editpanel_sectorstable-sector_item_title--leftpd" 
             :title="sector['title_' + lang]"
             v-text="sector['title_' + lang]"></span>
-        </div>
-        <div class="editpanel_sectorstable-sector_item">
-          <span class="editpanel_sectorstable-sector_item_title" v-text="'-'"></span>
         </div>
         <div class="editpanel_sectorstable-sector_item">
           <span class="editpanel_sectorstable-sector_item_title" 
@@ -73,7 +69,7 @@
   .editpanel_sectorstable-sectors {
     overflow-y: auto;
     padding: 0;
-    height: calc(100vh - 200px);
+    height: calc(100vh - 150px);
   }
   .editpanel_sectorstable-table_header {
     display: flex;
