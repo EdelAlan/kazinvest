@@ -106,9 +106,8 @@
         ui_component_state: false,
       })">
 
-      <div v-if="signup_success" class="">Ждите одобрения</div>
 
-      <div v-else class="home-signup_signin_container">
+      <div class="home-signup_signin_container">
 
         <tabs
           :titles_style="{

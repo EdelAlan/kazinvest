@@ -92,7 +92,7 @@
 
 <template>
 	<div class="signup">
-		<div class="signup-container">
+		<div v-if="!signup_success" class="signup-container">
 			
 			<template
 				v-if="!select_password_state">
@@ -205,7 +205,6 @@
 				<div class="signup-controls">
 					<button class="signup-control signup-control--primary"
 						v-on:click="
-							set_success,
 							signup(user_model)
 						"
 						v-text="{
@@ -220,6 +219,9 @@
 			</template>
 
 		</div>
+
+		<div class="signup-success" v-else>Вы зарегистрированы. Дождидесь одобрения администрации.</div>
+
 	</div>
 </template>
 
@@ -229,6 +231,10 @@
 	.signup-container {
 		width: 360px;
 		margin: 30px auto;
+	}
+
+	.signup-success {
+		padding: 30px;
 	}
 
 	.signup-role_select {

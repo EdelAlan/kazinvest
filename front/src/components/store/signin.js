@@ -21,9 +21,9 @@ export default {
         ) {
           return console.error(msg);
         }
-        console.log(msg);
         localStorage.setItem('sessiontoken', sessiontoken);
         this.dispatch('set_profile');
+        return msg;
       });
     }
   },
