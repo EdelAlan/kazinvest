@@ -8,7 +8,7 @@ const redis = require('../util/redis');
 router.post('/', bodyparser.json(), async (req, res) => {
   const { sessiontoken } = req.body;
   const { userid, password, death_time } = JSON.parse(cryptr.decrypt(sessiontoken));
-  
+
   const redis_token = await new Promise((resolve, reject) => {
     redis.get(userid, (_, reply) => {
       resolve(reply);
@@ -20,8 +20,8 @@ router.post('/', bodyparser.json(), async (req, res) => {
       msg: 'hello, hacker :)'
     });
   }
-  
-  if (!redis_token == sessiontoken) {
+
+  if (redis_token != sessiontoken) {
     return res.status(500).json({
       msg: 'tokens are not match'
     });  
