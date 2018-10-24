@@ -40,7 +40,134 @@
         'foreign_investments_sum',
         'number_jobs_sum',
         'taxes_sum',
+        'investments',
+        'production',
+        'foreign_investments',
+        'number_jobs',
+        'taxes',
       ]),
+
+      investments_sum_iz: state => {
+        var sum = 0;
+        state.investments.forEach( el => {
+          state.zones.forEach(zone => {
+            state.sectors.forEach(sector => {
+              if (zone.id == sector.zone_id && sector.id == el.parent_id && zone.zone_type == 2) {
+                sum += parseInt(el.val,10);
+              }
+            });
+          });
+        });
+        return sum;
+      },
+      foreign_investments_sum_iz: state => {
+        var sum = 0;
+        state.foreign_investments.forEach( el => {
+          state.zones.forEach(zone => {
+            state.sectors.forEach(sector => {
+              if (zone.id == sector.zone_id && sector.id == el.parent_id && zone.zone_type == 2) {
+                sum += parseInt(el.val,10);
+              }
+            });
+          });
+        });
+        return sum;
+      },
+      production_sum_iz: state => {
+        var sum = 0;
+        state.production.forEach( el => {
+          state.zones.forEach(zone => {
+            state.sectors.forEach(sector => {
+              if (zone.id == sector.zone_id && sector.id == el.parent_id && zone.zone_type == 2) {
+                sum += parseInt(el.val,10);
+              }
+            });
+          });
+        });
+        return sum;
+      },
+      number_jobs_sum_iz: state => {
+        var sum = 0;
+        state.number_jobs.forEach( el => {
+          state.zones.forEach(zone => {
+            state.sectors.forEach(sector => {
+              if (zone.id == sector.zone_id && sector.id == el.parent_id && zone.zone_type == 2) {
+                sum += parseInt(el.val,10);
+              }
+            });
+          });
+        });
+        return sum;
+      },
+      taxes_sum_iz: state => {
+        var sum = 0;
+        state.taxes.forEach( el => {
+          state.zones.forEach(zone => {
+            state.sectors.forEach(sector => {
+              if (zone.id == sector.zone_id && sector.id == el.parent_id && zone.zone_type == 2) {
+                sum += parseInt(el.val,10);
+              }
+            });
+          });
+        });
+        return sum;
+      },
+
+      investments_sum_level2: state => {
+        var sum = 0;
+        state.investments.forEach(el => {
+					state.sectors.forEach(sector => {
+						if (sector.id == el.parent_id) {
+              sum += parseInt(el.val,10);
+						}
+					});
+        });
+        return sum;
+      },
+      foreign_investments_sum_level2: state => {
+        var sum = 0;
+        state.foreign_investments.forEach(el => {
+					state.sectors.forEach(sector => {
+						if (sector.id == el.parent_id) {
+              sum += parseInt(el.val,10);
+						}
+					});
+        });
+        return sum;
+      },
+      production_sum_level2: state => {
+        var sum = 0;
+        state.production.forEach(el => {
+					state.sectors.forEach(sector => {
+						if (sector.id == el.parent_id) {
+              sum += parseInt(el.val,10);
+						}
+					});
+        });
+        return sum;
+      },
+      number_jobs_sum_level2: state => {
+        var sum = 0;
+        state.number_jobs.forEach(el => {
+					state.sectors.forEach(sector => {
+						if (sector.id == el.parent_id) {
+              sum += parseInt(el.val,10);
+						}
+					});
+        });
+        return sum;
+      },
+      taxes_sum_level2: state => {
+        var sum = 0;
+        state.taxes.forEach(el => {
+					state.sectors.forEach(sector => {
+						if (sector.id == el.parent_id) {
+              sum += parseInt(el.val,10);
+						}
+					});
+        });
+        return sum;
+      },
 
     },
 
@@ -68,9 +195,9 @@
             await this.set_production();
             await this.set_number_jobs();
             await this.set_taxes();
-            console.log(this.investments_sum);
             break;
           case 'level_1:iz:numeric':
+            await this.set_sectors();
             await this.set_investments();
             await this.set_foreign_investments();
             await this.set_production();
@@ -78,8 +205,18 @@
             await this.set_taxes();
             break;
           case 'level_2:numeric':
+            await this.set_investments();
+            await this.set_foreign_investments();
+            await this.set_production();
+            await this.set_number_jobs();
+            await this.set_taxes();
             break;
           case 'level_3:numeric':
+            await this.set_investments();
+            await this.set_foreign_investments();
+            await this.set_production();
+            await this.set_number_jobs();
+            await this.set_taxes();
             break;
         }
       }
@@ -555,29 +692,51 @@
             title_ru: 'Объем вложанных инвестиций',
             title_en: 'Investments volume',
             title_kz: 'Объем вложанных инвестиций',
+            sum: investments_sum,
+            tenge_ru: ' Тенге',
+            tenge_en: ' Tenge',
+            tenge_kz: ' Теңге',
           }, {
             id: 'sez_pv',
             title_ru: 'Объем производства',
             title_en: 'Production volume',
             title_kz: 'Объем производства',
+            sum: production_sum,
+            tenge_ru: ' Тенге',
+            tenge_en: ' Tenge',
+            tenge_kz: ' Теңге',
           }, {
             id: 'sez_fdi',
             title_ru: 'Прямые иностранные инвестиции',
             title_en: 'Foreign direct investments',
             title_kz: 'Прямые иностранные инвестиции',
+            sum: foreign_investments_sum,
+            tenge_ru: ' Тенге',
+            tenge_en: ' Tenge',
+            tenge_kz: ' Теңге',
           }, {
             id: 'sez_njc',
             title_ru: 'Количество созданных рабочих мест',
             title_en: 'Number of jobs created',
             title_kz: 'Количество созданных рабочих мест',
+            sum: number_jobs_sum,
+            tenge_ru: '',
+            tenge_en: '',
+            tenge_kz: '',
           }, {
             id: 'sez_tv',
             title_ru: 'Объем налоговых отчислений',
             title_en: 'Tax volume',
             title_kz: 'Объем налоговых отчислений',
+            sum: taxes_sum,
+            tenge_ru: ' Тенге',
+            tenge_en: ' Tenge',
+            tenge_kz: ' Теңге',
           }]"
-          v-text="item['title_' + lang]"
-        ></div>
+        >
+          <span class="reference-item-sum" v-text="item.sum + item['tenge_' + lang]+'\n'"></span>
+          <span class="reference-item-title" v-text="item['title_' + lang]"></span>
+        </div>
       </div>
 
       <div slot="body" v-if="passport_content == 'level_1:iz:numeric'">
@@ -594,29 +753,51 @@
             title_ru: 'Объем вложанных инвестиций',
             title_en: 'Investments volume',
             title_kz: 'Объем вложанных инвестиций',
+            sum: investments_sum_iz,
+            tenge_ru: ' Тенге',
+            tenge_en: ' Tenge',
+            tenge_kz: ' Теңге',
           }, {
             id: 'iz_pv',
             title_ru: 'Объем производства',
             title_en: 'Production volume',
             title_kz: 'Объем производства',
+            sum: production_sum_iz,
+            tenge_ru: ' Тенге',
+            tenge_en: ' Tenge',
+            tenge_kz: ' Теңге',
           }, {
             id: 'iz_fdi',
             title_ru: 'Прямые иностранные инвестиции',
             title_en: 'Foreign direct investments',
             title_kz: 'Прямые иностранные инвестиции',
+            sum: foreign_investments_sum_iz,
+            tenge_ru: ' Тенге',
+            tenge_en: ' Tenge',
+            tenge_kz: ' Теңге',
           }, {
             id: 'iz_njc',
             title_ru: 'Количество созданных рабочих мест',
             title_en: 'Number of jobs created',
             title_kz: 'Количество созданных рабочих мест',
+            sum: number_jobs_sum_iz,
+            tenge_ru: '',
+            tenge_en: '',
+            tenge_kz: '',
           }, {
             id: 'iz_tv',
             title_ru: 'Объем налоговых отчислений',
             title_en: 'Tax volume',
             title_kz: 'Объем налоговых отчислений',
+            sum: taxes_sum_iz,
+            tenge_ru: ' Тенге',
+            tenge_en: ' Tenge',
+            tenge_kz: ' Теңге',
           }]"
-          v-text="item['title_' + lang]"
-        ></div>
+        >
+          <span class="reference-item-sum" v-text="item.sum + item['tenge_' + lang]+'\n'"></span>
+          <span class="reference-item-title" v-text="item['title_' + lang]"></span>
+        </div>
       </div>
 
       <div slot="body" v-if="passport_content == 'level_1:sez:diagramm'">
@@ -706,29 +887,51 @@
             title_ru: 'Объем вложанных инвестиций',
             title_en: 'Investments volume',
             title_kz: 'Объем вложанных инвестиций',
+            sum: investments_sum_level2,
+            tenge_ru: ' Тенге',
+            tenge_en: ' Tenge',
+            tenge_kz: ' Теңге',
           }, {
             id: 'pv',
             title_ru: 'Объем производства',
             title_en: 'Production volume',
             title_kz: 'Объем производства',
+            sum: production_sum_level2,
+            tenge_ru: ' Тенге',
+            tenge_en: ' Tenge',
+            tenge_kz: ' Теңге',
           }, {
             id: 'fdi',
             title_ru: 'Прямые иностранные инвестиции',
             title_en: 'Foreign direct investments',
             title_kz: 'Прямые иностранные инвестиции',
+            sum: foreign_investments_sum_level2,
+            tenge_ru: ' Тенге',
+            tenge_en: ' Tenge',
+            tenge_kz: ' Теңге',
           }, {
             id: 'njc',
             title_ru: 'Количество созданных рабочих мест',
             title_en: 'Number of jobs created',
             title_kz: 'Количество созданных рабочих мест',
+            sum: number_jobs_sum_level2,
+            tenge_ru: '',
+            tenge_en: '',
+            tenge_kz: '',
           }, {
             id: 'tv',
             title_ru: 'Объем налоговых отчислений',
             title_en: 'Tax volume',
             title_kz: 'Объем налоговых отчислений',
+            sum: taxes_sum_level2,
+            tenge_ru: ' Тенге',
+            tenge_en: ' Tenge',
+            tenge_kz: ' Теңге',
           }]"
-          v-text="item['title_' + lang]"
-        ></div>
+        >
+          <span class="reference-item-sum" v-text="item.sum + item['tenge_' + lang]+'\n'"></span>
+          <span class="reference-item-title" v-text="item['title_' + lang]"></span>
+        </div>
       </div>
 
 
@@ -745,29 +948,51 @@
             title_ru: 'Объем вложанных инвестиций',
             title_en: 'Investments volume',
             title_kz: 'Объем вложанных инвестиций',
+            sum: investments_sum_level2,
+            tenge_ru: ' Тенге',
+            tenge_en: ' Tenge',
+            tenge_kz: ' Теңге',
           }, {
             id: 'pv',
             title_ru: 'Объем производства',
             title_en: 'Production volume',
             title_kz: 'Объем производства',
+            sum: production_sum_level2,
+            tenge_ru: ' Тенге',
+            tenge_en: ' Tenge',
+            tenge_kz: ' Теңге',
           }, {
             id: 'fdi',
             title_ru: 'Прямые иностранные инвестиции',
             title_en: 'Foreign direct investments',
             title_kz: 'Прямые иностранные инвестиции',
+            sum: foreign_investments_sum_level2,
+            tenge_ru: ' Тенге',
+            tenge_en: ' Tenge',
+            tenge_kz: ' Теңге',
           }, {
             id: 'njc',
             title_ru: 'Количество созданных рабочих мест',
             title_en: 'Number of jobs created',
             title_kz: 'Количество созданных рабочих мест',
+            sum: number_jobs_sum_level2,
+            tenge_ru: '',
+            tenge_en: '',
+            tenge_kz: '',
           }, {
             id: 'tv',
             title_ru: 'Объем налоговых отчислений',
             title_en: 'Tax volume',
             title_kz: 'Объем налоговых отчислений',
+            sum: taxes_sum_level2,
+            tenge_ru: ' Тенге',
+            tenge_en: ' Tenge',
+            tenge_kz: ' Теңге',
           }]"
-          v-text="item['title_' + lang]"
-        ></div>
+        >
+          <span class="reference-item-sum" v-text="item.sum + item['tenge_' + lang]+'\n'"></span>
+          <span class="reference-item-title" v-text="item['title_' + lang]"></span>
+        </div>
       </div>
 
     </passport>

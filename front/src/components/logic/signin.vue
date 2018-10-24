@@ -21,7 +21,6 @@
 			...mapActions([
 				'sign_in',
 				'set_profile',
-				'change_ui_visibility',
 			]),
 
 			signin () {

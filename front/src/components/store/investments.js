@@ -39,7 +39,6 @@ export default {
         sum += parseInt(el.val,10);
       });
       return sum;
-
     },
     foreign_investments_sum: state => {
       var sum = 0;
@@ -47,7 +46,6 @@ export default {
         sum += parseInt(el.val,10);
       });
       return sum;
-
     },
     number_jobs_sum: state => {
       var sum = 0;
@@ -55,7 +53,6 @@ export default {
         sum += parseInt(el.val,10);
       });
       return sum;
-
     },
     production_sum: state => {
       var sum = 0;
@@ -63,7 +60,6 @@ export default {
         sum += parseInt(el.val,10);
       });
       return sum;
-
     },
     taxes_sum: state => {
       var sum = 0;
@@ -71,7 +67,6 @@ export default {
         sum += parseInt(el.val,10);
       });
       return sum;
-
     },
   },
 

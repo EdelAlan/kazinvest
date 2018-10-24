@@ -294,10 +294,10 @@
             <div class="welcome">
                 <div class="title"
                   v-text="{
-                    'title_ru': 'Добро пожаловать!', 
-                    'title_kz': 'Қош келдіңіз!', 
-                    'title_en': 'Welcome!'
-                  }['title_' + lang]"
+                    'title_ru': 'Добро пожаловать', 
+                    'title_kz': 'Қош келдіңіз', 
+                    'title_en': 'Welcome'
+                  }['title_' + lang] + (profile ? ', ' + profile.member_firstname + ' ' + profile.member_lastname : '') + '!'"
                 ></div>
                 <div class="helper"></div>
             </div>
@@ -542,7 +542,7 @@
   .assistant {
     width: 40px;
     height: 45px;
-    position: absolute;
+    position: fixed;
     bottom: 10px;
     right: 10px;
     background: url('../../assets/images/assistant.svg') no-repeat center;
@@ -561,6 +561,9 @@
     align-items: flex-end;
   }
 
+.assistant--menu {
+  position: fixed;
+}
   .assistant--menu .menu,
   .menu_body {
       display: flex;

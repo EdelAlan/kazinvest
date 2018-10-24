@@ -55,6 +55,7 @@
 
 <style>
   .reference-item {
+    white-space: pre-line;
     border-bottom: 1px solid #eee;
     padding: 15px;
     transition: all 200ms;
@@ -62,6 +63,19 @@
     color: #03A0E3;
     transition: all 200ms;
   }
+
+  .reference-item-sum {
+    white-space: pre-line;
+    font-size: 18px;
+    color: #03A0E3;
+  }
+
+  .reference-item-title {
+    white-space: pre-line;
+    font-size: 14px;
+    color: #949494;
+  }
+
   .reference-item--active {
     background: #50C7F9;
     color: #fff;
