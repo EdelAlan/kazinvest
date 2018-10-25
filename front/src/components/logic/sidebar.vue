@@ -1019,7 +1019,7 @@
     height: 100vh;
   }
   .sidebar-scroll_section {
-    height: calc(100vh - 210px);
+    height: calc(100vh - 235px);
     overflow-y: scroll;
     margin-top: 5px;
   }

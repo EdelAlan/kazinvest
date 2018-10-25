@@ -134,13 +134,14 @@
     cursor: pointer;
   }
   .filter-carret {
-    width: 20px;
-    height: 12px;
+    width: 17px;
+    height: 9px;
     pointer-events: none;
     position: absolute;
-    right: 14px;
+    right: 10px;
     top: 50%;
     opacity: .5;
+    background-repeat: no-repeat;
     transform: translateY(-50%);
     background-size: contain;
     background-image: url('../../assets/images/carret.svg');

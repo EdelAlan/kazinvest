@@ -43,7 +43,6 @@
     position: absolute;
     z-index: 10;
     width: 320px;
-    height: 100vh;
     box-shadow: 0 0 5px 0 rgba(0,0,0,.2);
   }
   .editpanel_sidebar-item {

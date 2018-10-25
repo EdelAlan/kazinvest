@@ -60,7 +60,7 @@
   .editpanel_sectorstable {
     position: absolute;
     z-index: 10;
-    width: 100%;
+    width: calc(100% - 60px);
     background: #fff;
     margin: 30px;
     box-shadow: 0 0 5px 0 rgba(0,0,0,.2);

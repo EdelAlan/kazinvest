@@ -15,16 +15,16 @@
 <template>
   <div>
     <div id="ru"
-      class="lang-item" 
-      :class="{ 'lang-item--active': lang == 'ru' }"
+      class="lang_container-item" 
+      :class="{ 'lang_container-item--active': lang == 'ru' }"
       @click="select_lang('ru')"></div>
     <div id="kz"
-      class="lang-item" 
-      :class="{ 'lang-item--active': lang == 'kz' }"
+      class="lang_container-item" 
+      :class="{ 'lang_container-item--active': lang == 'kz' }"
       @click="select_lang('kz')"></div>
     <div id="en"
-      class="lang-item" 
-      :class="{ 'lang-item--active': lang == 'en' }"
+      class="lang_container-item" 
+      :class="{ 'lang_container-item--active': lang == 'en' }"
       @click="select_lang('en')"></div>
   </div>
 </template>
@@ -37,29 +37,29 @@
     justify-content: flex-end;
   }
 
-  .lang-item {
+  .lang_container-item {
     height: 22px;
     width: 37px;
     margin: 0 8px;
   }
 
-  .lang-item--active {
+  .lang_container-item--active {
     box-shadow: inset 0 0 0 2px #52cbff;
   }
 
-  #kz.lang-item {
+  #kz.lang_container-item {
     background: url('../../assets/images/lang-kk.svg') no-repeat center;
   }
 
-  #ru.lang-item {
+  #ru.lang_container-item {
     background: url('../../assets/images/lang-ru.svg') no-repeat center;
   }
 
-  #en.lang-item {
+  #en.lang_container-item {
     background: url('../../assets/images/lang-en.svg') no-repeat center;
   }
 
-  .lang-item:hover {
+  .lang_container-item:hover {
     cursor: pointer;
   }
 

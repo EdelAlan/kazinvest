@@ -54,6 +54,7 @@
   .editpanel_sidebar-sidebar {
     left: 0;
     top: 0;
+    bottom: 0;
     width: 250px;
     background: #fff;
   }
