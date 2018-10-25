@@ -44,7 +44,7 @@
             arcSweep = 1;
           }
           result.push({
-            color: idx == 0 ? '#03A0E3' : '#7ED767',
+            color: idx == 0 ? '#7ED767' : '#03A0E3',
             d: `M${l},${l} L${l},0 A${l},${l} 0 ${arcSweep},1 ${x}, ${y} z`,
             transform: `translate(${this.size * 0.05}, ${this.size * 0.05}) rotate(${rotation}, ${l}, ${l})`,
           });
