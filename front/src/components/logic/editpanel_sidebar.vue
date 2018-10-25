@@ -3,11 +3,15 @@
 
   export default {
 
+    
+    methods: mapActions([
+      'set_view',
+    ]),
+
     computed: mapGetters([
-      'sectors',
       'lang',
-      'republics',
       'profile',
+      'views',
     ]),
 
   }
@@ -22,7 +26,12 @@
       </router-link>
     </div>
     <div class="editpanel_sidebar-items">
-      <div class="editpanel_sidebar-item editpanel_sidebar-item--active">Участки</div>
+      <div v-for="(view, idx) in views" 
+        class="editpanel_sidebar-item"
+        :class="{ 'editpanel_sidebar-item--active': view.active }"
+        v-text="view['title_' + lang]"
+        v-on:click="set_view(idx)"
+      ></div>
     </div>
 
   </div>
@@ -40,6 +49,7 @@
   .editpanel_sidebar-item {
     height: 53px;
     padding: 15px;
+    cursor: pointer;
   }
   .editpanel_sidebar-item--active {
     background: #50C7F9;

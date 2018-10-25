@@ -1,21 +1,19 @@
 <script>
   import { mapGetters, mapActions } from 'vuex';
   import editpanel_sidebar from '../logic/editpanel_sidebar';
+  import editpanel_members from '../logic/editpanel_members';
   import editpanel_sectorstable from '../logic/editpanel_sectorstable';
 
   export default {
     components: {
       editpanel_sidebar,
       editpanel_sectorstable,
-    },
-
-    data() {
-      return {
-      }
+      editpanel_members,
     },
 
     computed: mapGetters([
       'profile',
+      'views',
     ]),
 
 		methods: {
@@ -23,7 +21,6 @@
         'set_selected_zone',
         'set_sectors',
       ]),
-     
 		},
 
     async mounted () {
@@ -44,7 +41,8 @@
     <editpanel_sidebar class="editpanel_sidebar-sidebar"></editpanel_sidebar>
     <div class="editpanel-content">
       <div class="editpanel-content_item">
-        <editpanel_sectorstable />
+        <editpanel_sectorstable v-if="views[0].active" />
+        <editpanel_members v-if="views[1].active && profile.member_role == 'superadmin'" />
       </div>
     </div>
   </div>

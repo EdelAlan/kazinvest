@@ -32,6 +32,7 @@ const investments = require('./src/api/investments');
 const number_jobs = require('./src/api/number_jobs'); 
 const production = require('./src/api/production'); 
 const taxes = require('./src/api/taxes'); 
+const members = require('./src/api/members'); 
 
 app
   .use((_, res, next) => {
@@ -59,5 +60,6 @@ app
   .use('/back/api/number_jobs', number_jobs)
   .use('/back/api/production', production)
   .use('/back/api/taxes', taxes)
+  .use('/back/api/members', members)
 
   .listen(5000, () => console.log('Listen on 5000'));

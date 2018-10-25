@@ -114,7 +114,7 @@
     height: 62px;
     width: 110px;
     background: url('../../assets/images/logo-blue-black.svg') no-repeat center;
-    background-size: cover;
+    background-size: contain;
     position: absolute;
     top: 10px;
     left: 10px;

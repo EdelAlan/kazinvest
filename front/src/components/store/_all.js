@@ -19,6 +19,8 @@ import objects from './objects';
 import provinces from './provinces';
 import profile from './profile';
 import investments from './investments';
+import editpanel from './editpanel';
+import members from './members';
 
 Vue.use(Vuex);
 
@@ -48,5 +50,7 @@ export default new Vuex.Store({
 		provinces,
 		profile,
 		investments,
+		editpanel,
+		members,
 	},
 });
