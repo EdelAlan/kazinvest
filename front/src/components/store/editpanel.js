@@ -4,11 +4,13 @@ export default {
   state: () => ({
     views: [{
       active: true,
+      id: 'sectors',
       title_ru: 'Участки',
       title_kz: 'Участки',
       title_en: 'Участки',
     }, {
       active: false,
+      id: 'members',
       title_ru: 'Участники',
       title_kz: 'Участники',
       title_en: 'Участники',

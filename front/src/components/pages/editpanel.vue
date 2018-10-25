@@ -41,8 +41,8 @@
     <editpanel_sidebar class="editpanel_sidebar-sidebar"></editpanel_sidebar>
     <div class="editpanel-content">
       <div class="editpanel-content_item">
-        <editpanel_sectorstable v-if="views[0].active" />
-        <editpanel_members v-if="views[1].active && profile.member_role == 'superadmin'" />
+        <editpanel_sectorstable v-if="views[0] && views[0].active" />
+        <editpanel_members v-if="views[1] && views[1].active && profile.member_role == 'superadmin'" />
       </div>
     </div>
   </div>
