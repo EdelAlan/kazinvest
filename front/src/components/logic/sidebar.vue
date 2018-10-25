@@ -409,7 +409,7 @@
         doc.line(30, doc.autoTable.previous.finalY + 85, 565, doc.autoTable.previous.finalY + 85);
 
 
-        doc.save('test.pdf');
+        doc.save(this.selected_sector['title_'+this.lang]+'.pdf');
       },
 
       generate_excel() {
