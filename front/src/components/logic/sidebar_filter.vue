@@ -56,25 +56,24 @@
         }['title_' + lang]"
       />
 
-        <filter_checker
-          style="width: 100%; margin-bottom: 5px"
-          :list="provinces_filter"
-          :title="{
-            'title_ru': provinces_filter.filter(it => it.checked).length ? provinces_filter.filter(it => it.checked).map(it => it.title_ru).join(', ') : 'Регион', 
-            'title_kz': provinces_filter.filter(it => it.checked).length ? provinces_filter.filter(it => it.checked).map(it => it.title_kz).join(', ') : 'Регион', 
-            'title_en': provinces_filter.filter(it => it.checked).length ? provinces_filter.filter(it => it.checked).map(it => it.title_en).join(', ') : 'Регион',
-          }"
-          v-on:select="set_provinces_filter"
-          :styles="{
-            'border': '1px solid #fff',
-            'border-radius': '3px',
-            'height': '31px',
-            'font-size': '14px',
-            'padding': '5px 35px 5px 10px',
-            'line-height': '18px'
-          }"
-        />
-
+      <filter_checker
+        style="width: 100%; margin-bottom: 5px"
+        :list="provinces_filter"
+        :title="{
+          'title_ru': provinces_filter.filter(it => it.checked).length ? provinces_filter.filter(it => it.checked).map(it => it.title_ru).join(', ') : 'Регион', 
+          'title_kz': provinces_filter.filter(it => it.checked).length ? provinces_filter.filter(it => it.checked).map(it => it.title_kz).join(', ') : 'Аймақ', 
+          'title_en': provinces_filter.filter(it => it.checked).length ? provinces_filter.filter(it => it.checked).map(it => it.title_en).join(', ') : 'District',
+        }"
+        v-on:select="set_provinces_filter"
+        :styles="{
+          'border': '1px solid #fff',
+          'border-radius': '3px',
+          'height': '31px',
+          'font-size': '14px',
+          'padding': '5px 35px 5px 10px',
+          'line-height': '18px'
+        }"
+      />
 
       <div class="sidebar_filter-filter">
 
@@ -82,8 +81,8 @@
           :list="zone_filter"
           :title="{
             'title_ru': zone_filter.filter(it => it.checked).length ? zone_filter.filter(it => it.checked).map(it => it.title_ru).join(', ') : 'СЭЗ/ИЗ', 
-            'title_kz': zone_filter.filter(it => it.checked).length ? zone_filter.filter(it => it.checked).map(it => it.title_kz).join(', ') : 'СЭЗ/ИЗ', 
-            'title_en': zone_filter.filter(it => it.checked).length ? zone_filter.filter(it => it.checked).map(it => it.title_en).join(', ') : 'СЭЗ/ИЗ',
+            'title_kz': zone_filter.filter(it => it.checked).length ? zone_filter.filter(it => it.checked).map(it => it.title_kz).join(', ') : 'АЭА/ИА', 
+            'title_en': zone_filter.filter(it => it.checked).length ? zone_filter.filter(it => it.checked).map(it => it.title_en).join(', ') : 'IZ/SEZ',
           }"
           v-on:select="set_zone_filter"
           :styles="{
@@ -102,8 +101,8 @@
           :list="industries_filter"
           :title="{
             'title_ru': industries_filter.filter(it => it.checked).length ? industries_filter.filter(it => it.checked).map(it => it.title_ru).join(', ') : 'Отрасль', 
-            'title_kz': industries_filter.filter(it => it.checked).length ? industries_filter.filter(it => it.checked).map(it => it.title_kz).join(', ') : 'Отрасль', 
-            'title_en': industries_filter.filter(it => it.checked).length ? industries_filter.filter(it => it.checked).map(it => it.title_en).join(', ') : 'Отрасль',
+            'title_kz': industries_filter.filter(it => it.checked).length ? industries_filter.filter(it => it.checked).map(it => it.title_kz).join(', ') : 'Салалары', 
+            'title_en': industries_filter.filter(it => it.checked).length ? industries_filter.filter(it => it.checked).map(it => it.title_en).join(', ') : 'Industries',
           }"
           v-on:select="set_industries_filter"
           :styles="{

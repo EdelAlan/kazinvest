@@ -14,11 +14,17 @@
 
 <template>
   <div>
-    <div id="ru" class="lang-item"
+    <div id="ru"
+      class="lang-item" 
+      :class="{ 'lang-item--active': lang == 'ru' }"
       @click="select_lang('ru')"></div>
-    <div id="kz" class="lang-item"
+    <div id="kz"
+      class="lang-item" 
+      :class="{ 'lang-item--active': lang == 'kz' }"
       @click="select_lang('kz')"></div>
-    <div id="en" class="lang-item"
+    <div id="en"
+      class="lang-item" 
+      :class="{ 'lang-item--active': lang == 'en' }"
       @click="select_lang('en')"></div>
   </div>
 </template>
@@ -26,15 +32,19 @@
 
 <style>
   .lang_container {
-      padding: 20px;
-      display: flex;
-      justify-content: flex-end;
+    padding: 20px;
+    display: flex;
+    justify-content: flex-end;
   }
 
   .lang-item {
     height: 22px;
     width: 37px;
     margin: 0 8px;
+  }
+
+  .lang-item--active {
+    box-shadow: inset 0 0 0 2px #52cbff;
   }
 
   #kz.lang-item {
