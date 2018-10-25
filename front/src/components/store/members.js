@@ -21,10 +21,13 @@ export default {
         path: this.getters.api_path + '/back/api/members'
       }).then(members => commit('set_members', members));
     },
-    update_member({ commit, dispatch }, member_id) {
+    update_member ({ dispatch }, member) {
       return fetcher({
-        path: this.getters.api_path + '/back/api/members/' + member_id
-      }).then(_ => {
+        method: 'put',
+        path: this.getters.api_path + '/back/api/members/' + member.member_id,
+        body: member,
+      }).then(res => {
+        console.log(res);
         dispatch('set_members');
       });
     },

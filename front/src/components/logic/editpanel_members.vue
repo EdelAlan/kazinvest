@@ -10,6 +10,7 @@
 
     methods: mapActions([
       'set_members',
+      'update_member',
     ]),
 
     async mounted () {
@@ -43,7 +44,15 @@
             v-text="member.member_id"></span>
         </div>
         <div class="editpanel_members-member_item">
-          <input type="checkbox" :checked="member.member_verification" />
+          <input type="checkbox" 
+            v-on:click="update_member({
+              member_firstname: member.member_firstname,
+              member_lastname: member.member_lastname,
+              member_id: member.member_id,
+              member_verification: !member.member_verification,
+            })"
+            :checked="member.member_verification"
+          />
         </div>
         <div class="editpanel_members-member_item">
           <span class="editpanel_members-member_item_title" 
