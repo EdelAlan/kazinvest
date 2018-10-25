@@ -34,7 +34,7 @@ export default {
       style: positron(),
       zoom: 4.82,
       center: [67.5, 48.51],
-      interactive: false
+      interactive: true
     });
 
     this.popupm = new mapboxgl.Popup({
@@ -1093,8 +1093,8 @@ export default {
         }
       );
       this._mapboxgl_map.setMaxBounds(null);
-      this._mapboxgl_map.scrollZoom.disable();
-      this._mapboxgl_map.dragPan.disable();
+      // this._mapboxgl_map.scrollZoom.disable();
+      // this._mapboxgl_map.dragPan.disable();
       this._mapboxgl_map.setStyle(positron());
       this.init_map();
       this.move_map();

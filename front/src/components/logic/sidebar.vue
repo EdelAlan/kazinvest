@@ -6,6 +6,7 @@
   import reference from './reference';
   import passport_anal from './passport_anal';
   import passport_anal_bar from './passport_anal_bar';
+  import font from '../../assets/js/font.js';
   import { mapGetters, mapActions } from 'vuex';  
 
   export default {
@@ -219,7 +220,202 @@
             await this.set_taxes();
             break;
         }
-      }
+      },
+
+      async generate_pdf() {
+        await this.set_investments();
+        await this.set_foreign_investments();
+        await this.set_production();
+        await this.set_number_jobs();
+        await this.set_taxes();
+
+        const jsPDF = require('jspdf');
+        require('jspdf-autotable');
+
+        const label_img = 'data:image/png;base64,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';
+        const doc = new jsPDF(
+          "portrait",
+          "px",
+          [595, 842]
+        );
+
+        const PTSans = font();
+        doc.addFileToVFS("PTSans.ttf", PTSans);
+        doc.addFont('PTSans.ttf', 'PTSans', 'normal');
+        doc.setFont('PTSans');
+        
+        // header
+        doc.setFillColor('#03A0E3');
+        doc.rect(0, 0, 595, 40, 'F');
+        doc.addImage(label_img, 'PNG', 30, 9, 22, 22);
+        doc.setFillColor('#FFFFFF');
+        doc.setFontSize(16);
+        doc.setTextColor(255);
+        doc.text(this.lang == 'ru' ? 'Отчет по проектам / участникам' : this.lang == 'kz' ? 'Жоба / қатысушы туралы есеп' : 'Project / Participant Report', 62, 25)
+
+        // body
+        doc.setFontSize(16);
+        doc.setTextColor('#484D5E');
+
+        doc.text(this.lang == 'ru' ? 'Наименование Компании – участника:' : this.lang == 'kz' ? 'Қоғамның атауы - қатысушы:' : 'Name of the Company - participant:', 30, 77);
+        doc.text(this.selected_sector['title_' + this.lang], 460, 77);
+
+        doc.text(this.lang == 'ru' ? 'Название проекта:' : this.lang == 'kz' ? 'Жобаның атауы:' : 'Project name', 30, 122);
+        doc.text(this.selected_sector['title_project_' + this.lang], 300, 122);
+
+        doc.text(this.lang == 'ru' ? 'Выпускаемая продукция:' : this.lang == 'kz' ? 'Өнімдер:' : 'Manufactured products:', 30, 167);
+        doc.text(this.selected_sector['products_' + this.lang], 460, 167);
+
+        doc.text(this.lang == 'ru' ? 'Год:' : this.lang == 'kz' ? 'Жыл:' : 'Year:', 30, 212);
+        doc.text(this.selected_sector['project_date'], 460, 212);
+
+        doc.text(this.lang == 'ru' ? 'Текущий статус:' : this.lang == 'kz' ? 'Ағымдағы күй:' : 'Current status:', 30, 257);
+        switch(this.selected_sector.project_type) {
+          case 1:
+            doc.text(this.lang == 'ru' ? 'Действующий' : this.lang == 'kz' ? 'Әрекеттегі' : 'Ongoing', 460, 257);
+            break;
+          case 2:
+            doc.text(this.lang == 'ru' ? 'На стадии реализации' : this.lang == 'kz' ? 'Іске асыру сатысында' : 'Underway', 460, 257);
+            break;
+          case 3:
+            doc.text(this.lang == 'ru' ? 'Свободный' : this.lang == 'kz' ? 'Еркін' : 'Free', 460, 257);
+            break;
+        }
+
+        doc.text(this.lang == 'ru' ? 'Наличие подведенных инфраструктурных мощностей:' : this.lang == 'kz' ? 'Инфрақұрылымдық мүмкіндіктердің болуы:' : 'Availability of infrastructure capacity:', 30, 302);
+
+        doc.text(this.lang == 'ru' ? 'Стоимость проекта:' : this.lang == 'kz' ? 'Жобаның құны:' : 'Project price:', 30, 347);
+        doc.text(this.selected_sector['project_price'] + (this.lang == 'ru' ? ' Тенге' : this.lang == 'kz' ? ' Теңге' : ' Tenge'), 460, 347);
+
+        doc.text(this.lang == 'ru' ? 'Иностранное участие:' : this.lang == 'kz' ? 'Шетелдік қатысуы:' : 'Internetional participation:', 30, 392);
+        doc.text(this.selected_sector['foreign_participation'], 460, 392);
+
+        doc.text(this.lang == 'ru' ? 'Мощность проекта:' : this.lang == 'kz' ? 'Жобаның қуаты:' : 'Project power:', 30, 436);
+        doc.text(this.selected_sector['power'], 460, 436);
+
+        if (this.selected_sector.project_type == 2) {
+          doc.text(this.lang == 'ru' ? 'Планируемые рабочие места:' : this.lang == 'kz' ? 'Жоспарланған жұмыс орындары:' : 'Planned jobs:', 30, 481);
+          doc.text(this.selected_sector['plan_jobs'].toString(), 460, 481);
+
+          doc.text(this.lang == 'ru' ? 'Контакты:' : this.lang == 'kz' ? 'Байланыс:' : 'Contacts:', 30, 525);
+          doc.text(this.selected_sector['contacts_' + this.lang], 460, 525);
+
+          doc.line(30, 545, 565, 545);
+        }
+
+        doc.text(this.lang == 'ru' ? 'Контакты:' : this.lang == 'kz' ? 'Байланыс:' : 'Contacts:', 30, 481);
+        doc.text(this.selected_sector['contacts_' + this.lang], 460, 481);
+
+
+        doc.setDrawColor('#D2D2D2');
+        doc.setLineWidth(1);
+        doc.line(30, 97, 565, 97);
+        doc.line(30, 142, 565, 142);
+        doc.line(30, 187, 565, 187);
+        doc.line(30, 232, 565, 232);
+        doc.line(30, 277, 565, 277);
+        doc.line(30, 322, 565, 322);
+        doc.line(30, 367, 565, 367);
+        doc.line(30, 412, 565, 412);
+        doc.line(30, 456, 565, 456);
+        doc.line(30, 501, 565, 501);
+
+        doc.addPage();
+
+        // header
+        doc.setFillColor('#03A0E3');
+        doc.rect(0, 0, 595, 40, 'F');
+        doc.addImage(label_img, 'PNG', 30, 9, 22, 22);
+        doc.setFillColor('#FFFFFF');
+        doc.setFontSize(16);
+        doc.setTextColor(255);
+        doc.text(this.lang == 'ru' ? 'Отчет по проектам / участникам' : this.lang == 'kz' ? 'Жоба / қатысушы туралы есеп' : 'Project / Participant Report', 62, 25)
+
+        doc.setFontSize(12);
+        doc.setTextColor('#484D5E');
+
+        doc.text(this.lang == 'ru' ? 'Объем вложанных инвестиций по проекту по годам:' : this.lang == 'kz' ? 'Жылына жобаға салынған инвестициялар көлемі:' : 'The volume of investments in the project by year:', 30, 77);
+        doc.text(this.lang == 'ru' ? 'Объем производства по проекту по годам:' : this.lang == 'kz' ? 'Жобаға жыл сайынғы өнім көлемі:' : 'The volume of production for the project by year:', 30, 160);
+        doc.text(this.lang == 'ru' ? 'Прямые иностранные инвестиций по проекту по годам:' : this.lang == 'kz' ? 'Жобаға жыл сайын шетелдік тікелей инвестициялар:' : 'Foreign direct investment in the project by year:', 30, 235);
+        doc.text(this.lang == 'ru' ? 'Количество рабочих мест по проекту по годам:' : this.lang == 'kz' ? 'Жыл сайын жобада жұмыс орындарының саны:' : 'Number of jobs in the project by year:', 30, 310);
+        doc.text(this.lang == 'ru' ? 'Объем налоговых отчислений по проектам по годам:' : this.lang == 'kz' ? 'Жыл бойынша жобалар бойынша салық аударымдарының сомасы:' : 'The amount of tax deductions for projects by year:', 30, 390);
+
+        doc.text(this.lang == 'ru' ? 'Доля выделенного финансирования по отношению к общей сумме финансирования СЭЗ/ИЗ РК:' : this.lang == 'kz' ? 'ҚР АЭА/ИА қаржыландырудың жалпы сомасына қатысты бөлінетін қаржыландыру үлесі:' : 'The share of funding allocated in relation to the total amount of financing of the SEZ/IZ:', 30, 490);
+        if (this.selected_sector.project_type == 3) {
+          doc.text(this.lang == 'ru' ? 'Делимый:' : this.lang == 'kz' ? 'Бөліседі:' : 'Divisible:', 30, 545);
+          switch(this.selected_sector.divisible) {
+            case 1:
+              doc.text(this.lang == 'ru' ? 'Да' : this.lang == 'kz' ? 'Иә' : 'Yes', 460, 545);
+              break;
+            case 0:
+              doc.text(this.lang == 'ru' ? 'Нет' : this.lang == 'kz' ? 'Жоқ' : 'No', 460, 545);
+              break;
+          }
+        }
+
+        // table Объем вложанных инвестиций по проекту по годам:
+        const columns = [2014, 2015, 2016, 2017, 2018];
+        
+        var data = [
+          [this.investments.filter(el => el.year == 2014).length > 0 ? this.investments.filter(el => el.year == 2014)[0].val : 0, 
+            this.investments.filter(el => el.year == 2015).length > 0 ? this.investments.filter(el => el.year == 2015)[0].val : 0,
+            this.investments.filter(el => el.year == 2016).length > 0 ? this.investments.filter(el => el.year == 2016)[0].val : 0, 
+            this.investments.filter(el => el.year == 2017).length > 0 ? this.investments.filter(el => el.year == 2017)[0].val : 0, 
+            this.investments.filter(el => el.year == 2018).length > 0 ? this.investments.filter(el => el.year == 2018)[0].val : 0],
+        ];
+        doc.autoTable(columns, data, {startY: 92});
+
+        // table Объем производства по проекту по годам:
+        data = [
+          [this.production.filter(el => el.year == 2014).length > 0 ? this.production.filter(el => el.year == 2014)[0].val : 0, 
+            this.production.filter(el => el.year == 2015).length > 0 ? this.production.filter(el => el.year == 2015)[0].val : 0,
+            this.production.filter(el => el.year == 2016).length > 0 ? this.production.filter(el => el.year == 2016)[0].val : 0, 
+            this.production.filter(el => el.year == 2017).length > 0 ? this.production.filter(el => el.year == 2017)[0].val : 0, 
+            this.production.filter(el => el.year == 2018).length > 0 ? this.production.filter(el => el.year == 2018)[0].val : 0],
+        ];
+        doc.autoTable(columns, data, {startY: doc.autoTable.previous.finalY + 45});
+
+        // tbale Прямые иностранные инвестиций по проекту по годам:
+        data = [
+          [this.foreign_investments.filter(el => el.year == 2014).length > 0 ? this.foreign_investments.filter(el => el.year == 2014)[0].val : 0, 
+            this.foreign_investments.filter(el => el.year == 2015).length > 0 ? this.foreign_investments.filter(el => el.year == 2015)[0].val : 0,
+            this.foreign_investments.filter(el => el.year == 2016).length > 0 ? this.foreign_investments.filter(el => el.year == 2016)[0].val : 0, 
+            this.foreign_investments.filter(el => el.year == 2017).length > 0 ? this.foreign_investments.filter(el => el.year == 2017)[0].val : 0, 
+            this.foreign_investments.filter(el => el.year == 2018).length > 0 ? this.foreign_investments.filter(el => el.year == 2018)[0].val : 0],
+        ];
+        doc.autoTable(columns, data, {startY: doc.autoTable.previous.finalY + 45});
+
+        // table Количество рабочих мест по проекту по годам:
+        data = [
+          [this.number_jobs.filter(el => el.year == 2014).length > 0 ? this.number_jobs.filter(el => el.year == 2014)[0].val : 0, 
+            this.number_jobs.filter(el => el.year == 2015).length > 0 ? this.number_jobs.filter(el => el.year == 2015)[0].val : 0,
+            this.number_jobs.filter(el => el.year == 2016).length > 0 ? this.number_jobs.filter(el => el.year == 2016)[0].val : 0, 
+            this.number_jobs.filter(el => el.year == 2017).length > 0 ? this.number_jobs.filter(el => el.year == 2017)[0].val : 0, 
+            this.number_jobs.filter(el => el.year == 2018).length > 0 ? this.number_jobs.filter(el => el.year == 2018)[0].val : 0],
+        ];
+        doc.autoTable(columns, data, {startY: doc.autoTable.previous.finalY + 45});
+
+        // table Объем налоговых отчислений по проектам по годам:
+        data = [
+          [this.taxes.filter(el => el.year == 2014).length > 0 ? this.taxes.filter(el => el.year == 2014)[0].val : 0, 
+            this.taxes.filter(el => el.year == 2015).length > 0 ? this.taxes.filter(el => el.year == 2015)[0].val : 0,
+            this.taxes.filter(el => el.year == 2016).length > 0 ? this.taxes.filter(el => el.year == 2016)[0].val : 0, 
+            this.taxes.filter(el => el.year == 2017).length > 0 ? this.taxes.filter(el => el.year == 2017)[0].val : 0, 
+            this.taxes.filter(el => el.year == 2018).length > 0 ? this.taxes.filter(el => el.year == 2018)[0].val : 0],
+        ];
+        doc.autoTable(columns, data, {startY: doc.autoTable.previous.finalY + 45});
+
+        doc.line(30, doc.autoTable.previous.finalY + 25, 565, doc.autoTable.previous.finalY + 25);
+        doc.line(30, doc.autoTable.previous.finalY + 85, 565, doc.autoTable.previous.finalY + 85);
+
+
+        doc.save('test.pdf');
+      },
+
+      generate_excel() {
+        
+      },
+
     },
 
     watch: {
@@ -623,6 +819,12 @@
         && passport_content != 'level_1:sez:numeric'
         && passport_content != 'level_1:iz:diagramm'
       ">
+        <div class="passport-body_item">
+          <button class="passport-body_item_excel"
+            @click="generate_excel">Excel</button>
+          <button class="passport-body_item_pdf"
+            @click="generate_pdf">PDF</button>
+        </div>
         <div class="passport-body_item">
           <span class="passport-body_item_key">Название компании участника</span>
           <span class="passport-body_item_val" 
