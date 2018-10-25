@@ -93,7 +93,12 @@
             'padding': '5px 35px 5px 10px',
             'line-height': '18px'
           }"
-        />
+        >
+          <div class="sidebar_filter-marker sidebar_filter-marker--green"
+            slot="check_img_0"></div>
+          <div class="sidebar_filter-marker sidebar_filter-marker--orange"
+            slot="check_img_1"></div>
+        </filter_checker>
       </div>
 
       <div class="sidebar_filter-filter">
@@ -157,6 +162,21 @@
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+  }
+  .sidebar_filter-marker {
+    width: 20px;
+    height: 30px;
+    float: left;
+    margin-left: 5px;
+    background-size: 80%;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+  }
+  .sidebar_filter-marker--green {
+    background-image: url('../../assets/images/g.svg');
+  }
+  .sidebar_filter-marker--orange {
+    background-image: url('../../assets/images/o.svg');
   }
   .sidebar_filter-input {
     background: white;

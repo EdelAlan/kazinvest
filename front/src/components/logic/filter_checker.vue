@@ -42,7 +42,7 @@
         'lang',
       ]),
     },
-    
+
   };
 
 </script>
@@ -69,6 +69,9 @@
 
       <div class="filter-item"
         v-for="item, key in list">
+        <slot 
+          v-if="Object.keys($slots).length" 
+          :name="'check_img_' + key"></slot>
         <label 
           :title="item['title_' + lang]"
           class="filter-item_label"
@@ -167,5 +170,10 @@
   }
   .filter-item:hover {
     background: #f1f1f1;
+  }
+  .filter-marker {
+    float: left;
+    width: 30px;
+    height: 30px;
   }
 </style>
