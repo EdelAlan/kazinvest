@@ -26,7 +26,9 @@ export default {
   getters: {
     views(state, getters) {
       return state.views.filter(it => {
-        return getters.profile.member_role == 'superadmin' ? it : it.id != 'members';
+        if (getters.profile) {
+          return getters.profile.member_role == 'superadmin' ? it : it.id != 'members';
+        }
       });
     },
   },

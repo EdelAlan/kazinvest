@@ -151,7 +151,7 @@
   }
   .mapview-breadcrumb {
     position: absolute;
-    z-index: 20;
+    z-index: 8;
     left: 150px;
     transition: all .5s ease-in-out;
     top: 0;

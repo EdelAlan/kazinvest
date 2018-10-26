@@ -1,6 +1,7 @@
 export default {
   state: () => ({
     signup_signin_modal: false,
+    video_modal: false,
     passport: false,// паспорт объекта, "sector" - название из базы
     passport_anal: false,
     passport_anal_data: null,
@@ -30,6 +31,7 @@ export default {
 
   getters: {
     signup_signin_modal: state => state.signup_signin_modal,
+    video_modal: state => state.video_modal,
     passport: state => state.passport,
     passport_content: state => state.passport_content,
     passport_title: state => state.passport_title,

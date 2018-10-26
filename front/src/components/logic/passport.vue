@@ -39,7 +39,7 @@
 
 <style>
 	.passport {
-		width: 300px;
+		width: 320px;
 		background: #fff;
 		border-radius: 3px;
 		box-shadow: 0 0 10px rgba(0, 0, 0, .2);

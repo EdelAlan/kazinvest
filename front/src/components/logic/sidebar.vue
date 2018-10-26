@@ -1,6 +1,7 @@
 <script>
   import sidebar_header from './sidebar_header';
   import tabs from '../ui/tabs';
+  import modal from '../ui/modal';
   import passport from './passport';
   import legends from './legends';
   import reference from './reference';
@@ -11,12 +12,19 @@
   export default {
     components: {
       tabs,
+      modal,
       sidebar_header,
       legends,
       passport,
       reference,
       passport_anal,
       passport_anal_bar,
+    },
+
+    data () {
+      return {
+        selected_video: '',
+      }
     },
 
     computed: {
@@ -45,6 +53,7 @@
         'foreign_investments',
         'number_jobs',
         'taxes',
+        'video_modal',
       ]),
 
       investments_sum_iz: state => {
@@ -172,6 +181,9 @@
     },
 
     methods: {
+      select_video (youtube_id) {
+        this.selected_video = youtube_id;
+      },  
       ...mapActions([
         'set_level',
         'set_passport_title',
@@ -232,6 +244,19 @@
 <template>
   <div class="sidebar" 
     :class="{'sidebar--expanded': sidebar_expanded}">
+
+    <modal
+      v-if="video_modal"
+      v-on:close="change_ui_visibility({
+        ui_component: 'video_modal',
+        ui_component_state: false,
+      })">
+      <iframe style="border: none" width="520" height="305"
+        :src="'https://www.youtube.com/embed/' + selected_video">
+      </iframe>
+    </modal>
+
+    
     <sidebar_header class="sidebar-header"></sidebar_header>
 
     <div class="sidebar-scroll_section">
@@ -479,48 +504,47 @@
                   passport_content: 'level_3:numeric',
                 }]"
               />
-
             </div>
           </template>
-            <reference
-              v-if="zone_filter[key].checked && active_level.id == 1"
-              v-for="republic, key in republics"
-              :menu="[{
-                title_ru: 'Цифровые показатели ' + republic['title_' + lang],
-                title_en: 'Digital indicators ' + republic['title_' + lang],
-                title_kz: 'Сандық көрсеткіштер ' + republic['title_' + lang],
-                passport_content: 'level_1:' + republic.type + ':numeric',
-              }, {
-                title_ru: 'Диаграммы ' + republic['title_' + lang],
-                title_en: 'Diagrams ' + republic['title_' + lang],
-                title_kz: 'Диаграммалар ' + republic['title_' + lang],
-                passport_content: 'level_1:' + republic.type + ':diagramm',
-              }]"
-            />
-            <reference
-              v-if="active_level.id == 2"
-              :menu="[{
-                title_ru: 'Цифровые показатели',
-                title_en: 'Digital indicators',
-                title_kz: 'Сандық көрсеткіштер',
-                passport_content: 'level_2:numeric',
-              }, {
-                title_ru: 'Диаграммы',
-                title_en: 'Diagrams',
-                title_kz: 'Диаграммалар',
-                passport_content: 'level_2:diagramm',
-              }]"
-            />
-            <reference
-              v-if="active_level.id == 3"
-              :menu="[{
-                title_ru: 'Цифровые показатели',
-                title_en: 'Digital indicators',
-                title_kz: 'Сандық көрсеткіштер',
-                passport_content: 'level_3:numeric',
-              }]"
-            />
-
+          <reference
+            v-if="zone_filter[key].checked && active_level.id == 1"
+            v-for="republic, key in republics"
+            :menu="[{
+              title_ru: 'Цифровые показатели ' + republic['title_' + lang],
+              title_en: 'Digital indicators ' + republic['title_' + lang],
+              title_kz: 'Сандық көрсеткіштер ' + republic['title_' + lang],
+              passport_content: 'level_1:' + republic.type + ':numeric',
+            }, {
+              title_ru: 'Диаграммы ' + republic['title_' + lang],
+              title_en: 'Diagrams ' + republic['title_' + lang],
+              title_kz: 'Диаграммалар ' + republic['title_' + lang],
+              passport_content: 'level_1:' + republic.type + ':diagramm',
+            }]"
+          />
+          <reference
+            v-if="active_level.id == 2"
+            :menu="[{
+              title_ru: 'Цифровые показатели',
+              title_en: 'Digital indicators',
+              title_kz: 'Сандық көрсеткіштер',
+              passport_content: 'level_2:numeric',
+            }, {
+              title_ru: 'Диаграммы',
+              title_en: 'Diagrams',
+              title_kz: 'Диаграммалар',
+              passport_content: 'level_2:diagramm',
+            }]"
+          />
+          <reference
+            v-if="active_level.id == 3"
+            :menu="[{
+              title_ru: 'Цифровые показатели',
+              title_en: 'Digital indicators',
+              title_kz: 'Сандық көрсеткіштер',
+              passport_content: 'level_3:numeric',
+            }]"
+          />
+          
         </tabs>
       </div>
     </div>
@@ -535,8 +559,36 @@
         <div class="sidebar-passport_padding" slot="body" v-if="passport_content == 'level_1:sez_common'">
           <div v-html="republics[0]['common_' + lang]"></div>
         </div>
-        <div class="sidebar-passport_padding" slot="body" v-if="passport_content == 'level_1:sez_market'">
-          <div v-html="'Данных пока нет'"></div>
+        <div class="" slot="body" v-if="passport_content == 'level_1:sez_market'">
+          <h2 class="sidebar-passport_subtitle">Фото</h2>
+          <div class="sidebar-market_wrap">
+            <div v-for="video in republics[0].videos" class="sidebar-passport_video">
+              <img :src="'http://img.youtube.com/vi/' + video.video + '/mqdefault.jpg'" />
+            </div>
+          </div>
+          <h2 class="sidebar-passport_subtitle">Видео</h2>
+          <div class="sidebar-market_wrap">
+            <div v-for="video in republics[0].videos" class="sidebar-passport_video"
+              v-on:click="
+                change_ui_visibility({
+                  ui_component: 'video_modal',
+                  ui_component_state: true,
+                }),
+                select_video(video.video)
+              "
+            >
+              <img :src="'http://img.youtube.com/vi/' + video.video + '/mqdefault.jpg'" />
+            </div>
+
+
+          </div>
+          <h2 class="sidebar-passport_subtitle">Презентации</h2>
+          <div class="sidebar-market_file" v-for="file in republics[0].files">
+            <a :href="file.file_name" target="_blank">
+              <div class="sidebar-market_pdf"></div>
+              <div class="sidebar-market_pdf_text">{{file['name_' + lang]}}</div>
+            </a>
+          </div>          
         </div>
         <div class="sidebar-passport_padding" slot="body" v-if="passport_content == 'level_1:iz_advantages'">
           <div v-html="republics[1]['advantages_' + lang]"></div>
@@ -569,8 +621,34 @@
             <p>Ссылка на закон</p>
           </a>
         </div>
-        <div class="sidebar-passport_padding" slot="body" v-if="passport_content == 'level_1:iz_market'">
-          <div v-html="'Данных пока нет'"></div>
+        <div slot="body" v-if="passport_content == 'level_1:iz_market'">
+          <h2 class="sidebar-passport_subtitle">Фото</h2>
+          <div class="sidebar-market_wrap">
+            <div v-for="video in republics[1].videos" class="sidebar-passport_video">
+              <img :src="'http://img.youtube.com/vi/' + video.video + '/mqdefault.jpg'" />
+            </div>
+          </div>
+          <h2 class="sidebar-passport_subtitle">Видео</h2>
+          <div class="sidebar-market_wrap">
+            <div v-for="video in republics[1].videos" class="sidebar-passport_video"
+              v-on:click="
+                change_ui_visibility({
+                  ui_component: 'video_modal',
+                  ui_component_state: true,
+                }),
+                select_video(video.video)
+              "
+            >
+              <img :src="'http://img.youtube.com/vi/' + video.video + '/mqdefault.jpg'" />
+            </div>
+          </div>
+          <h2 class="sidebar-passport_subtitle">Презентации</h2>
+          <div class="sidebar-market_file" v-for="file in republics[1].files">
+            <a :href="file.file_name" target="_blank">
+              <div class="sidebar-market_pdf"></div>
+              <div class="sidebar-market_pdf_text">{{file['name_' + lang]}}</div>
+            </a>
+          </div>
         </div>
         <div class="sidebar-passport_padding" slot="body" v-if="passport_content == 'level_1:sez_iz_contacts'">
           <div v-html="republics[0]['contacts_' + lang]"></div>
@@ -1046,6 +1124,47 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, .2);
   }
   .sidebar-section--main_content {
+  }
+  .sidebar-passport_subtitle {
+    color: #0075A7;
+    font-weight: normal;
+    margin: 15px 0 0 10px;
+    font-size: 16px;
+  }
+  .sidebar-passport_video {
+    width: 92px;
+    height: 53px;
+    float: left;
+    margin: 5px;
+    overflow: hidden;
+    border-radius: 2px;
+    cursor: pointer;
+
+  }
+  .sidebar-market_wrap {
+    padding: 5px;
+    overflow: hidden;
+  }
+  .sidebar-market_file {
+    overflow: hidden;
+    cursor: pointer;
+    padding: 10px;
+  }
+  .sidebar-market_file:hover {
+    background: #f1f1f1;
+  }
+  .sidebar-market_pdf {
+    width: 40px;
+    float: left;
+    height: 40px;
+    background: url('../../assets/images/pdf.png');
+  }
+  .sidebar-market_pdf_text {
+    padding-top: 8px;
+  }
+  .sidebar-passport_video img {
+    width: 100%;
+    height: 100%;
   }
   .sidebar-item {
     border-bottom: 1px solid #eee;

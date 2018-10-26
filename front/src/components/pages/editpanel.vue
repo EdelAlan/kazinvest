@@ -24,7 +24,7 @@
 		},
 
     async mounted () {
-      if (this.profile.member_role == 'superadmin') {
+      if (this.profile && this.profile.member_role == 'superadmin') {
         return this.set_sectors();
       } else {
         await this.set_selected_zone(this.profile.member_zone);
@@ -42,7 +42,7 @@
     <div class="editpanel-content">
       <div class="editpanel-content_item">
         <editpanel_sectorstable v-if="views[0] && views[0].active" />
-        <editpanel_members v-if="views[1] && views[1].active && profile.member_role == 'superadmin'" />
+        <editpanel_members v-if="views[1] && views[1].active && profile && profile.member_role == 'superadmin'" />
       </div>
     </div>
   </div>
