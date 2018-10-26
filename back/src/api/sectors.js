@@ -99,10 +99,6 @@ router.get('/', async (req, res) => {
 
   res.send(sectors);
 
-
-
-
-
 });
 
 router.get('/:id', async (req, res) => {
