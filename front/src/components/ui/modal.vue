@@ -36,6 +36,8 @@
 		top: 50%;
 		transform: translate(-50%, -50%);
 		background: #fff;
+		max-width: 800px;
+		max-height: 800px;
 		min-width: 200px;
 		min-height: 100px;
 	}

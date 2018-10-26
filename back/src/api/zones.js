@@ -113,14 +113,39 @@ router.get('/', async (req, res) => {
   console.log('provinces_filter:', provinces_filter);
   console.log('search_string:', search_string);
 
-  let result = await db_query(sql, params);
-  result = result.map(it => ({
+  let zones = (await db_query(sql, params)).map(it => ({
     ...it,
     title_ru: zone_type_str[it.zone_type - 1].title_ru + ' ' + (it.title_ru || 'нет названия'),
-    title_kz: zone_type_str[it.zone_type - 1].title_kz + ' ' + (it.title_kz || it.title_ru),
-    title_en: zone_type_str[it.zone_type - 1].title_en + ' ' + (it.title_en || it.title_ru),
+    title_kz: zone_type_str[it.zone_type - 1].title_kz + ' ' + (it.title_kz || it.title_ru || 'нет названия'),
+    title_en: zone_type_str[it.zone_type - 1].title_en + ' ' + (it.title_en || it.title_ru || 'нет названия'),
   }));
-  res.send(result);
+
+  const zones_videos = await db_query(
+    'SELECT * FROM zone_videos',
+  );
+  const zones_files = await db_query(
+    'SELECT * FROM zone_files',
+  );
+  const zones_photos = await db_query(
+    'SELECT * FROM zone_photos',
+  );
+
+  zones = zones.map(zone => {
+    return {
+      ...zone,
+      videos: zones_videos
+        .filter(vid => vid.zone_id == zone.id),
+      files: zones_files
+        .filter(file => file.zone_id == zone.id),
+      photos: zones_photos
+        .filter(photos => photos.zone_id == zone.id),
+    };
+  });
+
+
+  res.send(zones);
+
+
 });
 
 router.get('/:id', async (req, res) => {

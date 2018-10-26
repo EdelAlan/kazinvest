@@ -66,21 +66,75 @@ router.get('/', async (req, res) => {
 
   console.log(sql);
   console.log(params);
-  const result = await db_query(sql, params);
+  let sectors = await db_query(sql, params);
 
-  res.send(result.map(it => ({ 
+  sectors = sectors.map(it => ({ 
     ...it, 
     project_type_title_ru: it.project_type == 1 ? 'Действующий' : it.project_type == 2 ? 'На стадии реализации' : 'Свободный',
     project_type_title_kz: it.project_type == 1 ? 'Действующий' : it.project_type == 2 ? 'На стадии реализации' : 'Свободный',
     project_type_title_en: it.project_type == 1 ? 'Действующий' : it.project_type == 2 ? 'На стадии реализации' : 'Свободный',
-  })));
+  }));
+
+  const sectors_videos = await db_query(
+    'SELECT * FROM sector_videos',
+  );
+  const sectors_files = await db_query(
+    'SELECT * FROM sector_files',
+  );
+  const sectors_photos = await db_query(
+    'SELECT * FROM sector_photos',
+  );
+
+  sectors = sectors.map(sector => {
+    return {
+      ...sector,
+      videos: sectors_videos
+        .filter(vid => vid.sector_id == sector.id),
+      files: sectors_files
+        .filter(file => file.sector_id == sector.id),
+      photos: sectors_photos
+        .filter(photos => photos.sector_id == sector.id),
+    };
+  });
+
+  res.send(sectors);
+
+
+
+
+
 });
 
 router.get('/:id', async (req, res) => {
-  res.send(await db_query(
+  let sectors = await db_query(
     'SELECT * from sectors where id = $1',
     [req.params.id],
-  ));
+  );
+
+  const sectors_videos = await db_query(
+    'SELECT * FROM sector_videos',
+  );
+  const sectors_files = await db_query(
+    'SELECT * FROM sector_files',
+  );
+  const sectors_photos = await db_query(
+    'SELECT * FROM sector_photos',
+  );
+
+  sectors = sectors.map(sector => {
+    return {
+      ...sector,
+      videos: sectors_videos
+        .filter(vid => vid.sector_id == sector.id),
+      files: sectors_files
+        .filter(file => file.sector_id == sector.id),
+      photos: sectors_photos
+        .filter(photos => photos.sector_id == sector.id),
+    };
+  });
+
+  res.send(sectors);
+
 });
 
 module.exports = router;

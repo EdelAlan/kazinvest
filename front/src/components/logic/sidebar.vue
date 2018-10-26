@@ -25,6 +25,7 @@
     data () {
       return {
         selected_video: '',
+        selected_image: '',
       }
     },
 
@@ -54,6 +55,7 @@
         'foreign_investments',
         'number_jobs',
         'taxes',
+        'image_modal',
         'video_modal',
       ]),
 
@@ -182,8 +184,11 @@
     },
 
     methods: {
-      select_video (youtube_id) {
-        this.selected_video = youtube_id;
+      select_video (src) {
+        this.selected_video = src;
+      },  
+      select_image (src) {
+        this.selected_image = src;
       },  
       ...mapActions([
         'set_level',
@@ -448,11 +453,24 @@
         ui_component_state: false,
       })">
       <iframe style="border: none" width="520" height="305"
-        :src="'https://www.youtube.com/embed/' + selected_video">
+        :src="selected_video">
       </iframe>
     </modal>
 
-    
+    <modal
+      v-if="image_modal"
+      v-on:close="change_ui_visibility({
+        ui_component: 'image_modal',
+        ui_component_state: false,
+      })">
+      <img
+        style="object-fit: cover;"
+        width="100%"
+        height="100%"
+        :src="selected_image"
+      />
+    </modal>
+
     <sidebar_header class="sidebar-header"></sidebar_header>
 
     <div class="sidebar-scroll_section">
@@ -568,11 +586,6 @@
                 title_kz: 'Сипаттама ' + selected_zone['title_' + lang] + ' ҚР',
                 passport_content: 'level_2:zone_description',
               }, {
-                title_ru: 'Галерея зоны ' + selected_zone['title_' + lang] + ' РК',
-                title_en: 'Zone gallery ' + selected_zone['title_' + lang] + ' RK',
-                title_kz: 'Аумақ галереясы ' + selected_zone['title_' + lang] + ' ҚР',
-                passport_content: 'level_2:zone_gallery',
-              }, {
                 title_ru: 'Маркетинговые материалы',
                 title_en: 'Marketing materials',
                 title_kz: 'Маркетингтік материалдар',
@@ -592,11 +605,6 @@
                 title_en: 'General information',
                 title_kz: 'Жалпы ақпарат',
                 passport_content: 'level_3:sector_common',
-              }, {
-                title_ru: 'Галерея сектора',
-                title_en: 'Sector gallery',
-                title_kz: 'Сектор галереясы',
-                passport_content: 'level_3:sector_gallery',
               }, {
                 title_ru: 'Маркетинговые материалы',
                 title_en: 'Marketing materials',
@@ -754,38 +762,41 @@
         </div>
         <div class="sidebar-passport_padding" slot="body" v-if="passport_content == 'level_1:sez_common'">
           <div v-html="republics[0]['common_' + lang]"></div>
-        </div>
-        <div class="" slot="body" v-if="passport_content == 'level_1:sez_market'">
-          <h2 class="sidebar-passport_subtitle">Фото</h2>
-          <div class="sidebar-market_wrap">
-            <div v-for="video in republics[0].videos" class="sidebar-passport_video">
-              <img :src="'http://img.youtube.com/vi/' + video.video + '/mqdefault.jpg'" />
+        </div>   
+        <div slot="body" v-if="passport_content == 'level_1:sez_market'">
+          <h2 v-if="republics[0].photos.length" class="sidebar-passport_subtitle">Фото</h2>
+          <div v-if="republics[0].photos.length" class="sidebar-market_wrap">
+            <div v-for="photo in republics[0].photos" class="sidebar-passport_photo">
+              <img :src="photo.src"
+                v-on:click="
+                  change_ui_visibility({
+                    ui_component: 'image_modal',
+                    ui_component_state: true,
+                  }),
+                  select_image(photo.src)
+              "/>
             </div>
           </div>
-          <h2 class="sidebar-passport_subtitle">Видео</h2>
-          <div class="sidebar-market_wrap">
+          <h2 v-if="republics[0].videos.length" class="sidebar-passport_subtitle">Видео</h2>
+          <div v-if="republics[0].videos.length" class="sidebar-market_wrap">
             <div v-for="video in republics[0].videos" class="sidebar-passport_video"
               v-on:click="
                 change_ui_visibility({
                   ui_component: 'video_modal',
                   ui_component_state: true,
                 }),
-                select_video(video.video)
-              "
-            >
-              <img :src="'http://img.youtube.com/vi/' + video.video + '/mqdefault.jpg'" />
-            </div>
-
-
+                select_video(video.src)
+            "></div>
           </div>
-          <h2 class="sidebar-passport_subtitle">Презентации</h2>
-          <div class="sidebar-market_file" v-for="file in republics[0].files">
-            <a :href="file.file_name" target="_blank">
+          <h2 v-if="republics[0].files.length" class="sidebar-passport_subtitle">Файлы</h2>
+          <div v-if="republics[0].files.length" class="sidebar-market_file" v-for="file in republics[0].files">
+            <a :href="file.src" target="_blank">
               <div class="sidebar-market_pdf"></div>
               <div class="sidebar-market_pdf_text">{{file['name_' + lang]}}</div>
             </a>
           </div>          
         </div>
+        
         <div class="sidebar-passport_padding" slot="body" v-if="passport_content == 'level_1:iz_advantages'">
           <div v-html="republics[1]['advantages_' + lang]"></div>
         </div>
@@ -818,29 +829,35 @@
           </a>
         </div>
         <div slot="body" v-if="passport_content == 'level_1:iz_market'">
-          <h2 class="sidebar-passport_subtitle">Фото</h2>
-          <div class="sidebar-market_wrap">
-            <div v-for="video in republics[1].videos" class="sidebar-passport_video">
-              <img :src="'http://img.youtube.com/vi/' + video.video + '/mqdefault.jpg'" />
-            </div>
+          <h2 v-if="republics[1].photos.length" class="sidebar-passport_subtitle">Фото</h2>
+          <div v-if="republics[1].photos.length" class="sidebar-market_wrap">
+            <div v-for="photo in republics[1].photos" class="sidebar-passport_photo">
+              <img :src="photo.src"
+                v-on:click="
+                  change_ui_visibility({
+                    ui_component: 'image_modal',
+                    ui_component_state: true,
+                  }),
+                  select_image(photo.src)
+              "/>            
+            </div>          
           </div>
-          <h2 class="sidebar-passport_subtitle">Видео</h2>
-          <div class="sidebar-market_wrap">
+          <h2 v-if="republics[1].videos.length" class="sidebar-passport_subtitle">Видео</h2>
+          <div v-if="republics[1].videos.length" class="sidebar-market_wrap">
             <div v-for="video in republics[1].videos" class="sidebar-passport_video"
               v-on:click="
                 change_ui_visibility({
                   ui_component: 'video_modal',
                   ui_component_state: true,
                 }),
-                select_video(video.video)
+                select_video(video.src)
               "
             >
-              <img :src="'http://img.youtube.com/vi/' + video.video + '/mqdefault.jpg'" />
             </div>
           </div>
-          <h2 class="sidebar-passport_subtitle">Презентации</h2>
-          <div class="sidebar-market_file" v-for="file in republics[1].files">
-            <a :href="file.file_name" target="_blank">
+          <h2 v-if="republics[1].files.length" class="sidebar-passport_subtitle">Файлы</h2>
+          <div v-if="republics[1].files.length" class="sidebar-market_file" v-for="file in republics[1].files">
+            <a :href="file.src" target="_blank">
               <div class="sidebar-market_pdf"></div>
               <div class="sidebar-market_pdf_text">{{file['name_' + lang]}}</div>
             </a>
@@ -856,12 +873,41 @@
         <div class="sidebar-passport_padding" slot="body" v-if="passport_content == 'level_2:zone_description'">
           <div v-html="selected_zone['description_' + lang]"></div>
         </div>
-        <div class="sidebar-passport_padding" slot="body" v-if="passport_content == 'level_2:zone_gallery'">
-          <div v-html="'Данных пока нет'"></div>
+        
+        <div slot="body" v-if="passport_content == 'level_2:zone_market'">
+          <h2 v-if="selected_zone.photos.length" class="sidebar-passport_subtitle">Фото</h2>
+          <div v-if="selected_zone.photos.length" class="sidebar-market_wrap">
+            <div v-for="photo in selected_zone.photos" class="sidebar-passport_photo">
+              <img :src="photo.src"
+                v-on:click="
+                  change_ui_visibility({
+                    ui_component: 'image_modal',
+                    ui_component_state: true,
+                  }),
+                  select_image(photo.src)
+              "/>            
+            </div>           
+          </div>
+          <h2 v-if="selected_zone.videos.length" class="sidebar-passport_subtitle">Видео</h2>
+          <div v-if="selected_zone.videos.length" class="sidebar-market_wrap">
+            <div v-for="video in selected_zone.videos" class="sidebar-passport_video"
+              v-on:click="
+                change_ui_visibility({
+                  ui_component: 'video_modal',
+                  ui_component_state: true,
+                }),
+                select_video(video.src)
+            "></div>
+          </div>
+          <h2 v-if="selected_zone.files.length" class="sidebar-passport_subtitle">Файлы</h2>
+          <div class="sidebar-market_file" v-for="file in selected_zone.files">
+            <a :href="file.src" target="_blank">
+              <div class="sidebar-market_pdf"></div>
+              <div class="sidebar-market_pdf_text">{{file['name_' + lang]}}</div>
+            </a>
+          </div>    
         </div>
-        <div class="sidebar-passport_padding" slot="body" v-if="passport_content == 'level_2:zone_market'">
-          <div v-html="'Данных пока нет'"></div>
-        </div>
+
         <div class="sidebar-passport_padding" slot="body" v-if="passport_content == 'level_2:zone_contacts'">
           <div v-html="selected_zone['contacts_' + lang]"></div>
         </div>
@@ -870,11 +916,40 @@
       <!-- Инфа о конкретном Сектор 3 уровнь -->
       <template v-if="active_level.id == 3">
         <!-- общая инфа -->
-        <div class="sidebar-passport_padding" slot="body" v-if="passport_content == 'level_3:sector_gallery'">
-          <div v-html="'Данных пока нет'"></div>
+        <div class="sidebar-passport_padding" slot="body" v-if="passport_content == 'level_3:sector_common'">
         </div>
-        <div class="sidebar-passport_padding" slot="body" v-if="passport_content == 'level_3:sector_market'">
-          <div v-html="'Данных пока нет'"></div>
+        <div slot="body" v-if="passport_content == 'level_3:sector_market'">
+          <h2 v-if="selected_sector.photos.length" class="sidebar-passport_subtitle">Фото</h2>
+          <div v-if="selected_sector.photos.length" class="sidebar-market_wrap">
+             <div v-for="photo in selected_sector.photos" class="sidebar-passport_photo">
+              <img :src="photo.src"
+                v-on:click="
+                  change_ui_visibility({
+                    ui_component: 'image_modal',
+                    ui_component_state: true,
+                  }),
+                  select_image(photo.src)
+              "/>            
+            </div>     
+          </div>
+          <h2 v-if="selected_sector.videos.length" class="sidebar-passport_subtitle">Видео</h2>
+          <div v-if="selected_sector.videos.length" class="sidebar-market_wrap">
+            <div v-for="video in selected_sector.videos" class="sidebar-passport_video"
+              v-on:click="
+                change_ui_visibility({
+                  ui_component: 'video_modal',
+                  ui_component_state: true,
+                }),
+                select_video(video.src)
+            "></div>
+          </div>
+          <h2 v-if="selected_sector.files.length" class="sidebar-passport_subtitle">Файлы</h2>
+          <div v-if="selected_sector.files.length" class="sidebar-market_file" v-for="file in selected_sector.files">
+            <a :href="file.src" target="_blank">
+              <div class="sidebar-market_pdf"></div>
+              <div class="sidebar-market_pdf_text">{{file['name_' + lang]}}</div>
+            </a>
+          </div>        
         </div>
         <div class="sidebar-passport_padding" slot="body" v-if="passport_content == 'level_3:sector_contacts'">
           <div v-html="selected_sector['contacts_' + lang]"></div>
@@ -889,7 +964,6 @@
         selected_sector 
         && active_level.id == 3 
         && passport_content != 'level_3:numeric'
-        && passport_content != 'level_3:sector_gallery'
         && passport_content != 'level_3:sector_market'
         && passport_content != 'level_3:sector_contacts'
         && passport_content != 'level_1:sez:numeric'
@@ -1336,11 +1410,40 @@
   .sidebar-passport_video {
     width: 92px;
     height: 53px;
+    background: #000;
     float: left;
     margin: 5px;
     overflow: hidden;
     border-radius: 2px;
     cursor: pointer;
+    position: relative;
+  }
+  .sidebar-passport_photo {
+    width: 92px;
+    height: 53px;
+    background: #000;
+    float: left;
+    margin: 5px;
+    overflow: hidden;
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+  }
+  .sidebar-passport_photo img {
+    height: 100%;
+    width: 100%;
+  }
+  .sidebar-passport_video::after {
+    content: '';
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 50%;
+    background-size: 100%;
+    left: 50%;
+    background-repeat: no-repeat;
+    transform: translate(-50%, -50%);
+    background-image: url('../../assets/images/play.svg');
 
   }
   .sidebar-market_wrap {

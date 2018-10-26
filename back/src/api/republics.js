@@ -1,7 +1,7 @@
 const router = require('express-async-router').AsyncRouter();
 const db_query = require('../util/db_query');
 
-router.get('/', async (req, res) => {
+router.get('/', async (_, res) => {
   let republics = await db_query(
     'SELECT * FROM republics ORDER BY id',
   );
@@ -11,6 +11,9 @@ router.get('/', async (req, res) => {
   const republics_files = await db_query(
     'SELECT * FROM republic_files',
   );
+  const republics_photos = await db_query(
+    'SELECT * FROM republic_photos',
+  );
 
   republics = republics.map(republic => {
     return {
@@ -18,7 +21,9 @@ router.get('/', async (req, res) => {
       videos: republics_videos
         .filter(vid => vid.republic_id == republic.id),
       files: republics_files
-        .filter(vid => vid.republic_id == republic.id),
+        .filter(file => file.republic_id == republic.id),
+      photos: republics_photos
+        .filter(photo => photo.republic_id == republic.id),
     };
   });
 
