@@ -79,6 +79,32 @@
 	.passport-body_item_val {
 		font-size: 14px;
 	}
+	.passport-body_item_excel {
+		position: absolute;
+		cursor: pointer;
+		outline: none;
+		width: 45px;
+		height: 20px;
+		right: 65px;
+		border: none;
+		color: #fff;
+		background: #03A0E3;
+		border-radius: 2px;
+		font-size: 14px;
+	}
+	.passport-body_item_pdf {
+		position: absolute;
+		cursor: pointer;
+		outline: none;
+		width: 40px;
+		height: 20px;
+		right: 15px;
+		border: none;
+		color: #fff;
+		background: #03A0E3;
+		border-radius: 2px;
+		font-size: 14px;
+	}
 	.passport-close {
 		cursor: pointer;
 		outline: none;
