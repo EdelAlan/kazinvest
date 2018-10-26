@@ -767,13 +767,13 @@
           <h2 v-if="republics[0].photos.length" class="sidebar-passport_subtitle">Фото</h2>
           <div v-if="republics[0].photos.length" class="sidebar-market_wrap">
             <div v-for="photo in republics[0].photos" class="sidebar-passport_photo">
-              <img :src="photo.src"
+              <img :src="photo['src_' + lang]"
                 v-on:click="
                   change_ui_visibility({
                     ui_component: 'image_modal',
                     ui_component_state: true,
                   }),
-                  select_image(photo.src)
+                  select_image(photo['src_' + lang])
               "/>
             </div>
           </div>
@@ -785,12 +785,12 @@
                   ui_component: 'video_modal',
                   ui_component_state: true,
                 }),
-                select_video(video.src)
+                select_video(video['src_' + lang])
             "></div>
           </div>
           <h2 v-if="republics[0].files.length" class="sidebar-passport_subtitle">Файлы</h2>
           <div v-if="republics[0].files.length" class="sidebar-market_file" v-for="file in republics[0].files">
-            <a :href="file.src" target="_blank">
+            <a :href="file['src_' + lang]" target="_blank">
               <div class="sidebar-market_pdf"></div>
               <div class="sidebar-market_pdf_text">{{file['name_' + lang]}}</div>
             </a>
@@ -832,13 +832,13 @@
           <h2 v-if="republics[1].photos.length" class="sidebar-passport_subtitle">Фото</h2>
           <div v-if="republics[1].photos.length" class="sidebar-market_wrap">
             <div v-for="photo in republics[1].photos" class="sidebar-passport_photo">
-              <img :src="photo.src"
+              <img :src="photo['src_' + lang]"
                 v-on:click="
                   change_ui_visibility({
                     ui_component: 'image_modal',
                     ui_component_state: true,
                   }),
-                  select_image(photo.src)
+                  select_image(photo['src_' + lang])
               "/>            
             </div>          
           </div>
@@ -850,14 +850,14 @@
                   ui_component: 'video_modal',
                   ui_component_state: true,
                 }),
-                select_video(video.src)
+                select_video(video['src_' + lang])
               "
             >
             </div>
           </div>
           <h2 v-if="republics[1].files.length" class="sidebar-passport_subtitle">Файлы</h2>
           <div v-if="republics[1].files.length" class="sidebar-market_file" v-for="file in republics[1].files">
-            <a :href="file.src" target="_blank">
+            <a :href="file['src_' + lang]" target="_blank">
               <div class="sidebar-market_pdf"></div>
               <div class="sidebar-market_pdf_text">{{file['name_' + lang]}}</div>
             </a>
@@ -878,13 +878,13 @@
           <h2 v-if="selected_zone.photos.length" class="sidebar-passport_subtitle">Фото</h2>
           <div v-if="selected_zone.photos.length" class="sidebar-market_wrap">
             <div v-for="photo in selected_zone.photos" class="sidebar-passport_photo">
-              <img :src="photo.src"
+              <img :src="photo['src_' + lang]"
                 v-on:click="
                   change_ui_visibility({
                     ui_component: 'image_modal',
                     ui_component_state: true,
                   }),
-                  select_image(photo.src)
+                  select_image(photo['src_' + lang])
               "/>            
             </div>           
           </div>
@@ -896,12 +896,12 @@
                   ui_component: 'video_modal',
                   ui_component_state: true,
                 }),
-                select_video(video.src)
+                select_video(video['src_' + lang])
             "></div>
           </div>
           <h2 v-if="selected_zone.files.length" class="sidebar-passport_subtitle">Файлы</h2>
           <div class="sidebar-market_file" v-for="file in selected_zone.files">
-            <a :href="file.src" target="_blank">
+            <a :href="file['src_' + lang]" target="_blank">
               <div class="sidebar-market_pdf"></div>
               <div class="sidebar-market_pdf_text">{{file['name_' + lang]}}</div>
             </a>
@@ -922,13 +922,13 @@
           <h2 v-if="selected_sector.photos.length" class="sidebar-passport_subtitle">Фото</h2>
           <div v-if="selected_sector.photos.length" class="sidebar-market_wrap">
              <div v-for="photo in selected_sector.photos" class="sidebar-passport_photo">
-              <img :src="photo.src"
+              <img :src="photo['src_' + lang]"
                 v-on:click="
                   change_ui_visibility({
                     ui_component: 'image_modal',
                     ui_component_state: true,
                   }),
-                  select_image(photo.src)
+                  select_image(photo['src_' + lang])
               "/>            
             </div>     
           </div>
@@ -940,12 +940,12 @@
                   ui_component: 'video_modal',
                   ui_component_state: true,
                 }),
-                select_video(video.src)
+                select_video(video['src_' + lang])
             "></div>
           </div>
           <h2 v-if="selected_sector.files.length" class="sidebar-passport_subtitle">Файлы</h2>
           <div v-if="selected_sector.files.length" class="sidebar-market_file" v-for="file in selected_sector.files">
-            <a :href="file.src" target="_blank">
+            <a :href="file['src_' + lang]" target="_blank">
               <div class="sidebar-market_pdf"></div>
               <div class="sidebar-market_pdf_text">{{file['name_' + lang]}}</div>
             </a>
