@@ -7,6 +7,7 @@
   import reference from './reference';
   import passport_anal from './passport_anal';
   import passport_anal_bar from './passport_anal_bar';
+  import numseparator from '../../util/numseparator';
   import font from '../../assets/js/font.js';
   import { mapGetters, mapActions } from 'vuex';  
 
@@ -184,6 +185,7 @@
     },
 
     methods: {
+      numseparator,
       select_video (src) {
         this.selected_video = src;
       },  
@@ -824,6 +826,12 @@
             </p>
           </a>
           <br>
+          <a class="sidebar-link" :href="'http://adilet.zan.kz/' + (lang == 'ru' ? 'rus' : lang == 'kz' ? 'kaz' : 'eng') + '/docs/K030000442_'" target="_blank">
+            <h4>Земельный кодекс Республики Казахстан</h4>
+          </a>
+          <a class="sidebar-link" :href="'http://adilet.zan.kz/' + (lang == 'ru' ? 'rus' : lang == 'kz' ? 'kaz' : 'eng') + '/docs/K1700000123'" target="_blank">
+            <h4>О таможенном регулировании в Республике Казахстан</h4>
+          </a>
           <a :href="'http://adilet.zan.kz?lang=' + (lang == 'ru' ? 'rus' : lang == 'kz' ? 'kaz' : 'eng')" target="_blank">
             <p>Ссылка на закон</p>
           </a>
@@ -990,7 +998,7 @@
         <div class="passport-body_item">
           <span class="passport-body_item_key">Стоимость проекта</span>
           <span class="passport-body_item_val" 
-            v-text="selected_sector.project_price"></span>
+            v-text="numseparator(selected_sector.project_price)"></span>
         </div>
         <div class="passport-body_item">
           <span class="passport-body_item_key">Площадь занимаемого участка</span>
@@ -1046,7 +1054,7 @@
             title_ru: 'Объем вложанных инвестиций',
             title_en: 'Investments volume',
             title_kz: 'Объем вложанных инвестиций',
-            sum: investments_sum,
+            sum: this.numseparator(investments_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
             tenge_kz: ' Теңге',
@@ -1055,7 +1063,7 @@
             title_ru: 'Объем производства',
             title_en: 'Production volume',
             title_kz: 'Объем производства',
-            sum: production_sum,
+            sum: this.numseparator(production_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
             tenge_kz: ' Теңге',
@@ -1064,7 +1072,7 @@
             title_ru: 'Прямые иностранные инвестиции',
             title_en: 'Foreign direct investments',
             title_kz: 'Прямые иностранные инвестиции',
-            sum: foreign_investments_sum,
+            sum: this.numseparator(foreign_investments_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
             tenge_kz: ' Теңге',
@@ -1073,7 +1081,7 @@
             title_ru: 'Количество созданных рабочих мест',
             title_en: 'Number of jobs created',
             title_kz: 'Количество созданных рабочих мест',
-            sum: number_jobs_sum,
+            sum: this.numseparator(number_jobs_sum),
             tenge_ru: '',
             tenge_en: '',
             tenge_kz: '',
@@ -1082,7 +1090,7 @@
             title_ru: 'Объем налоговых отчислений',
             title_en: 'Tax volume',
             title_kz: 'Объем налоговых отчислений',
-            sum: taxes_sum,
+            sum: this.numseparator(taxes_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
             tenge_kz: ' Теңге',
@@ -1107,7 +1115,7 @@
             title_ru: 'Объем вложанных инвестиций',
             title_en: 'Investments volume',
             title_kz: 'Объем вложанных инвестиций',
-            sum: investments_sum_iz,
+            sum: this.numseparator(investments_sum_iz),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
             tenge_kz: ' Теңге',
@@ -1116,7 +1124,7 @@
             title_ru: 'Объем производства',
             title_en: 'Production volume',
             title_kz: 'Объем производства',
-            sum: production_sum_iz,
+            sum: this.numseparator(production_sum_iz),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
             tenge_kz: ' Теңге',
@@ -1125,7 +1133,7 @@
             title_ru: 'Прямые иностранные инвестиции',
             title_en: 'Foreign direct investments',
             title_kz: 'Прямые иностранные инвестиции',
-            sum: foreign_investments_sum_iz,
+            sum: this.numseparator(foreign_investments_sum_iz),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
             tenge_kz: ' Теңге',
@@ -1134,7 +1142,7 @@
             title_ru: 'Количество созданных рабочих мест',
             title_en: 'Number of jobs created',
             title_kz: 'Количество созданных рабочих мест',
-            sum: number_jobs_sum_iz,
+            sum: this.numseparator(number_jobs_sum_iz),
             tenge_ru: '',
             tenge_en: '',
             tenge_kz: '',
@@ -1143,7 +1151,7 @@
             title_ru: 'Объем налоговых отчислений',
             title_en: 'Tax volume',
             title_kz: 'Объем налоговых отчислений',
-            sum: taxes_sum_iz,
+            sum: this.numseparator(taxes_sum_iz),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
             tenge_kz: ' Теңге',
@@ -1241,7 +1249,7 @@
             title_ru: 'Объем вложанных инвестиций',
             title_en: 'Investments volume',
             title_kz: 'Объем вложанных инвестиций',
-            sum: investments_sum_level2,
+            sum: this.numseparator(investments_sum_level2),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
             tenge_kz: ' Теңге',
@@ -1250,7 +1258,7 @@
             title_ru: 'Объем производства',
             title_en: 'Production volume',
             title_kz: 'Объем производства',
-            sum: production_sum_level2,
+            sum: this.numseparator(production_sum_level2),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
             tenge_kz: ' Теңге',
@@ -1259,7 +1267,7 @@
             title_ru: 'Прямые иностранные инвестиции',
             title_en: 'Foreign direct investments',
             title_kz: 'Прямые иностранные инвестиции',
-            sum: foreign_investments_sum_level2,
+            sum: this.numseparator(foreign_investments_sum_level2),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
             tenge_kz: ' Теңге',
@@ -1268,7 +1276,7 @@
             title_ru: 'Количество созданных рабочих мест',
             title_en: 'Number of jobs created',
             title_kz: 'Количество созданных рабочих мест',
-            sum: number_jobs_sum_level2,
+            sum: this.numseparator(number_jobs_sum_level2),
             tenge_ru: '',
             tenge_en: '',
             tenge_kz: '',
@@ -1277,7 +1285,7 @@
             title_ru: 'Объем налоговых отчислений',
             title_en: 'Tax volume',
             title_kz: 'Объем налоговых отчислений',
-            sum: taxes_sum_level2,
+            sum: this.numseparator(taxes_sum_level2),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
             tenge_kz: ' Теңге',
@@ -1302,7 +1310,7 @@
             title_ru: 'Объем вложанных инвестиций',
             title_en: 'Investments volume',
             title_kz: 'Объем вложанных инвестиций',
-            sum: investments_sum_level2,
+            sum: this.numseparator(investments_sum_level2),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
             tenge_kz: ' Теңге',
@@ -1311,7 +1319,7 @@
             title_ru: 'Объем производства',
             title_en: 'Production volume',
             title_kz: 'Объем производства',
-            sum: production_sum_level2,
+            sum: this.numseparator(production_sum_level2),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
             tenge_kz: ' Теңге',
@@ -1320,7 +1328,7 @@
             title_ru: 'Прямые иностранные инвестиции',
             title_en: 'Foreign direct investments',
             title_kz: 'Прямые иностранные инвестиции',
-            sum: foreign_investments_sum_level2,
+            sum: this.numseparator(foreign_investments_sum_level2),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
             tenge_kz: ' Теңге',
@@ -1329,7 +1337,7 @@
             title_ru: 'Количество созданных рабочих мест',
             title_en: 'Number of jobs created',
             title_kz: 'Количество созданных рабочих мест',
-            sum: number_jobs_sum_level2,
+            sum: this.numseparator(number_jobs_sum_level2),
             tenge_ru: '',
             tenge_en: '',
             tenge_kz: '',
@@ -1338,7 +1346,7 @@
             title_ru: 'Объем налоговых отчислений',
             title_en: 'Tax volume',
             title_kz: 'Объем налоговых отчислений',
-            sum: taxes_sum_level2,
+            sum: this.numseparator(taxes_sum_level2),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
             tenge_kz: ' Теңге',

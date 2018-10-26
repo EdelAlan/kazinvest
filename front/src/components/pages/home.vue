@@ -149,8 +149,13 @@
     </lang_home>
 
         <div class="content">
+            <router-link to="/editpanel" v-if="profile" class="home-profile">
+              <span v-text="profile.member_firstname + ' '"></span>
+              <span v-text="profile.member_lastname"></span>
+              <span v-text="profile.member_zone ? ' (' + profile.member_zone['title_' + lang] + ')' : ''"></span>
+            </router-link>
 
-            <a href="#"
+            <button v-if="!profile" href="#"
               id="sign_in"
               class="btn"
               v-on:click="call_signin()"
@@ -159,7 +164,18 @@
                 'title_kz': 'Кіру', 
                 'title_en': 'Sign in'
               }['title_' + lang]">
-              </a>
+              </button>
+            <button v-else href="#"
+              id="sign_in"
+              class="btn"
+              v-on:click="signout"
+              v-text="{
+                'title_ru': 'Выйти', 
+                'title_kz': 'Кіру', 
+                'title_en': 'Sign in'
+              }['title_' + lang]">
+              </button>
+
 
             <div class="filter_line">
 
@@ -305,11 +321,6 @@
                 <div class="close_btn" @click="toggleMenu"></div>
                 <div class="menu_body">
                     <div v-if="profile">
-                      <div v-text="profile.member_id"></div>
-                      <span v-text="profile.member_firstname + ' '"></span>
-                      <span v-text="profile.member_lastname"></span>
-                      <p v-text="profile.member_zone ? profile.member_zone['title_' + lang] : ''"></p>
-                      <br>
                       <router-link v-if="profile" to="/editpanel" class="btn"
                         v-text="{
                           'title_ru': 'Панель редактирования', 
@@ -317,7 +328,6 @@
                           'title_en': 'Панель редактирования'
                         }['title_' + lang]"
                       ></router-link>
-                      <button  class="btn" v-on:click="signout">Выйти</button>
                     </div>
                     <template v-else>
                       <a href="https://invest.gov.kz/cabinet/registration/" class="btn"
@@ -387,6 +397,19 @@
     border-radius: 3px;
   }
 
+  .home-profile {
+    float: left;
+    background: #52cbff;
+    color: #fff;
+    border-radius: 3px;
+    padding: 5px 15px;
+    border: 1px solid #E3E3E3;
+  }
+
+  #sign_in {
+    float: right;
+  }
+
   .home-main_btn {
     padding: 40px 30px;
     background: #52cbff;
@@ -412,9 +435,6 @@
   }
 
   .content {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
     margin: 40px auto 0;
     max-width: 800px;
   }
