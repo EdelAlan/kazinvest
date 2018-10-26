@@ -1392,7 +1392,7 @@
   }
   .sidebar-passport_analytics {
     position: absolute;
-    left: 640px;
+    left: 660px;
     top: 60px;
   }
   .sidebar-header {
