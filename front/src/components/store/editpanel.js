@@ -2,6 +2,7 @@ import fetcher from '../../util/fetcher';
 
 export default {
   state: () => ({
+    zone_sectors: null,
     views: [{
       active: true,
       id: 'sectors',
@@ -21,6 +22,9 @@ export default {
     set_views(state, views) {
       state.views = views;
     },
+    set_zone_sectors(state, zone_sectors) {
+      state.zone_sectors = zone_sectors;
+    },
   },
 
   getters: {
@@ -31,6 +35,8 @@ export default {
         }
       });
     },
+
+    zone_sectors: state => state.zone_sectors,
   },
 
   actions: {
@@ -40,5 +46,22 @@ export default {
         active: key == idx ? true : false,
       })));
     },
+    set_zone_sectors ({ commit, getters }) {
+      commit('set_zone_sectors', getters.zones.map(zone => {
+        return {
+          ...zone,
+          collapsed: true,
+          sectors: getters.sectors.filter(sector => sector.zone_id == zone.id),
+        }
+      }));
+    },
+    collapse_zone_sectors ({ commit, getters }, zoneid) {
+      commit('set_zone_sectors', getters.zone_sectors.map(zone => {
+        return {
+          ...zone,
+          collapsed: zone.id == zoneid ? !zone.collapsed : zone.collapsed,
+        }
+      }));
+    }
   },
 };

@@ -16,22 +16,6 @@
       'views',
     ]),
 
-		methods: {
-      ...mapActions([
-        'set_selected_zone',
-        'set_sectors',
-      ]),
-		},
-
-    async mounted () {
-      if (this.profile && this.profile.member_role == 'superadmin') {
-        return this.set_sectors();
-      } else {
-        await this.set_selected_zone(this.profile.member_zone);
-        return this.set_sectors(this.profile.member_zone.id);
-      }
-    },
-
 	}
 </script>
 
