@@ -1,8 +1,16 @@
 <script>
   import { mapGetters, mapActions } from 'vuex';  
+  import editpanel_editzone from './editpanel_editzone';  
 
   export default {
     components: {
+      editpanel_editzone,
+    },
+
+    data () {
+      return {
+        editzone_state: false,
+      }
     },
 
     computed: mapGetters([
@@ -32,6 +40,7 @@
       'set_selected_zone',
       'set_zone_sectors',
       'collapse_zone_sectors',
+      'set_edited_zone',
     ]),
 
   }
@@ -41,69 +50,75 @@
 <template>
   <div class="editpanel_sectorstable">
 
-    <div v-for="zone in zone_sectors" class="editpanel_sectorstable-item">
-      <h2 class="editpanel_sectorstable-header_title" 
-        v-text="zone['title_' + lang]"></h2>
-      <button class="editpanel_sectorstable-zone_edit"></button>
+    <editpanel_editzone v-if="editzone_state" />
 
-      <button class="editpanel_sectorstable-collape"
-        v-on:click="collapse_zone_sectors(zone.id)"
-      ></button>
-      <!--
-        <h2 class="editpanel_sectorstable-header_title" v-text="selected_zone ? selected_zone['title_' + lang] : 'Все зоны'"></h2>
-      <div class="editpanel_sectorstable-header"
-      </div>
-     -->
+    <div v-if="!editzone_state" class="editpanel_sectorstable-zones">
+
+      <div v-for="zone in zone_sectors" class="editpanel_sectorstable-item">
+        <h2 class="editpanel_sectorstable-header_title" 
+          v-text="zone['title_' + lang]"></h2>
+        <button class="editpanel_sectorstable-zone_edit" 
+          v-on:click="
+            set_edited_zone(zone),
+            editzone_state = true
+          "
+        ></button>
+
+        <button class="editpanel_sectorstable-collape"
+          v-on:click="collapse_zone_sectors(zone.id)"
+        ></button>
 
 
-      <template
-        v-if="!zone.collapsed">
-        <div class="editpanel_sectorstable-table_header">
-          <div v-text="'Название'" class="editpanel_sectorstable-table_header_item"></div>
-          <div v-text="'Статус'" class="editpanel_sectorstable-table_header_item"></div>
-          <div v-text="'Срок реализации'" class="editpanel_sectorstable-table_header_item"></div>
-        </div>
-    
-        <div class="editpanel_sectorstable-sectors"
-          v-for="sector in zone.sectors">
-          <div class="editpanel_sectorstable-sector">
-            <div class="editpanel_sectorstable-sector_item">
-              <button class="editpanel_sectorstable-sector_item_edit"></button>
-              <span class="editpanel_sectorstable-sector_item_title editpanel_sectorstable-sector_item_title--leftpd" 
-                :title="sector['title_' + lang]"
-                v-text="sector['title_' + lang]"></span>
-            </div>
-            <div class="editpanel_sectorstable-sector_item">
-              <span class="editpanel_sectorstable-sector_item_title" 
-                :title="sector['project_type_title_' + lang]"
-                v-text="sector['project_type_title_' + lang]"></span>
-            </div>
-            <div class="editpanel_sectorstable-sector_item">
-              <span class="editpanel_sectorstable-sector_item_title" 
-                :title="sector.project_date"
-                v-text="sector.project_date"></span>
+        <template
+          v-if="!zone.collapsed">
+          <div class="editpanel_sectorstable-table_header">
+            <div v-text="'Название'" class="editpanel_sectorstable-table_header_item"></div>
+            <div v-text="'Статус'" class="editpanel_sectorstable-table_header_item"></div>
+            <div v-text="'Срок реализации'" class="editpanel_sectorstable-table_header_item"></div>
+          </div>
+      
+          <div class="editpanel_sectorstable-sectors"
+            v-for="sector in zone.sectors">
+            <div class="editpanel_sectorstable-sector">
+              <div class="editpanel_sectorstable-sector_item">
+                <button class="editpanel_sectorstable-sector_item_edit"></button>
+                <span class="editpanel_sectorstable-sector_item_title editpanel_sectorstable-sector_item_title--leftpd" 
+                  :title="sector['title_' + lang]"
+                  v-text="sector['title_' + lang]"></span>
+              </div>
+              <div class="editpanel_sectorstable-sector_item">
+                <span class="editpanel_sectorstable-sector_item_title" 
+                  :title="sector['project_type_title_' + lang]"
+                  v-text="sector['project_type_title_' + lang]"></span>
+              </div>
+              <div class="editpanel_sectorstable-sector_item">
+                <span class="editpanel_sectorstable-sector_item_title" 
+                  :title="sector.project_date"
+                  v-text="sector.project_date"></span>
+              </div>
             </div>
           </div>
-        </div>
-      </template>
+        </template>
 
+      </div>
     </div>
     
   </div>
 </template>
 
 <style>
-  .editpanel_sectorstable {
+  .editpanel_sectorstable {}
+  .editpanel_sectorstable-zones {
     position: absolute;
     z-index: 10;
     width: calc(100% - 60px);
     background: #fff;
-    margin: 30px;
     box-shadow: 0 0 5px 0 rgba(0,0,0,.2);
     border-radius: 3px;
     overflow-y: auto;
     padding: 0;
-    height: calc(100vh - 150px);
+    margin: 30px;
+    height: calc(100vh - 60px);
   }
   .editpanel_sectorstable-sectors {
   }

@@ -3,6 +3,7 @@ import fetcher from '../../util/fetcher';
 export default {
   state: () => ({
     zone_sectors: null,
+    edited_zone: null,
     views: [{
       active: true,
       id: 'sectors',
@@ -25,6 +26,11 @@ export default {
     set_zone_sectors(state, zone_sectors) {
       state.zone_sectors = zone_sectors;
     },
+    set_edited_zone(state, zone) {
+      console.log(zone)
+      state.edited_zone = zone;
+      console.log(state.edited_zone);
+    },
   },
 
   getters: {
@@ -37,6 +43,7 @@ export default {
     },
 
     zone_sectors: state => state.zone_sectors,
+    edited_zone: state => state.edited_zone,
   },
 
   actions: {
@@ -62,6 +69,9 @@ export default {
           collapsed: zone.id == zoneid ? !zone.collapsed : zone.collapsed,
         }
       }));
-    }
+    },
+    set_edited_zone({ commit }, zone) {
+      commit('set_edited_zone', zone);
+    },
   },
 };
