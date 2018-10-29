@@ -59,6 +59,7 @@ export default {
           ...zone,
           collapsed: true,
           sectors: getters.sectors.filter(sector => sector.zone_id == zone.id),
+          // alan: положить показатели
         }
       }));
     },

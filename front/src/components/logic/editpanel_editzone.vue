@@ -19,6 +19,8 @@
           files: null,
           videos: null,
           photos: null,
+
+          // alan объявить поле для показателей
         },
       }
     },
@@ -40,6 +42,7 @@
     },
 
     mounted () {
+      console.log(this.edited_zone)
       Object.keys(this.zonemodel).forEach(it => {
         this.zonemodel[it] = this.edited_zone[it];
       });

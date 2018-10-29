@@ -27,6 +27,7 @@
           filter: false,
         });
         await this.set_sectors();
+        // @alan: вызвать экшон, отвечающий за получение показателей из бэка (инвестиции)
         return this.set_zone_sectors();
       } else {
         await this.set_selected_zone(this.profile.member_zone);
