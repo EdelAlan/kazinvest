@@ -73,5 +73,17 @@ export default {
     set_edited_zone({ commit }, zone) {
       commit('set_edited_zone', zone);
     },
+    
+    update_zone ({ commit }, zone) {
+      const path = this.getters.api_path + `/back/api/zones/${zone.id}`;
+      console.log(path);
+      return fetcher({ 
+        method: 'put',
+        path,
+        body: zone,
+      }).then(res => {
+        console.log(res)
+      });
+    },
   },
 };

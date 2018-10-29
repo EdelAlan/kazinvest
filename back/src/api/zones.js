@@ -1,4 +1,5 @@
 const router = require('express-async-router').AsyncRouter();
+const body_parser = require('body-parser');
 const db_query = require('../util/db_query');
 const zone_type_str = [{
   "id": 1,
@@ -24,7 +25,9 @@ const FIELDS = `
   zone.description_ru,
   zone.description_kz,
   zone.description_en,
-  contacts_ru,
+  zone.contacts_ru,
+  zone.contacts_kz,
+  zone.contacts_en,
   created_date,
   budget_need,
   budget_allocated,
@@ -37,16 +40,12 @@ const FIELDS = `
 
 router.get('/', async (req, res) => {
   const { zone_filter, industries_filter, provinces_filter, search_string, lang } = req.query;
-
   const zone_f = zone_filter ? JSON.parse(zone_filter) : undefined;
   const industries_f = industries_filter ? JSON.parse(industries_filter) : undefined;
   const provinces_f = provinces_filter ? JSON.parse(provinces_filter) : undefined;
-
   const zone_l = zone_filter ? JSON.parse(zone_filter).length : 0;
   const industries_l = industries_filter ? JSON.parse(industries_filter).length : 0;
   const provinces_l = provinces_filter ? JSON.parse(provinces_filter).length : 0;
-
-
   const sql = `
     SELECT ${FIELDS}, (
       SELECT COUNT(*) AS object_count
@@ -83,28 +82,19 @@ router.get('/', async (req, res) => {
 
     ORDER BY zone_type ASC, object_count DESC
   `;
-
   const params = 
     (zone_filter && industries_filter && provinces_filter) ? 
       zone_f.concat(industries_f).concat(provinces_f) :
-    
     (zone_f && industries_filter) ?   
       zone_f.concat(industries_f) :
-    
     (zone_f && provinces_filter) ? 
       zone_f.concat(provinces_f) :
-    
     (industries_filter && provinces_filter) ? 
       industries_f.concat(provinces_f) :
-    
     zone_filter ? zone_f : 
-    
     industries_filter ? industries_f :
-    
     provinces_filter ? provinces_f : 
-    
     [];
-    
   console.log(sql);
   console.log(params);
   console.log('lang:', lang);
@@ -112,14 +102,12 @@ router.get('/', async (req, res) => {
   console.log('industries_filter:', industries_filter);
   console.log('provinces_filter:', provinces_filter);
   console.log('search_string:', search_string);
-
   let zones = (await db_query(sql, params)).map(it => ({
     ...it,
     title_ru: zone_type_str[it.zone_type - 1].title_ru + ' ' + (it.title_ru || 'нет названия'),
     title_kz: zone_type_str[it.zone_type - 1].title_kz + ' ' + (it.title_kz || it.title_ru || 'нет названия'),
     title_en: zone_type_str[it.zone_type - 1].title_en + ' ' + (it.title_en || it.title_ru || 'нет названия'),
   }));
-
   const zones_videos = await db_query(
     'SELECT * FROM zone_videos',
   );
@@ -129,7 +117,6 @@ router.get('/', async (req, res) => {
   const zones_photos = await db_query(
     'SELECT * FROM zone_photos',
   );
-
   zones = zones.map(zone => {
     return {
       ...zone,
@@ -141,11 +128,7 @@ router.get('/', async (req, res) => {
         .filter(photos => photos.zone_id == zone.id),
     };
   });
-
-
   res.send(zones);
-
-
 });
 
 router.get('/:id', async (req, res) => {
@@ -160,4 +143,42 @@ router.get('/:id', async (req, res) => {
   ));
 });
 
+router.put('/:id', body_parser.json(), async (req, res) => {
+  const sql = `
+    INSERT INTO zone (
+      ${Object.keys(req.body).join(', ')}
+    ) VALUES (
+      ${Object.values(req.body).join(', ')}
+    )
+  `;
+  console.log(sql);
+  // const params = 
+  // res.send(await db_query(sql,
+  //   [req.params.id],
+  // ));
+});
+
 module.exports = router;
+
+
+// return bcrypt.hash(password, 10)
+//   .then(async hash => {
+//     return await db_query(`
+//         INSERT INTO member (
+//           member_id,
+//           member_password,
+//           member_firstname,
+//           member_lastname,
+//           member_zone,
+//           member_role
+//         ) VALUES ($1, $2, $3, $4, $5, $6)
+//       `, [userid, hash, firstname, lastname, zone, role])
+//       .then(_ => res.json({
+//         msg: 'signup success',
+//       })).catch(err => {
+//         console.err(err);
+//         res.status(500).json({
+//           msg: 'something broke',
+//         });
+//       });
+//   });

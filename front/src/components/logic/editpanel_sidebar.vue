@@ -1,8 +1,11 @@
 <script>
   import { mapGetters, mapActions } from 'vuex';  
+  import lang from './lang';  
 
   export default {
-
+    components: {
+      lang,
+    },
     
     methods: mapActions([
       'set_view',
@@ -24,6 +27,7 @@
       <router-link to="/">
         <div class="editpanel_sidebar-logo"></div>
       </router-link>
+      <lang class="editpanel_sidebar-lang"></lang>
     </div>
     <div class="editpanel_sidebar-items">
       <div v-for="(view, idx) in views" 
@@ -33,7 +37,6 @@
         v-on:click="set_view(idx)"
       ></div>
     </div>
-
   </div>
 </template>
 
@@ -49,10 +52,16 @@
     height: 53px;
     padding: 15px;
     cursor: pointer;
+    top: 0;
   }
   .editpanel_sidebar-item--active {
     background: #50C7F9;
     color: #fff;
+  }
+  .editpanel_sidebar-lang {
+    position: absolute;
+    right: 10px;
+    top: 15px;
   }
   .editpanel_sidebar-header {
     background: #03A0E3;
