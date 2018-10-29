@@ -815,7 +815,7 @@ export default {
 
       doc.text(
         this.lang == "ru"
-          ? "Объем вложанных инвестиций по годам:"
+          ? "Объем вложенных инвестиций по годам:"
           : this.lang == "kz"
             ? "Жылына салынған инвестициялар көлемі:"
             : "The volume of investments by year:",
@@ -911,7 +911,7 @@ export default {
         }
       }
 
-      // table Объем вложанных инвестиций по годам:
+      // table Объем вложенных инвестиций по годам:
       const columns = [2014, 2015, 2016, 2017, 2018];
 
       var data = [
@@ -1545,8 +1545,8 @@ export default {
         && passport_content != 'level_1:iz:diagramm'
       ">
         <div class="passport-body_item">
-          <button class="passport-body_item_excel"
-            @click="generate_excel">Excel</button>
+          <!-- <button class="passport-body_item_excel"
+            @click="generate_excel">Excel</button> -->
           <button class="passport-body_item_pdf"
             @click="generate_pdf">PDF</button>
         </div>
@@ -1616,9 +1616,9 @@ export default {
           :class="{ 'reference-item--active': !passport_content ? false : passport_content == item.passport_content }"
           v-for="item in [{
             id: 'sez_iv',
-            title_ru: 'Объем вложанных инвестиций',
+            title_ru: 'Объем вложенных инвестиций',
             title_en: 'Investments volume',
-            title_kz: 'Объем вложанных инвестиций',
+            title_kz: 'Объем вложенных инвестиций',
             sum: this.numseparator(investments_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
@@ -1677,9 +1677,9 @@ export default {
           :class="{ 'reference-item--active': !passport_content ? false : passport_content == item.passport_content }"
           v-for="item in [{
             id: 'iz_iv',
-            title_ru: 'Объем вложанных инвестиций',
+            title_ru: 'Объем вложенных инвестиций',
             title_en: 'Investments volume',
-            title_kz: 'Объем вложанных инвестиций',
+            title_kz: 'Объем вложенных инвестиций',
             sum: this.numseparator(investments_sum_iz),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
@@ -1811,9 +1811,9 @@ export default {
           :class="{ 'reference-item--active': !passport_content ? false : passport_content == item.passport_content }"
           v-for="item in [{
             id: 'iv',
-            title_ru: 'Объем вложанных инвестиций',
+            title_ru: 'Объем вложенных инвестиций',
             title_en: 'Investments volume',
-            title_kz: 'Объем вложанных инвестиций',
+            title_kz: 'Объем вложенных инвестиций',
             sum: this.numseparator(investments_sum_level2),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
@@ -1872,9 +1872,9 @@ export default {
           :class="{ 'reference-item--active': !passport_content ? false : passport_content == item.passport_content }"
           v-for="item in [{
             id: 'iv',
-            title_ru: 'Объем вложанных инвестиций',
+            title_ru: 'Объем вложенных инвестиций',
             title_en: 'Investments volume',
-            title_kz: 'Объем вложанных инвестиций',
+            title_kz: 'Объем вложенных инвестиций',
             sum: this.numseparator(investments_sum_level2),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',

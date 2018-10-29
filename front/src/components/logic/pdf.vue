@@ -438,13 +438,13 @@
             // header
             this.header_pdf(this.doc);
 
-            this.doc.text(this.lang == 'ru' ? 'Объем вложанных инвестиций по годам:' : this.lang == 'kz' ? 'Жылына салынған инвестициялар көлемі:' : 'The volume of investments by year:', 30,112);
+            this.doc.text(this.lang == 'ru' ? 'Объем вложенных инвестиций по годам:' : this.lang == 'kz' ? 'Жылына салынған инвестициялар көлемі:' : 'The volume of investments by year:', 30,112);
             this.doc.text(this.lang == 'ru' ? 'Объем производства по годам:' : this.lang == 'kz' ? 'Жыл сайынғы өнім көлемі:' : 'The volume of production by year:', 30, 190);
             this.doc.text(this.lang == 'ru' ? 'Прямые иностранные инвестиций по годам:' : this.lang == 'kz' ? 'Жыл сайын шетелдік тікелей инвестициялар:' : 'Foreign direct investment by year:', 30, 265);
             this.doc.text(this.lang == 'ru' ? 'Количество рабочих мест по годам:' : this.lang == 'kz' ? 'Жыл сайын жұмыс орындарының саны:' : 'Number of jobs by year:', 30, 340);
             this.doc.text(this.lang == 'ru' ? 'Объем налоговых отчислений по проектам по годам:' : this.lang == 'kz' ? 'Жыл бойынша салық аударымдарының сомасы:' : 'The amount of tax deductions by year:', 30, 420);
 
-            // table Объем вложанных инвестиций по годам:
+            // table Объем вложенных инвестиций по годам:
             const columns = [2014, 2015, 2016, 2017, 2018];
             
             var data = [[
@@ -549,9 +549,6 @@
 
 <style>
   .pdf {
-    border: none;
-    width: 100%;
-    outline: none;
     white-space: pre-line;
     border-bottom: 1px solid #eee;
     padding: 15px;
@@ -559,7 +556,6 @@
     cursor: pointer;
     color: #03A0E3;
     transition: all 200ms;
-    font-size: 18px;
   }
 
   .pdf-sum {
@@ -574,14 +570,7 @@
     color: #949494;
   }
 
-  .pdf--active {
-    background: #50C7F9;
-    color: #fff;
-  }
   .pdf:hover {
     background: #f5f5f5;
-  }
-  .pdf.pdf--active:hover {
-    background: #50C7F9;
   }
 </style>
