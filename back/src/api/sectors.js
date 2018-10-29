@@ -1,4 +1,5 @@
 const router = require('express-async-router').AsyncRouter();
+const body_parser = require('body-parser');
 const db_query = require('../util/db_query');
 
 const FIELDS = `
@@ -131,6 +132,68 @@ router.get('/:id', async (req, res) => {
 
   res.send(sectors);
 
+});
+
+router.put('/:id', body_parser.json(), async (req, res) => {
+  const to_sectors = JSON.parse(JSON.stringify({
+    ...req.body,
+    st_asgeojson: undefined,
+    files: undefined,
+    videos: undefined,
+    photos: undefined,
+
+    investments2014: undefined,
+    investments2015: undefined,
+    investments2016: undefined,
+    investments2017: undefined,
+    investments2018: undefined,
+
+    production2014: undefined,
+    production2015: undefined,
+    production2016: undefined,
+    production2017: undefined,
+    production2018: undefined,
+
+    foreign_investments2014: undefined,
+    foreign_investments2015: undefined,
+    foreign_investments2016: undefined,
+    foreign_investments2017: undefined,
+    foreign_investments2018: undefined,
+
+    number_jobs2014: undefined,
+    number_jobs2015: undefined,
+    number_jobs2016: undefined,
+    number_jobs2017: undefined,
+    number_jobs2018: undefined,
+
+    taxes2014: undefined,
+    taxes2015: undefined,
+    taxes2016: undefined,
+    taxes2017: undefined,
+    taxes2018: undefined,
+  }));
+  console.log(to_sectors)
+  const to_sectors_values = Object.keys(to_sectors).map(key => {
+    return to_sectors[key];
+  });
+  console.log(to_sectors_values)
+  const sql = `
+    UPDATE sectors SET
+      ${Object.keys(to_sectors).map((key, idx) => {
+        return key + ' = $' + (++idx)
+      }).join(', ')}
+    WHERE sectors.id = ${req.params.id}
+  `;
+  console.log(sql)
+  await db_query(sql, [...to_sectors_values])
+    .then(_ => res.json({
+      msg: 'sectors updated',
+    })).catch (err => {
+      console.err(err);
+      res.status(500).json({
+        msg: 'something broke',
+      });
+    });
 });
 
 module.exports = router;

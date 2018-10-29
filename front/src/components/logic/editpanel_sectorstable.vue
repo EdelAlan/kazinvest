@@ -1,15 +1,18 @@
 <script>
   import { mapGetters, mapActions } from 'vuex';  
   import editpanel_editzone from './editpanel_editzone';  
+  import editpanel_editsector from './editpanel_editsector';  
 
   export default {
     components: {
       editpanel_editzone,
+      editpanel_editsector,
     },
 
     data () {
       return {
         editzone_state: false,
+        editsector_state: false,
       }
     },
 
@@ -28,6 +31,11 @@
         });
         await this.set_sectors();
         // @alan: вызвать экшон, отвечающий за получение показателей из бэка (инвестиции)
+        await this.set_investments();
+        await this.set_foreign_investments();
+        await this.set_production();
+        await this.set_number_jobs();
+        await this.set_taxes();
         return this.set_zone_sectors();
       } else {
         await this.set_selected_zone(this.profile.member_zone);
@@ -42,6 +50,12 @@
       'set_zone_sectors',
       'collapse_zone_sectors',
       'set_edited_zone',
+      'set_edited_sector',
+      'set_investments',
+      'set_foreign_investments',
+      'set_production',
+      'set_number_jobs',
+      'set_taxes',
     ]),
 
   }
@@ -52,8 +66,9 @@
   <div class="editpanel_sectorstable">
 
     <editpanel_editzone v-if="editzone_state" />
+    <editpanel_editsector v-if="editsector_state" />
 
-    <div v-if="!editzone_state" class="editpanel_sectorstable-zones">
+    <div v-if="!editzone_state && !editsector_state" class="editpanel_sectorstable-zones">
 
       <div v-for="zone in zone_sectors" class="editpanel_sectorstable-item">
         <h2 class="editpanel_sectorstable-header_title" 
@@ -82,7 +97,12 @@
             v-for="sector in zone.sectors">
             <div class="editpanel_sectorstable-sector">
               <div class="editpanel_sectorstable-sector_item">
-                <button class="editpanel_sectorstable-sector_item_edit"></button>
+                <button class="editpanel_sectorstable-sector_item_edit"
+                  v-on:click="
+                    set_edited_sector(sector),
+                    editsector_state = true
+                  "
+                ></button>
                 <span class="editpanel_sectorstable-sector_item_title editpanel_sectorstable-sector_item_title--leftpd" 
                   :title="sector['title_' + lang]"
                   v-text="sector['title_' + lang]"></span>

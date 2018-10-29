@@ -4,6 +4,7 @@ export default {
   state: () => ({
     zone_sectors: null,
     edited_zone: null,
+    edited_sector: null,
     views: [{
       active: true,
       id: 'sectors',
@@ -31,6 +32,11 @@ export default {
       state.edited_zone = zone;
       console.log(state.edited_zone);
     },
+    set_edited_sector(state, sector) {
+      console.log(sector)
+      state.edited_sector = sector;
+      console.log(state.edited_sector);
+    },
   },
 
   getters: {
@@ -44,6 +50,7 @@ export default {
 
     zone_sectors: state => state.zone_sectors,
     edited_zone: state => state.edited_zone,
+    edited_sector: state => state.edited_sector,
   },
 
   actions: {
@@ -58,8 +65,40 @@ export default {
         return {
           ...zone,
           collapsed: true,
-          sectors: getters.sectors.filter(sector => sector.zone_id == zone.id),
-          // alan: положить показатели
+          sectors: getters.sectors.filter(sector => sector.zone_id == zone.id).map(sector => {
+            return {
+              ...sector,
+              investments2014: getters.investments.filter(el => el.parent_id == sector.id && el.year == 2014)[0] ? getters.investments.filter(el => el.parent_id == sector.id && el.year == 2014)[0].val : 0,
+              investments2015: getters.investments.filter(el => el.parent_id == sector.id && el.year == 2015)[0] ? getters.investments.filter(el => el.parent_id == sector.id && el.year == 2015)[0].val : 0,
+              investments2016: getters.investments.filter(el => el.parent_id == sector.id && el.year == 2016)[0] ? getters.investments.filter(el => el.parent_id == sector.id && el.year == 2016)[0].val : 0,
+              investments2017: getters.investments.filter(el => el.parent_id == sector.id && el.year == 2017)[0] ? getters.investments.filter(el => el.parent_id == sector.id && el.year == 2017)[0].val : 0,
+              investments2018: getters.investments.filter(el => el.parent_id == sector.id && el.year == 2018)[0] ? getters.investments.filter(el => el.parent_id == sector.id && el.year == 2018)[0].val : 0,
+
+              production2014: getters.production.filter(el => el.parent_id == sector.id && el.year == 2014)[0] ? getters.production.filter(el => el.parent_id == sector.id && el.year == 2014)[0].val : 0,
+              production2015: getters.production.filter(el => el.parent_id == sector.id && el.year == 2015)[0] ? getters.production.filter(el => el.parent_id == sector.id && el.year == 2015)[0].val : 0,
+              production2016: getters.production.filter(el => el.parent_id == sector.id && el.year == 2016)[0] ? getters.production.filter(el => el.parent_id == sector.id && el.year == 2016)[0].val : 0,
+              production2017: getters.production.filter(el => el.parent_id == sector.id && el.year == 2017)[0] ? getters.production.filter(el => el.parent_id == sector.id && el.year == 2017)[0].val : 0,
+              production2018: getters.production.filter(el => el.parent_id == sector.id && el.year == 2018)[0] ? getters.production.filter(el => el.parent_id == sector.id && el.year == 2018)[0].val : 0,
+
+              foreign_investments2014: getters.foreign_investments.filter(el => el.parent_id == sector.id && el.year == 2014)[0] ? getters.foreign_investments.filter(el => el.parent_id == sector.id && el.year == 2014)[0].val : 0,
+              foreign_investments2015: getters.foreign_investments.filter(el => el.parent_id == sector.id && el.year == 2015)[0] ? getters.foreign_investments.filter(el => el.parent_id == sector.id && el.year == 2015)[0].val : 0,
+              foreign_investments2016: getters.foreign_investments.filter(el => el.parent_id == sector.id && el.year == 2016)[0] ? getters.foreign_investments.filter(el => el.parent_id == sector.id && el.year == 2016)[0].val : 0,
+              foreign_investments2017: getters.foreign_investments.filter(el => el.parent_id == sector.id && el.year == 2017)[0] ? getters.foreign_investments.filter(el => el.parent_id == sector.id && el.year == 2017)[0].val : 0,
+              foreign_investments2018: getters.foreign_investments.filter(el => el.parent_id == sector.id && el.year == 2018)[0] ? getters.foreign_investments.filter(el => el.parent_id == sector.id && el.year == 2018)[0].val : 0,
+
+              number_jobs2014: getters.number_jobs.filter(el => el.parent_id == sector.id && el.year == 2014)[0] ? getters.number_jobs.filter(el => el.parent_id == sector.id && el.year == 2014)[0].val : 0,
+              number_jobs2015: getters.number_jobs.filter(el => el.parent_id == sector.id && el.year == 2015)[0] ? getters.number_jobs.filter(el => el.parent_id == sector.id && el.year == 2015)[0].val : 0,
+              number_jobs2016: getters.number_jobs.filter(el => el.parent_id == sector.id && el.year == 2016)[0] ? getters.number_jobs.filter(el => el.parent_id == sector.id && el.year == 2016)[0].val : 0,
+              number_jobs2017: getters.number_jobs.filter(el => el.parent_id == sector.id && el.year == 2017)[0] ? getters.number_jobs.filter(el => el.parent_id == sector.id && el.year == 2017)[0].val : 0,
+              number_jobs2018: getters.number_jobs.filter(el => el.parent_id == sector.id && el.year == 2018)[0] ? getters.number_jobs.filter(el => el.parent_id == sector.id && el.year == 2018)[0].val : 0,
+              
+              taxes2014: getters.taxes.filter(el => el.parent_id == sector.id && el.year == 2014)[0] ? getters.taxes.filter(el => el.parent_id == sector.id && el.year == 2014)[0].val : 0,
+              taxes2015: getters.taxes.filter(el => el.parent_id == sector.id && el.year == 2015)[0] ? getters.taxes.filter(el => el.parent_id == sector.id && el.year == 2015)[0].val : 0,
+              taxes2016: getters.taxes.filter(el => el.parent_id == sector.id && el.year == 2016)[0] ? getters.taxes.filter(el => el.parent_id == sector.id && el.year == 2016)[0].val : 0,
+              taxes2017: getters.taxes.filter(el => el.parent_id == sector.id && el.year == 2017)[0] ? getters.taxes.filter(el => el.parent_id == sector.id && el.year == 2017)[0].val : 0,
+              taxes2018: getters.taxes.filter(el => el.parent_id == sector.id && el.year == 2018)[0] ? getters.taxes.filter(el => el.parent_id == sector.id && el.year == 2018)[0].val : 0,
+            }
+          }),
         }
       }));
     },
@@ -74,6 +113,9 @@ export default {
     set_edited_zone({ commit }, zone) {
       commit('set_edited_zone', zone);
     },
+    set_edited_sector({ commit }, sector) {
+      commit('set_edited_sector', sector);
+    },
     
     update_zone ({ commit }, zone) {
       const path = this.getters.api_path + `/back/api/zones/${zone.id}`;
@@ -82,6 +124,17 @@ export default {
         method: 'put',
         path,
         body: zone,
+      }).then(res => {
+        console.log(res)
+      });
+    },
+    update_sector ({ commit }, sector) {
+      const path = this.getters.api_path + `/back/api/sectors/${sector.id}`;
+      console.log(path);
+      return fetcher({ 
+        method: 'put',
+        path,
+        body: sector,
       }).then(res => {
         console.log(res)
       });
