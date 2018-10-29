@@ -153,6 +153,8 @@ router.put('/:id', body_parser.json(), async (req, res) => {
     videos: undefined,
     photos: undefined,
   }));
+  console.log(to_zone)
+  // return;
   const to_zone_values = Object.keys(to_zone).map(key => {
     return to_zone[key];
   });
@@ -163,6 +165,8 @@ router.put('/:id', body_parser.json(), async (req, res) => {
       }).join(', ')}
     WHERE zone.id = ${req.body.id}
   `;
+  console.log(sql)
+  // return;
   return await db_query(sql, [...to_zone_values])
     .then(_ => res.json({
       msg: 'zone updated',

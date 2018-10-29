@@ -1190,13 +1190,13 @@ export default {
               v-if="!sectors"
               @click="
                 set_passport_content(''),
-                zone.object_count > 0 ? set_level({
+                set_level({
                   id: 2,
                   title_ru: zone.title_ru,
                   title_en: zone.title_en,
                   title_kz: zone.title_kz,
                   properties: zone
-                }) : null
+                })
               ">
               <span class="sidebar-item_title" 
                 :title="zone['title_' + lang]"
@@ -1357,7 +1357,7 @@ export default {
           </div>
           <h2 v-if="republics[0].files.length" class="sidebar-passport_subtitle">Файлы</h2>
           <div v-if="republics[0].files.length" class="sidebar-market_file" v-for="file in republics[0].files">
-            <a :href="file['src_' + lang]" target="_blank">
+            <a :href="file['src_' + lang]" download>
               <div class="sidebar-market_pdf"></div>
               <div class="sidebar-market_pdf_text">{{file['name_' + lang]}}</div>
             </a>
@@ -1430,7 +1430,7 @@ export default {
           </div>
           <h2 v-if="republics[1].files.length" class="sidebar-passport_subtitle">Файлы</h2>
           <div v-if="republics[1].files.length" class="sidebar-market_file" v-for="file in republics[1].files">
-            <a :href="file['src_' + lang]" target="_blank">
+            <a :href="file['src_' + lang]" download>
               <div class="sidebar-market_pdf"></div>
               <div class="sidebar-market_pdf_text">{{file['name_' + lang]}}</div>
             </a>
@@ -1474,7 +1474,7 @@ export default {
           </div>
           <h2 v-if="selected_zone.files.length" class="sidebar-passport_subtitle">Файлы</h2>
           <div class="sidebar-market_file" v-for="file in selected_zone.files">
-            <a :href="file['src_' + lang]" target="_blank">
+            <a :href="file['src_' + lang]" download>
               <div class="sidebar-market_pdf"></div>
               <div class="sidebar-market_pdf_text">{{file['name_' + lang]}}</div>
             </a>
@@ -1518,7 +1518,7 @@ export default {
           </div>
           <h2 v-if="selected_sector.files.length" class="sidebar-passport_subtitle">Файлы</h2>
           <div v-if="selected_sector.files.length" class="sidebar-market_file" v-for="file in selected_sector.files">
-            <a :href="file['src_' + lang]" target="_blank">
+            <a :href="file['src_' + lang]" download>
               <div class="sidebar-market_pdf"></div>
               <div class="sidebar-market_pdf_text">{{file['name_' + lang]}}</div>
             </a>
