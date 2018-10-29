@@ -78,6 +78,7 @@ export default {
     ...mapGetters([
       "sidebar_expanded",
       "zones",
+      "all_zones",
       "sectors",
       "lang",
       "selected_sector",
@@ -263,6 +264,7 @@ export default {
       "change_ui_visibility",
       "set_passport_anal_data",
       "set_passport_anal_bar_data",
+      "set_all_zones",
       "set_sectors",
       "set_foreign_investments",
       "set_investments",
