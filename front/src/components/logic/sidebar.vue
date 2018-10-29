@@ -317,41 +317,16 @@ export default {
       doc.setFillColor("#FFFFFF");
       doc.setFontSize(18);
       doc.setTextColor(255);
-      switch (this.active_level.id) {
-        case 1:
-          doc.text(
-            this.lang == "ru"
-              ? "Отчет по общей информации"
-              : this.lang == "kz"
-                ? "Жалпы ақпарат туралы есеп"
-                : "General Information Report",
-            62,
-            25
-          );
-          break;
-        case 2:
-          doc.text(
-            this.lang == "ru"
-              ? "Отчет по цифровым показателям и инфраструктурам"
-              : this.lang == "kz"
-                ? "Сандық өнімділік және инфрақұрылым туралы есеп"
-                : "Digital Indicator and Infrastructure Report",
-            62,
-            25
-          );
-          break;
-        case 3:
-          doc.text(
-            this.lang == "ru"
-              ? "Отчет по проектам / участникам"
-              : this.lang == "kz"
-                ? "Жоба / қатысушы туралы есеп"
-                : "Project / Participant Report",
-            62,
-            25
-          );
-          break;
-      }
+
+      doc.text(
+        this.lang == "ru"
+          ? "Отчет по проектам / участникам"
+          : this.lang == "kz"
+            ? "Жоба / қатысушы туралы есеп"
+            : "Project / Participant Report",
+        62,
+        25
+      );
 
       doc.setFontSize(16);
       doc.setTextColor("#484D5E");
@@ -561,7 +536,7 @@ export default {
         });
         doc.text(ttl_text, 400, 67);
       } else {
-        doc.text(ttl, 400, 67);
+        doc.text(ttl, 400, 77);
       }
 
       doc.text(
@@ -800,7 +775,7 @@ export default {
 
         doc.setDrawColor("#D2D2D2");
         doc.setLineWidth(1);
-        doc.line(30, 756, 565, 756);
+        doc.line(30, 776, 565, 776);
       } else {
         doc.text(
           this.lang == "ru"
@@ -894,7 +869,7 @@ export default {
         490
       );
       if (this.investments_sum) {
-        doc.text( ((this.investments_sum * 100)/this.investment).toFixed(2) + '%\r\n( '+this.investments_sum.toLocaleString('en')+'/'+this.investment.toLocaleString('en')+')', 400, 490);
+        doc.text( ((this.investments_sum * 100)/this.investment).toFixed(2) + '%\r\n('+this.investments_sum.toLocaleString('en')+'/'+this.investment.toLocaleString('en')+')', 400, 490);
       } else {
         doc.text('0%', 460, 490);
       }
@@ -913,7 +888,7 @@ export default {
             );
             doc.text(
               this.lang == "ru" ? "Да" : this.lang == "kz" ? "Иә" : "Yes",
-              400,
+              460,
               545
             );
             break;
@@ -929,7 +904,7 @@ export default {
             );
             doc.text(
               this.lang == "ru" ? "Нет" : this.lang == "kz" ? "Жоқ" : "No",
-              400,
+              460,
               545
             );
             break;
@@ -1019,7 +994,7 @@ export default {
         doc.autoTable.previous.finalY + 85
       );
 
-      doc.save(this.selected_sector["title_" + this.lang] + ".pdf");
+      doc.save(this.selected_zone["title_" + this.lang] + '_' + this.selected_sector["title_" + this.lang] + ".pdf");
     },
 
     generate_excel() {}
