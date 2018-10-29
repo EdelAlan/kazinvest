@@ -108,8 +108,8 @@
   .piechart_popup-total {
     position: absolute;
     left: 50%;
-    font-size: 18px;
-    top: 30%;
+    font-size: 14px;
+    top: 35%;
     color: #878DA1;
     transform: translateX(-50%);
   }

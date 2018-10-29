@@ -3,6 +3,7 @@ import fetcher from '../../util/fetcher';
 export default {
   state: () => ({
     zones: [],
+    all_zones: [],
     selected_zone: null,
   }),
 
@@ -13,6 +14,9 @@ export default {
     set_zones (state, zones) {
       state.zones = zones;
     },
+    set_all_zones (state, all_zones) {
+      state.all_zones = all_zones;
+    },
     set_selected_zone (state, selected_zone) {
       state.selected_zone = selected_zone;
     },
@@ -21,6 +25,7 @@ export default {
   getters: {
     zone_type: state => state.zone_type,
     zones: state => state.zones,
+    all_zones: state => state.all_zones,
     selected_zone: state => state.selected_zone,
   },
 
@@ -44,6 +49,12 @@ export default {
         + (lang != '' ? `&lang=${lang}` : '') : '');
       console.log(path);
       return fetcher({ path }).then(zones => commit('set_zones', zones));
+    },
+    async set_all_zones({ commit }) {
+      const path = this.getters.api_path 
+        + '/back/api/zones';
+      console.log(path);
+      return fetcher({ path }).then(all_zones => commit('set_all_zones', all_zones));
     },
   },
 };

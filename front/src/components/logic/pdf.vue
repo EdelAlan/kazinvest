@@ -62,6 +62,7 @@
         ...mapGetters([
             'lang',
             'zones',
+            'all_zones',
             'sectors',
             'selected_sector',
             'active_level',
@@ -75,35 +76,36 @@
             'investments_sum',
         ]),
 
-        diagram_data: async () => {
-            await this.set_sectors();
-			var ongoing=0, 
-				underway=0;
-			await this.sectors.forEach(sector => {
-				this.zones.forEach(zone => {
-					if (zone.id == sector.zone_id) {
-						switch(sector.project_type) {
-							case 1:
-								ongoing++;
-								break;
-							case 2:
-								underway++;
-								break;
-							default:
-								break;
-						}
-					}
-				});
-			});
-			return [
-                    { key: 'Действующие проекты', val: ongoing },
-                    { key: 'Проекты на стадии реализации', val: underway },
-			    ];
-        }
+        // diagram_data: async () => {
+        //     await this.set_sectors();
+		// 	var ongoing=0, 
+		// 		underway=0;
+		// 	await this.sectors.forEach(sector => {
+		// 		this.zones.forEach(zone => {
+		// 			if (zone.id == sector.zone_id) {
+		// 				switch(sector.project_type) {
+		// 					case 1:
+		// 						ongoing++;
+		// 						break;
+		// 					case 2:
+		// 						underway++;
+		// 						break;
+		// 					default:
+		// 						break;
+		// 				}
+		// 			}
+		// 		});
+		// 	});
+		// 	return [
+        //             { key: 'Действующие проекты', val: ongoing },
+        //             { key: 'Проекты на стадии реализации', val: underway },
+		// 	    ];
+        // }
     },
 
     methods: {
         ...mapActions([
+            'set_all_zones',
             'set_sectors',
             'set_foreign_investments',
             'set_investments',
@@ -347,12 +349,12 @@
                     this.doc.text(this.investments_sum.toLocaleString('en') + (this.lang == 'ru' ? ' Тенге' : this.lang == 'kz' ? ' Теңге' : ' Tenge'), 430, 510);
 
                     this.doc.text(this.lang == 'ru' ? 'Информация по количеству проектов:' : this.lang == 'kz' ? 'Жобалар саны туралы ақпарат:' : 'Information on the number of projects:', 30, 565);
-                    this.doc.
+                    // this.doc.
                     break;
                 case 2:
-                    this.doc.text(this.lang == 'ru' ? 'Наименование Компании – участника:' : this.lang == 'kz' ? 'Қоғамның атауы - қатысушы:' : 'Name of the Company - participant:', 30, 67);
+                    this.doc.text(this.lang == 'ru' ? 'Наименование Компании – участника:' : this.lang == 'kz' ? 'Қоғамның атауы - қатысушы:' : 'Name of the Company - participant:', 30, 77);
                     var ttl = this.selected_zone['title_' + this.lang].split(' ');
-                    if (ttl.length >= 2) {
+                    if (ttl.length > 2) {
                         var ttl_text = '';
                         ttl.forEach((el, i) => {
                             if (i%2 == 0) {
@@ -363,14 +365,72 @@
                         });
                         this.doc.text(ttl_text, 400, 67);
                     } else {
-                        this.doc.text(ttl, 400, 67);
+                        this.doc.text(this.selected_zone['title_' + this.lang], 400, 77);
                     }
+
+                    this.doc.text(this.lang == 'ru' ? 'Период действия зоны:' : this.lang == 'kz' ? 'Аймақтың әрекет ету мерзімі:' : 'Zone validity period:', 30, 122);
+                    this.doc.text(this.selected_zone.zone_time, 400, 122);
+
+                    this.doc.text(this.lang == 'ru' ? 'Отрасаль зоны:' : this.lang == 'kz' ? 'Аймақ өнеркәсібі:' : 'Zone industry:', 30, 167);
+                    switch(this.selected_zone.industries_id) {
+                        case 1:
+                            this.doc.text(this.lang == 'ru' ? 'Химия' : this.lang == 'kz' ? 'Химия' : 'Chemistry', 400, 167);
+                            break;
+                        case 2:
+                            this.doc.text(this.lang == 'ru' ? 'Нефтехимия' : this.lang == 'kz' ? 'Мұнай-химия' : 'Petrochemistry', 400, 167);
+                            break;
+                        case 3:
+                            this.doc.text(this.lang == 'ru' ? 'Металлургия' : this.lang == 'kz' ? 'Металлургия' : 'Metallurgy', 400, 167);
+                            break;
+                        case 4:
+                            this.doc.text(this.lang == 'ru' ? 'Машиностроение' : this.lang == 'kz' ? 'Машина жасау' : 'Engineering', 400, 167);
+                            break;
+                        case 5:
+                            this.doc.text(this.lang == 'ru' ? 'Логистика' : this.lang == 'kz' ? 'Логистика' : 'Logistics', 400, 167);
+                            break;
+                        case 6:
+                            this.doc.text(this.lang == 'ru' ? 'Нефтесервис' : this.lang == 'kz' ? 'Нефтесервис' : 'Petroservice', 400, 167);
+                            break;
+                        case 7:
+                            this.doc.text(this.lang == 'ru' ? 'Текстиль' : this.lang == 'kz' ? 'Тоқыма' : 'Textile', 400, 167);
+                            break;
+                        case 8:
+                            this.doc.text(this.lang == 'ru' ? 'ИКТ и НИОКР' : this.lang == 'kz' ? 'АКТ' : 'ICT & R&D', 400, 167);
+                            break;
+                        case 9:
+                            this.doc.text(this.lang == 'ru' ? 'Продукты питания' : this.lang == 'kz' ? 'Тамақ өнімдері' : 'Food', 400, 167);
+                            break;
+                        case 10:
+                            this.doc.text(this.lang == 'ru' ? 'Туризм' : this.lang == 'kz' ? 'Туризм' : 'Tourism', 400, 167);
+                            break;
+                        case 11:
+                            this.doc.text(this.lang == 'ru' ? 'Смешанная' : this.lang == 'kz' ? 'Аралас' : 'Mixed', 400, 167);
+                            break;
+                        case 12:
+                            this.doc.text(this.lang == 'ru' ? 'Торговля' : this.lang == 'kz' ? 'Сауда' : 'Trade', 400, 167);
+                            break;
+                    }
+
+                    this.doc.text(this.lang == 'ru' ? 'Доля свободной площади зоны:' : this.lang == 'kz' ? 'Бос аймақтың үлесі:' : 'The share of free zone area:', 30, 212);
+                    this.doc.text((100 - this.selected_zone.level)+'%', 400, 212);
 
                     this.doc.setDrawColor('#D2D2D2');
                     this.doc.setLineWidth(1);
                     this.doc.line(30, 97, 565, 97);
+                    this.doc.line(30, 142, 565, 142);
+                    this.doc.line(30, 187, 565, 187);
+                    this.doc.line(30, 232, 565, 232);
+
+                    this.doc.addPage();
                     
                     this.doc.text(this.lang == 'ru' ? 'Доля выделенного финансирования по отношению\r\nк общей сумме финансирования СЭЗ/ИЗ РК:' : this.lang == 'kz' ? 'ҚР АЭА/ИА қаржыландырудың жалпы сомасына қатысты бөлінетін қаржыландыру үлесі:' : 'The share of funding allocated in relation to the total amount of financing of the SEZ/IZ:', 30, 510);
+                    await this.set_all_zones();
+                    var budget_allocated_sum = 0;
+                    this.all_zones.forEach(zone => {
+                        budget_allocated_sum += zone.budget_allocated ? parseInt(zone.budget_allocated, 10) : 0;
+                    });
+                    var bap = ((parseInt(this.selected_zone.budget_allocated, 10) * 100)/budget_allocated_sum).toFixed(2)+'%\r\n(' + parseInt(this.selected_zone.budget_allocated, 10).toLocaleString('en') + '/' + budget_allocated_sum.toLocaleString('en')+')';
+                    this.doc.text(this.selected_zone.budget_allocated ? bap : '-', 400, 510);
 
                     break;
             }
@@ -378,13 +438,13 @@
             // header
             this.header_pdf(this.doc);
 
-            this.doc.text(this.lang == 'ru' ? 'Объем вложанных инвестиций по годам:' : this.lang == 'kz' ? 'Жылына салынған инвестициялар көлемі:' : 'The volume of investments by year:', 30,112);
+            this.doc.text(this.lang == 'ru' ? 'Объем вложенных инвестиций по годам:' : this.lang == 'kz' ? 'Жылына салынған инвестициялар көлемі:' : 'The volume of investments by year:', 30,112);
             this.doc.text(this.lang == 'ru' ? 'Объем производства по годам:' : this.lang == 'kz' ? 'Жыл сайынғы өнім көлемі:' : 'The volume of production by year:', 30, 190);
             this.doc.text(this.lang == 'ru' ? 'Прямые иностранные инвестиций по годам:' : this.lang == 'kz' ? 'Жыл сайын шетелдік тікелей инвестициялар:' : 'Foreign direct investment by year:', 30, 265);
             this.doc.text(this.lang == 'ru' ? 'Количество рабочих мест по годам:' : this.lang == 'kz' ? 'Жыл сайын жұмыс орындарының саны:' : 'Number of jobs by year:', 30, 340);
             this.doc.text(this.lang == 'ru' ? 'Объем налоговых отчислений по проектам по годам:' : this.lang == 'kz' ? 'Жыл бойынша салық аударымдарының сомасы:' : 'The amount of tax deductions by year:', 30, 420);
 
-            // table Объем вложанных инвестиций по годам:
+            // table Объем вложенных инвестиций по годам:
             const columns = [2014, 2015, 2016, 2017, 2018];
             
             var data = [[
@@ -443,11 +503,10 @@
             this.doc.line(30, this.doc.autoTable.previous.finalY + 25, 565, this.doc.autoTable.previous.finalY + 25);
             this.doc.line(30, this.doc.autoTable.previous.finalY + 85, 565, this.doc.autoTable.previous.finalY + 85);
 
-            this.doc.save('pdf.pdf');
+            this.doc.save(this.active_level.id == 1 ? 'sez_iz.pdf' : this.selected_zone.title_en + '.pdf');
         },
 
         header_pdf(doc) {
-
             this.doc.setFillColor('#03A0E3');
             this.doc.rect(0, 0, 595, 40, 'F');
             this.doc.addImage(this.label_img, 'PNG', 30, 9, 22, 22);
@@ -475,25 +534,21 @@
   }
 </script>
 
-// :class="{ 'pdf--active': !passport_content ? false : passport_content ==.passport_content }"
 <template>
 	<div
         class="pdf"
         @click="generate_pdf(),
             generate_excel()"
-        v-text="'PDF'">
-        <piechart
+        v-text="lang == 'ru' ? 'Экспорт PDF' : lang == 'en' ? 'Export PDF' : 'PDF экспорттау'">
+        <!-- <piechart
 			:sectors="diagram_data"
-		></piechart>
+		></piechart> -->
     </div>
 </template>
 
 
 <style>
   .pdf {
-    border: none;
-    width: 100%;
-    outline: none;
     white-space: pre-line;
     border-bottom: 1px solid #eee;
     padding: 15px;
@@ -501,7 +556,6 @@
     cursor: pointer;
     color: #03A0E3;
     transition: all 200ms;
-    font-size: 18px;
   }
 
   .pdf-sum {
@@ -516,14 +570,7 @@
     color: #949494;
   }
 
-  .pdf--active {
-    background: #50C7F9;
-    color: #fff;
-  }
   .pdf:hover {
     background: #f5f5f5;
-  }
-  .pdf.pdf--active:hover {
-    background: #50C7F9;
   }
 </style>

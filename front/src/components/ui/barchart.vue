@@ -22,22 +22,22 @@
         <g class="bar">
           <text y="9.5" dy=".35em" v-text="2015"></text>
           <rect x="50" :width="bars[0].percent_val + `%`" height="8" y="5" rx="5" ry="5"></rect>
-          <text :x="15 + bars[0].percent_val + `%`" y="9.5" dy=".35em" v-text="bars[0].val"></text>
+          <text :x="15 + bars[0].percent_val + `%`" y="9.5" dy=".35em" v-text="bars[0].val.toLocaleString('en')"></text>
         </g>
         <g class="bar">
           <text y="54.5" dy=".35em" v-text="2016"></text>
           <rect x="50" :width="bars[1].percent_val + `%`" height="8" y="50" rx="5" ry="5"></rect>
-          <text :x="15 + bars[1].percent_val + `%`" y="54.5" dy=".35em" v-text="bars[1].val"></text>
+          <text :x="15 + bars[1].percent_val + `%`" y="54.5" dy=".35em" v-text="bars[1].val.toLocaleString('en')"></text>
         </g>
         <g class="bar">
           <text y="99.5" dy=".35em" v-text="2017"></text>
           <rect x="50" :width="bars[2].percent_val + `%`" height="8" y="95" rx="5" ry="5"></rect>
-          <text :x="15 + bars[2].percent_val + `%`" y="99.5" dy=".35em" v-text="bars[2].val"></text>
+          <text :x="15 + bars[2].percent_val + `%`" y="99.5" dy=".35em" v-text="bars[2].val.toLocaleString('en')"></text>
         </g>
         <g class="bar">
           <text y="144.5" dy=".35em" v-text="2018"></text>
           <rect x="50" :width="bars[3].percent_val + `%`" height="8" y="140" rx="5" ry="5"></rect>
-          <text :x="15 + bars[3].percent_val + `%`" y="144.5" dy=".35em" v-text="bars[3].val"></text>
+          <text :x="15 + bars[3].percent_val + `%`" y="144.5" dy=".35em" v-text="bars[3].val.toLocaleString('en')"></text>
         </g>
       </svg>
     </figure>
