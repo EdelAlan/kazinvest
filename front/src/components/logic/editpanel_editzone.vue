@@ -42,8 +42,15 @@
     },
 
     mounted () {
-      console.log(this.edited_zone)
       Object.keys(this.zonemodel).forEach(it => {
+        if (
+          it == 'title_ru' || 
+          it == 'title_kz' || 
+          it == 'title_en'
+        ) {
+          this.zonemodel[it] = this.edited_zone[it].slice(4);
+          return;
+        }
         this.zonemodel[it] = this.edited_zone[it];
       });
     }
@@ -54,7 +61,7 @@
 <template>
   <div class="editpanel_editzone">
 
-    <h2 class="editpanel_editzone-title" v-text="zonemodel['title_' + lang]"></h2>
+    <h2 class="editpanel_editzone-title" v-text="edited_zone['title_' + lang]"></h2>
     <button v-on:click="update_zone(zonemodel)">Сохранить</button>
 
     <tabs
@@ -116,6 +123,10 @@
 
 
       <div class="editpanel_editzone-tab" slot="tab_0">
+        <h3>Название</h3>
+        <input
+          v-model="zonemodel['title_' + lang]"
+        />
         <h3>Описание</h3>
         <textarea style="width: 100%; height: 100px;"
           v-model="zonemodel['description_' + lang]">

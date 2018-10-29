@@ -131,6 +131,7 @@ router.get('/', async (req, res) => {
   res.send(zones);
 });
 
+
 router.get('/:id', async (req, res) => {
   res.send(await db_query(`
       SELECT ${FIELDS} 
@@ -143,42 +144,34 @@ router.get('/:id', async (req, res) => {
   ));
 });
 
+
 router.put('/:id', body_parser.json(), async (req, res) => {
+  const to_zone = JSON.parse(JSON.stringify({
+    ...req.body,
+    id: undefined,
+    files: undefined,
+    videos: undefined,
+    photos: undefined,
+  }));
+  const to_zone_values = Object.keys(to_zone).map(key => {
+    return to_zone[key];
+  });
   const sql = `
-    INSERT INTO zone (
-      ${Object.keys(req.body).join(', ')}
-    ) VALUES (
-      ${Object.values(req.body).join(', ')}
-    )
+    UPDATE zone SET
+      ${Object.keys(to_zone).map((key, idx) => {
+        return key + ' = $' + (++idx)
+      }).join(', ')}
+    WHERE zone.id = ${req.body.id}
   `;
-  console.log(sql);
-  // const params = 
-  // res.send(await db_query(sql,
-  //   [req.params.id],
-  // ));
+  return await db_query(sql, [...to_zone_values])
+    .then(_ => res.json({
+      msg: 'zone updated',
+    })).catch (err => {
+      console.err(err);
+      res.status(500).json({
+        msg: 'something broke',
+      });
+    });
 });
 
 module.exports = router;
-
-
-// return bcrypt.hash(password, 10)
-//   .then(async hash => {
-//     return await db_query(`
-//         INSERT INTO member (
-//           member_id,
-//           member_password,
-//           member_firstname,
-//           member_lastname,
-//           member_zone,
-//           member_role
-//         ) VALUES ($1, $2, $3, $4, $5, $6)
-//       `, [userid, hash, firstname, lastname, zone, role])
-//       .then(_ => res.json({
-//         msg: 'signup success',
-//       })).catch(err => {
-//         console.err(err);
-//         res.status(500).json({
-//           msg: 'something broke',
-//         });
-//       });
-//   });
