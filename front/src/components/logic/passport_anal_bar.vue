@@ -280,7 +280,7 @@
 						break;
 				}
 				this.bar_data = this.bar_data.map(({ val, key }, idx) => ({
-					percent_val: val == 0 ? 0 : ((val / Math.max.apply(null, this.bar_data.map(o => o.val))) * 60),
+					percent_val: val == 0 ? 0 : ((val / Math.max.apply(null, this.bar_data.map(o => o.val))) * 55),
 					val: val,
 					key,
 				}));
