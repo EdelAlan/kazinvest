@@ -33,12 +33,12 @@
 
     methods: {
       select (item) {
-        this.selected_item = item['title_' + this.lang]; // FIXME: lang
+        this.selected_item = item['title_' + this.lang];
         this.$emit('select', item);
         this.$el.ownerDocument.removeEventListener('click', this.close, true);
       },
       search (match) {
-        this.filtered_list = this.list.filter(it => { // FIXME: lang
+        this.filtered_list = this.list.filter(it => {
           if (it['title_' + this.lang].toLowerCase().indexOf(match.toLowerCase()) > -1) {
             return it;
           }
