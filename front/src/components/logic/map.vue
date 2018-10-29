@@ -1321,7 +1321,7 @@ export default {
               type: 'fill',
               source: 'sector-multi',
               paint: {
-                'fill-color': 'rgba(19, 150, 214, 0.5)',
+                'fill-color': '#00ACFF',
                 'fill-opacity': 0.8
               },
               filter: ['==', 'type', 1]
@@ -1335,7 +1335,7 @@ export default {
                   'line-cap': 'round'
                 },
                 paint: {
-                  'line-color': '#3585AD',
+                  'line-color': '#00ACFF',
                   'line-width': 3,
                   'line-dasharray': [2.5, 2.5]
                 },
@@ -1347,7 +1347,7 @@ export default {
                 type: 'fill',
                 source: 'sector-multi',
                 paint: {
-                  'fill-color': 'rgba(229, 208, 12, 0.4)',
+                  'fill-color': '#FFE500',
                   'fill-opacity': 0.8
                 },
                 filter: ['==', 'type', 2]
@@ -1361,7 +1361,7 @@ export default {
                   'line-cap': 'round'
                 },
                 paint: {
-                  'line-color': '#A48C10',
+                  'line-color': '#FFE500',
                   'line-width': 3,
                   'line-dasharray': [2.5, 2.5]
                 },
@@ -1373,7 +1373,7 @@ export default {
                 type: 'fill',
                 source: 'sector-multi',
                 paint: {
-                  'fill-color': 'rgba(6, 178, 23, 0.4)',
+                  'fill-color': '#03C717',
                   'fill-opacity': 0.8
                 },
                 filter: ['==', 'type', 3]
@@ -1387,7 +1387,7 @@ export default {
                   'line-cap': 'round'
                 },
                 paint: {
-                  'line-color': '#149541',
+                  'line-color': '#03C717',
                   'line-width': 3,
                   'line-dasharray': [2.5, 2.5]
                 },
