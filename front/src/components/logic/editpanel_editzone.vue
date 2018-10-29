@@ -21,6 +21,9 @@
           photos: null,
 
           // alan объявить поле для показателей
+          budget_allocated: null,
+          budget_need: null,
+          level: null,
         },
       }
     },
@@ -80,17 +83,8 @@
           ></span>
         </span>
       </span>
-
-      <span slot="tab_title_1">
-        <span class="sidebar-tab">
-          <span class="sidebar-tab_icon"></span>
-          <span class="sidebar-tab_title"
-            v-text="lang == 'ru' ? 'Цифровые показатели' : lang == 'en' ? 'Цифровые показатели': 'Цифровые показатели'"
-          ></span>
-        </span>        
-      </span>
       
-      <span slot="tab_title_2">
+      <span slot="tab_title_1">
         <span class="sidebar-tab">
           <span class="sidebar-tab_icon"></span>
           <span class="sidebar-tab_title"
@@ -99,7 +93,7 @@
         </span>        
       </span>
       
-      <span slot="tab_title_3">
+      <span slot="tab_title_2">
         <span class="sidebar-tab">
           <span class="sidebar-tab_icon"></span>
           <span class="sidebar-tab_title"
@@ -157,14 +151,27 @@
 
       </div>
 
-      <div slot="tab_1">
-      1
+      <div class="editpanel_editzone-tab" slot="tab_1">
+        <h3>Объем затраченных средств из бюджета на инфаструктуру</h3>
+        <p class="editpanel_editzone-tab-input_title" 
+          v-text="lang == 'ru' ? 'Потребность' : lang == 'en' ? 'Budget need' : 'Мұқтаждық'"></p>
+        <input type="number" min="0"
+          class="editpanel_editzone-tab-input"
+          v-model="zonemodel.budget_need"/>
+        <p class="editpanel_editzone-tab-input_title" 
+          v-text="lang == 'ru' ? 'Выделено' : lang == 'en' ? 'Budget allocated' : 'Белгіленген'"></p>
+        <input type="number" min="0"
+          class="editpanel_editzone-tab-input"
+          v-model="zonemodel.budget_allocated"/>
+        <p class="editpanel_editzone-tab-input_title" 
+          v-text="lang == 'ru' ? 'Доля выделенного финансирования по отношению к общей сумме финансирования СЭЗ РК' : lang == 'en' ? 'The share of funding allocated in relation to the total amount of financing of the SEZ/IZ of RK' : 'ҚР АЭА/ИА қаржыландырудың жалпы сомасына қатысты бөлінетін қаржыландыру үлесі'"></p>
+        <input type="number" min="0"
+          class="editpanel_editzone-tab-input"
+          v-model="zonemodel.level"/>
       </div>
+
       <div slot="tab_2">
       2
-      </div>
-      <div slot="tab_3">
-      3
       </div>
     </tabs>
   </div>
@@ -195,6 +202,28 @@
 
   .editpanel_editzone-tab {
     padding: 0 20px;
+  }
+
+  .editpanel_editzone-tab-input {
+    width: 150px; 
+    height: 25px; 
+    border: none; 
+    border-bottom: 1px solid #ccc; 
+    outline: none;
+    font-size: 14px;
+    margin: 0 0 30px 0;
+  }
+
+  .editpanel_editzone-tab-input_title {
+    font-weight: normal;
+    font-size: 12px;
+    color: #747474;
+  }
+
+  h3 {
+    font-weight: normal;
+    font-size: 16px;
+    color: #03A0E3;
   }
  
 </style>
