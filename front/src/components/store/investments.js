@@ -4,6 +4,7 @@ export default {
   state: () => ({
     foreign_investments: [],
     investments: [],
+    investment: [],
     number_jobs: [],
     production: [],
     taxes: [],
@@ -15,6 +16,9 @@ export default {
     },
     set_investments (state, investments) {
       state.investments = investments;
+    },
+    set_investment (state, investment) {
+      state.investment = investment;
     },
     set_number_jobs (state, number_jobs) {
       state.number_jobs = number_jobs;
@@ -30,6 +34,13 @@ export default {
   getters: {
     foreign_investments: state => state.foreign_investments,
     investments: state => state.investments,
+    investment: state => {
+      var sum = 0;
+      state.investment.forEach(el => {
+        sum += parseInt(el.val,10);
+      });
+      return sum;
+    },
     number_jobs: state => state.number_jobs,
     production: state => state.production,
     taxes: state => state.taxes,
@@ -83,6 +94,13 @@ export default {
         path: this.getters.api_path + '/back/api/investments' + (this.getters.selected_sector ? '?parent_id=' + this.getters.selected_sector.id : ''),
       }).then(investments => {
         commit('set_investments', investments);
+      });
+    },
+    set_investment ({ commit }) {
+      return fetcher({
+        path: this.getters.api_path + '/back/api/investments',
+      }).then(investment => {
+        commit('set_investment', investment);
       });
     },
     set_number_jobs ({ commit }) {
