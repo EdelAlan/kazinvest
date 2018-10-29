@@ -1144,7 +1144,7 @@ export default {
                       title_en: el.title_en,
                       type: el.project_type,
                       id: el.id,
-                      area: ( turf.area(JSON.parse(el.st_asgeojson)) / 10000 ).toFixed(2),
+                      area: el.area ? el.area : '-',
                     }
                   });
                   sector_line.data.features.push({
@@ -1170,7 +1170,8 @@ export default {
                       title_kz: el.title_kz,
                       title_en: el.title_en,                    
                       type: el.project_type,
-                      id: el.id
+                      id: el.id,
+                      area: el.area ? el.area : '-',
                     }
                   });
                   sector_line.data.features.push({
@@ -1181,7 +1182,8 @@ export default {
                       title_kz: el.title_kz,
                       title_en: el.title_en,                    
                       type: el.project_type,
-                      id: el.id
+                      id: el.id,
+                      area: el.area ? el.area : '-',
                     }
                   });
             }
@@ -1194,7 +1196,8 @@ export default {
                       title_kz: el.title_kz,
                       title_en: el.title_en,
                       type: el.project_type,
-                      id: el.id
+                      id: el.id,
+                      area: el.area ? el.area : 0,
                 }
               });
 
@@ -1208,7 +1211,8 @@ export default {
                       title_kz: el.title_kz,
                       title_en: el.title_en,
                       type: el.project_type,
-                      id: el.id
+                      id: el.id,
+                      area: el.area ? el.area : 0,
                     }
                   });
                 });
@@ -1221,7 +1225,8 @@ export default {
                     title_kz: el.title_kz,
                     title_en: el.title_en,
                     type: el.project_type,
-                    id: el.id
+                    id: el.id,
+                    area: el.area ? el.area : 0,
                   }
                 });
               }
