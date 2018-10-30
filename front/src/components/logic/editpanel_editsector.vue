@@ -175,7 +175,7 @@
 
 
       <div class="editpanel_editsector-tab" slot="tab_0">
-        <h3>Общая информация</h3>
+        <h3 class="editpanel_editsector-tab-title">Общая информация</h3>
 
         <p class="editpanel_editsector-tab-input_title-oi" 
           v-text="'Название компании участника'"></p>
@@ -232,7 +232,7 @@
           v-model="sectormodel.power"/>
 
 
-        <h3>Контакты</h3>
+        <h3 class="editpanel_editsector-tab-title">Контакты</h3>
 
         <input type="text"
           class="editpanel_editsector-tab-input-oi"
@@ -241,7 +241,8 @@
       </div>
 
       <div class="editpanel_editsector-tab" slot="tab_1">
-        <h3 v-text="lang == 'ru' ? 'Объем вложанных инвестиций' : lang == 'en' ? 'Investments volume' : 'Инвестициялар көлемі'"></h3>
+        <h3 class="editpanel_editsector-tab-title"
+        v-text="lang == 'ru' ? 'Объем вложанных инвестиций' : lang == 'en' ? 'Investments volume' : 'Инвестициялар көлемі'"></h3>
 
         <p class="editpanel_editsector-tab-input_title" 
           v-text="2014"></p>
@@ -275,7 +276,8 @@
 
 
 
-        <h3 v-text="lang == 'ru' ? 'Объем производства' : lang == 'en' ? 'Production volume' : 'Өндіріс көлемі'"></h3>
+        <h3 class="editpanel_editsector-tab-title"
+        v-text="lang == 'ru' ? 'Объем производства' : lang == 'en' ? 'Production volume' : 'Өндіріс көлемі'"></h3>
 
         <p class="editpanel_editsector-tab-input_title" 
           v-text="2014"></p>
@@ -309,7 +311,8 @@
 
 
 
-        <h3 v-text="lang == 'ru' ? 'Прямые иностранные инвестиции' : lang == 'en' ? 'Foreign direct investments' : 'Шетелдік тікелей инвестициялар'"></h3>
+        <h3 class="editpanel_editsector-tab-title"
+        v-text="lang == 'ru' ? 'Прямые иностранные инвестиции' : lang == 'en' ? 'Foreign direct investments' : 'Шетелдік тікелей инвестициялар'"></h3>
 
         <p class="editpanel_editsector-tab-input_title" 
           v-text="2014"></p>
@@ -343,7 +346,8 @@
 
 
 
-        <h3 v-text="lang == 'ru' ? 'Количество созданных рабочих' : lang == 'en' ? 'Number of jobs created' : 'Жасалған жұмыс орындарының саны'"></h3>
+        <h3 class="editpanel_editsector-tab-title"
+        v-text="lang == 'ru' ? 'Количество созданных рабочих' : lang == 'en' ? 'Number of jobs created' : 'Жасалған жұмыс орындарының саны'"></h3>
 
         <p class="editpanel_editsector-tab-input_title" 
           v-text="2014"></p>
@@ -377,7 +381,8 @@
 
 
 
-        <h3 v-text="lang == 'ru' ? 'Объем налоговых отчислений' : lang == 'en' ? 'Tax volume' : 'Салықтық аударымдардың сомасы'"></h3>
+        <h3 class="editpanel_editsector-tab-title"
+        v-text="lang == 'ru' ? 'Объем налоговых отчислений' : lang == 'en' ? 'Tax volume' : 'Салықтық аударымдардың сомасы'"></h3>
 
         <p class="editpanel_editsector-tab-input_title" 
           v-text="2014"></p>
@@ -452,6 +457,12 @@
     padding: 0 20px;
   }
 
+  .editpanel_editsector-tab-title {
+    font-weight: normal;
+    font-size: 16px;
+    color: #03A0E3;
+  }
+
   .editpanel_editsector-tab-input {
     width: 150px; 
     height: 25px; 
@@ -476,12 +487,6 @@
     font-weight: normal;
     font-size: 12px;
     color: #747474;
-  }
-
-  h3 {
-    font-weight: normal;
-    font-size: 16px;
-    color: #03A0E3;
   }
  
 </style>
