@@ -242,7 +242,7 @@
 
       <div class="editpanel_editsector-tab" slot="tab_1">
         <h3 class="editpanel_editsector-tab-title"
-        v-text="lang == 'ru' ? 'Объем вложанных инвестиций' : lang == 'en' ? 'Investments volume' : 'Инвестициялар көлемі'"></h3>
+        v-text="lang == 'ru' ? 'Объем вложенных инвестиций' : lang == 'en' ? 'Investments volume' : 'Инвестициялар көлемі'"></h3>
 
         <p class="editpanel_editsector-tab-input_title" 
           v-text="2014"></p>
