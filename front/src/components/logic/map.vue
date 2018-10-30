@@ -257,8 +257,8 @@ export default {
 
               this.show_popup({
                 is_piechart: false,
-                pageX: e.originalEvent.pageX,
-                pageY: e.originalEvent.pageY,
+                pageX: e.originalEvent.pageX + 7,
+                pageY: e.originalEvent.pageY - 7,
                 feature: sectors[0]
               });
             }
