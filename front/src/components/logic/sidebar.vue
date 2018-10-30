@@ -1395,11 +1395,11 @@ export default {
             <h4>Земельный кодекс Республики Казахстан</h4>
           </a>
           <a class="sidebar-link" :href="'http://adilet.zan.kz/' + (lang == 'ru' ? 'rus' : lang == 'kz' ? 'kaz' : 'eng') + '/docs/K1700000123'" target="_blank">
-            <h4>О таможенном регулировании в Республике Казахстан</h4>
+            <h4>О таможенном регулировании в Республике Казахстан. Глава 29. Таможенная процедура свободной таможенной зоны</h4>
           </a>
-          <a :href="'http://adilet.zan.kz?lang=' + (lang == 'ru' ? 'rus' : lang == 'kz' ? 'kaz' : 'eng')" target="_blank">
+         <!-- <a :href="'http://adilet.zan.kz?lang=' + (lang == 'ru' ? 'rus' : lang == 'kz' ? 'kaz' : 'eng')" target="_blank">
             <p>Ссылка на закон</p>
-          </a>
+          </a>-->
         </div>
         <div slot="body" v-if="passport_content == 'level_1:iz_market'">
           <h2 v-if="republics[1].photos.length" class="sidebar-passport_subtitle">Фото</h2>
