@@ -123,33 +123,33 @@
 
 
       <div class="editpanel_editzone-tab" slot="tab_0">
-        <h3>Название</h3>
+        <h3 class="editpanel_editsector-tab-title">Название</h3>
         <input
           v-model="zonemodel['title_' + lang]"
         />
-        <h3>Описание</h3>
+        <h3 class="editpanel_editsector-tab-title">Описание</h3>
         <textarea style="width: 100%; height: 100px;"
           v-model="zonemodel['description_' + lang]">
         </textarea>
-        <h3>Маркетинговые материалы</h3>
+        <h3 class="editpanel_editsector-tab-title">Маркетинговые материалы</h3>
         <div class="sidebar-market_wrap">
           <div v-for="photo in zonemodel.photos" class="sidebar-passport_photo">
             <img :src="photo['src_' + lang]" />
           </div>
           <input type="file" v-on:change="set_photo" />
         </div>
-        <h3>Видео</h3>
+        <h3 class="editpanel_editsector-tab-title">Видео</h3>
         <div class="sidebar-market_wrap">
           <div v-for="video in zonemodel.videos" class="sidebar-passport_video"></div>
         </div>
-        <h3>Файлы</h3>
+        <h3 class="editpanel_editsector-tab-title">Файлы</h3>
         <div class="sidebar-market_file">
           <a v-for="file in zonemodel.files" :href="file['src_' + lang]" target="_blank">
             <div class="sidebar-market_pdf"></div>
             <div class="sidebar-market_pdf_text">{{file['name_' + lang]}}</div>
           </a>
         </div>
-        <h3>Контакты</h3>
+        <h3 class="editpanel_editsector-tab-title">Контакты</h3>
         <div class="sidebar-passport_padding">
           <textarea style="width: 100%; height: 100px;"
             v-model="zonemodel['contacts_' + lang]">
@@ -159,7 +159,7 @@
       </div>
 
       <div class="editpanel_editzone-tab" slot="tab_1">
-        <h3>Объем затраченных средств из бюджета на инфаструктуру</h3>
+        <h3 class="editpanel_editsector-tab-title">Объем затраченных средств из бюджета на инфаструктуру</h3>
         <p class="editpanel_editzone-tab-input_title" 
           v-text="lang == 'ru' ? 'Потребность' : lang == 'en' ? 'Budget need' : 'Мұқтаждық'"></p>
         <input type="number" min="0"
@@ -227,7 +227,7 @@
     color: #747474;
   }
 
-  h3 {
+  .editpanel_editsector-tab-title {
     font-weight: normal;
     font-size: 16px;
     color: #03A0E3;
