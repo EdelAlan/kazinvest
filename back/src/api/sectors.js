@@ -135,6 +135,152 @@ router.get('/:id', async (req, res) => {
 });
 
 router.put('/:id', body_parser.json(), async (req, res) => {
+  const to_investments = JSON.parse(JSON.stringify({
+    2014: req.body.investments2014,
+    2015: req.body.investments2015,
+    2016: req.body.investments2016,
+    2017: req.body.investments2017,
+    2018: req.body.investments2018,
+  }));
+  Object.keys(to_investments).map(async key => {
+    var s = await db_query(`SELECT parent_id FROM qindicators_investments 
+      WHERE qindicators_investments.parent_id = ${req.params.id}
+      AND qindicators_investments.year = ${key}
+    `);
+    var value = parseInt(to_investments[key],10);
+
+    if (s[0]) {
+      const sql = `
+        UPDATE qindicators_investments SET val = $1
+        WHERE qindicators_investments.parent_id = ${req.params.id} AND qindicators_investments.year = ${key}
+      `;
+      await db_query(sql, [value])
+    } else {
+      const sql = `
+        INSERT INTO qindicators_investments (parent_id, year, val) 
+        VALUES ($1 , $2, $3)
+      `;
+      await db_query(sql, [req.params.id, key, value]);
+    }
+  });
+
+  const to_foreign_investments = JSON.parse(JSON.stringify({
+    2014: req.body.foreign_investments2014,
+    2015: req.body.foreign_investments2015,
+    2016: req.body.foreign_investments2016,
+    2017: req.body.foreign_investments2017,
+    2018: req.body.foreign_investments2018,
+  }));
+  Object.keys(to_foreign_investments).map(async key => {
+    var s = await db_query(`SELECT parent_id FROM qindicators_foreigninvestments 
+      WHERE qindicators_foreigninvestments.parent_id = ${req.params.id}
+      AND qindicators_foreigninvestments.year = ${key}
+    `);
+    var value = parseInt(to_foreign_investments[key],10);
+
+    if (s[0]) {
+      const sql = `
+        UPDATE qindicators_foreigninvestments SET val = $1
+        WHERE qindicators_foreigninvestments.parent_id = ${req.params.id} AND qindicators_foreigninvestments.year = ${key}
+      `;
+      await db_query(sql, [value])
+    } else {
+      const sql = `
+        INSERT INTO qindicators_foreigninvestments (parent_id, year, val) 
+        VALUES ($1 , $2, $3)
+      `;
+      await db_query(sql, [req.params.id, key, value]);
+    }
+  });
+
+  const to_production = JSON.parse(JSON.stringify({
+    2014: req.body.production2014,
+    2015: req.body.production2015,
+    2016: req.body.production2016,
+    2017: req.body.production2017,
+    2018: req.body.production2018,
+  }));
+  Object.keys(to_production).map(async key => {
+    var s = await db_query(`SELECT parent_id FROM qindicators_bulkproductions 
+      WHERE qindicators_bulkproductions.parent_id = ${req.params.id}
+      AND qindicators_bulkproductions.year = ${key}
+    `);
+    var value = parseInt(to_production[key],10);
+
+    if (s[0]) {
+      const sql = `
+        UPDATE qindicators_bulkproductions SET val = $1
+        WHERE qindicators_bulkproductions.parent_id = ${req.params.id} AND qindicators_bulkproductions.year = ${key}
+      `;
+      await db_query(sql, [value])
+    } else {
+      const sql = `
+        INSERT INTO qindicators_bulkproductions (parent_id, year, val) 
+        VALUES ($1 , $2, $3)
+      `;
+      await db_query(sql, [req.params.id, key, value]);
+    }
+  });
+
+  const to_number_jobs = JSON.parse(JSON.stringify({
+    2014: req.body.number_jobs2014,
+    2015: req.body.number_jobs2015,
+    2016: req.body.number_jobs2016,
+    2017: req.body.number_jobs2017,
+    2018: req.body.number_jobs2018,
+  }));
+  Object.keys(to_number_jobs).map(async key => {
+    var s = await db_query(`SELECT parent_id FROM qindicators_numberjobs 
+      WHERE qindicators_numberjobs.parent_id = ${req.params.id}
+      AND qindicators_numberjobs.year = ${key}
+    `);
+    var value = parseInt(to_number_jobs[key],10);
+
+    if (s[0]) {
+      const sql = `
+        UPDATE qindicators_numberjobs SET val = $1
+        WHERE qindicators_numberjobs.parent_id = ${req.params.id} AND qindicators_numberjobs.year = ${key}
+      `;
+      await db_query(sql, [value])
+    } else {
+      const sql = `
+        INSERT INTO qindicators_numberjobs (parent_id, year, val) 
+        VALUES ($1 , $2, $3)
+      `;
+      await db_query(sql, [req.params.id, key, value]);
+    }
+  });
+
+  const to_taxes = JSON.parse(JSON.stringify({
+    2014: req.body.taxes2014,
+    2015: req.body.taxes2015,
+    2016: req.body.taxes2016,
+    2017: req.body.taxes2017,
+    2018: req.body.taxes2018,
+  }));
+  Object.keys(to_taxes).map(async key => {
+    var s = await db_query(`SELECT parent_id FROM qindicators_bulktaxes 
+      WHERE qindicators_bulktaxes.parent_id = ${req.params.id}
+      AND qindicators_bulktaxes.year = ${key}
+    `);
+    var value = parseInt(to_taxes[key],10);
+
+    if (s[0]) {
+      const sql = `
+        UPDATE qindicators_bulktaxes SET val = $1
+        WHERE qindicators_bulktaxes.parent_id = ${req.params.id} AND qindicators_bulktaxes.year = ${key}
+      `;
+      await db_query(sql, [value])
+    } else {
+      const sql = `
+        INSERT INTO qindicators_bulktaxes (parent_id, year, val) 
+        VALUES ($1 , $2, $3)
+      `;
+      await db_query(sql, [req.params.id, key, value]);
+    }
+  });
+
+
   const to_sectors = JSON.parse(JSON.stringify({
     ...req.body,
     st_asgeojson: undefined,
@@ -172,11 +318,9 @@ router.put('/:id', body_parser.json(), async (req, res) => {
     taxes2017: undefined,
     taxes2018: undefined,
   }));
-  console.log(to_sectors)
   const to_sectors_values = Object.keys(to_sectors).map(key => {
     return to_sectors[key];
   });
-  console.log(to_sectors_values)
   const sql = `
     UPDATE sectors SET
       ${Object.keys(to_sectors).map((key, idx) => {
@@ -184,12 +328,11 @@ router.put('/:id', body_parser.json(), async (req, res) => {
       }).join(', ')}
     WHERE sectors.id = ${req.params.id}
   `;
-  console.log(sql)
   await db_query(sql, [...to_sectors_values])
     .then(_ => res.json({
       msg: 'sectors updated',
     })).catch (err => {
-      console.err(err);
+      console.log(err);
       res.status(500).json({
         msg: 'something broke',
       });
