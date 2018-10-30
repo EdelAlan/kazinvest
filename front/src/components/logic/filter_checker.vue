@@ -63,7 +63,8 @@
       
       <button class="filters-btn"
         v-on:click="toggle_selection"
-        v-text="selected_all ? 'Убрать все' : 'Выбрать все'"
+        v-text="selected_all ? lang == 'ru' ? 'Убрать все' : lang == 'kz' ? 'Алып тастау' : 'Uncheck all' :
+                lang == 'ru' ? 'Выбрать все' : lang == 'kz' ? 'Барлығын таңдау' : 'Check all'"
       ></button>
   
 

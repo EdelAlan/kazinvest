@@ -324,8 +324,8 @@
                       <router-link v-if="profile" to="/editpanel" class="btn"
                         v-text="{
                           'title_ru': 'Панель редактирования', 
-                          'title_kz': 'Панель редактирования', 
-                          'title_en': 'Панель редактирования'
+                          'title_kz': 'Редакциялау тақтасы', 
+                          'title_en': 'Edit panel'
                         }['title_' + lang]"
                       ></router-link>
                     </div>
@@ -571,7 +571,7 @@
   }
 
   .menu {
-    min-width: 200px;
+    min-width: 100px;
     display: none;
     position: absolute;
     right: calc(100% + 20px);
