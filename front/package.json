@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@mapbox/mapbox-gl-draw": "^1.0.9",
     "@turf/turf": "^5.1.6",
     "j": "^1.0.0",
     "jspdf": "^1.4.1",

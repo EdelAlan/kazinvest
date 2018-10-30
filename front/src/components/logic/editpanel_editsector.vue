@@ -1,6 +1,9 @@
 <script>
   import { mapGetters, mapActions } from 'vuex';  
   import tabs from '../ui/tabs';  
+  import editmap from '../logic/editmap';
+  import reset_sector_map from '../logic/editpanel_reset_sector_map';
+  import basemaps from '../logic/basemaps';
 
   export default {
     data () {
@@ -34,6 +37,7 @@
           project_type: null,
           sef: null,
           st_asgeojson: null,
+          geom: null,
           status: null,
           time_realization_en: null,
           time_realization_kz: null,
@@ -85,18 +89,32 @@
 
     components: {
       tabs,
+      editmap,
+      reset_sector_map,
+      basemaps,
     },
 
     computed: mapGetters([
       'lang',
       'profile',
       'edited_sector',
+      'edited_sector_geom',
     ]),
+
+    watch: {
+      edited_sector_geom: 'assign_geom',
+    },
 
     methods: {
       ...mapActions([
         'update_sector',
+        'set_basemap',
       ]),
+
+      assign_geom() {
+        this.sectormodel.geom = this.edited_sector_geom;
+      },
+
     },
 
     mounted () {
@@ -175,68 +193,86 @@
 
 
       <div class="editpanel_editsector-tab" slot="tab_0">
-        <h3 class="editpanel_editsector-tab-title">Общая информация</h3>
+        <h3 class="editpanel_editsector-tab-title"
+           v-text="lang == 'ru' ? 'Общая информация' : lang == 'en' ? 'General information': 'Жалпы ақпарат'"
+        ></h3>
 
         <p class="editpanel_editsector-tab-input_title-oi" 
-          v-text="'Название компании участника'"></p>
+          v-text="lang == 'ru' ? 'Название компании участника' : lang == 'en' ? 'Participant\'s company name': 'Қатысушының компания атауы'"
+        ></p>
         <input type="text"
           class="editpanel_editsector-tab-input-oi"
           v-model="sectormodel['title_'+lang]"/>
 
         <p class="editpanel_editsector-tab-input_title-oi" 
-          v-text="'Описание'"></p>
+          v-text="lang == 'ru' ? 'Описание' : lang == 'en' ? 'Description': 'Сипаттама'"
+        ></p>
         <input type="text"
           class="editpanel_editsector-tab-input-oi"
           v-model="sectormodel['title_project_'+lang]"/>
 
         <p class="editpanel_editsector-tab-input_title-oi" 
-          v-text="'Стоимость проекта'"></p>
+          v-text="lang == 'ru' ? 'Стоимость проекта' : lang == 'en' ? 'Project price': 'Жобаның құны'"
+        ></p>
         <input type="number" min="0"
           class="editpanel_editsector-tab-input-oi"
           v-model="sectormodel.project_price"/>
       
         <p class="editpanel_editsector-tab-input_title-oi" 
-          v-text="'Текущий статус'"></p>
+          v-text="lang == 'ru' ? 'Текущий статус' : lang == 'en' ? 'Current status': 'Ағымдағы күй'"
+        ></p>
         <input type="text"
           class="editpanel_editsector-tab-input-oi"
           v-model="sectormodel['current_status_' + lang]"/>
 
         <p class="editpanel_editsector-tab-input_title-oi" 
-          v-text="'Год'"></p>
+          v-text="lang == 'ru' ? 'Год' : lang == 'en' ? 'Year': 'Жыл'"
+        ></p>
         <input type="number" min="0"
           class="editpanel_editsector-tab-input-oi"
           v-model="sectormodel.project_date"/>
 
         <p class="editpanel_editsector-tab-input_title-oi" 
-          v-text="'Продукция'"></p>
+          v-text="lang == 'ru' ? 'Продукция' : lang == 'en' ? 'Products': 'Өнімдер'"
+        ></p>
         <input type="text"
           class="editpanel_editsector-tab-input-oi"
           v-model="sectormodel['products_' + lang]"/>
 
         <p class="editpanel_editsector-tab-input_title-oi" 
-          v-text="'Сроки реализации'"></p>
+          v-text="lang == 'ru' ? 'Сроки реализации' : lang == 'en' ? 'Implementation period': 'Іске асыру мерзімі'"
+      ></p>
         <input type="text"
           class="editpanel_editsector-tab-input-oi"
           v-model="sectormodel['time_realization_' + lang]"/>
 
         <p class="editpanel_editsector-tab-input_title-oi" 
-          v-text="'Рабочие места'"></p>
+          v-text="lang == 'ru' ? 'Рабочие места' : lang == 'en' ? 'Workplaces': 'Жұмыс орындары'"
+        ></p>
         <input type="number" min="0"
           class="editpanel_editsector-tab-input-oi"
           v-model="sectormodel.plan_jobs"/>
 
         <p class="editpanel_editsector-tab-input_title-oi" 
-          v-text="'Мощность'"></p>
+          v-text="lang == 'ru' ? 'Мощность' : lang == 'en' ? 'Power': 'Қуат'"
+        ></p>
         <input type="text"
           class="editpanel_editsector-tab-input-oi"
           v-model="sectormodel.power"/>
 
 
-        <h3 class="editpanel_editsector-tab-title">Контакты</h3>
+        <h3 class="editpanel_editsector-tab-title"
+          v-text="lang == 'ru' ? 'Контакты' : lang == 'en' ? 'Contacts' : 'Байланыс'"
+        ></h3>
 
         <input type="text"
           class="editpanel_editsector-tab-input-oi"
           v-model="sectormodel['contacts_' + lang]"/>
+
+        <editmap class="editpanel_editsector-map"/>
+        <reset_sector_map />
+        <basemaps class="editpanel_editsector-basemaps" :style="{ top: '385px' }"
+          v-on:click="set_basemap"/>
 
       </div>
 
@@ -443,6 +479,17 @@
     padding: 0;
     margin: 30px;
     height: calc(100vh - 60px);
+  }
+
+  .editpanel_editsector-map {
+    height: 100%;
+    width: 50%;
+    right: 0;
+    top: 126px
+  }
+
+  .editpanel_editsector-basemaps {
+    z-index: 1000;
   }
 
   .editpanel_editsector-title {

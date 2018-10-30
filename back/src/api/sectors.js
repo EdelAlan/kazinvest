@@ -280,9 +280,21 @@ router.put('/:id', body_parser.json(), async (req, res) => {
     }
   });
 
+  const to_sectors_geom = JSON.parse(JSON.stringify({
+    geom: req.body.geom.features[0].geometry,
+  }));
+  const to_sectors_geom_value = Object.keys(to_sectors_geom).map(key => {
+    return to_sectors_geom[key];
+  });
+  const sql_geom = `
+    UPDATE sectors SET geom = ST_GeomFromGeoJSON( $1 )
+    WHERE sectors.id = ${req.params.id}
+  `;
+  await db_query(sql_geom, [req.body.geom.features[0].geometry]);
 
   const to_sectors = JSON.parse(JSON.stringify({
     ...req.body,
+    geom: undefined,
     st_asgeojson: undefined,
     files: undefined,
     videos: undefined,

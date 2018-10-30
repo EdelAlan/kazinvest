@@ -1331,7 +1331,9 @@ export default {
           <div v-html="republics[0]['common_' + lang]"></div>
         </div>   
         <div slot="body" v-if="passport_content == 'level_1:sez_market'">
-          <h2 v-if="republics[0].photos.length" class="sidebar-passport_subtitle">Фото</h2>
+          <h2 v-if="republics[0].photos.length" class="sidebar-passport_subtitle"
+            v-text="lang == 'ru' ? 'Фото' : lang == 'en' ? 'Photo': 'Сурет'"
+          ></h2>
           <div v-if="republics[0].photos.length" class="sidebar-market_wrap">
             <div v-for="photo in republics[0].photos" class="sidebar-passport_photo">
               <img :src="photo['src_' + lang]"
@@ -1344,7 +1346,9 @@ export default {
               "/>
             </div>
           </div>
-          <h2 v-if="republics[0].videos.length" class="sidebar-passport_subtitle">Видео</h2>
+          <h2 v-if="republics[0].videos.length" class="sidebar-passport_subtitle"
+            v-text="lang == 'ru' ? 'Видео' : lang == 'en' ? 'Video': 'Бейне сурет'"
+          ></h2>
           <div v-if="republics[0].videos.length" class="sidebar-market_wrap">
             <div v-for="video in republics[0].videos" class="sidebar-passport_video"
               v-on:click="
@@ -1355,7 +1359,9 @@ export default {
                 select_video(video['src_' + lang])
             "></div>
           </div>
-          <h2 v-if="republics[0].files.length" class="sidebar-passport_subtitle">Файлы</h2>
+          <h2 v-if="republics[0].files.length" class="sidebar-passport_subtitle"
+            v-text="lang == 'ru' ? 'Файлы' : lang == 'en' ? 'Files': 'Файлдар'"
+          ></h2>
           <div v-if="republics[0].files.length" class="sidebar-market_file" v-for="file in republics[0].files">
             <a :href="file['src_' + lang]" download>
               <div class="sidebar-market_pdf"></div>
@@ -1402,7 +1408,9 @@ export default {
           </a>-->
         </div>
         <div slot="body" v-if="passport_content == 'level_1:iz_market'">
-          <h2 v-if="republics[1].photos.length" class="sidebar-passport_subtitle">Фото</h2>
+          <h2 v-if="republics[1].photos.length" class="sidebar-passport_subtitle"
+            v-text="lang == 'ru' ? 'Фото' : lang == 'en' ? 'Photo': 'Сурет'"
+          ></h2>
           <div v-if="republics[1].photos.length" class="sidebar-market_wrap">
             <div v-for="photo in republics[1].photos" class="sidebar-passport_photo">
               <img :src="photo['src_' + lang]"
@@ -1415,7 +1423,9 @@ export default {
               "/>            
             </div>          
           </div>
-          <h2 v-if="republics[1].videos.length" class="sidebar-passport_subtitle">Видео</h2>
+          <h2 v-if="republics[1].videos.length" class="sidebar-passport_subtitle"
+            v-text="lang == 'ru' ? 'Видео' : lang == 'en' ? 'Video': 'Бейне сурет'"
+          ></h2>
           <div v-if="republics[1].videos.length" class="sidebar-market_wrap">
             <div v-for="video in republics[1].videos" class="sidebar-passport_video"
               v-on:click="
@@ -1428,7 +1438,9 @@ export default {
             >
             </div>
           </div>
-          <h2 v-if="republics[1].files.length" class="sidebar-passport_subtitle">Файлы</h2>
+          <h2 v-if="republics[1].files.length" class="sidebar-passport_subtitle"
+            v-text="lang == 'ru' ? 'Файлы' : lang == 'en' ? 'Files': 'Файлдар'"
+          ></h2>
           <div v-if="republics[1].files.length" class="sidebar-market_file" v-for="file in republics[1].files">
             <a :href="file['src_' + lang]" download>
               <div class="sidebar-market_pdf"></div>
@@ -1448,7 +1460,9 @@ export default {
         </div>
         
         <div slot="body" v-if="passport_content == 'level_2:zone_market'">
-          <h2 v-if="selected_zone.photos.length" class="sidebar-passport_subtitle">Фото</h2>
+          <h2 v-if="selected_zone.photos.length" class="sidebar-passport_subtitle"
+            v-text="lang == 'ru' ? 'Фото' : lang == 'en' ? 'Photo': 'Сурет'"
+          ></h2>
           <div v-if="selected_zone.photos.length" class="sidebar-market_wrap">
             <div v-for="photo in selected_zone.photos" class="sidebar-passport_photo">
               <img :src="photo['src_' + lang]"
@@ -1461,7 +1475,9 @@ export default {
               "/>            
             </div>           
           </div>
-          <h2 v-if="selected_zone.videos.length" class="sidebar-passport_subtitle">Видео</h2>
+          <h2 v-if="selected_zone.videos.length" class="sidebar-passport_subtitle"
+            v-text="lang == 'ru' ? 'Видео' : lang == 'en' ? 'Video': 'Бейне сурет'"
+          ></h2>
           <div v-if="selected_zone.videos.length" class="sidebar-market_wrap">
             <div v-for="video in selected_zone.videos" class="sidebar-passport_video"
               v-on:click="
@@ -1472,7 +1488,9 @@ export default {
                 select_video(video['src_' + lang])
             "></div>
           </div>
-          <h2 v-if="selected_zone.files.length" class="sidebar-passport_subtitle">Файлы</h2>
+          <h2 v-if="selected_zone.files.length" class="sidebar-passport_subtitle"
+            v-text="lang == 'ru' ? 'Файлы' : lang == 'en' ? 'Files': 'Файлдар'"
+          ></h2>
           <div class="sidebar-market_file" v-for="file in selected_zone.files">
             <a :href="file['src_' + lang]" download>
               <div class="sidebar-market_pdf"></div>
@@ -1492,7 +1510,9 @@ export default {
         <div class="sidebar-passport_padding" slot="body" v-if="passport_content == 'level_3:sector_common'">
         </div>
         <div slot="body" v-if="passport_content == 'level_3:sector_market'">
-          <h2 v-if="selected_sector.photos.length" class="sidebar-passport_subtitle">Фото</h2>
+          <h2 v-if="selected_sector.photos.length" class="sidebar-passport_subtitle"
+            v-text="lang == 'ru' ? 'Фото' : lang == 'en' ? 'Photo': 'Сурет'"
+          ></h2>
           <div v-if="selected_sector.photos.length" class="sidebar-market_wrap">
              <div v-for="photo in selected_sector.photos" class="sidebar-passport_photo">
               <img :src="photo['src_' + lang]"
@@ -1505,7 +1525,9 @@ export default {
               "/>            
             </div>     
           </div>
-          <h2 v-if="selected_sector.videos.length" class="sidebar-passport_subtitle">Видео</h2>
+          <h2 v-if="selected_sector.videos.length" class="sidebar-passport_subtitle"
+            v-text="lang == 'ru' ? 'Видео' : lang == 'en' ? 'Video': 'Бейне сурет'"
+          ></h2>
           <div v-if="selected_sector.videos.length" class="sidebar-market_wrap">
             <div v-for="video in selected_sector.videos" class="sidebar-passport_video"
               v-on:click="
@@ -1516,7 +1538,9 @@ export default {
                 select_video(video['src_' + lang])
             "></div>
           </div>
-          <h2 v-if="selected_sector.files.length" class="sidebar-passport_subtitle">Файлы</h2>
+          <h2 v-if="selected_sector.files.length" class="sidebar-passport_subtitle"
+            v-text="lang == 'ru' ? 'Файлы' : lang == 'en' ? 'Files': 'Файлдар'"
+          ></h2>
           <div v-if="selected_sector.files.length" class="sidebar-market_file" v-for="file in selected_sector.files">
             <a :href="file['src_' + lang]" download>
               <div class="sidebar-market_pdf"></div>
@@ -1551,52 +1575,72 @@ export default {
             @click="generate_pdf">PDF</button>
         </div>
         <div class="passport-body_item">
-          <span class="passport-body_item_key">Название компании участника</span>
+          <span class="passport-body_item_key"
+            v-text="lang == 'ru' ? 'Название компании участника' : lang == 'en' ? 'Participant\'s company name': 'Қатысушының компания атауы'"
+          ></span>
           <span class="passport-body_item_val" 
             v-text="selected_sector['title_' + lang]"></span>
         </div>
         <div class="passport-body_item">
-          <span class="passport-body_item_key">Описание</span>
+          <span class="passport-body_item_key"
+            v-text="lang == 'ru' ? 'Описание' : lang == 'en' ? 'Description': 'Сипаттама'"
+          ></span>
           <span class="passport-body_item_val" 
             v-text="selected_sector['title_project_' + lang]"></span>
         </div>
         <div class="passport-body_item">
-          <span class="passport-body_item_key">Стоимость проекта</span>
+          <span class="passport-body_item_key"
+            v-text="lang == 'ru' ? 'Стоимость проекта' : lang == 'en' ? 'Project price': 'Жобаның құны'"
+          ></span>
           <span class="passport-body_item_val" 
             v-text="numseparator(selected_sector.project_price)"></span>
         </div>
         <div class="passport-body_item">
-          <span class="passport-body_item_key">Площадь занимаемого участка</span>
+          <span class="passport-body_item_key"
+            v-text="lang == 'ru' ? 'Площадь занимаемого участка' : lang == 'en' ? 'Land area': 'Ауданы'"
+          ></span>
           <span class="passport-body_item_val" 
             v-text="selected_sector.area"></span>
         </div>
         <div class="passport-body_item">
-          <span class="passport-body_item_key">Текущий статус</span>
+          <span class="passport-body_item_key"
+            v-text="lang == 'ru' ? 'Текущий статус' : lang == 'en' ? 'Current status': 'Ағымдағы күй'"
+          ></span>
           <span class="passport-body_item_val" 
             v-text="selected_sector['current_status_' + lang]"></span>
         </div>
         <div class="passport-body_item">
-          <span class="passport-body_item_key">Год</span>
+          <span class="passport-body_item_key"
+            v-text="lang == 'ru' ? 'Год' : lang == 'en' ? 'Year': 'Жыл'"
+          ></span>
           <span class="passport-body_item_val" 
             v-text="selected_sector.project_date"></span>
         </div>
         <div class="passport-body_item">
-          <span class="passport-body_item_key">Продукция</span>
+          <span class="passport-body_item_key"
+            v-text="lang == 'ru' ? 'Продукция' : lang == 'en' ? 'Products': 'Өнімдер'"
+          ></span>
           <span class="passport-body_item_val" 
             v-text="selected_sector['products_' + lang]"></span>
         </div>
         <div class="passport-body_item">
-          <span class="passport-body_item_key">Сроки реализации</span>
+          <span class="passport-body_item_key"
+            v-text="lang == 'ru' ? 'Сроки реализации' : lang == 'en' ? 'Implementation period': 'Іске асыру мерзімі'"
+          ></span>
           <span class="passport-body_item_val" 
             v-text="selected_sector['time_realization_' + lang]"></span>
         </div>
         <div class="passport-body_item">
-          <span class="passport-body_item_key">План работы</span>
+          <span class="passport-body_item_key"
+            v-text="lang == 'ru' ? 'Рабочие места' : lang == 'en' ? 'Workplaces': 'Жұмыс орындары'"
+          ></span>
           <span class="passport-body_item_val" 
             v-text="selected_sector.plan_jobs"></span>
         </div>
         <div class="passport-body_item">
-          <span class="passport-body_item_key">Мощность</span>
+          <span class="passport-body_item_key"
+            v-text="lang == 'ru' ? 'Мощность' : lang == 'en' ? 'Power': 'Қуат'"
+          ></span>
           <span class="passport-body_item_val" 
             v-text="selected_sector.power"></span>
         </div>
