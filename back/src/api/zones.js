@@ -1,6 +1,8 @@
 const router = require('express-async-router').AsyncRouter();
 const body_parser = require('body-parser');
 const db_query = require('../util/db_query');
+const file_upload = require('express-fileupload');
+
 const zone_type_str = [{
   "id": 1,
   "title_ru": "СЭЗ",
@@ -146,14 +148,19 @@ router.get('/:id', async (req, res) => {
 
 
 router.put('/:id', body_parser.json(), async (req, res) => {
+  const filespath = '/files/zones/' + req.body.id + '/';
+  const photos = req.body.physic_photos;
+  console.log(filespath)
+  console.log(req.files)
   const to_zone = JSON.parse(JSON.stringify({
     ...req.body,
     id: undefined,
     files: undefined,
     videos: undefined,
     photos: undefined,
+    physic_photos: undefined,
   }));
-  console.log(to_zone)
+  console.log(photos)
   // return;
   const to_zone_values = Object.keys(to_zone).map(key => {
     return to_zone[key];

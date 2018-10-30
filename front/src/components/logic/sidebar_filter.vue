@@ -165,7 +165,7 @@
   }
   .sidebar_filter-marker {
     width: 20px;
-    height: 30px;
+    height: 27px;
     float: left;
     margin-left: 5px;
     background-size: 80%;

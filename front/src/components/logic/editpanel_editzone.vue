@@ -42,6 +42,9 @@
       ...mapActions([
         'update_zone',
       ]),
+      set_photo ({ target: { files }}) {
+        this.zonemodel.physic_photos = files[0];
+      },
     },
 
     mounted () {
@@ -56,6 +59,9 @@
         }
         this.zonemodel[it] = this.edited_zone[it];
       });
+      this.zonemodel.physic_photos = {
+        0: null,
+      };
     }
   }
 </script>
@@ -130,6 +136,7 @@
           <div v-for="photo in zonemodel.photos" class="sidebar-passport_photo">
             <img :src="photo['src_' + lang]" />
           </div>
+          <input type="file" v-on:change="set_photo" />
         </div>
         <h3>Видео</h3>
         <div class="sidebar-market_wrap">
