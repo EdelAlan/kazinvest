@@ -72,8 +72,8 @@ router.get('/', async (req, res) => {
   sectors = sectors.map(it => ({ 
     ...it, 
     project_type_title_ru: it.project_type == 1 ? 'Действующий' : it.project_type == 2 ? 'На стадии реализации' : 'Свободный',
-    project_type_title_kz: it.project_type == 1 ? 'Действующий' : it.project_type == 2 ? 'На стадии реализации' : 'Свободный',
-    project_type_title_en: it.project_type == 1 ? 'Действующий' : it.project_type == 2 ? 'На стадии реализации' : 'Свободный',
+    project_type_title_kz: it.project_type == 1 ? 'Ағымдағы жоба' : it.project_type == 2 ? 'Iске асырылуда' : 'Бос',
+    project_type_title_en: it.project_type == 1 ? 'Ongoing' : it.project_type == 2 ? 'Underway' : 'Free',
   }));
 
   const sectors_videos = await db_query(

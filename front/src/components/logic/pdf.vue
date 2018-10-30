@@ -423,7 +423,7 @@
 
                     this.doc.addPage();
                     
-                    this.doc.text(this.lang == 'ru' ? 'Доля выделенного финансирования по отношению\r\nк общей сумме финансирования СЭЗ/ИЗ РК:' : this.lang == 'kz' ? 'ҚР АЭА/ИА қаржыландырудың жалпы сомасына қатысты бөлінетін қаржыландыру үлесі:' : 'The share of funding allocated in relation to the total amount of financing of the SEZ/IZ:', 30, 510);
+                    this.doc.text(this.lang == 'ru' ? 'Доля выделенного финансирования по отношению\r\nк общей сумме финансирования СЭЗ/ИЗ РК:' : this.lang == 'kz' ? 'ҚР АЭА/ИА қаржыландырудың жалпы сомасына\r\nқатысты бөлінетін қаржыландыру үлесі:' : 'The share of funding allocated in relation to the\r\ntotal amount of financing of the SEZ/IZ:', 30, 510);
                     await this.set_all_zones();
                     var budget_allocated_sum = 0;
                     this.all_zones.forEach(zone => {

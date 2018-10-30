@@ -9,14 +9,14 @@ export default {
       active: true,
       id: 'sectors',
       title_ru: 'Участки',
-      title_kz: 'Участки',
-      title_en: 'Участки',
+      title_kz: 'Аумақтар',
+      title_en: 'Zones',
     }, {
       active: false,
       id: 'members',
       title_ru: 'Участники',
-      title_kz: 'Участники',
-      title_en: 'Участники',
+      title_kz: 'Қатысушылар',
+      title_en: 'Participants',
     }],
   }),
 

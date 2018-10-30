@@ -863,8 +863,8 @@ export default {
         this.lang == "ru"
           ? "Доля выделенного финансирования по отношению\r\nк общей сумме финансирования СЭЗ/ИЗ РК:"
           : this.lang == "kz"
-            ? "ҚР АЭА/ИА қаржыландырудың жалпы сомасына қатысты бөлінетін қаржыландыру үлесі:"
-            : "The share of funding allocated in relation to the total amount of financing of the SEZ/IZ:",
+            ? "ҚР АЭА/ИА қаржыландырудың жалпы сомасына\r\nқатысты бөлінетін қаржыландыру үлесі:"
+            : "The share of funding allocated in relation to\r\nthe total amount of financing of the SEZ/IZ:",
         30,
         490
       );

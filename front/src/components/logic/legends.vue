@@ -28,7 +28,7 @@
       v-if="active_level.id != 3"
       :model="{
         title_ru: 'Земельные участки',
-        title_kz: 'Жер учаскелері',
+        title_kz: 'Жер аумақтары',
         title_en: 'Land areas',
         children: earth_list,
       }"

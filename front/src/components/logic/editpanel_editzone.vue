@@ -71,7 +71,9 @@
   <div class="editpanel_editzone">
 
     <h2 class="editpanel_editzone-title" v-text="edited_zone['title_' + lang]"></h2>
-    <button v-on:click="update_zone(zonemodel)">Сохранить</button>
+    <button v-on:click="update_zone(zonemodel)" 
+      v-text="lang == 'ru' ? 'Сохранить' : lang == 'en' ? 'Save' : 'Cақтау'"
+    ></button>
 
     <tabs
       :titles_style="{
@@ -85,7 +87,7 @@
         <span class="sidebar-tab">
           <span class="sidebar-tab_icon"></span>
           <span class="sidebar-tab_title"
-            v-text="lang == 'ru' ? 'Справочная информация' : lang == 'en' ? 'Справочная информация': 'Справочная информация'"
+            v-text="lang == 'ru' ? 'Справочная информация' : lang == 'en' ? 'Refernce information': 'Анықтамалық ақпарат'"
           ></span>
         </span>
       </span>
@@ -94,7 +96,7 @@
         <span class="sidebar-tab">
           <span class="sidebar-tab_icon"></span>
           <span class="sidebar-tab_title"
-            v-text="lang == 'ru' ? 'Диаграммы' : lang == 'en' ? 'Диаграммы': 'Диаграммы'"
+            v-text="lang == 'ru' ? 'Диаграммы' : lang == 'en' ? 'Diagrams': 'Диаграммалар'"
           ></span>
         </span>        
       </span>
@@ -103,7 +105,7 @@
         <span class="sidebar-tab">
           <span class="sidebar-tab_icon"></span>
           <span class="sidebar-tab_title"
-            v-text="lang == 'ru' ? 'Инфраструктура' : lang == 'en' ? 'Инфраструктура': 'Инфраструктура'"
+            v-text="lang == 'ru' ? 'Инфраструктура' : lang == 'en' ? 'Infrastructure': 'Инфрақұрылым'"
           ></span>
         </span>        
       </span>
@@ -123,33 +125,43 @@
 
 
       <div class="editpanel_editzone-tab" slot="tab_0">
-        <h3 class="editpanel_editsector-tab-title">Название</h3>
+        <h3 class="editpanel_editsector-tab-title" v-text="lang == 'ru' ? 'Название' : lang == 'en' ? 'Title' : 'Атауы'"></h3>
         <input
           v-model="zonemodel['title_' + lang]"
         />
-        <h3 class="editpanel_editsector-tab-title">Описание</h3>
+        <h3 class="editpanel_editsector-tab-title"
+           v-text="lang == 'ru' ? 'Описание' : lang == 'en' ? 'Description' : 'Сипаттама'"
+        ></h3>
         <textarea style="width: 100%; height: 100px;"
           v-model="zonemodel['description_' + lang]">
         </textarea>
-        <h3 class="editpanel_editsector-tab-title">Маркетинговые материалы</h3>
+        <h3 class="editpanel_editsector-tab-title"
+          v-text="lang == 'ru' ? 'Маркетинговые материалы' : lang == 'en' ? 'Merketing materials' : 'Маркетингтік материалдар'"
+        ></h3>
         <div class="sidebar-market_wrap">
           <div v-for="photo in zonemodel.photos" class="sidebar-passport_photo">
             <img :src="photo['src_' + lang]" />
           </div>
           <input type="file" v-on:change="set_photo" />
         </div>
-        <h3 class="editpanel_editsector-tab-title">Видео</h3>
+        <h3 class="editpanel_editsector-tab-title"
+          v-text="lang == 'en' ? 'Video' : 'Видео'"
+        ></h3>
         <div class="sidebar-market_wrap">
           <div v-for="video in zonemodel.videos" class="sidebar-passport_video"></div>
         </div>
-        <h3 class="editpanel_editsector-tab-title">Файлы</h3>
+        <h3 class="editpanel_editsector-tab-title"
+          v-text="lang == 'ru' ? 'Файлы' : lang == 'en' ? 'Files' : 'Файлдар'"
+        ></h3>
         <div class="sidebar-market_file">
           <a v-for="file in zonemodel.files" :href="file['src_' + lang]" target="_blank">
             <div class="sidebar-market_pdf"></div>
             <div class="sidebar-market_pdf_text">{{file['name_' + lang]}}</div>
           </a>
         </div>
-        <h3 class="editpanel_editsector-tab-title">Контакты</h3>
+        <h3 class="editpanel_editsector-tab-title"
+          v-text="lang == 'ru' ? 'Контакты' : lang == 'en' ? 'Contacts' : 'Байланыс'"
+        ></h3>
         <div class="sidebar-passport_padding">
           <textarea style="width: 100%; height: 100px;"
             v-model="zonemodel['contacts_' + lang]">
@@ -159,7 +171,9 @@
       </div>
 
       <div class="editpanel_editzone-tab" slot="tab_1">
-        <h3 class="editpanel_editsector-tab-title">Объем затраченных средств из бюджета на инфаструктуру</h3>
+        <h3 class="editpanel_editsector-tab-title"
+          v-text="lang == 'ru' ? 'Объем затраченных средств из бюджета на инфаструктуру' : lang == 'en' ? 'Budget infrastructural expenses' : 'Бюджеттен инфрақұрылымға жұмсалған қаражаттар'"
+        ></h3>
         <p class="editpanel_editzone-tab-input_title" 
           v-text="lang == 'ru' ? 'Потребность' : lang == 'en' ? 'Budget need' : 'Мұқтаждық'"></p>
         <input type="number" min="0"
