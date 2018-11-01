@@ -12,9 +12,9 @@ b:
 
 nodeup:
 	cd front && \
-	npm i && \
+	npm install && \
 	cd ../back && \
-	npm i
+	npm install
 
 pub:
 	cd ./front && npm run build && \
