@@ -1140,6 +1140,11 @@ export default {
                 title_kz: 'Сипаттама ' + selected_zone['title_' + lang] + ' ҚР',
                 passport_content: 'level_2:zone_description',
               }, {
+                title_ru: 'Описание региона',
+                title_en: 'Region description',
+                title_kz: 'Аймақ сипаттама',
+                passport_content: 'level_2:region_description',
+              }, {
                 title_ru: 'Маркетинговые материалы',
                 title_en: 'Marketing materials',
                 title_kz: 'Маркетингтік материалдар',
@@ -1447,6 +1452,10 @@ export default {
         <div class="sidebar-passport_padding" slot="body" v-if="passport_content == 'level_2:zone_description'">
           <div v-html="selected_zone['description_' + lang]"></div>
         </div>
+
+        <div class="sidebar-passport_padding" slot="body" v-if="passport_content == 'level_2:region_description'">
+          <div v-html="selected_zone['region_description_' + lang]"></div>
+        </div>
         
         <div slot="body" v-if="passport_content == 'level_2:zone_market'">
           <h2 v-if="selected_zone.photos.length" class="sidebar-passport_subtitle"
@@ -1577,12 +1586,12 @@ export default {
           <span class="passport-body_item_val" 
             v-text="selected_sector['title_project_' + lang]"></span>
         </div>
-        <div class="passport-body_item">
+        <div class="passport-body_item" v-if="selected_sector.divisible == 1">
           <span class="passport-body_item_key"
-            v-text="lang == 'ru' ? 'Стоимость проекта' : lang == 'en' ? 'Project price': 'Жобаның құны'"
+            v-text="lang == 'ru' ? 'Делимый' : lang == 'en' ? 'Divisible': 'Бөліседі'"
           ></span>
           <span class="passport-body_item_val" 
-            v-text="numseparator(selected_sector.project_price)"></span>
+            v-text="selected_sector.divisible == 1 ? (lang == 'ru' ? 'Да' : lang == 'kz' ? 'Иә' : 'Yes') : (lang == 'ru' ? 'Нет' : lang == 'kz' ? 'Жоқ' : 'No')"></span>
         </div>
         <div class="passport-body_item">
           <span class="passport-body_item_key"
@@ -1651,7 +1660,7 @@ export default {
             id: 'sez_iv',
             title_ru: 'Объем вложенных инвестиций',
             title_en: 'Investments volume',
-            title_kz: 'Объем вложенных инвестиций',
+            title_kz: 'Инвестициялар көлемі',
             sum: this.numseparator(investments_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
@@ -1660,7 +1669,7 @@ export default {
             id: 'sez_pv',
             title_ru: 'Объем производства',
             title_en: 'Production volume',
-            title_kz: 'Объем производства',
+            title_kz: 'Өндіріс көлемі',
             sum: this.numseparator(production_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
@@ -1669,7 +1678,7 @@ export default {
             id: 'sez_fdi',
             title_ru: 'Прямые иностранные инвестиции',
             title_en: 'Foreign direct investments',
-            title_kz: 'Прямые иностранные инвестиции',
+            title_kz: 'Шетелдік тікелей инвестициялар',
             sum: this.numseparator(foreign_investments_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
@@ -1678,7 +1687,7 @@ export default {
             id: 'sez_njc',
             title_ru: 'Количество созданных рабочих мест',
             title_en: 'Number of jobs created',
-            title_kz: 'Количество созданных рабочих мест',
+            title_kz: 'Жасалған жұмыс орындарының саны',
             sum: this.numseparator(number_jobs_sum),
             tenge_ru: '',
             tenge_en: '',
@@ -1687,7 +1696,7 @@ export default {
             id: 'sez_tv',
             title_ru: 'Объем налоговых отчислений',
             title_en: 'Tax volume',
-            title_kz: 'Объем налоговых отчислений',
+            title_kz: 'Салықтық аударымдардың сомасы',
             sum: this.numseparator(taxes_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
@@ -1712,7 +1721,7 @@ export default {
             id: 'iz_iv',
             title_ru: 'Объем вложенных инвестиций',
             title_en: 'Investments volume',
-            title_kz: 'Объем вложенных инвестиций',
+            title_kz: 'Инвестициялар көлемі',
             sum: this.numseparator(investments_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
@@ -1721,7 +1730,7 @@ export default {
             id: 'iz_pv',
             title_ru: 'Объем производства',
             title_en: 'Production volume',
-            title_kz: 'Объем производства',
+            title_kz: 'Өндіріс көлемі',
             sum: this.numseparator(production_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
@@ -1730,7 +1739,7 @@ export default {
             id: 'iz_fdi',
             title_ru: 'Прямые иностранные инвестиции',
             title_en: 'Foreign direct investments',
-            title_kz: 'Прямые иностранные инвестиции',
+            title_kz: 'Шетелдік тікелей инвестициялар',
             sum: this.numseparator(foreign_investments_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
@@ -1739,7 +1748,7 @@ export default {
             id: 'iz_njc',
             title_ru: 'Количество созданных рабочих мест',
             title_en: 'Number of jobs created',
-            title_kz: 'Количество созданных рабочих мест',
+            title_kz: 'Жасалған жұмыс орындарының саны',
             sum: this.numseparator(number_jobs_sum),
             tenge_ru: '',
             tenge_en: '',
@@ -1748,7 +1757,7 @@ export default {
             id: 'iz_tv',
             title_ru: 'Объем налоговых отчислений',
             title_en: 'Tax volume',
-            title_kz: 'Объем налоговых отчислений',
+            title_kz: 'Салықтық аударымдардың сомасы',
             sum: this.numseparator(taxes_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
@@ -1846,7 +1855,7 @@ export default {
             id: 'iv',
             title_ru: 'Объем вложенных инвестиций',
             title_en: 'Investments volume',
-            title_kz: 'Объем вложенных инвестиций',
+            title_kz: 'Инвестициялар көлемі',
             sum: this.numseparator(investments_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
@@ -1855,7 +1864,7 @@ export default {
             id: 'pv',
             title_ru: 'Объем производства',
             title_en: 'Production volume',
-            title_kz: 'Объем производства',
+            title_kz: 'Өндіріс көлемі',
             sum: this.numseparator(production_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
@@ -1864,7 +1873,7 @@ export default {
             id: 'fdi',
             title_ru: 'Прямые иностранные инвестиции',
             title_en: 'Foreign direct investments',
-            title_kz: 'Прямые иностранные инвестиции',
+            title_kz: 'Шетелдік тікелей инвестициялар',
             sum: this.numseparator(foreign_investments_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
@@ -1873,7 +1882,7 @@ export default {
             id: 'njc',
             title_ru: 'Количество созданных рабочих мест',
             title_en: 'Number of jobs created',
-            title_kz: 'Количество созданных рабочих мест',
+            title_kz: 'Жасалған жұмыс орындарының саны',
             sum: this.numseparator(number_jobs_sum),
             tenge_ru: '',
             tenge_en: '',
@@ -1882,7 +1891,7 @@ export default {
             id: 'tv',
             title_ru: 'Объем налоговых отчислений',
             title_en: 'Tax volume',
-            title_kz: 'Объем налоговых отчислений',
+            title_kz: 'Салықтық аударымдардың сомасы',
             sum: this.numseparator(taxes_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
@@ -1907,7 +1916,7 @@ export default {
             id: 'iv',
             title_ru: 'Объем вложенных инвестиций',
             title_en: 'Investments volume',
-            title_kz: 'Объем вложенных инвестиций',
+            title_kz: 'Инвестициялар көлемі',
             sum: this.numseparator(investments_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
@@ -1916,7 +1925,7 @@ export default {
             id: 'pv',
             title_ru: 'Объем производства',
             title_en: 'Production volume',
-            title_kz: 'Объем производства',
+            title_kz: 'Өндіріс көлемі',
             sum: this.numseparator(production_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
@@ -1925,7 +1934,7 @@ export default {
             id: 'fdi',
             title_ru: 'Прямые иностранные инвестиции',
             title_en: 'Foreign direct investments',
-            title_kz: 'Прямые иностранные инвестиции',
+            title_kz: 'Шетелдік тікелей инвестициялар',
             sum: this.numseparator(foreign_investments_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
@@ -1934,7 +1943,7 @@ export default {
             id: 'njc',
             title_ru: 'Количество созданных рабочих мест',
             title_en: 'Number of jobs created',
-            title_kz: 'Количество созданных рабочих мест',
+            title_kz: 'Жасалған жұмыс орындарының саны',
             sum: this.numseparator(number_jobs_sum),
             tenge_ru: '',
             tenge_en: '',
@@ -1943,7 +1952,7 @@ export default {
             id: 'tv',
             title_ru: 'Объем налоговых отчислений',
             title_en: 'Tax volume',
-            title_kz: 'Объем налоговых отчислений',
+            title_kz: 'Салықтық аударымдардың сомасы',
             sum: this.numseparator(taxes_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
@@ -1952,6 +1961,10 @@ export default {
         >
           <span class="reference-item-sum" v-text="item.sum + item['tenge_' + lang]+'\n'"></span>
           <span class="reference-item-title" v-text="item['title_' + lang]"></span>
+        </div>
+        <div class="sidebar-project_price">
+          <span class="reference-item-sum" v-text="numseparator(selected_sector.project_price) + ' ' + (lang == 'ru' ? ' Тенге\n' : lang == 'kz' ? ' Теңге\n' : ' Tenge\n')"></span>
+          <span class="reference-item-title" v-text="lang == 'ru' ? 'Стоимость проекта\n' : lang == 'kz' ? 'Жоба бағасы\n' : 'Project price\n'"></span>
         </div>
       </div>
 
@@ -2120,5 +2133,9 @@ export default {
 }
 .sidebar-item--active:hover {
   background: #50c7f9;
+}
+
+.sidebar-project_price {
+  padding: 15px;
 }
 </style>

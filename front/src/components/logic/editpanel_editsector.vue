@@ -211,6 +211,27 @@
           class="editpanel_editsector-tab-input-oi"
           v-model="sectormodel['title_project_'+lang]"/>
 
+        <p class="editpanel_editsector-tab-input_title-oi"
+          v-if="sectormodel.project_type == 3" 
+          v-text="lang == 'ru' ? 'Делимый' : lang == 'en' ? 'Divisible': 'Бөліседі'"
+        ></p>
+        <select 
+          class="editpanel_editsector-tab-input-oi"
+          v-if="sectormodel.project_type == 3" 
+          v-model="sectormodel.divisible"
+        >
+          <option 
+            value=1
+            :selected="sectormodel.divisible == 1"
+            v-text="lang == 'ru' ? 'Да' : lang == 'kz' ? 'Иә' : 'Yes'"
+          ></option> 
+          <option 
+            value=0
+            :selected="sectormodel.divisible == 0"
+            v-text="lang == 'ru' ? 'Нет' : lang == 'kz' ? 'Жоқ' : 'No'"
+          ></option>
+        </select>
+
         <p class="editpanel_editsector-tab-input_title-oi" 
           v-text="lang == 'ru' ? 'Стоимость проекта' : lang == 'en' ? 'Project price': 'Жобаның құны'"
         ></p>

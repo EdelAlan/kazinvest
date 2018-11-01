@@ -13,6 +13,9 @@
           description_ru: null,
           description_kz: null,
           description_en: null,
+          region_description_ru: null,
+          region_description_kz: null,
+          region_description_en: null,
           contacts_ru: null,
           contacts_kz: null,
           contacts_en: null,
@@ -134,6 +137,12 @@
         ></h3>
         <textarea style="width: 100%; height: 100px;"
           v-model="zonemodel['description_' + lang]">
+        </textarea>
+        <h3 class="editpanel_editsector-tab-title"
+           v-text="lang == 'ru' ? 'Описание региона' : lang == 'en' ? 'Region description' : 'Аймақтың сипаттамасы'"
+        ></h3>
+        <textarea style="width: 100%; height: 100px;"
+          v-model="zonemodel['region_description_' + lang]">
         </textarea>
         <h3 class="editpanel_editsector-tab-title"
           v-text="lang == 'ru' ? 'Маркетинговые материалы' : lang == 'en' ? 'Merketing materials' : 'Маркетингтік материалдар'"

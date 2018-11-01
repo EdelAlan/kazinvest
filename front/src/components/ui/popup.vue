@@ -123,6 +123,10 @@
       v-if="!model.is_piechart"
       v-text="model.feature.properties.area + (this.lang == 'en' ? ' ha' : ' Га')">
     </div>
+    <div class="popup-zone-divisible"
+      v-if="model.feature.properties.type == 3"
+      v-text="model.feature.properties.divisible == 1 ? (lang == 'ru' ? 'Делимый' : lang == 'kz' ? 'Бөліседі' : 'Divisible') : (lang == 'ru' ? 'Неделимый' : lang == 'kz' ? 'Бөлінбейді' : 'Indivisible')">
+    </div>
     <piechart_popup
       v-if="is_piechart"
       :sectors="[
@@ -198,6 +202,19 @@
     font-size: 14px;
     color: #878DA1;
     margin: 0 0 5px 10px;
+  }
+
+  .popup-zone-divisible {
+    position: absolute;
+    max-width: 160px;
+    bottom: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    display: block;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    color: #878DA1;
+    margin: 0 0 27px 10px;
   }
 
   .popup-area {
