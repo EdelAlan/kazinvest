@@ -5,6 +5,7 @@ export default {
     zones: [],
     all_zones: [],
     selected_zone: null,
+    zone_sector: null,
   }),
 
   mutations: {
@@ -20,6 +21,9 @@ export default {
     set_selected_zone (state, selected_zone) {
       state.selected_zone = selected_zone;
     },
+    set_zone_sector (state, zone_sector) {
+      state.zone_sector = zone_sector;
+    },
   },
 
   getters: {
@@ -27,6 +31,7 @@ export default {
     zones: state => state.zones,
     all_zones: state => state.all_zones,
     selected_zone: state => state.selected_zone,
+    zone_sector: state => state.zone_sector,
   },
 
   actions: {
@@ -53,8 +58,27 @@ export default {
     async set_all_zones({ commit }) {
       const path = this.getters.api_path 
         + '/back/api/zones';
-      console.log(path);
-      return fetcher({ path }).then(all_zones => commit('set_all_zones', all_zones));
+      return fetcher({ path }).then(all_zones => {
+        commit('set_all_zones', all_zones);
+      });
+    },
+    set_zone_sector ({ commit, getters }) {
+      commit('set_zone_sector', getters.all_zones.map(zone => {
+        return {
+          ...zone,
+          collapsed: true,
+          sectors: getters.sectors.filter(sector => sector.zone_id == zone.id).map(sector => {
+            return {
+              ...sector,
+              investments: getters.investments.filter(el => el.parent_id == sector.id),
+              production: getters.production.filter(el => el.parent_id == sector.id),
+              foreign_investments: getters.foreign_investments.filter(el => el.parent_id == sector.id),
+              number_jobs: getters.number_jobs.filter(el => el.parent_id == sector.id),
+              taxes: getters.taxes.filter(el => el.parent_id == sector.id),
+            }
+          }),
+        }
+      }));
     },
   },
 };

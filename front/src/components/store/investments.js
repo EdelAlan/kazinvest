@@ -44,41 +44,6 @@ export default {
     number_jobs: state => state.number_jobs,
     production: state => state.production,
     taxes: state => state.taxes,
-    investments_sum: state => {
-      var sum = 0;
-      state.investments.forEach(el => {
-        sum += parseInt(el.val,10);
-      });
-      return sum;
-    },
-    foreign_investments_sum: state => {
-      var sum = 0;
-      state.foreign_investments.forEach(el => {
-        sum += parseInt(el.val,10);
-      });
-      return sum;
-    },
-    number_jobs_sum: state => {
-      var sum = 0;
-      state.number_jobs.forEach(el => {
-        sum += parseInt(el.val,10);
-      });
-      return sum;
-    },
-    production_sum: state => {
-      var sum = 0;
-      state.production.forEach(el => {
-        sum += parseInt(el.val,10);
-      });
-      return sum;
-    },
-    taxes_sum: state => {
-      var sum = 0;
-      state.taxes.forEach(el => {
-        sum += parseInt(el.val,10);
-      });
-      return sum;
-    },
   },
 
   actions: {

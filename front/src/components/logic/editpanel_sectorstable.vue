@@ -30,7 +30,6 @@
           filter: false,
         });
         await this.set_sectors();
-        // @alan: вызвать экшон, отвечающий за получение показателей из бэка (инвестиции)
         await this.set_investments();
         await this.set_foreign_investments();
         await this.set_production();

@@ -30,6 +30,12 @@ export default {
       selected_video: "",
       selected_image: "",
 
+      investments_sum: 0,
+      production_sum: 0,
+      foreign_investments_sum: 0,
+      number_jobs_sum: 0,
+      taxes_sum: 0,
+
       iv2014: 0,
       iv2015: 0,
       iv2016: 0,
@@ -74,6 +80,10 @@ export default {
     };
   },
 
+  async mounted() {
+    await this.get_all_investments();
+  },
+
   computed: {
     ...mapGetters([
       "sidebar_expanded",
@@ -91,11 +101,6 @@ export default {
       "selected_zone",
       "passport_content",
       "profile",
-      "investments_sum",
-      "production_sum",
-      "foreign_investments_sum",
-      "number_jobs_sum",
-      "taxes_sum",
       "investments",
       "investment",
       "production",
@@ -103,150 +108,9 @@ export default {
       "number_jobs",
       "taxes",
       "image_modal",
-      "video_modal"
+      "video_modal",
+      "zone_sector",
     ]),
-
-    investments_sum_iz: state => {
-      var sum = 0;
-      state.investments.forEach(el => {
-        state.zones.forEach(zone => {
-          state.sectors.forEach(sector => {
-            if (
-              zone.id == sector.zone_id &&
-              sector.id == el.parent_id &&
-              zone.zone_type == 2
-            ) {
-              sum += parseInt(el.val, 10);
-            }
-          });
-        });
-      });
-      return sum;
-    },
-    foreign_investments_sum_iz: state => {
-      var sum = 0;
-      state.foreign_investments.forEach(el => {
-        state.zones.forEach(zone => {
-          state.sectors.forEach(sector => {
-            if (
-              zone.id == sector.zone_id &&
-              sector.id == el.parent_id &&
-              zone.zone_type == 2
-            ) {
-              sum += parseInt(el.val, 10);
-            }
-          });
-        });
-      });
-      return sum;
-    },
-    production_sum_iz: state => {
-      var sum = 0;
-      state.production.forEach(el => {
-        state.zones.forEach(zone => {
-          state.sectors.forEach(sector => {
-            if (
-              zone.id == sector.zone_id &&
-              sector.id == el.parent_id &&
-              zone.zone_type == 2
-            ) {
-              sum += parseInt(el.val, 10);
-            }
-          });
-        });
-      });
-      return sum;
-    },
-    number_jobs_sum_iz: state => {
-      var sum = 0;
-      state.number_jobs.forEach(el => {
-        state.zones.forEach(zone => {
-          state.sectors.forEach(sector => {
-            if (
-              zone.id == sector.zone_id &&
-              sector.id == el.parent_id &&
-              zone.zone_type == 2
-            ) {
-              sum += parseInt(el.val, 10);
-            }
-          });
-        });
-      });
-      return sum;
-    },
-    taxes_sum_iz: state => {
-      var sum = 0;
-      state.taxes.forEach(el => {
-        state.zones.forEach(zone => {
-          state.sectors.forEach(sector => {
-            if (
-              zone.id == sector.zone_id &&
-              sector.id == el.parent_id &&
-              zone.zone_type == 2
-            ) {
-              sum += parseInt(el.val, 10);
-            }
-          });
-        });
-      });
-      return sum;
-    },
-
-    investments_sum_level2: state => {
-      var sum = 0;
-      state.investments.forEach(el => {
-        state.sectors.forEach(sector => {
-          if (sector.id == el.parent_id) {
-            sum += parseInt(el.val, 10);
-          }
-        });
-      });
-      return sum;
-    },
-    foreign_investments_sum_level2: state => {
-      var sum = 0;
-      state.foreign_investments.forEach(el => {
-        state.sectors.forEach(sector => {
-          if (sector.id == el.parent_id) {
-            sum += parseInt(el.val, 10);
-          }
-        });
-      });
-      return sum;
-    },
-    production_sum_level2: state => {
-      var sum = 0;
-      state.production.forEach(el => {
-        state.sectors.forEach(sector => {
-          if (sector.id == el.parent_id) {
-            sum += parseInt(el.val, 10);
-          }
-        });
-      });
-      return sum;
-    },
-    number_jobs_sum_level2: state => {
-      var sum = 0;
-      state.number_jobs.forEach(el => {
-        state.sectors.forEach(sector => {
-          if (sector.id == el.parent_id) {
-            sum += parseInt(el.val, 10);
-          }
-        });
-      });
-      return sum;
-    },
-    taxes_sum_level2: state => {
-      var sum = 0;
-      state.taxes.forEach(el => {
-        state.sectors.forEach(sector => {
-          if (sector.id == el.parent_id) {
-            sum += parseInt(el.val, 10);
-          }
-        });
-      });
-      return sum;
-    }
   },
 
   methods: {
@@ -271,39 +135,164 @@ export default {
       "set_investment",
       "set_number_jobs",
       "set_production",
-      "set_taxes"
+      "set_taxes",
+      "set_zone_sector",
     ]),
 
-    async get_investments() {
+    async get_all_investments() {
+      await this.set_investments();
+      await this.set_foreign_investments();
+      await this.set_production();
+      await this.set_number_jobs();
+      await this.set_taxes();
+    },
+
+    async get_zone_sector() {
       switch (this.passport_content) {
         case "level_1:sez:numeric":
-          await this.set_investments();
-          await this.set_foreign_investments();
-          await this.set_production();
-          await this.set_number_jobs();
-          await this.set_taxes();
+          await this.set_all_zones();
+          await this.set_sectors();
+          // await this.get_all_investments();
+          await this.set_zone_sector();
+          this.investments_sum = 0;
+          this.foreign_investments_sum = 0;
+          this.production_sum = 0;
+          this.number_jobs_sum = 0;
+          this.taxes_sum = 0;
+          this.zone_sector.filter(zone => zone.zone_type == 1).forEach( zone => {
+            zone.sectors.forEach(sector => {
+              this.investments_sum += sector.investments.length != 0 ? sector.investments.reduce( (a, it) => {
+                  return a + parseInt(it.val,10) 
+              }, 0) : 0;
+
+              this.production_sum += sector.production.length != 0 ? sector.production.reduce( (a, it) => {
+                  return a + parseInt(it.val,10) 
+              }, 0) : 0;
+
+              this.foreign_investments_sum += sector.foreign_investments.length != 0 ? sector.foreign_investments.reduce( (a, it) => {
+                  return a + parseInt(it.val,10) 
+              }, 0) : 0;
+
+              this.number_jobs_sum += sector.number_jobs.length != 0 ? sector.number_jobs.reduce( (a, it) => {
+                  return a + parseInt(it.val,10) 
+              }, 0) : 0;
+
+              this.taxes_sum += sector.taxes.length != 0 ? sector.taxes.reduce( (a, it) => {
+                  return a + parseInt(it.val,10) 
+              }, 0) : 0;
+            });
+          });
           break;
         case "level_1:iz:numeric":
+          await this.set_all_zones();
           await this.set_sectors();
-          await this.set_investments();
-          await this.set_foreign_investments();
-          await this.set_production();
-          await this.set_number_jobs();
-          await this.set_taxes();
+          // await this.get_all_investments();
+          await this.set_zone_sector();
+          this.investments_sum = 0;
+          this.foreign_investments_sum = 0;
+          this.production_sum = 0;
+          this.number_jobs_sum = 0;
+          this.taxes_sum = 0;
+          this.zone_sector.filter(zone => zone.zone_type == 2).forEach( zone => {
+            zone.sectors.forEach(sector => {
+              this.investments_sum += sector.investments.length != 0 ? sector.investments.reduce( (a, it) => {
+                  return a + parseInt(it.val,10) 
+              }, 0) : 0;
+
+              this.production_sum += sector.production.length != 0 ? sector.production.reduce( (a, it) => {
+                  return a + parseInt(it.val,10) 
+              }, 0) : 0;
+
+              this.foreign_investments_sum += sector.foreign_investments.length != 0 ? sector.foreign_investments.reduce( (a, it) => {
+                  return a + parseInt(it.val,10) 
+              }, 0) : 0;
+
+              this.number_jobs_sum += sector.number_jobs.length != 0 ? sector.number_jobs.reduce( (a, it) => {
+                  return a + parseInt(it.val,10) 
+              }, 0) : 0;
+
+              this.taxes_sum += sector.taxes.length != 0 ? sector.taxes.reduce( (a, it) => {
+                  return a + parseInt(it.val,10) 
+              }, 0) : 0;
+            });
+          });
           break;
         case "level_2:numeric":
-          await this.set_investments();
-          await this.set_foreign_investments();
-          await this.set_production();
-          await this.set_number_jobs();
-          await this.set_taxes();
+          // await this.get_all_investments();
+          this.investments_sum = 0;
+          this.foreign_investments_sum = 0;
+          this.production_sum = 0;
+          this.number_jobs_sum = 0;
+          this.taxes_sum = 0;
+          this.sectors.forEach(sector => {
+            this.investments.forEach(el => {
+              if (sector.id == el.parent_id) {
+                this.investments_sum += parseInt(el.val,10);
+              }
+            });
+            
+            this.foreign_investments.forEach(el => {
+              if (sector.id == el.parent_id) {
+                this.foreign_investments_sum += parseInt(el.val,10);
+              }
+            });
+
+            this.production.forEach(el => {
+              if (sector.id == el.parent_id) {
+                this.production_sum += parseInt(el.val,10);
+              }
+            });
+
+            this.number_jobs.forEach(el => {
+              if (sector.id == el.parent_id) {
+                this.number_jobs_sum += parseInt(el.val,10);
+              }
+            });
+
+            this.taxes.forEach(el => {
+              if (sector.id == el.parent_id) {
+                this.taxes_sum += parseInt(el.val,10);
+              }
+            });
+          });
           break;
         case "level_3:numeric":
-          await this.set_investments();
-          await this.set_foreign_investments();
-          await this.set_production();
-          await this.set_number_jobs();
-          await this.set_taxes();
+          // await this.get_all_investments();
+          this.investments_sum = 0;
+          this.foreign_investments_sum = 0;
+          this.production_sum = 0;
+          this.number_jobs_sum = 0;
+          this.taxes_sum = 0;
+
+          this.investments.forEach(el => {
+            if (this.selected_sector.id == el.parent_id) {
+              this.investments_sum += parseInt(el.val,10);
+            }
+          });
+            
+          this.foreign_investments.forEach(el => {
+            if (this.selected_sector.id == el.parent_id) {
+              this.foreign_investments_sum += parseInt(el.val,10);
+            }
+          });
+
+          this.production.forEach(el => {
+            if (this.selected_sector.id == el.parent_id) {
+              this.production_sum += parseInt(el.val,10);
+            }
+          });
+
+          this.number_jobs.forEach(el => {
+            if (this.selected_sector.id == el.parent_id) {
+              this.number_jobs_sum += parseInt(el.val,10);
+            }
+          });
+
+          this.taxes.forEach(el => {
+            if (this.selected_sector.id == el.parent_id) {
+              this.taxes_sum += parseInt(el.val,10);
+            }
+          });
           break;
       }
     },
@@ -402,100 +391,100 @@ export default {
     put_data(el, row) {
       switch(row) {
           case 'iv':
-                    switch(el.year) {
-                        case 2014:
-                            this.iv2014 += parseInt(el.val, 10);
-                            break;
-                        case 2015:
-                            this.iv2015 += parseInt(el.val, 10);
-                            break;
-                        case 2016:
-                            this.iv2016 += parseInt(el.val, 10);
-                            break;
-                        case 2017:
-                            this.iv2017 += parseInt(el.val, 10);
-                            break;
-                        case 2018:
-                            this.iv2018 += parseInt(el.val, 10);
-                            break;
-                    }
+            switch(el.year) {
+                case 2014:
+                    this.iv2014 += parseInt(el.val, 10);
                     break;
+                case 2015:
+                    this.iv2015 += parseInt(el.val, 10);
+                    break;
+                case 2016:
+                    this.iv2016 += parseInt(el.val, 10);
+                    break;
+                case 2017:
+                    this.iv2017 += parseInt(el.val, 10);
+                    break;
+                case 2018:
+                    this.iv2018 += parseInt(el.val, 10);
+                    break;
+            }
+            break;
           case 'pv':
-                    switch(el.year) {
-                        case 2014:
-                            this.pv2014 += parseInt(el.val, 10);
-                            break;
-                        case 2015:
-                            this.pv2015 += parseInt(el.val, 10);
-                            break;
-                        case 2016:
-                            this.pv2016 += parseInt(el.val, 10);
-                            break;
-                        case 2017:
-                            this.pv2017 += parseInt(el.val, 10);
-                            break;
-                        case 2018:
-                            this.pv2018 += parseInt(el.val, 10);
-                            break;
-                    }
+            switch(el.year) {
+                case 2014:
+                    this.pv2014 += parseInt(el.val, 10);
                     break;
+                case 2015:
+                    this.pv2015 += parseInt(el.val, 10);
+                    break;
+                case 2016:
+                    this.pv2016 += parseInt(el.val, 10);
+                    break;
+                case 2017:
+                    this.pv2017 += parseInt(el.val, 10);
+                    break;
+                case 2018:
+                    this.pv2018 += parseInt(el.val, 10);
+                    break;
+            }
+            break;
           case 'fdi':
-                    switch(el.year) {
-                        case 2014:
-                            this.fdi2014 += parseInt(el.val, 10);
-                            break;
-                        case 2015:
-                            this.fdi2015 += parseInt(el.val, 10);
-                            break;
-                        case 2016:
-                            this.fdi2016 += parseInt(el.val, 10);
-                            break;
-                        case 2017:
-                            this.fdi2017 += parseInt(el.val, 10);
-                            break;
-                        case 2018:
-                            this.fdi2018 += parseInt(el.val, 10);
-                            break;
-                    }
+            switch(el.year) {
+                case 2014:
+                    this.fdi2014 += parseInt(el.val, 10);
                     break;
+                case 2015:
+                    this.fdi2015 += parseInt(el.val, 10);
+                    break;
+                case 2016:
+                    this.fdi2016 += parseInt(el.val, 10);
+                    break;
+                case 2017:
+                    this.fdi2017 += parseInt(el.val, 10);
+                    break;
+                case 2018:
+                    this.fdi2018 += parseInt(el.val, 10);
+                    break;
+            }
+            break;
           case 'njc':
-                    switch(el.year) {
-                        case 2014:
-                            this.njc2014 += parseInt(el.val, 10);
-                            break;
-                        case 2015:
-                            this.njc2015 += parseInt(el.val, 10);
-                            break;
-                        case 2016:
-                            this.njc2016 += parseInt(el.val, 10);
-                            break;
-                        case 2017:
-                            this.njc2017 += parseInt(el.val, 10);
-                            break;
-                        case 2018:
-                            this.njc2018 += parseInt(el.val, 10);
-                            break;
-                    }
+            switch(el.year) {
+                case 2014:
+                    this.njc2014 += parseInt(el.val, 10);
                     break;
+                case 2015:
+                    this.njc2015 += parseInt(el.val, 10);
+                    break;
+                case 2016:
+                    this.njc2016 += parseInt(el.val, 10);
+                    break;
+                case 2017:
+                    this.njc2017 += parseInt(el.val, 10);
+                    break;
+                case 2018:
+                    this.njc2018 += parseInt(el.val, 10);
+                    break;
+            }
+            break;
           case 'tv':
-                    switch(el.year) {
-                        case 2014:
-                            this.tv2014 += parseInt(el.val, 10);
-                            break;
-                        case 2015:
-                            this.tv2015 += parseInt(el.val, 10);
-                            break;
-                        case 2016:
-                            this.tv2016 += parseInt(el.val, 10);
-                            break;
-                        case 2017:
-                            this.tv2017 += parseInt(el.val, 10);
-                            break;
-                        case 2018:
-                            this.tv2018 += parseInt(el.val, 10);
-                            break;
-                    }
+            switch(el.year) {
+                case 2014:
+                    this.tv2014 += parseInt(el.val, 10);
                     break;
+                case 2015:
+                    this.tv2015 += parseInt(el.val, 10);
+                    break;
+                case 2016:
+                    this.tv2016 += parseInt(el.val, 10);
+                    break;
+                case 2017:
+                    this.tv2017 += parseInt(el.val, 10);
+                    break;
+                case 2018:
+                    this.tv2018 += parseInt(el.val, 10);
+                    break;
+            }
+            break;
       }
 		},
 
@@ -1001,7 +990,7 @@ export default {
   },
 
   watch: {
-    passport_content: "get_investments"
+    passport_content: "get_zone_sector"
   }
 };
 </script>
@@ -1724,7 +1713,7 @@ export default {
             title_ru: 'Объем вложенных инвестиций',
             title_en: 'Investments volume',
             title_kz: 'Объем вложенных инвестиций',
-            sum: this.numseparator(investments_sum_iz),
+            sum: this.numseparator(investments_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
             tenge_kz: ' Теңге',
@@ -1733,7 +1722,7 @@ export default {
             title_ru: 'Объем производства',
             title_en: 'Production volume',
             title_kz: 'Объем производства',
-            sum: this.numseparator(production_sum_iz),
+            sum: this.numseparator(production_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
             tenge_kz: ' Теңге',
@@ -1742,7 +1731,7 @@ export default {
             title_ru: 'Прямые иностранные инвестиции',
             title_en: 'Foreign direct investments',
             title_kz: 'Прямые иностранные инвестиции',
-            sum: this.numseparator(foreign_investments_sum_iz),
+            sum: this.numseparator(foreign_investments_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
             tenge_kz: ' Теңге',
@@ -1751,7 +1740,7 @@ export default {
             title_ru: 'Количество созданных рабочих мест',
             title_en: 'Number of jobs created',
             title_kz: 'Количество созданных рабочих мест',
-            sum: this.numseparator(number_jobs_sum_iz),
+            sum: this.numseparator(number_jobs_sum),
             tenge_ru: '',
             tenge_en: '',
             tenge_kz: '',
@@ -1760,7 +1749,7 @@ export default {
             title_ru: 'Объем налоговых отчислений',
             title_en: 'Tax volume',
             title_kz: 'Объем налоговых отчислений',
-            sum: this.numseparator(taxes_sum_iz),
+            sum: this.numseparator(taxes_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
             tenge_kz: ' Теңге',
@@ -1858,7 +1847,7 @@ export default {
             title_ru: 'Объем вложенных инвестиций',
             title_en: 'Investments volume',
             title_kz: 'Объем вложенных инвестиций',
-            sum: this.numseparator(investments_sum_level2),
+            sum: this.numseparator(investments_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
             tenge_kz: ' Теңге',
@@ -1867,7 +1856,7 @@ export default {
             title_ru: 'Объем производства',
             title_en: 'Production volume',
             title_kz: 'Объем производства',
-            sum: this.numseparator(production_sum_level2),
+            sum: this.numseparator(production_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
             tenge_kz: ' Теңге',
@@ -1876,7 +1865,7 @@ export default {
             title_ru: 'Прямые иностранные инвестиции',
             title_en: 'Foreign direct investments',
             title_kz: 'Прямые иностранные инвестиции',
-            sum: this.numseparator(foreign_investments_sum_level2),
+            sum: this.numseparator(foreign_investments_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
             tenge_kz: ' Теңге',
@@ -1885,7 +1874,7 @@ export default {
             title_ru: 'Количество созданных рабочих мест',
             title_en: 'Number of jobs created',
             title_kz: 'Количество созданных рабочих мест',
-            sum: this.numseparator(number_jobs_sum_level2),
+            sum: this.numseparator(number_jobs_sum),
             tenge_ru: '',
             tenge_en: '',
             tenge_kz: '',
@@ -1894,7 +1883,7 @@ export default {
             title_ru: 'Объем налоговых отчислений',
             title_en: 'Tax volume',
             title_kz: 'Объем налоговых отчислений',
-            sum: this.numseparator(taxes_sum_level2),
+            sum: this.numseparator(taxes_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
             tenge_kz: ' Теңге',
@@ -1919,7 +1908,7 @@ export default {
             title_ru: 'Объем вложенных инвестиций',
             title_en: 'Investments volume',
             title_kz: 'Объем вложенных инвестиций',
-            sum: this.numseparator(investments_sum_level2),
+            sum: this.numseparator(investments_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
             tenge_kz: ' Теңге',
@@ -1928,7 +1917,7 @@ export default {
             title_ru: 'Объем производства',
             title_en: 'Production volume',
             title_kz: 'Объем производства',
-            sum: this.numseparator(production_sum_level2),
+            sum: this.numseparator(production_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
             tenge_kz: ' Теңге',
@@ -1937,7 +1926,7 @@ export default {
             title_ru: 'Прямые иностранные инвестиции',
             title_en: 'Foreign direct investments',
             title_kz: 'Прямые иностранные инвестиции',
-            sum: this.numseparator(foreign_investments_sum_level2),
+            sum: this.numseparator(foreign_investments_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
             tenge_kz: ' Теңге',
@@ -1946,7 +1935,7 @@ export default {
             title_ru: 'Количество созданных рабочих мест',
             title_en: 'Number of jobs created',
             title_kz: 'Количество созданных рабочих мест',
-            sum: this.numseparator(number_jobs_sum_level2),
+            sum: this.numseparator(number_jobs_sum),
             tenge_ru: '',
             tenge_en: '',
             tenge_kz: '',
@@ -1955,7 +1944,7 @@ export default {
             title_ru: 'Объем налоговых отчислений',
             title_en: 'Tax volume',
             title_kz: 'Объем налоговых отчислений',
-            sum: this.numseparator(taxes_sum_level2),
+            sum: this.numseparator(taxes_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
             tenge_kz: ' Теңге',
