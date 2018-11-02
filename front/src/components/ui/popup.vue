@@ -97,8 +97,7 @@
             this.type_kz = 'Жоба іске асырылуда';
             break;
         }
-      }
-      
+      }    
     },
 
     computed: mapGetters([
@@ -127,6 +126,10 @@
       v-if="model.feature.properties.type == 3"
       v-text="model.feature.properties.divisible == 1 ? (lang == 'ru' ? 'Делимый' : lang == 'kz' ? 'Бөліседі' : 'Divisible') : (lang == 'ru' ? 'Неделимый' : lang == 'kz' ? 'Бөлінбейді' : 'Indivisible')">
     </div>
+    <div class="popup-zone-zone_time"
+      v-if="model.is_piechart"
+      v-text="model.feature.properties.zone_time != '' ? (lang == 'ru' ? 'До '+ model.feature.properties.zone_time : lang == 'kz' ? model.feature.properties.zone_time+' дейін' : 'Until '+model.feature.properties.zone_time) : ''">
+    </div>
     <piechart_popup
       v-if="is_piechart"
       :sectors="[
@@ -143,7 +146,7 @@
   .popup {
     position: absolute;
     width: 223px;
-    height: 67px;
+    height: 80px;
     background: #FFFFFF;
     box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.25);
     border-radius: 2px;
@@ -188,7 +191,7 @@
     text-overflow: ellipsis;
     font-size: 14px;
     color: #878DA1;
-    margin: 0 0 10px 10px;
+    margin: 0 0 27px 10px;
   }
 
   .popup-zone-area {
@@ -215,6 +218,19 @@
     font-size: 14px;
     color: #878DA1;
     margin: 0 0 27px 10px;
+  }
+
+  .popup-zone-zone_time {
+    position: absolute;
+    max-width: 160px;
+    bottom: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    display: block;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    color: #878DA1;
+    margin: 0 0 5px 10px;
   }
 
   .popup-area {
