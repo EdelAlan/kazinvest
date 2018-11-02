@@ -241,8 +241,8 @@ export default {
               this._mapboxgl_map.getCanvas().style.cursor = 'pointer';
               this.show_popup({
                 is_piechart: true,
-                pageX: e.originalEvent.pageX,
-                pageY: e.originalEvent.pageY,
+                pageX: e.originalEvent.pageX + 7,
+                pageY: e.originalEvent.pageY - 7,
                 feature: zones[0]
               });
             }
@@ -671,6 +671,7 @@ export default {
                 budget_need: el.budget_need,
                 budget_allocated: el.budget_allocated,
                 diagram_level: (el.level <= 100 && el.level)  ? el.level : 0,
+                zone_time: el.zone_time ? el.zone_time : '',
               }
             });
           }
