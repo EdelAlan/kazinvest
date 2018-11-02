@@ -94,6 +94,8 @@ export default {
       "selected_sector",
       "passport_anal",
       "passport_anal_bar",
+      "passport_anal_data",
+      "passport_anal_bar_data",
       "passport",
       "zone_filter",
       "republics",
@@ -1657,7 +1659,7 @@ export default {
             ui_component: 'passport_anal_bar',
             ui_component_state: true,
           })"
-          :class="{ 'reference-item--active': !passport_content ? false : passport_content == item.passport_content }"
+          :class="{ 'reference-item--active': item.id == passport_anal_bar_data }"
           v-for="item in [{
             id: 'sez_iv',
             title_ru: 'Объем вложенных инвестиций',
@@ -1718,7 +1720,7 @@ export default {
             ui_component: 'passport_anal_bar',
             ui_component_state: true,
           })"
-          :class="{ 'reference-item--active': !passport_content ? false : passport_content == item.passport_content }"
+          :class="{ 'reference-item--active': item.id == passport_anal_bar_data }"
           v-for="item in [{
             id: 'iz_iv',
             title_ru: 'Объем вложенных инвестиций',
@@ -1779,7 +1781,7 @@ export default {
             ui_component: 'passport_anal',
             ui_component_state: true,
           })"
-          :class="{ 'reference-item--active': !passport_content ? false : passport_content == item.passport_content }"
+          :class="{ 'reference-item--active': item.id == passport_anal_data }"
           v-for="item in [{
             id: 'sez_bie',
             title_ru: 'Объем затраченных средств из бюджета на инфаструктуру',
@@ -1803,7 +1805,7 @@ export default {
             ui_component: 'passport_anal',
             ui_component_state: true,
           })"
-          :class="{ 'reference-item--active': !passport_content ? false : passport_content == item.passport_content }"
+          :class="{ 'reference-item--active': item.id == passport_anal_data }"
           v-for="item in [{
             id: 'iz_bie',
             title_ru: 'Объем затраченных средств из бюджета на инфаструктуру',
@@ -2139,5 +2141,11 @@ export default {
 
 .sidebar-project_price {
   padding: 15px;
+}
+.reference-item--active .reference-item-sum {
+  color: #fff;
+}
+.reference-item--active .reference-item-title {
+  color: #fff;
 }
 </style>

@@ -55,6 +55,8 @@ export default {
     },
     set_passport_anal_data({ commit }, passport_anal_data) {
       commit('set_passport_anal_data', passport_anal_data);
+      console.log(passport_anal_data)
+      console.log(this.getters.passport_anal_data)
     },
     set_passport_anal_bar_data({ commit }, passport_anal_bar_data) {
       commit('set_passport_anal_bar_data', passport_anal_bar_data);
