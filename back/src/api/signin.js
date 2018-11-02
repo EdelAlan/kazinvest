@@ -1,7 +1,7 @@
 const router = require('express-async-router').AsyncRouter();
 const bodyparser = require('body-parser');
 const db_query = require('../util/db_query');
-const bcrypt = require('bcrypt');
+const bcryptjs = require('bcryptjs');
 const Cryptr = require('cryptr');
 const cryptr = new Cryptr('myTotalySecretKey');
 const redis = require('../util/redis');
@@ -15,7 +15,7 @@ router.post('/', bodyparser.json(), async (req, res) => {
     if (!user) return res.status(404).json({
       msg: 'user not found or not verified',
     });
-    return bcrypt.compare(password, user.member_password)
+    return bcryptjs.compare(password, user.member_password)
     .then(bool => {
       if (!bool) return res.status(404).json({
         msg: 'user wrong password',

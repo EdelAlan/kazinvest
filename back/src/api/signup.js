@@ -1,12 +1,12 @@
 const router = require('express-async-router').AsyncRouter();
 const bodyparser = require('body-parser');
 const db_query = require('../util/db_query');
-const bcrypt = require('bcrypt');
+const bcryptjs = require('bcryptjs');
 
 router.post('/', bodyparser.json(), (req, res) => {
   const { userid, password, firstname, lastname, zone, role } = req.body;
   if (userid && password && firstname && lastname && zone && role) {
-    return bcrypt.hash(password, 10)
+    return bcryptjs.hash(password, 10)
     .then(async hash => {
       return await db_query(`
         INSERT INTO member (
