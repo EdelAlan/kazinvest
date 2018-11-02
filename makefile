@@ -1,3 +1,5 @@
+DEVSERVER := root@192.168.55.167
+
 .PHONY: 
 	f \
 	b \
@@ -19,10 +21,10 @@ nodeup:
 pub:
 	cd ./front && npm run build && \
 	mv dist ./kazinvest && cd .. && \
-	scp -r ./front/kazinvest root@192.168.55.167:/srv/ && \
+	scp -r ./front/kazinvest ${DEVSERVER}:/srv/ && \
 	rm -rf ./front/kazinvest && \
-	scp -r ./back root@192.168.55.167:/srv/ && \
-	ssh root@192.168.55.167 ' \
+	scp -r ./back ${DEVSERVER}:/srv/ && \
+	ssh ${DEVSERVER} ' \
 		rm -rf /srv/kazinvest-back && \
 		mv /srv/back /srv/kazinvest-back && \
 		cd /srv/kazinvest-back/ && \

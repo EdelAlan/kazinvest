@@ -7,7 +7,7 @@ redis.keys('*', (_, keys) => {
     console.log('USERS:')
     keys.forEach(it => {
       redis.get(it, (_, reply) => {
-        console.log(it, ': ', reply.slice(0, 10));
+        console.log(it + ':', reply.slice(0, 10));
       });
     });
   }
