@@ -42,6 +42,7 @@
 				'sectors',
 				'selected_sector',
 				'zones',
+				'zone_sector',
 			]),
 		},
 
@@ -96,95 +97,94 @@
 				this.bar2018 = 0;
 				switch(this.active_level.id) {
 					case 1:
-						await this.set_sectors();
 						switch(this.passport_anal_bar_data) {
 							case 'sez_iv':
-								await this.set_investments();
-								this.investments.forEach(el => {
-									this.put_data(el);
+								this.zone_sector.filter(zone => zone.zone_type == 1).forEach( zone => {
+									zone.sectors.forEach(sector => {
+										sector.investments ? sector.investments.forEach(el => {
+											this.put_data(el);
+										}) : '';
+									});
 								});
 								break;
 							case 'sez_pv':
-								await this.set_production();
-								this.production.forEach(el => {
-									this.put_data(el);
+								this.zone_sector.filter(zone => zone.zone_type == 1).forEach( zone => {
+									zone.sectors.forEach(sector => {
+										sector.production ? sector.production.forEach(el => {
+											this.put_data(el);
+										}) : '';
+									});
 								});
 								break;
 							case 'sez_fdi':
-								await this.set_foreign_investments();
-								this.foreign_investments.forEach(el => {
-									this.put_data(el);
+								this.zone_sector.filter(zone => zone.zone_type == 1).forEach( zone => {
+									zone.sectors.forEach(sector => {
+										sector.foreign_investments ? sector.foreign_investments.forEach(el => {
+											this.put_data(el);
+										}) : '';
+									});
 								});
 								break;
 							case 'sez_njc':
-								await this.set_number_jobs();
-								this.number_jobs.forEach(el => {
-									this.put_data(el);
+								this.zone_sector.filter(zone => zone.zone_type == 1).forEach( zone => {
+									zone.sectors.forEach(sector => {
+										sector.number_jobs ? sector.number_jobs.forEach(el => {
+											this.put_data(el);
+										}) : '';
+									});
 								});
 								break;
 							case 'sez_tv':
-								await this.set_taxes();
-								this.taxes.forEach(el => {
-									this.put_data(el);
+								this.zone_sector.filter(zone => zone.zone_type == 1).forEach( zone => {
+									zone.sectors.forEach(sector => {
+										sector.taxes ? sector.taxes.forEach(el => {
+											this.put_data(el);
+										}) : '';
+									});
 								});
 								break;
 							case 'iz_iv':
-								await this.set_investments();
-								this.investments.forEach( el => {
-									this.zones.forEach(zone => {
-										this.sectors.forEach(sector => {
-											if (zone.id == sector.zone_id && sector.id == el.parent_id && zone.zone_type == 2) {
-												this.put_data(el);
-											}
-										});
+								this.zone_sector.filter(zone => zone.zone_type == 2).forEach( zone => {
+									zone.sectors.forEach(sector => {
+										sector.investments ? sector.investments.forEach(el => {
+											this.put_data(el);
+										}) : '';
 									});
 								});
 								break;
 							case 'iz_pv':
-								await this.set_production();
-								this.production.forEach( el => {
-									this.zones.forEach(zone => {
-										this.sectors.forEach(sector => {
-											if (zone.id == sector.zone_id && sector.id == el.parent_id && zone.zone_type == 2) {
-												this.put_data(el);
-											}
-										});
+								this.zone_sector.filter(zone => zone.zone_type == 2).forEach( zone => {
+									zone.sectors.forEach(sector => {
+										sector.production ? sector.production.forEach(el => {
+											this.put_data(el);
+										}) : '';
 									});
 								});
 								break;
 							case 'iz_fdi':
-								await this.set_foreign_investments();
-								this.foreign_investments.forEach( el => {
-									this.zones.forEach(zone => {
-										this.sectors.forEach(sector => {
-											if (zone.id == sector.zone_id && sector.id == el.parent_id && zone.zone_type == 2) {
-												this.put_data(el);
-											}
-										});
+								this.zone_sector.filter(zone => zone.zone_type == 2).forEach( zone => {
+									zone.sectors.forEach(sector => {
+										sector.foreign_investments ? sector.foreign_investments.forEach(el => {
+											this.put_data(el);
+										}) : '';
 									});
 								});
 								break;
 							case 'iz_njc':
-								await this.set_number_jobs();
-								this.number_jobs.forEach( el => {
-									this.zones.forEach(zone => {
-										this.sectors.forEach(sector => {
-											if (zone.id == sector.zone_id && sector.id == el.parent_id && zone.zone_type == 2) {
-												this.put_data(el);
-											}
-										});
+								this.zone_sector.filter(zone => zone.zone_type == 2).forEach( zone => {
+									zone.sectors.forEach(sector => {
+										sector.number_jobs ? sector.number_jobs.forEach(el => {
+											this.put_data(el);
+										}) : '';
 									});
 								});
 								break;
 							case 'iz_tv':
-								await this.set_taxes();
-								this.taxes.forEach( el => {
-									this.zones.forEach(zone => {
-										this.sectors.forEach(sector => {
-											if (zone.id == sector.zone_id && sector.id == el.parent_id && zone.zone_type == 2) {
-												this.put_data(el);
-											}
-										});
+								this.zone_sector.filter(zone => zone.zone_type == 2).forEach( zone => {
+									zone.sectors.forEach(sector => {
+										sector.taxes ? sector.taxes.forEach(el => {
+											this.put_data(el);
+										}) : '';
 									});
 								});
 								break;

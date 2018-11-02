@@ -47,6 +47,7 @@ export default {
         ui_component: 'passport_anal_bar',
         ui_component_state: false,
       });
+      this.dispatch('set_passport_content','');
       let updated_levels = state.levels.slice();
       switch (level.id) {
         case 2:
@@ -74,6 +75,7 @@ export default {
 
 
     set_level_b ({commit, state}, level) {
+      this.dispatch('set_passport_content','');
       if (level.id == this.getters.active_level.id) {
         if (level.id == 1) {
           commit('set_level', [LEVEL_1]);
