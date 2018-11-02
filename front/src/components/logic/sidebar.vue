@@ -1258,7 +1258,7 @@ export default {
                   passport_content: 'level_2:diagramm',
                 }]"
               />
-              <pdf 
+              <pdf
                 v-if="active_level.id == 1 || active_level.id == 2"/>
               <reference
                 v-if="active_level.id == 3"
@@ -1566,7 +1566,9 @@ export default {
         && passport_content != 'level_1:sez:numeric'
         && passport_content != 'level_1:iz:diagramm'
       ">
-        <div class="passport-body_item">
+        <div class="passport-body_item"
+          v-if="profile"
+        >
           <!-- <button class="passport-body_item_excel"
             @click="generate_excel">Excel</button> -->
           <button class="passport-body_item_pdf"

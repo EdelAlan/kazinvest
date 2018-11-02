@@ -212,6 +212,30 @@
           v-model="sectormodel['title_project_'+lang]"/>
 
         <p class="editpanel_editsector-tab-input_title-oi"
+          v-text="lang == 'ru' ? 'Тип проекта' : lang == 'en' ? 'Project type': 'Жобаның түрі'"
+        ></p>
+        <select 
+          class="editpanel_editsector-tab-input-oi"
+          v-model="sectormodel.project_type"
+        >
+          <option 
+            value=1
+            :selected="sectormodel.project_type == 1"
+            v-text="lang == 'ru' ? 'Действующий' : lang == 'kz' ? 'Ағымдағы жоба' : 'Ongoing'"
+          ></option> 
+          <option 
+            value=2
+            :selected="sectormodel.project_type == 2"
+            v-text="lang == 'ru' ? 'На стадии реализации' : lang == 'kz' ? 'Iске асырылуда' : 'Underway'"
+          ></option>
+          <option 
+            value=3
+            :selected="sectormodel.project_type == 3"
+            v-text="lang == 'ru' ? 'Свободный' : lang == 'kz' ? 'Бос' : 'Free'"
+          ></option>
+        </select>
+
+        <p class="editpanel_editsector-tab-input_title-oi"
           v-if="sectormodel.project_type == 3" 
           v-text="lang == 'ru' ? 'Делимый' : lang == 'en' ? 'Divisible': 'Бөліседі'"
         ></p>

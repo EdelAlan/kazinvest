@@ -3,6 +3,9 @@ const db_query = require('../util/db_query');
 
 const FIELDS = `
   id,
+  title_ru,
+  title_en,
+  title_kz,
   zone_id,
   status,
   type,
