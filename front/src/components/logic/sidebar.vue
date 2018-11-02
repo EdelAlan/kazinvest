@@ -35,6 +35,8 @@ export default {
       foreign_investments_sum: 0,
       number_jobs_sum: 0,
       taxes_sum: 0,
+      exports_volume_sum: 0,
+      spent_foreign_investments_sum: 0,
 
       iv2014: 0,
       iv2015: 0,
@@ -76,7 +78,19 @@ export default {
       tv2015: 0,
       tv2016: 0,
       tv2017: 0,
-      tv2018: 0
+      tv2018: 0,
+
+      ev2014: 0,
+      ev2015: 0,
+      ev2016: 0,
+      ev2017: 0,
+      ev2018: 0,
+
+      sfi2014: 0,
+      sfi2015: 0,
+      sfi2016: 0,
+      sfi2017: 0,
+      sfi2018: 0,
     };
   },
 
@@ -109,6 +123,8 @@ export default {
       "foreign_investments",
       "number_jobs",
       "taxes",
+      "exports_volume",
+      "spent_foreign_investments",
       "image_modal",
       "video_modal",
       "zone_sector",
@@ -138,6 +154,8 @@ export default {
       "set_number_jobs",
       "set_production",
       "set_taxes",
+      "set_exports_volume",
+      "set_spent_foreign_investments",
       "set_zone_sector",
     ]),
 
@@ -147,6 +165,8 @@ export default {
       await this.set_production();
       await this.set_number_jobs();
       await this.set_taxes();
+      await this.set_exports_volume();
+      await this.set_spent_foreign_investments();
     },
 
     async get_zone_sector() {
@@ -154,13 +174,14 @@ export default {
         case "level_1:sez:numeric":
           await this.set_all_zones();
           await this.set_sectors();
-          // await this.get_all_investments();
           await this.set_zone_sector();
           this.investments_sum = 0;
           this.foreign_investments_sum = 0;
           this.production_sum = 0;
           this.number_jobs_sum = 0;
           this.taxes_sum = 0;
+          this.exports_volume_sum = 0;
+          this.spent_foreign_investments_sum = 0;
           this.zone_sector.filter(zone => zone.zone_type == 1).forEach( zone => {
             zone.sectors.forEach(sector => {
               this.investments_sum += sector.investments.length != 0 ? sector.investments.reduce( (a, it) => {
@@ -182,19 +203,28 @@ export default {
               this.taxes_sum += sector.taxes.length != 0 ? sector.taxes.reduce( (a, it) => {
                   return a + parseInt(it.val,10) 
               }, 0) : 0;
+
+              this.exports_volume_sum += sector.exports_volume.length != 0 ? sector.exports_volume.reduce( (a, it) => {
+                  return a + parseInt(it.val,10) 
+              }, 0) : 0;
+
+              this.spent_foreign_investments_sum += sector.spent_foreign_investments.length != 0 ? sector.spent_foreign_investments.reduce( (a, it) => {
+                  return a + parseInt(it.val,10) 
+              }, 0) : 0;
             });
           });
           break;
         case "level_1:iz:numeric":
           await this.set_all_zones();
           await this.set_sectors();
-          // await this.get_all_investments();
           await this.set_zone_sector();
           this.investments_sum = 0;
           this.foreign_investments_sum = 0;
           this.production_sum = 0;
           this.number_jobs_sum = 0;
           this.taxes_sum = 0;
+          this.exports_volume_sum = 0;
+          this.spent_foreign_investments_sum = 0;
           this.zone_sector.filter(zone => zone.zone_type == 2).forEach( zone => {
             zone.sectors.forEach(sector => {
               this.investments_sum += sector.investments.length != 0 ? sector.investments.reduce( (a, it) => {
@@ -216,16 +246,25 @@ export default {
               this.taxes_sum += sector.taxes.length != 0 ? sector.taxes.reduce( (a, it) => {
                   return a + parseInt(it.val,10) 
               }, 0) : 0;
+
+              this.exports_volume_sum += sector.exports_volume.length != 0 ? sector.exports_volume.reduce( (a, it) => {
+                  return a + parseInt(it.val,10) 
+              }, 0) : 0;
+
+              this.spent_foreign_investments_sum += sector.spent_foreign_investments.length != 0 ? sector.spent_foreign_investments.reduce( (a, it) => {
+                  return a + parseInt(it.val,10) 
+              }, 0) : 0;
             });
           });
           break;
         case "level_2:numeric":
-          // await this.get_all_investments();
           this.investments_sum = 0;
           this.foreign_investments_sum = 0;
           this.production_sum = 0;
           this.number_jobs_sum = 0;
           this.taxes_sum = 0;
+          this.exports_volume_sum = 0;
+          this.spent_foreign_investments_sum = 0;
           this.sectors.forEach(sector => {
             this.investments.forEach(el => {
               if (sector.id == el.parent_id) {
@@ -256,15 +295,28 @@ export default {
                 this.taxes_sum += parseInt(el.val,10);
               }
             });
+
+            this.exports_volume.forEach(el => {
+              if (sector.id == el.parent_id) {
+                this.exports_volume_sum += parseInt(el.val,10);
+              }
+            });
+
+            this.spent_foreign_investments.forEach(el => {
+              if (sector.id == el.parent_id) {
+                this.spent_foreign_investments_sum += parseInt(el.val,10);
+              }
+            });
           });
           break;
         case "level_3:numeric":
-          // await this.get_all_investments();
           this.investments_sum = 0;
           this.foreign_investments_sum = 0;
           this.production_sum = 0;
           this.number_jobs_sum = 0;
           this.taxes_sum = 0;
+          this.exports_volume_sum = 0;
+          this.spent_foreign_investments_sum = 0;
 
           this.investments.forEach(el => {
             if (this.selected_sector.id == el.parent_id) {
@@ -293,6 +345,18 @@ export default {
           this.taxes.forEach(el => {
             if (this.selected_sector.id == el.parent_id) {
               this.taxes_sum += parseInt(el.val,10);
+            }
+          });
+
+          this.exports_volume.forEach(el => {
+            if (this.selected_sector.id == el.parent_id) {
+              this.exports_volume_sum += parseInt(el.val,10);
+            }
+          });
+
+          this.spent_foreign_investments.forEach(el => {
+            if (this.selected_sector.id == el.parent_id) {
+              this.spent_foreign_investments_sum += parseInt(el.val,10);
             }
           });
           break;
@@ -366,12 +430,19 @@ export default {
       this.tv2017 = 0;
       this.tv2018 = 0;
 
-      await this.set_investments();
-      await this.set_investment();
-      await this.set_foreign_investments();
-      await this.set_production();
-      await this.set_number_jobs();
-      await this.set_taxes();
+      this.ev2014 = 0;
+      this.ev2015 = 0;
+      this.ev2016 = 0;
+      this.ev2017 = 0;
+      this.ev2018 = 0;
+
+      this.sfi2014 = 0;
+      this.sfi2015 = 0;
+      this.sfi2016 = 0;
+      this.sfi2017 = 0;
+      this.sfi2018 = 0;
+
+      await get_all_investments();
 
       this.investments.forEach(el => {
           this.put_data(el, 'iv');
@@ -387,6 +458,12 @@ export default {
       });
       this.taxes.forEach(el => {
           this.put_data(el, 'tv');
+      });
+      this.exports_value.forEach(el => {
+          this.put_data(el, 'ev');
+      });
+      this.spent_foreign_investments.forEach(el => {
+          this.put_data(el, 'sfi');
       });
     },
 
@@ -484,6 +561,44 @@ export default {
                     break;
                 case 2018:
                     this.tv2018 += parseInt(el.val, 10);
+                    break;
+            }
+            break;
+          case 'ev':
+            switch(el.year) {
+                case 2014:
+                    this.ev2014 += parseInt(el.val, 10);
+                    break;
+                case 2015:
+                    this.ev2015 += parseInt(el.val, 10);
+                    break;
+                case 2016:
+                    this.ev2016 += parseInt(el.val, 10);
+                    break;
+                case 2017:
+                    this.ev2017 += parseInt(el.val, 10);
+                    break;
+                case 2018:
+                    this.ev2018 += parseInt(el.val, 10);
+                    break;
+            }
+            break;
+          case 'sfi':
+            switch(el.year) {
+                case 2014:
+                    this.sfi2014 += parseInt(el.val, 10);
+                    break;
+                case 2015:
+                    this.sfi2015 += parseInt(el.val, 10);
+                    break;
+                case 2016:
+                    this.sfi2016 += parseInt(el.val, 10);
+                    break;
+                case 2017:
+                    this.sfi2017 += parseInt(el.val, 10);
+                    break;
+                case 2018:
+                    this.sfi2018 += parseInt(el.val, 10);
                     break;
             }
             break;
@@ -1705,6 +1820,24 @@ export default {
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
             tenge_kz: ' Теңге',
+          }, {
+            id: 'sez_ev',
+            title_ru: 'Объем экспорта',
+            title_en: 'Export volume',
+            title_kz: 'Экспорттың көлемі',
+            sum: this.numseparator(exports_volume_sum),
+            tenge_ru: ' Тенге',
+            tenge_en: ' Tenge',
+            tenge_kz: ' Теңге',
+          }, {
+            id: 'sez_sfi',
+            title_ru: 'Привлечено иностранных инвестиций на 1 тг., затраченных бюджетом',
+            title_en: 'Attracted foreign investments for 1 tenge spent by the budget',
+            title_kz: 'Бюджеттен жұмсалған 1 теңгеге шетелдік инвестициялар тартылды',
+            sum: this.numseparator(spent_foreign_investments_sum),
+            tenge_ru: ' Тенге',
+            tenge_en: ' Tenge',
+            tenge_kz: ' Теңге',
           }]"
         >
           <span class="reference-item-sum" v-text="item.sum + item['tenge_' + lang]+'\n'"></span>
@@ -1763,6 +1896,24 @@ export default {
             title_en: 'Tax volume',
             title_kz: 'Салықтық аударымдардың сомасы',
             sum: this.numseparator(taxes_sum),
+            tenge_ru: ' Тенге',
+            tenge_en: ' Tenge',
+            tenge_kz: ' Теңге',
+          }, {
+            id: 'iz_ev',
+            title_ru: 'Объем экспорта',
+            title_en: 'Export volume',
+            title_kz: 'Экспорттың көлемі',
+            sum: this.numseparator(exports_volume_sum),
+            tenge_ru: ' Тенге',
+            tenge_en: ' Tenge',
+            tenge_kz: ' Теңге',
+          }, {
+            id: 'iz_sfi',
+            title_ru: 'Привлечено иностранных инвестиций на 1 тг., затраченных бюджетом',
+            title_en: 'Attracted foreign investments for 1 tenge spent by the budget',
+            title_kz: 'Бюджеттен жұмсалған 1 теңгеге шетелдік инвестициялар тартылды',
+            sum: this.numseparator(spent_foreign_investments_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
             tenge_kz: ' Теңге',
@@ -1900,6 +2051,24 @@ export default {
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
             tenge_kz: ' Теңге',
+          }, {
+            id: 'ev',
+            title_ru: 'Объем экспорта',
+            title_en: 'Export volume',
+            title_kz: 'Экспорттың көлемі',
+            sum: this.numseparator(exports_volume_sum),
+            tenge_ru: ' Тенге',
+            tenge_en: ' Tenge',
+            tenge_kz: ' Теңге',
+          }, {
+            id: 'sfi',
+            title_ru: 'Привлечено иностранных инвестиций на 1 тг., затраченных бюджетом',
+            title_en: 'Attracted foreign investments for 1 tenge spent by the budget',
+            title_kz: 'Бюджеттен жұмсалған 1 теңгеге шетелдік инвестициялар тартылды',
+            sum: this.numseparator(spent_foreign_investments_sum),
+            tenge_ru: ' Тенге',
+            tenge_en: ' Tenge',
+            tenge_kz: ' Теңге',
           }]"
         >
           <span class="reference-item-sum" v-text="item.sum + item['tenge_' + lang]+'\n'"></span>
@@ -1958,6 +2127,24 @@ export default {
             title_en: 'Tax volume',
             title_kz: 'Салықтық аударымдардың сомасы',
             sum: this.numseparator(taxes_sum),
+            tenge_ru: ' Тенге',
+            tenge_en: ' Tenge',
+            tenge_kz: ' Теңге',
+          }, {
+            id: 'ev',
+            title_ru: 'Объем экспорта',
+            title_en: 'Export volume',
+            title_kz: 'Экспорттың көлемі',
+            sum: this.numseparator(exports_volume_sum),
+            tenge_ru: ' Тенге',
+            tenge_en: ' Tenge',
+            tenge_kz: ' Теңге',
+          }, {
+            id: 'sfi',
+            title_ru: 'Привлечено иностранных инвестиций на 1 тг., затраченных бюджетом',
+            title_en: 'Attracted foreign investments for 1 tenge spent by the budget',
+            title_kz: 'Бюджеттен жұмсалған 1 теңгеге шетелдік инвестициялар тартылды',
+            sum: this.numseparator(spent_foreign_investments_sum),
             tenge_ru: ' Тенге',
             tenge_en: ' Tenge',
             tenge_kz: ' Теңге',

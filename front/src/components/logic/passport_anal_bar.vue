@@ -38,6 +38,8 @@
 				'number_jobs',
 				'production',
 				'taxes',
+				'exports_volume',
+				'spent_foreign_investments',
 				'zones',
 				'sectors',
 				'selected_sector',
@@ -58,6 +60,8 @@
 				'set_number_jobs',
 				'set_production',
 				'set_taxes',
+				'set_exports_volume',
+				'set_spent_foreign_investments',
 				'set_sectors',
 			]),
 
@@ -143,6 +147,24 @@
 									});
 								});
 								break;
+							case 'sez_ev':
+								this.zone_sector.filter(zone => zone.zone_type == 1).forEach( zone => {
+									zone.sectors.forEach(sector => {
+										sector.exports_volume ? sector.exports_volume.forEach(el => {
+											this.put_data(el);
+										}) : '';
+									});
+								});
+								break;
+							case 'sez_sfi':
+								this.zone_sector.filter(zone => zone.zone_type == 1).forEach( zone => {
+									zone.sectors.forEach(sector => {
+										sector.spent_foreign_investments ? sector.spent_foreign_investments.forEach(el => {
+											this.put_data(el);
+										}) : '';
+									});
+								});
+								break;
 							case 'iz_iv':
 								this.zone_sector.filter(zone => zone.zone_type == 2).forEach( zone => {
 									zone.sectors.forEach(sector => {
@@ -183,6 +205,24 @@
 								this.zone_sector.filter(zone => zone.zone_type == 2).forEach( zone => {
 									zone.sectors.forEach(sector => {
 										sector.taxes ? sector.taxes.forEach(el => {
+											this.put_data(el);
+										}) : '';
+									});
+								});
+								break;
+							case 'iz_ev':
+								this.zone_sector.filter(zone => zone.zone_type == 2).forEach( zone => {
+									zone.sectors.forEach(sector => {
+										sector.exports_volume ? sector.exports_volume.forEach(el => {
+											this.put_data(el);
+										}) : '';
+									});
+								});
+								break;
+							case 'iz_sfi':
+								this.zone_sector.filter(zone => zone.zone_type == 2).forEach( zone => {
+									zone.sectors.forEach(sector => {
+										sector.spent_foreign_investments ? sector.spent_foreign_investments.forEach(el => {
 											this.put_data(el);
 										}) : '';
 									});
@@ -242,6 +282,26 @@
 									});
 								});
 								break;
+							case 'ev':
+								await this.set_exports_volume();
+								this.exports_volume.forEach(el => {
+									this.sectors.forEach(sector => {
+										if (sector.id == el.parent_id) {
+											this.put_data(el);
+										}
+									});
+								});
+								break;
+							case 'sfi':
+								await this.set_spent_foreign_investments();
+								this.spent_foreign_investments.forEach(el => {
+									this.sectors.forEach(sector => {
+										if (sector.id == el.parent_id) {
+											this.put_data(el);
+										}
+									});
+								});
+								break;
 						}
 						break;
 					case 3:
@@ -273,6 +333,18 @@
 							case 'tv':
 								await this.set_taxes();
 								this.taxes.forEach(el => {
+									this.put_data(el);
+								});
+								break;
+							case 'ev':
+								await this.set_exports_volume();
+								this.exports_volume.forEach(el => {
+									this.put_data(el);
+								});
+								break;
+							case 'sfi':
+								await this.set_spent_foreign_investments();
+								this.spent_foreign_investments.forEach(el => {
 									this.put_data(el);
 								});
 								break;

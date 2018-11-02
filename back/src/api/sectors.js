@@ -280,8 +280,67 @@ router.put('/:id', body_parser.json(), async (req, res) => {
     }
   });
 
+  const to_export_volumes = JSON.parse(JSON.stringify({
+    2014: req.body.exports_volume2014,
+    2015: req.body.exports_volume2015,
+    2016: req.body.exports_volume2016,
+    2017: req.body.exports_volume2017,
+    2018: req.body.exports_volume2018,
+  }));
+  Object.keys(to_export_volumes).map(async key => {
+    var s = await db_query(`SELECT parent_id FROM qindicators_exports_volume 
+      WHERE qindicators_exports_volume.parent_id = ${req.params.id}
+      AND qindicators_exports_volume.year = ${key}
+    `);
+    var value = parseInt(to_export_volumes[key],10);
+
+    if (s[0]) {
+      const sql = `
+        UPDATE qindicators_exports_volume SET val = $1
+        WHERE qindicators_exports_volume.parent_id = ${req.params.id} AND qindicators_exports_volume.year = ${key}
+      `;
+      await db_query(sql, [value])
+    } else {
+      const sql = `
+        INSERT INTO qindicators_exports_volume (parent_id, year, val) 
+        VALUES ($1 , $2, $3)
+      `;
+      await db_query(sql, [req.params.id, key, value]);
+    }
+  });
+
+  const to_spent_foreign_investments = JSON.parse(JSON.stringify({
+    2014: req.body.spent_foreign_investments2014,
+    2015: req.body.spent_foreign_investments2015,
+    2016: req.body.spent_foreign_investments2016,
+    2017: req.body.spent_foreign_investments2017,
+    2018: req.body.spent_foreign_investments2018,
+  }));
+  Object.keys(to_spent_foreign_investments).map(async key => {
+    var s = await db_query(`SELECT parent_id FROM qindicators_sfi
+      WHERE qindicators_sfi.parent_id = ${req.params.id}
+      AND qindicators_sfi.year = ${key}
+    `);
+    var value = parseInt(to_spent_foreign_investments[key],10);
+
+    if (s[0]) {
+      const sql = `
+        UPDATE qindicators_sfi SET val = $1
+        WHERE qindicators_sfi.parent_id = ${req.params.id} AND qindicators_sfi.year = ${key}
+      `;
+      await db_query(sql, [value])
+    } else {
+      const sql = `
+        INSERT INTO qindicators_sfi (parent_id, year, val) 
+        VALUES ($1 , $2, $3)
+      `;
+      await db_query(sql, [req.params.id, key, value]);
+    }
+  });
+
+  console.log(req.body.geom)
   const to_sectors_geom = JSON.parse(JSON.stringify({
-    geom: req.body.geom.features[0].geometry,
+    geom: req.body.geom.features ? req.body.geom[0].geometry : req.body.geom,
   }));
   const to_sectors_geom_value = Object.keys(to_sectors_geom).map(key => {
     return to_sectors_geom[key];
@@ -290,7 +349,7 @@ router.put('/:id', body_parser.json(), async (req, res) => {
     UPDATE sectors SET geom = ST_GeomFromGeoJSON( $1 )
     WHERE sectors.id = ${req.params.id}
   `;
-  await db_query(sql_geom, [req.body.geom.features[0].geometry]);
+  await db_query(sql_geom, req.body.geom.features ? [req.body.geom.features[0].geometry] : [req.body.geom.geometry]);
 
   const to_sectors = JSON.parse(JSON.stringify({
     ...req.body,

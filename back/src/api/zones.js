@@ -153,8 +153,52 @@ router.get('/:id', async (req, res) => {
 router.put('/:id', body_parser.json(), async (req, res) => {
   const filespath = '/files/zones/' + req.body.id + '/';
   const photos = req.body.physic_photos;
-  console.log(filespath)
-  console.log(req.files)
+  // console.log(filespath)
+  // console.log(req.files)
+
+  req.body.infrastructures.forEach(infrastructure => {
+    const to_infrastructures = JSON.parse(JSON.stringify({
+      ...infrastructure,
+      created_date: undefined,
+      id: undefined,
+      title_ru: undefined,
+      title_en: undefined,
+      title_kz: undefined,
+      zone_id: undefined,
+      status: undefined,
+      type: undefined,
+      st_asgeojson: undefined,
+    }));
+    const to_infrastructures_values = Object.keys(to_infrastructures).map(key => {
+      return to_infrastructures[key];
+    });
+  });
+  // const to_infrastructures = JSON.parse(JSON.stringify({
+  //   ...req.body.infrastructures,
+  //   created_date: undefined,
+  //   id: undefined,
+  //   title_ru: undefined,
+  //   title_en: undefined,
+  //   title_kz: undefined,
+  //   zone_id: undefined,
+  //   status: undefined,
+  //   type: undefined,
+  //   st_asgeojson: undefined,
+  // }));
+  // const to_infrastructures_values = Object.keys(to_infrastructures).map(key => {
+  //   return to_infrastructures[key];
+  // });
+  // console.log(to_infrastructures);
+  // console.log(to_infrastructures_values);
+  // const sql = `
+  //   UPDATE infrastructures SET
+  //     ${Object.keys(to_zone).map((key, idx) => {
+  //       return key + ' = $' + (++idx)
+  //     }).join(', ')}
+  //   WHERE zone.id = ${req.body.id}
+  // `;
+
+
   const to_zone = JSON.parse(JSON.stringify({
     ...req.body,
     id: undefined,
@@ -162,8 +206,10 @@ router.put('/:id', body_parser.json(), async (req, res) => {
     videos: undefined,
     photos: undefined,
     physic_photos: undefined,
+    infrastructures: undefined,
+    objects: undefined,
   }));
-  console.log(photos)
+  // console.log(photos)
   // return;
   const to_zone_values = Object.keys(to_zone).map(key => {
     return to_zone[key];
@@ -175,7 +221,7 @@ router.put('/:id', body_parser.json(), async (req, res) => {
       }).join(', ')}
     WHERE zone.id = ${req.body.id}
   `;
-  console.log(sql)
+  // console.log(sql)
   // return;
   return await db_query(sql, [...to_zone_values])
     .then(_ => res.json({

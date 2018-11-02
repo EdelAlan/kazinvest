@@ -8,6 +8,8 @@ export default {
     number_jobs: [],
     production: [],
     taxes: [],
+    exports_volume: [],
+    spent_foreign_investments: [],
   }),
 
   mutations: {
@@ -29,6 +31,12 @@ export default {
     set_taxes (state, taxes) {
       state.taxes = taxes;
     },
+    set_exports_volume (state, exports_volume) {
+      state.exports_volume = exports_volume;
+    },
+    set_spent_foreign_investments (state, spent_foreign_investments) {
+      state.spent_foreign_investments = spent_foreign_investments;
+    },
   },
 
   getters: {
@@ -44,6 +52,8 @@ export default {
     number_jobs: state => state.number_jobs,
     production: state => state.production,
     taxes: state => state.taxes,
+    exports_volume: state => state.exports_volume,
+    spent_foreign_investments: state => state.spent_foreign_investments,
   },
 
   actions: {
@@ -87,6 +97,20 @@ export default {
         path: this.getters.api_path + '/back/api/taxes' + (this.getters.selected_sector ? '?parent_id=' + this.getters.selected_sector.id : ''),
       }).then(taxes => {
         commit('set_taxes', taxes);
+      });
+    },
+    set_exports_volume ({ commit }) {
+      return fetcher({
+        path: this.getters.api_path + '/back/api/exports_volume' + (this.getters.selected_sector ? '?parent_id=' + this.getters.selected_sector.id : ''),
+      }).then(exports_volume => {
+        commit('set_exports_volume', exports_volume);
+      });
+    },
+    set_spent_foreign_investments ({ commit }) {
+      return fetcher({
+        path: this.getters.api_path + '/back/api/spent_foreign_investments' + (this.getters.selected_sector ? '?parent_id=' + this.getters.selected_sector.id : ''),
+      }).then(spent_foreign_investments => {
+        commit('set_spent_foreign_investments', spent_foreign_investments);
       });
     },
   },

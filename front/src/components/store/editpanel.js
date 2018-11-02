@@ -97,6 +97,18 @@ export default {
               taxes2016: getters.taxes.filter(el => el.parent_id == sector.id && el.year == 2016)[0] ? getters.taxes.filter(el => el.parent_id == sector.id && el.year == 2016)[0].val : 0,
               taxes2017: getters.taxes.filter(el => el.parent_id == sector.id && el.year == 2017)[0] ? getters.taxes.filter(el => el.parent_id == sector.id && el.year == 2017)[0].val : 0,
               taxes2018: getters.taxes.filter(el => el.parent_id == sector.id && el.year == 2018)[0] ? getters.taxes.filter(el => el.parent_id == sector.id && el.year == 2018)[0].val : 0,
+
+              exports_volume2014: getters.exports_volume.filter(el => el.parent_id == sector.id && el.year == 2014)[0] ? getters.exports_volume.filter(el => el.parent_id == sector.id && el.year == 2014)[0].val : 0,
+              exports_volume2015: getters.exports_volume.filter(el => el.parent_id == sector.id && el.year == 2015)[0] ? getters.exports_volume.filter(el => el.parent_id == sector.id && el.year == 2015)[0].val : 0,
+              exports_volume2016: getters.exports_volume.filter(el => el.parent_id == sector.id && el.year == 2016)[0] ? getters.exports_volume.filter(el => el.parent_id == sector.id && el.year == 2016)[0].val : 0,
+              exports_volume2017: getters.exports_volume.filter(el => el.parent_id == sector.id && el.year == 2017)[0] ? getters.exports_volume.filter(el => el.parent_id == sector.id && el.year == 2017)[0].val : 0,
+              exports_volume2018: getters.exports_volume.filter(el => el.parent_id == sector.id && el.year == 2018)[0] ? getters.exports_volume.filter(el => el.parent_id == sector.id && el.year == 2018)[0].val : 0,
+              
+              spent_foreign_investments2014: getters.spent_foreign_investments.filter(el => el.parent_id == sector.id && el.year == 2014)[0] ? getters.spent_foreign_investments.filter(el => el.parent_id == sector.id && el.year == 2014)[0].val : 0,
+              spent_foreign_investments2015: getters.spent_foreign_investments.filter(el => el.parent_id == sector.id && el.year == 2015)[0] ? getters.spent_foreign_investments.filter(el => el.parent_id == sector.id && el.year == 2015)[0].val : 0,
+              spent_foreign_investments2016: getters.spent_foreign_investments.filter(el => el.parent_id == sector.id && el.year == 2016)[0] ? getters.spent_foreign_investments.filter(el => el.parent_id == sector.id && el.year == 2016)[0].val : 0,
+              spent_foreign_investments2017: getters.spent_foreign_investments.filter(el => el.parent_id == sector.id && el.year == 2017)[0] ? getters.spent_foreign_investments.filter(el => el.parent_id == sector.id && el.year == 2017)[0].val : 0,
+              spent_foreign_investments2018: getters.spent_foreign_investments.filter(el => el.parent_id == sector.id && el.year == 2018)[0] ? getters.spent_foreign_investments.filter(el => el.parent_id == sector.id && el.year == 2018)[0].val : 0,
             }
           }),
           infrastructures: getters.all_infrastructures.filter(it => it.zone_id == zone.id),

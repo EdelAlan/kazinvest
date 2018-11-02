@@ -75,6 +75,8 @@ export default {
               foreign_investments: getters.foreign_investments.filter(el => el.parent_id == sector.id),
               number_jobs: getters.number_jobs.filter(el => el.parent_id == sector.id),
               taxes: getters.taxes.filter(el => el.parent_id == sector.id),
+              exports_volume: getters.exports_volume.filter(el => el.parent_id == sector.id),
+              spent_foreign_investments: getters.spent_foreign_investments.filter(el => el.parent_id == sector.id),
             }
           }),
         }

@@ -83,6 +83,18 @@
           taxes2016: null,
           taxes2017: null,
           taxes2018: null,
+
+          exports_volume2014: null,
+          exports_volume2015: null,
+          exports_volume2016: null,
+          exports_volume2017: null,
+          exports_volume2018: null,
+
+          spent_foreign_investments2014: null,
+          spent_foreign_investments2015: null,
+          spent_foreign_investments2016: null,
+          spent_foreign_investments2017: null,
+          spent_foreign_investments2018: null,
         },
       }
     },
@@ -494,6 +506,77 @@
         <input type="number" min="0"
           class="editpanel_editsector-tab-input"
           v-model="sectormodel.taxes2018"/>
+
+
+        
+        <h3 class="editpanel_editsector-tab-title"
+        v-text="lang == 'ru' ? 'Объем экспорта' : lang == 'en' ? 'Export volume' : 'Экспорттың көлемі'"></h3>
+
+        <p class="editpanel_editsector-tab-input_title" 
+          v-text="2014"></p>
+        <input type="number" min="0"
+          class="editpanel_editsector-tab-input"
+          v-model="sectormodel.exports_volume2014"/>
+
+        <p class="editpanel_editsector-tab-input_title" 
+          v-text="2015"></p>
+        <input type="number" min="0"
+          class="editpanel_editsector-tab-input"
+          v-model="sectormodel.exports_volume2015"/>
+
+        <p class="editpanel_editsector-tab-input_title" 
+          v-text="2016"></p>
+        <input type="number" min="0"
+          class="editpanel_editsector-tab-input"
+          v-model="sectormodel.exports_volume2016"/>
+
+        <p class="editpanel_editsector-tab-input_title" 
+          v-text="2017"></p>
+        <input type="number" min="0"
+          class="editpanel_editsector-tab-input"
+          v-model="sectormodel.exports_volume2017"/>
+
+        <p class="editpanel_editsector-tab-input_title" 
+          v-text="2018"></p>
+        <input type="number" min="0"
+          class="editpanel_editsector-tab-input"
+          v-model="sectormodel.exports_volume2018"/>
+        
+
+
+
+        <h3 class="editpanel_editsector-tab-title"
+        v-text="lang == 'ru' ? 'Привлечено иностранных инвестиций на 1 тг., затраченных бюджетом' : lang == 'en' ? 'Attracted foreign investments for 1 tenge spent by the budget' : 'Бюджеттен жұмсалған 1 теңгеге шетелдік инвестициялар тартылды'"></h3>
+
+        <p class="editpanel_editsector-tab-input_title" 
+          v-text="2014"></p>
+        <input type="number" min="0"
+          class="editpanel_editsector-tab-input"
+          v-model="sectormodel.spent_foreign_investments2014"/>
+
+        <p class="editpanel_editsector-tab-input_title" 
+          v-text="2015"></p>
+        <input type="number" min="0"
+          class="editpanel_editsector-tab-input"
+          v-model="sectormodel.spent_foreign_investments2015"/>
+
+        <p class="editpanel_editsector-tab-input_title" 
+          v-text="2016"></p>
+        <input type="number" min="0"
+          class="editpanel_editsector-tab-input"
+          v-model="sectormodel.spent_foreign_investments2016"/>
+
+        <p class="editpanel_editsector-tab-input_title" 
+          v-text="2017"></p>
+        <input type="number" min="0"
+          class="editpanel_editsector-tab-input"
+          v-model="sectormodel.spent_foreign_investments2017"/>
+
+        <p class="editpanel_editsector-tab-input_title" 
+          v-text="2018"></p>
+        <input type="number" min="0"
+          class="editpanel_editsector-tab-input"
+          v-model="sectormodel.spent_foreign_investments2018"/>
 
       </div>
 

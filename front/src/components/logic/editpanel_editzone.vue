@@ -326,13 +326,13 @@
     top: 126px
   }
 
-  .mapboxgl-map {
+  /* .mapboxgl-map {
     height: 100%;
     width: 50%;
     position: absolute;
     right: 0;
     top: 126px;
-  }
+  } */
 
   .editpanel_editzone-basemaps {
     z-index: 1000;
