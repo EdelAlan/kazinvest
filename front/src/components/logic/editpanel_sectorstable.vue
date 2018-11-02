@@ -35,6 +35,8 @@
         await this.set_production();
         await this.set_number_jobs();
         await this.set_taxes();
+        await this.set_all_infrastructures();
+        await this.set_all_objects();
         return this.set_zone_sectors();
       } else {
         await this.set_selected_zone(this.profile.member_zone);
@@ -55,6 +57,8 @@
       'set_production',
       'set_number_jobs',
       'set_taxes',
+      'set_all_infrastructures',
+      'set_all_objects',
     ]),
 
   }

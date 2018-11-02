@@ -489,7 +489,7 @@ export default {
 
       this.popupm
           .setLngLat(features[0].geometry.coordinates.slice())
-          .setHTML(features[0].properties['title_' + this.lang])
+          .setHTML(features[0].properties['title_' + this.lang] + features[0].properties.capacity)
           .addTo(this._mapboxgl_map);
       
     });
@@ -508,7 +508,7 @@ export default {
       this._mapboxgl_map.getCanvas().style.cursor = 'pointer';
       this.popupm
           .setLngLat([e.lngLat.lng, e.lngLat.lat])
-          .setHTML(features[0].properties['title_' + this.lang])
+          .setHTML(features[0].properties['title_' + this.lang] + features[0].properties.capacity)
           .addTo(this._mapboxgl_map);
     });
 
@@ -1280,7 +1280,7 @@ export default {
                 'type': 'Feature',
                 'geometry': JSON.parse(el.st_asgeojson),
                 'properties': {
-                  'type': el.type,
+                  'capacity': el.capacity && el.unit ? '<br>' + el.capacity + ' ' + el.unit : '',
                   'color': el.color,
                   'title_ru': el.title_ru,
                   'title_en': el.title_en,
@@ -1294,7 +1294,7 @@ export default {
                   'type': 'Feature',
                   'geometry': obj.geometry,
                   'properties': {
-                    'type': el.type,
+                    'capacity': el.capacity && el.unit ? '<br>' + el.capacity + ' ' + el.unit : '',
                     'color': el.color,
                     'title_ru': el.title_ru,
                     'title_en': el.title_en,
@@ -1345,7 +1345,7 @@ export default {
             'type': 'Feature',
             'geometry': JSON.parse(el.st_asgeojson),
             'properties': {
-              'type': el.type,
+              'capacity': el.capacity && el.unit ? '<br>' + el.capacity + ' ' + el.unit : '',
               'color': el.color,
               'title_ru': el.title_ru,
               'title_en': el.title_en,

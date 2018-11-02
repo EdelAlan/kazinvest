@@ -1,6 +1,9 @@
 <script>
   import { mapGetters, mapActions } from 'vuex';  
   import tabs from '../ui/tabs';  
+  import editmap from '../logic/editmap';
+  import reset_sector_map from '../logic/editpanel_reset_sector_map';
+  import basemaps from '../logic/basemaps';
 
   export default {
     data () {
@@ -23,16 +26,21 @@
           videos: null,
           photos: null,
 
-          // alan объявить поле для показателей
           budget_allocated: null,
           budget_need: null,
           level: null,
+
+          infrastructures: null,
+          objects: null,
         },
       }
     },
 
     components: {
       tabs,
+      editmap,
+      reset_sector_map,
+      basemaps,
     },
 
     computed: mapGetters([
@@ -44,6 +52,7 @@
     methods: {
       ...mapActions([
         'update_zone',
+        'set_basemap',
       ]),
       set_photo ({ target: { files }}) {
         this.zonemodel.physic_photos = files[0];
@@ -65,6 +74,9 @@
       this.zonemodel.physic_photos = {
         0: null,
       };
+
+      console.log(this.zonemodel.infrastructures);
+      console.log(this.zonemodel.objects);
     }
   }
 </script>
@@ -128,23 +140,23 @@
 
 
       <div class="editpanel_editzone-tab" slot="tab_0">
-        <h3 class="editpanel_editsector-tab-title" v-text="lang == 'ru' ? 'Название' : lang == 'en' ? 'Title' : 'Атауы'"></h3>
+        <h3 class="editpanel_editzone-tab-title" v-text="lang == 'ru' ? 'Название' : lang == 'en' ? 'Title' : 'Атауы'"></h3>
         <input
           v-model="zonemodel['title_' + lang]"
         />
-        <h3 class="editpanel_editsector-tab-title"
+        <h3 class="editpanel_editzone-tab-title"
            v-text="lang == 'ru' ? 'Описание' : lang == 'en' ? 'Description' : 'Сипаттама'"
         ></h3>
         <textarea style="width: 100%; height: 100px;"
           v-model="zonemodel['description_' + lang]">
         </textarea>
-        <h3 class="editpanel_editsector-tab-title"
+        <h3 class="editpanel_editzone-tab-title"
            v-text="lang == 'ru' ? 'Описание региона' : lang == 'en' ? 'Region description' : 'Аймақтың сипаттамасы'"
         ></h3>
         <textarea style="width: 100%; height: 100px;"
           v-model="zonemodel['region_description_' + lang]">
         </textarea>
-        <h3 class="editpanel_editsector-tab-title"
+        <h3 class="editpanel_editzone-tab-title"
           v-text="lang == 'ru' ? 'Маркетинговые материалы' : lang == 'en' ? 'Merketing materials' : 'Маркетингтік материалдар'"
         ></h3>
         <div class="sidebar-market_wrap">
@@ -153,13 +165,13 @@
           </div>
           <input type="file" v-on:change="set_photo" />
         </div>
-        <h3 class="editpanel_editsector-tab-title"
+        <h3 class="editpanel_editzone-tab-title"
           v-text="lang == 'en' ? 'Video' : 'Видео'"
         ></h3>
         <div class="sidebar-market_wrap">
           <div v-for="video in zonemodel.videos" class="sidebar-passport_video"></div>
         </div>
-        <h3 class="editpanel_editsector-tab-title"
+        <h3 class="editpanel_editzone-tab-title"
           v-text="lang == 'ru' ? 'Файлы' : lang == 'en' ? 'Files' : 'Файлдар'"
         ></h3>
         <div class="sidebar-market_file">
@@ -168,7 +180,7 @@
             <div class="sidebar-market_pdf_text">{{file['name_' + lang]}}</div>
           </a>
         </div>
-        <h3 class="editpanel_editsector-tab-title"
+        <h3 class="editpanel_editzone-tab-title"
           v-text="lang == 'ru' ? 'Контакты' : lang == 'en' ? 'Contacts' : 'Байланыс'"
         ></h3>
         <div class="sidebar-passport_padding">
@@ -180,7 +192,7 @@
       </div>
 
       <div class="editpanel_editzone-tab" slot="tab_1">
-        <h3 class="editpanel_editsector-tab-title"
+        <h3 class="editpanel_editzone-tab-title"
           v-text="lang == 'ru' ? 'Объем затраченных средств из бюджета на инфаструктуру' : lang == 'en' ? 'Budget infrastructural expenses' : 'Бюджеттен инфрақұрылымға жұмсалған қаражаттар'"
         ></h3>
         <p class="editpanel_editzone-tab-input_title" 
@@ -200,8 +212,53 @@
           v-model="zonemodel.level"/>
       </div>
 
-      <div slot="tab_2">
-      2
+      <div class="editpanel_editzone-tab" slot="tab_2">
+        <h3 class="editpanel_editzone-tab-title"
+          v-text="lang == 'ru' ? 'Инфраструктура' : lang == 'en' ? 'Infrastructure' : 'Инфрақұрылым'"
+        ></h3>
+        <div
+          v-for="infrastructure in zonemodel.infrastructures"
+        >
+          <p class="editpanel_editzone-tab-input_title" 
+            v-text="infrastructure['title_' + lang]"></p>
+
+          <div class="editpanel_editzone-tab-input_subtitle" 
+            v-text="'Атрибут'"></div>
+          <input type="text"
+            class="editpanel_editzone-tab-input"
+            v-model="infrastructure.capacity"/>
+          <div class="editpanel_editzone-tab-input_subtitle" 
+            v-text="'Единица измерения'"></div>
+          <input type="text"
+            class="editpanel_editzone-tab-input"
+            v-model="infrastructure.unit"/>
+        </div>
+
+        <h3 class="editpanel_editzone-tab-title"
+          v-text="lang == 'ru' ? 'Объекты' : lang == 'en' ? 'Objects' : 'Объектілер'"
+        ></h3>
+        <div
+          v-for="object in zonemodel.objects"
+        >
+          <p class="editpanel_editzone-tab-input_title" 
+            v-text="object['title_' + lang]"></p>
+
+          <div class="editpanel_editzone-tab-input_subtitle" 
+            v-text="'Атрибут'"></div>
+          <input type="text"
+            class="editpanel_editzone-tab-input"
+            v-model="object.capacity"/>
+          <div class="editpanel_editzone-tab-input_subtitle" 
+            v-text="'Единица измерения'"></div>
+          <input type="text"
+            class="editpanel_editzone-tab-input"
+            v-model="object.unit"/>
+        </div>
+
+        <!-- <editmap class="editpanel_editzone-map"/>
+        <reset_sector_map />
+        <basemaps class="editpanel_editzone-basemaps" :style="{ top: '385px' }"
+          v-on:click="set_basemap"/> -->
       </div>
     </tabs>
   </div>
@@ -246,14 +303,39 @@
 
   .editpanel_editzone-tab-input_title {
     font-weight: normal;
+    font-size: 16px;
+    color: #50C7F9;
+  }
+
+  .editpanel_editzone-tab-input_subtitle {
+    font-weight: normal;
     font-size: 12px;
     color: #747474;
   }
 
-  .editpanel_editsector-tab-title {
+  .editpanel_editzone-tab-title {
     font-weight: normal;
-    font-size: 16px;
+    font-size: 20px;
     color: #03A0E3;
+  }
+
+  .editpanel_editzone-map {
+    height: 100%;
+    width: 50%;
+    right: 0;
+    top: 126px
+  }
+
+  .mapboxgl-map {
+    height: 100%;
+    width: 50%;
+    position: absolute;
+    right: 0;
+    top: 126px;
+  }
+
+  .editpanel_editzone-basemaps {
+    z-index: 1000;
   }
  
 </style>

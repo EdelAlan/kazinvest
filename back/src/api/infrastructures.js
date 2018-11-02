@@ -10,7 +10,9 @@ const FIELDS = `
   status,
   type,
   created_date,
-  ST_AsGeoJson(geom)
+  ST_AsGeoJson(geom),
+  capacity,
+  unit
 `;
 
 router.get('/', async (req, res) => {

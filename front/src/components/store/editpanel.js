@@ -99,6 +99,8 @@ export default {
               taxes2018: getters.taxes.filter(el => el.parent_id == sector.id && el.year == 2018)[0] ? getters.taxes.filter(el => el.parent_id == sector.id && el.year == 2018)[0].val : 0,
             }
           }),
+          infrastructures: getters.all_infrastructures.filter(it => it.zone_id == zone.id),
+          objects: getters.all_objects.filter(it => it.zone_id == zone.id),
         }
       }));
     },

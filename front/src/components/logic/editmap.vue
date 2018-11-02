@@ -57,6 +57,23 @@ export default {
           }
       },
 
+      reset_infrustructure() {
+          if (this.is_reset_sector) {
+            this.set_edited_sector_geom({
+                'type': 'Feature',
+                'geometry': JSON.parse(this.edited_sector.st_asgeojson),
+                'properties': {}
+            });
+            this.draw.deleteAll();
+            this.draw.add({
+                'type': 'Feature',
+                'geometry': JSON.parse(this.edited_sector.st_asgeojson),
+                'properties': {}
+            });
+            this.set_reset_sector();
+          }
+      },
+
       change_basemap() {
         this._mapboxgl_map.setLayoutProperty(
           'bing',
