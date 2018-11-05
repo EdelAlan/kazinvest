@@ -8,6 +8,7 @@ import reference from "./reference";
 import passport_anal from "./passport_anal";
 import passport_anal_bar from "./passport_anal_bar";
 import pdf from "./pdf";
+import XLSX from 'xlsx';
 import numseparator from "../../util/numseparator";
 import font from "../../assets/js/font.js";
 import { mapGetters, mapActions } from "vuex";
@@ -133,12 +134,15 @@ export default {
 
   methods: {
     numseparator,
+
     select_video(src) {
       this.selected_video = src;
     },
+
     select_image(src) {
       this.selected_image = src;
     },
+
     ...mapActions([
       "set_level",
       "set_passport_title",
@@ -406,23 +410,11 @@ export default {
       this.fdi2017 = 0;
       this.fdi2018 = 0;
 
-      this.fdi2014 = 0;
-      this.fdi2015 = 0;
-      this.fdi2016 = 0;
-      this.fdi2017 = 0;
-      this.fdi2018 = 0;
-
       this.njc2014 = 0;
       this.njc2015 = 0;
       this.njc2016 = 0;
       this.njc2017 = 0;
       this.njc2018 = 0;
-
-      this.fdi2014 = 0;
-      this.fdi2015 = 0;
-      this.fdi2016 = 0;
-      this.fdi2017 = 0;
-      this.fdi2018 = 0;
 
       this.tv2014 = 0;
       this.tv2015 = 0;
@@ -442,7 +434,7 @@ export default {
       this.sfi2017 = 0;
       this.sfi2018 = 0;
 
-      await get_all_investments();
+      await this.get_all_investments();
 
       this.investments.forEach(el => {
           this.put_data(el, 'iv');
@@ -459,7 +451,7 @@ export default {
       this.taxes.forEach(el => {
           this.put_data(el, 'tv');
       });
-      this.exports_value.forEach(el => {
+      this.exports_volume.forEach(el => {
           this.put_data(el, 'ev');
       });
       this.spent_foreign_investments.forEach(el => {
@@ -833,7 +825,7 @@ export default {
       if (pwr.length >= 2) {
         var pwr_text = "";
         pwr.forEach((el, i) => {
-          if (i % 2 == 0) {
+          if (i % 3 == 0 && i != 0) {
             pwr_text += el + "\n";
           } else {
             pwr_text += el + " ";
@@ -852,14 +844,14 @@ export default {
               ? "Жоспарланған жұмыс орындары:"
               : "Planned jobs:",
           30,
-          710
+          755
         );
         doc.text(
           this.selected_sector["plan_jobs"]
             ? parseInt(this.selected_sector["plan_jobs"]).toLocaleString("en")
             : "-",
           400,
-          710
+          755
         );
 
         doc.text(
@@ -869,14 +861,14 @@ export default {
               ? "Байланыс:"
               : "Contacts:",
           30,
-          755
+          800
         );
         doc.text(
           this.selected_sector["contacts_" + this.lang]
             ? this.selected_sector["contacts_" + this.lang]
             : "-",
           400,
-          755
+          800
         );
 
         doc.setDrawColor("#D2D2D2");
@@ -890,14 +882,14 @@ export default {
               ? "Байланыс:"
               : "Contacts:",
           30,
-          710
+          755
         );
         doc.text(
           this.selected_sector["contacts_" + this.lang]
             ? this.selected_sector["contacts_" + this.lang]
             : "-",
           400,
-          710
+          755
         );
       }
 
@@ -911,8 +903,8 @@ export default {
       doc.line(30, 502, 565, 502);
       doc.line(30, 547, 565, 547);
       doc.line(30, 622, 565, 622);
-      doc.line(30, 686, 565, 686);
       doc.line(30, 731, 565, 731);
+      doc.line(30, 776, 565, 776);
 
       doc.addPage();
 
@@ -964,6 +956,16 @@ export default {
         30,
         390
       );
+      doc.text(
+        this.lang == "ru" ? "Объем экспорта" : this.lang == "en" ? "Export volume" : "Экспорттың көлемі",
+        30,
+        470
+      );
+      doc.text(
+        this.lang == "ru" ? "Привлечено иностранных инвестиций на 1 тг., затраченных бюджетом" : this.lang == "en" ? "Attracted foreign investments for 1 tenge spent by the budget" : "Бюджеттен жұмсалған 1 теңгеге шетелдік инвестициялар тартылды",
+        30,
+        550
+      );
 
       doc.text(
         this.lang == "ru"
@@ -972,12 +974,12 @@ export default {
             ? "ҚР АЭА/ИА қаржыландырудың жалпы сомасына\r\nқатысты бөлінетін қаржыландыру үлесі:"
             : "The share of funding allocated in relation to\r\nthe total amount of financing of the SEZ/IZ:",
         30,
-        490
+        640
       );
       if (this.investments_sum) {
-        doc.text( ((this.investments_sum * 100)/this.investment).toFixed(2) + '%\r\n('+this.investments_sum.toLocaleString('en')+'/'+this.investment.toLocaleString('en')+')', 400, 490);
+        doc.text( ((this.investments_sum * 100)/this.investment).toFixed(2) + '%\r\n('+this.investments_sum.toLocaleString('en')+'/'+this.investment.toLocaleString('en')+')', 400, 650);
       } else {
-        doc.text('0%', 460, 490);
+        doc.text('0%', 460, 640);
       }
 
       if (this.selected_sector.divisible) {
@@ -990,12 +992,12 @@ export default {
                   ? "Бөліседі:"
                   : "Divisible:",
               30,
-              545
+              705
             );
             doc.text(
               this.lang == "ru" ? "Да" : this.lang == "kz" ? "Иә" : "Yes",
               460,
-              545
+              704
             );
             break;
           case 0:
@@ -1006,12 +1008,12 @@ export default {
                   ? "Бөліседі:"
                   : "Divisible:",
               30,
-              545
+              705
             );
             doc.text(
               this.lang == "ru" ? "Нет" : this.lang == "kz" ? "Жоқ" : "No",
               460,
-              545
+              705
             );
             break;
         }
@@ -1087,6 +1089,34 @@ export default {
         startY: doc.autoTable.previous.finalY + 45
       });
 
+      // table Объем экспорта
+      data = [
+        [
+          this.ev2014.toLocaleString("en") != 0 ? this.ev2014.toLocaleString("en") : '-',
+          this.ev2015.toLocaleString("en") != 0 ? this.ev2015.toLocaleString("en") : '-',
+          this.ev2016.toLocaleString("en") != 0 ? this.ev2016.toLocaleString("en") : '-',
+          this.ev2017.toLocaleString("en") != 0 ? this.ev2017.toLocaleString("en") : '-',
+          this.ev2018.toLocaleString("en") != 0 ? this.ev2018.toLocaleString("en") : '-',
+        ]
+      ];
+      doc.autoTable(columns, data, {
+        startY: doc.autoTable.previous.finalY + 45
+      });
+
+      // table 
+      data = [
+        [
+          this.sfi2014.toLocaleString("en") != 0 ? this.sfi2014.toLocaleString("en") : '-',
+          this.sfi2015.toLocaleString("en") != 0 ? this.sfi2015.toLocaleString("en") : '-',
+          this.sfi2016.toLocaleString("en") != 0 ? this.sfi2016.toLocaleString("en") : '-',
+          this.sfi2017.toLocaleString("en") != 0 ? this.sfi2017.toLocaleString("en") : '-',
+          this.sfi2018.toLocaleString("en") != 0 ? this.sfi2018.toLocaleString("en") : '-',
+        ]
+      ];
+      doc.autoTable(columns, data, {
+        startY: doc.autoTable.previous.finalY + 45
+      });
+
       doc.line(
         30,
         doc.autoTable.previous.finalY + 25,
@@ -1103,7 +1133,149 @@ export default {
       doc.save(this.selected_zone["title_" + this.lang] + '_' + this.selected_sector["title_" + this.lang] + ".pdf");
     },
 
-    generate_excel() {}
+    async generate_excel() {
+      await this.get_investments();
+
+      let project_type;
+      switch (this.selected_sector.project_type) {
+        case 1:
+          project_type = 
+            this.lang == "ru"
+              ? "Действующий"
+              : this.lang == "kz"
+                ? "Әрекеттегі"
+                : "Ongoing";
+          break;
+        case 2:
+          project_type = this.lang == "ru"
+              ? "На стадии реализации"
+              : this.lang == "kz"
+                ? "Іске асыру сатысында"
+                : "Underway";
+          break;
+        case 3:
+          project_type = this.lang == "ru"
+              ? "Свободный"
+              : this.lang == "kz"
+                ? "Еркін"
+                : "Free";
+          break;
+      }
+      let divisible;
+      switch (this.selected_sector.divisible) {
+        case 1:
+          divisible = this.lang == "ru" ? "Да" : this.lang == "kz" ? "Иә" : "Yes";
+          break;
+        case 0:
+          divisible = this.lang == "ru" ? "Нет" : this.lang == "kz" ? "Жоқ" : "No";
+          break;
+      }
+      let general_data = [{
+        title : this.selected_sector["title_" + this.lang],
+        title_project : this.selected_sector["title_project_" + this.lang],
+        products: this.selected_sector["products_" + this.lang],
+        year: this.selected_sector["project_date"] ? this.selected_sector["project_date"] : "-",
+        project_type: project_type,
+        project_price: this.selected_sector["project_price"] ? parseInt(this.selected_sector["project_price"]).toLocaleString("en") + (this.lang == "ru" ? " Тенге" : this.lang == "kz" ? " Теңге" : " Tenge") : "-",
+        foreign_participation: this.selected_sector["foreign_participation"] ? this.selected_sector["foreign_participation"] : "-",
+        power: this.selected_sector["power"] ? this.selected_sector["power"] : "-",
+        planned_jobs: this.selected_sector["plan_jobs"] ? parseInt(this.selected_sector["plan_jobs"]).toLocaleString("en") : "-",
+        contacts: this.selected_sector["contacts_" + this.lang] ? this.selected_sector["contacts_" + this.lang] : "-",
+        divisible: divisible,
+      }];
+
+      let header = [[
+        this.lang == 'ru' ? 'Название компании участника' : this.lang == 'en' ? 'Participant\'s company name': 'Қатысушының компания атауы',
+        this.lang == 'ru' ? 'Описание' : this.lang == 'en' ? 'Description': 'Сипаттама',
+        this.lang == "ru" ? "Выпускаемая продукция:" : this.lang == "kz" ? "Өнімдер:" : "Manufactured products:",
+        this.lang == "ru" ? "Год:" : this.lang == "kz" ? "Жыл:" : "Year:",
+        this.lang == "ru" ? "Текущий статус:" : this.lang == "kz" ? "Ағымдағы күй:" : "Current status:",
+        this.lang == "ru" ? "Стоимость проекта:" : this.lang == "kz" ? "Жобаның құны:" : "Project price:",
+        this.lang == "ru" ? "Иностранное участие:" : this.lang == "kz" ? "Шетелдік қатысуы:" : "Internetional participation:",
+        this.lang == "ru" ? "Мощность проекта:" : this.lang == "kz" ? "Жобаның қуаты:" : "Project power:",
+        this.lang == "ru" ? "Планируемые рабочие места:" : this.lang == "kz" ? "Жоспарланған жұмыс орындары:" : "Planned jobs:",
+        this.lang == "ru" ? "Контакты:" : this.lang == "kz" ? "Байланыс:" : "Contacts:",
+        this.lang == "ru" ? "Делимый:" : this.lang == "kz" ? "Бөліседі:" : "Divisible:",
+      ]];
+
+      let investments = [{
+        2014: this.iv2014.toLocaleString("en") != 0 ? this.iv2014.toLocaleString("en") : '-',
+        2015: this.iv2015.toLocaleString("en") != 0 ? this.iv2015.toLocaleString("en") : '-',
+        2016: this.iv2016.toLocaleString("en") != 0 ? this.iv2016.toLocaleString("en") : '-',
+        2017: this.iv2017.toLocaleString("en") != 0 ? this.iv2017.toLocaleString("en") : '-',
+        2018: this.iv2018.toLocaleString("en") != 0 ? this.iv2018.toLocaleString("en") : '-',
+      }];
+      let productions = [{
+        2014: this.fdi2014.toLocaleString("en") != 0 ? this.fdi2014.toLocaleString("en") : '-',
+        2015: this.fdi2015.toLocaleString("en") != 0 ? this.fdi2015.toLocaleString("en") : '-',
+        2016: this.fdi2016.toLocaleString("en") != 0 ? this.fdi2016.toLocaleString("en") : '-',
+        2017: this.fdi2017.toLocaleString("en") != 0 ? this.fdi2017.toLocaleString("en") : '-',
+        2018: this.fdi2018.toLocaleString("en") != 0 ? this.fdi2018.toLocaleString("en") : '-',
+      }];
+      let foreign_investments = [{
+        2014: this.iv2014.toLocaleString("en") != 0 ? this.iv2014.toLocaleString("en") : '-',
+        2015: this.iv2015.toLocaleString("en") != 0 ? this.iv2015.toLocaleString("en") : '-',
+        2016: this.iv2016.toLocaleString("en") != 0 ? this.iv2016.toLocaleString("en") : '-',
+        2017: this.iv2017.toLocaleString("en") != 0 ? this.iv2017.toLocaleString("en") : '-',
+        2018: this.iv2018.toLocaleString("en") != 0 ? this.iv2018.toLocaleString("en") : '-',
+      }];
+      let new_jobs_created = [{
+        2014: this.njc2014.toLocaleString("en") != 0 ? this.njc2014.toLocaleString("en") : '-',
+        2015: this.njc2015.toLocaleString("en") != 0 ? this.njc2015.toLocaleString("en") : '-',
+        2016: this.njc2016.toLocaleString("en") != 0 ? this.njc2016.toLocaleString("en") : '-',
+        2017: this.njc2017.toLocaleString("en") != 0 ? this.njc2017.toLocaleString("en") : '-',
+        2018: this.njc2018.toLocaleString("en") != 0 ? this.njc2018.toLocaleString("en") : '-',
+      }];
+      let taxes = [{
+        2014: this.tv2014.toLocaleString("en") != 0 ? this.tv2014.toLocaleString("en") : '-',
+        2015: this.tv2015.toLocaleString("en") != 0 ? this.tv2015.toLocaleString("en") : '-',
+        2016: this.tv2016.toLocaleString("en") != 0 ? this.tv2016.toLocaleString("en") : '-',
+        2017: this.tv2017.toLocaleString("en") != 0 ? this.tv2017.toLocaleString("en") : '-',
+        2018: this.tv2018.toLocaleString("en") != 0 ? this.tv2018.toLocaleString("en") : '-',
+      }];
+      let exports_value = [{
+        2014: this.ev2014.toLocaleString("en") != 0 ? this.ev2014.toLocaleString("en") : '-',
+        2015: this.ev2015.toLocaleString("en") != 0 ? this.ev2015.toLocaleString("en") : '-',
+        2016: this.ev2016.toLocaleString("en") != 0 ? this.ev2016.toLocaleString("en") : '-',
+        2017: this.ev2017.toLocaleString("en") != 0 ? this.ev2017.toLocaleString("en") : '-',
+        2018: this.ev2018.toLocaleString("en") != 0 ? this.ev2018.toLocaleString("en") : '-',
+      }];
+      let sfi = [{
+        2014: this.sfi2014.toLocaleString("en") != 0 ? this.sfi2014.toLocaleString("en") : '-',
+        2015: this.sfi2015.toLocaleString("en") != 0 ? this.sfi2015.toLocaleString("en") : '-',
+        2016: this.sfi2016.toLocaleString("en") != 0 ? this.sfi2016.toLocaleString("en") : '-',
+        2017: this.sfi2017.toLocaleString("en") != 0 ? this.sfi2017.toLocaleString("en") : '-',
+        2018: this.sfi2018.toLocaleString("en") != 0 ? this.sfi2018.toLocaleString("en") : '-',
+      }];
+
+      let workbook = XLSX.utils.book_new();
+      workbook.Props = {
+        Title: this.selected_zone["title_" + this.lang] + '_' + this.selected_sector["title_" + this.lang],
+        Subject: this.selected_zone["title_" + this.lang] + '_' + this.selected_sector["title_" + this.lang],
+        CreatedDate: new Date(),
+      };
+
+      let worksheet1 = XLSX.utils.aoa_to_sheet(header);
+      XLSX.utils.sheet_add_json(worksheet1, general_data, { skipHeader: true, origin: -1});
+      let worksheet2 = XLSX.utils.json_to_sheet(investments);
+      let worksheet3 = XLSX.utils.json_to_sheet(productions);
+      let worksheet4 = XLSX.utils.json_to_sheet(foreign_investments);
+      let worksheet5 = XLSX.utils.json_to_sheet(new_jobs_created);
+      let worksheet6 = XLSX.utils.json_to_sheet(taxes);
+      let worksheet7 = XLSX.utils.json_to_sheet(exports_value);
+      let worksheet8 = XLSX.utils.json_to_sheet(sfi);
+      
+      XLSX.utils.book_append_sheet(workbook, worksheet1, this.lang == "ru" ? "Отчет по проектам" : this.lang == "kz" ? "Жоба туралы есеп" : "Project Report");
+      XLSX.utils.book_append_sheet(workbook, worksheet2, this.lang == "ru" ? "Инвестиции" : this.lang == "kz" ? "Инвестициялар" : "Investments");
+      XLSX.utils.book_append_sheet(workbook, worksheet3, this.lang == "ru" ? "Объем производства" : this.lang == "kz" ? "Өнім көлемі" : "Production volume");
+      XLSX.utils.book_append_sheet(workbook, worksheet4, this.lang == "ru" ? "Иностранные инвестиции" : this.lang == "kz" ? "Шетелдік инвестициялар" : "Foreign investmentы");
+      XLSX.utils.book_append_sheet(workbook, worksheet5, this.lang == "ru" ? "Рабочие места" : this.lang == "kz" ? "Жұмыс орындары" : "Workplaces");
+      XLSX.utils.book_append_sheet(workbook, worksheet6, this.lang == "ru" ? "Налоговые отчисления" : this.lang == "kz" ? "Салық аударымдар" : "Tax");
+      XLSX.utils.book_append_sheet(workbook, worksheet7, this.lang == "ru" ? "Объем экспорта" : this.lang == "en" ? "Export volume" : "Экспорттың көлемі");
+      XLSX.utils.book_append_sheet(workbook, worksheet8, this.lang == "ru" ? "Привлечено иностр. инвестиций" : this.lang == "en" ? "Attracted foreign investments" : "Шетелдік инвестициялар тартылды");
+
+      XLSX.writeFile(workbook, this.selected_zone["title_" + this.lang] + '_' + this.selected_sector["title_" + this.lang] + ".xlsx");
+    }
   },
 
   watch: {
@@ -1686,8 +1858,8 @@ export default {
         <div class="passport-body_item"
           v-if="profile"
         >
-          <!-- <button class="passport-body_item_excel"
-            @click="generate_excel">Excel</button> -->
+          <button class="passport-body_item_excel"
+            @click="generate_excel">Excel</button>
           <button class="passport-body_item_pdf"
             @click="generate_pdf">PDF</button>
         </div>
@@ -1717,7 +1889,7 @@ export default {
             v-text="lang == 'ru' ? 'Площадь занимаемого участка' : lang == 'en' ? 'Land area': 'Ауданы'"
           ></span>
           <span class="passport-body_item_val" 
-            v-text="selected_sector.area"></span>
+            v-text="selected_sector.area + (lang == 'en' ? ' ha': ' Га')"></span>
         </div>
         <div class="passport-body_item">
           <span class="passport-body_item_key"
@@ -1940,9 +2112,9 @@ export default {
             title_kz: 'Бюджеттен инфрақұрылымға жұмсалған қаражаттар',
           }, {
             id: 'sez_sqi',
-            title_ru: 'Информация по количеству участков',
-            title_en: 'Sectors quantity information',
-            title_kz: 'Жер телімі сандық көрсеткіштер',
+            title_ru: 'Информация по количеству участников',
+            title_en: 'Information on the number of participants',
+            title_kz: 'Қатысушылардың саны туралы ақпарат',
           }]"
           v-text="item['title_' + lang]"
         ></div>
@@ -1964,9 +2136,9 @@ export default {
             title_kz: 'Бюджеттен инфрақұрылымға жұмсалған қаражаттар',
           }, {
             id: 'iz_sqi',
-            title_ru: 'Информация по количеству участков',
-            title_en: 'Sectors quantity information',
-            title_kz: 'Жер телімі сандық көрсеткіштер',
+            title_ru: 'Информация по количеству участников',
+            title_en: 'Information on the number of participants',
+            title_kz: 'Қатысушылардың саны туралы ақпарат',
           }]"
           v-text="item['title_' + lang]"
         ></div>
@@ -1989,9 +2161,9 @@ export default {
             title_kz: 'Бюджеттен инфрақұрылымға жұмсалған қаражаттар',
           }, {
             id: 'sez_sqi',
-            title_ru: 'Информация по количеству участков',
-            title_en: 'Sectors quantity information',
-            title_kz: 'Жер телімі сандық көрсеткіштер',
+            title_ru: 'Информация по количеству участников',
+            title_en: 'Information on the number of participants',
+            title_kz: 'Қатысушылардың саны туралы ақпарат',
           }]"
           v-text="item['title_' + lang]"
         ></div>
