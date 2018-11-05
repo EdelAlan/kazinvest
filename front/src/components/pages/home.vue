@@ -363,6 +363,7 @@
                 <div class="menu_body">
                     <div v-if="profile">
                       <router-link v-if="profile" to="/editpanel" class="btn"
+                        :style="{ 'font-size' : '16px' }"
                         v-text="{
                           'title_ru': 'Панель редактирования', 
                           'title_kz': 'Редакциялау тақтасы', 
@@ -370,7 +371,7 @@
                         }['title_' + lang]"
                       ></router-link>
                       <a href="#" class="btn"
-                        :style="{ width: '100%' }"
+                        :style="{ 'width' : '100%', 'font-size' : '16px' }"
                         v-on:click="call_feedback()"
                         v-text="{
                           'title_ru': 'Задать вопрос', 
@@ -381,6 +382,7 @@
                     </div>
                     <template v-else>
                       <a href="https://invest.gov.kz/cabinet/registration/" class="btn"
+                        :style="{ 'font-size' : '16px' }"
                         v-text="{
                           'title_ru': 'Хочу стать участником', 
                           'title_kz': 'Мен қатысушы болғым келеді', 
@@ -388,6 +390,7 @@
                         }['title_' + lang]"
                       ></a>
                       <a href="#" class="btn"
+                        :style="{ 'font-size' : '16px' }"
                         v-on:click="call_signup()"
                         v-text="{
                           'title_ru': 'Я участник СЭЗ / ИЗ', 
@@ -627,9 +630,9 @@
     align-items: flex-end;
   }
 
-.assistant--menu {
-  position: fixed;
-}
+  .assistant--menu {
+    position: fixed;
+  }
   .assistant--menu .menu,
   .menu_body {
       display: flex;
