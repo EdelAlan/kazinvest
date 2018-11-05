@@ -206,7 +206,7 @@
           class="editpanel_editzone-tab-input"
           v-model="zonemodel.budget_allocated"/>
         <p class="editpanel_editzone-tab-input_title" 
-          v-text="lang == 'ru' ? 'Доля выделенного финансирования по отношению к общей сумме финансирования СЭЗ РК' : lang == 'en' ? 'The share of funding allocated in relation to the total amount of financing of the SEZ/IZ of RK' : 'ҚР АЭА/ИА қаржыландырудың жалпы сомасына қатысты бөлінетін қаржыландыру үлесі'"></p>
+          v-text="lang == 'ru' ? 'Соотношение свободных и занятых земель' : lang == 'en' ? 'Free and taken land share' : 'Бос және қабылданған жер үлесі'"></p>
         <input type="number" min="0"
           class="editpanel_editzone-tab-input"
           v-model="zonemodel.level"/>
