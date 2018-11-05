@@ -553,18 +553,18 @@
                 2018: this.iv2018.toLocaleString("en") != 0 ? this.iv2018.toLocaleString("en") : '-',
             }];
             let productions = [{
+                2014: this.pv2014.toLocaleString("en") != 0 ? this.pv2014.toLocaleString("en") : '-',
+                2015: this.pv2015.toLocaleString("en") != 0 ? this.pv2015.toLocaleString("en") : '-',
+                2016: this.pv2016.toLocaleString("en") != 0 ? this.pv2016.toLocaleString("en") : '-',
+                2017: this.pv2017.toLocaleString("en") != 0 ? this.pv2017.toLocaleString("en") : '-',
+                2018: this.pv2018.toLocaleString("en") != 0 ? this.pv2018.toLocaleString("en") : '-',
+            }];
+            let foreign_investments = [{
                 2014: this.fdi2014.toLocaleString("en") != 0 ? this.fdi2014.toLocaleString("en") : '-',
                 2015: this.fdi2015.toLocaleString("en") != 0 ? this.fdi2015.toLocaleString("en") : '-',
                 2016: this.fdi2016.toLocaleString("en") != 0 ? this.fdi2016.toLocaleString("en") : '-',
                 2017: this.fdi2017.toLocaleString("en") != 0 ? this.fdi2017.toLocaleString("en") : '-',
                 2018: this.fdi2018.toLocaleString("en") != 0 ? this.fdi2018.toLocaleString("en") : '-',
-            }];
-            let foreign_investments = [{
-                2014: this.iv2014.toLocaleString("en") != 0 ? this.iv2014.toLocaleString("en") : '-',
-                2015: this.iv2015.toLocaleString("en") != 0 ? this.iv2015.toLocaleString("en") : '-',
-                2016: this.iv2016.toLocaleString("en") != 0 ? this.iv2016.toLocaleString("en") : '-',
-                2017: this.iv2017.toLocaleString("en") != 0 ? this.iv2017.toLocaleString("en") : '-',
-                2018: this.iv2018.toLocaleString("en") != 0 ? this.iv2018.toLocaleString("en") : '-',
             }];
             let new_jobs_created = [{
                 2014: this.njc2014.toLocaleString("en") != 0 ? this.njc2014.toLocaleString("en") : '-',
