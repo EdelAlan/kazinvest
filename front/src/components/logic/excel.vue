@@ -484,7 +484,7 @@
                     header = [[
                         this.lang == 'ru' ? 'Наименование Компании – участника:' : this.lang == 'kz' ? 'Қоғамның атауы - қатысушы:' : 'Name of the Company - participant:',
                         this.lang == 'ru' ? 'Период действия зоны:' : this.lang == 'kz' ? 'Аймақтың әрекет ету мерзімі:' : 'Zone validity period:',
-                        this.lang == 'ru' ? 'Отрасаль зоны:' : this.lang == 'kz' ? 'Аймақ өнеркәсібі:' : 'Zone industry:',
+                        this.lang == 'ru' ? 'Отрасль зоны:' : this.lang == 'kz' ? 'Аймақ өнеркәсібі:' : 'Zone industry:',
                         this.lang == 'ru' ? 'Доля свободной площади зоны:' : this.lang == 'kz' ? 'Бос аймақтың үлесі:' : 'The share of free zone area:',
                         this.lang == 'ru' ? 'Доля выделенного финансирования по отношению\r\nк общей сумме финансирования СЭЗ/ИЗ РК:' : this.lang == 'kz' ? 'ҚР АЭА/ИА қаржыландырудың жалпы сомасына\r\nқатысты бөлінетін қаржыландыру үлесі:' : 'The share of funding allocated in relation to the\r\ntotal amount of financing of the SEZ/IZ:',
 

@@ -163,6 +163,7 @@ export default {
       "set_exports_volume",
       "set_spent_foreign_investments",
       "set_zone_sector",
+      "set_passport_anal_title",
     ]),
 
     async get_all_investments() {
@@ -1946,6 +1947,7 @@ export default {
         <div class="reference-item"
           @click="
           set_passport_anal_bar_data(item.id),
+          set_passport_anal_title(item['title_'+lang]),
           change_ui_visibility({
             ui_component: 'passport_anal_bar',
             ui_component_state: true,
@@ -2025,6 +2027,7 @@ export default {
         <div class="reference-item"
           @click="
             set_passport_anal_bar_data(item.id),
+            set_passport_anal_title(item['title_'+lang]),
             change_ui_visibility({
             ui_component: 'passport_anal_bar',
             ui_component_state: true,
@@ -2104,6 +2107,7 @@ export default {
         <div class="reference-item"
           @click="
           set_passport_anal_data(item.id),
+          set_passport_anal_title(item['title_'+lang]),
           change_ui_visibility({
             ui_component: 'passport_anal',
             ui_component_state: true,
@@ -2128,6 +2132,7 @@ export default {
         <div class="reference-item"
           @click="
           set_passport_anal_data(item.id),
+          set_passport_anal_title(item['title_'+lang]),
           change_ui_visibility({
             ui_component: 'passport_anal',
             ui_component_state: true,
@@ -2153,6 +2158,7 @@ export default {
         <div class="reference-item"
           @click="
           set_passport_anal_data(item.id),
+          set_passport_anal_title(item['title_'+lang]),
           change_ui_visibility({
             ui_component: 'passport_anal',
             ui_component_state: true,
@@ -2177,6 +2183,7 @@ export default {
         <div class="reference-item"
           @click="
             set_passport_anal_bar_data(item.id),
+            set_passport_anal_title(item['title_'+lang]),
             change_ui_visibility({
             ui_component: 'passport_anal_bar',
             ui_component_state: true,
@@ -2256,6 +2263,7 @@ export default {
       <div slot="body" v-if="passport_content == 'level_3:numeric'">
         <div class="reference-item"
           @click="set_passport_anal_bar_data(item.id),
+            set_passport_anal_title(item['title_'+lang]),
             change_ui_visibility({
             ui_component: 'passport_anal_bar',
             ui_component_state: true,

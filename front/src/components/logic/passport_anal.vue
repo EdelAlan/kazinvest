@@ -25,6 +25,7 @@
 			'republics',
 			'sectors',
 			'zones',
+			'passport_anal_title',
 		]),
 
 		watch: {
@@ -174,6 +175,8 @@
 <template>
 	<div class="passport_anal">
 		<div class="passport_anal-header">
+			<span class="passport_anal-header_title"
+				v-text="passport_anal_title"></span>
 			<span class="passport_anal-close"
 				@click="change_ui_visibility({
 					ui_component: 'passport_anal',
@@ -199,6 +202,12 @@
 	
 	.passport_anal-header {
 		position: relative;
+	}
+	.passport_anal-header_title {
+		margin: 0;
+		display: block;
+		padding: 15px 10px;
+		font-size: 16px;
 	}
 	.passport_anal-header_title {
 		margin: 0;

@@ -514,7 +514,7 @@
                     this.doc.text(this.lang == 'ru' ? 'Период действия зоны:' : this.lang == 'kz' ? 'Аймақтың әрекет ету мерзімі:' : 'Zone validity period:', 30, 122);
                     this.doc.text(this.selected_zone.zone_time ? this.selected_zone.zone_time : '-', 400, 122);
 
-                    this.doc.text(this.lang == 'ru' ? 'Отрасаль зоны:' : this.lang == 'kz' ? 'Аймақ өнеркәсібі:' : 'Zone industry:', 30, 167);
+                    this.doc.text(this.lang == 'ru' ? 'Отрасль зоны:' : this.lang == 'kz' ? 'Аймақ өнеркәсібі:' : 'Zone industry:', 30, 167);
                     switch(this.selected_zone.industries_id) {
                         case 1:
                             this.doc.text(this.lang == 'ru' ? 'Химия' : this.lang == 'kz' ? 'Химия' : 'Chemistry', 400, 167);

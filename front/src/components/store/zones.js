@@ -43,6 +43,14 @@ export default {
         ui_component: 'passport',
         ui_component_state: false,
       });
+      this.dispatch('change_ui_visibility', {
+        ui_component: 'passport_anal',
+        ui_component_state: false,
+      });
+      this.dispatch('change_ui_visibility', {
+        ui_component: 'passport_anal_bar',
+        ui_component_state: false,
+      });
       this.dispatch('reset_sector');
       const { lang } = this.state.lang;
       const { search_string } = this.state.filters;

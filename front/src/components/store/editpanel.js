@@ -14,7 +14,7 @@ export default {
     }, {
       active: false,
       id: 'members',
-      title_ru: 'Пользватели',
+      title_ru: 'Пользователи',
       title_kz: 'Пайдаланушылар',
       title_en: 'Users',
     }],
