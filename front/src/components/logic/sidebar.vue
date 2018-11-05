@@ -2115,7 +2115,7 @@ export default {
           :class="{ 'reference-item--active': item.id == passport_anal_data }"
           v-for="item in [{
             id: 'sez_bie',
-            title_ru: 'Объем затраченных средств из бюджета на инфаструктуру',
+            title_ru: 'Объем затраченных средств из бюджета на инфраструктуру',
             title_en: 'Budget infrastructural expenses',
             title_kz: 'Бюджеттен инфрақұрылымға жұмсалған қаражаттар',
           }, {
@@ -2140,7 +2140,7 @@ export default {
           :class="{ 'reference-item--active': item.id == passport_anal_data }"
           v-for="item in [{
             id: 'iz_bie',
-            title_ru: 'Объем затраченных средств из бюджета на инфаструктуру',
+            title_ru: 'Объем затраченных средств из бюджета на инфраструктуру',
             title_en: 'Budget infrastructural expenses',
             title_kz: 'Бюджеттен инфрақұрылымға жұмсалған қаражаттар',
           }, {
@@ -2166,7 +2166,7 @@ export default {
           :class="{ 'reference-item--active': !passport_content ? false : passport_content == item.passport_content }"
           v-for="item in [{
             id: 'sez_bie',
-            title_ru: 'Объем затраченных средств из бюджета на инфаструктуру',
+            title_ru: 'Объем затраченных средств из бюджета на инфраструктуру',
             title_en: 'Budget infrastructural expenses',
             title_kz: 'Бюджеттен инфрақұрылымға жұмсалған қаражаттар',
           }, {
