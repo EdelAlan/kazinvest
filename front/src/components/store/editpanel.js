@@ -14,9 +14,9 @@ export default {
     }, {
       active: false,
       id: 'members',
-      title_ru: 'Участники',
-      title_kz: 'Қатысушылар',
-      title_en: 'Participants',
+      title_ru: 'Пользватели',
+      title_kz: 'Пайдаланушылар',
+      title_en: 'Users',
     }],
   }),
 

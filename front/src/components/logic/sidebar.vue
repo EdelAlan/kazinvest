@@ -8,6 +8,7 @@ import reference from "./reference";
 import passport_anal from "./passport_anal";
 import passport_anal_bar from "./passport_anal_bar";
 import pdf from "./pdf";
+import excel from "./excel";
 import XLSX from 'xlsx';
 import numseparator from "../../util/numseparator";
 import font from "../../assets/js/font.js";
@@ -23,7 +24,8 @@ export default {
     reference,
     passport_anal,
     passport_anal_bar,
-    pdf
+    pdf,
+    excel,
   },
 
   data() {
@@ -1275,7 +1277,7 @@ export default {
       XLSX.utils.book_append_sheet(workbook, worksheet8, this.lang == "ru" ? "Привлечено иностр. инвестиций" : this.lang == "en" ? "Attracted foreign investments" : "Шетелдік инвестициялар тартылды");
 
       XLSX.writeFile(workbook, this.selected_zone["title_" + this.lang] + '_' + this.selected_sector["title_" + this.lang] + ".xlsx");
-    }
+    },
   },
 
   watch: {
@@ -1548,6 +1550,8 @@ export default {
                 }]"
               />
               <pdf
+                v-if="active_level.id == 1 || active_level.id == 2"/>
+              <excel
                 v-if="active_level.id == 1 || active_level.id == 2"/>
               <reference
                 v-if="active_level.id == 3"
