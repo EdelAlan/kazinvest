@@ -193,7 +193,7 @@
 
       <div class="editpanel_editzone-tab" slot="tab_1">
         <h3 class="editpanel_editzone-tab-title"
-          v-text="lang == 'ru' ? 'Объем затраченных средств из бюджета на инфаструктуру' : lang == 'en' ? 'Budget infrastructural expenses' : 'Бюджеттен инфрақұрылымға жұмсалған қаражаттар'"
+          v-text="lang == 'ru' ? 'Объем затраченных средств из бюджета на инфраструктуру' : lang == 'en' ? 'Budget infrastructural expenses' : 'Бюджеттен инфрақұрылымға жұмсалған қаражаттар'"
         ></h3>
         <p class="editpanel_editzone-tab-input_title" 
           v-text="lang == 'ru' ? 'Потребность' : lang == 'en' ? 'Budget need' : 'Мұқтаждық'"></p>
