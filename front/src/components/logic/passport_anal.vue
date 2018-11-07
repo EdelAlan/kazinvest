@@ -96,7 +96,8 @@
 							case 'sez_sqi':
 								await this.set_sectors();
 								var ongoing=0, 
-									underway=0;
+									underway=0,
+									free=0;
 								await this.sectors.forEach(sector => {
 									this.zones.forEach(zone => {
 										if ( (zone.zone_type == 1) && (zone.id == sector.zone_id)) {
@@ -107,6 +108,9 @@
 												case 2:
 													underway++;
 													break;
+												case 3:
+													free++;
+													break;
 												default:
 													break;
 											}
@@ -114,14 +118,16 @@
 									});
 								});
 								this.diagram_data = [
-									{ key: 'Действующие проекты', val: ongoing },
-									{ key: 'Проекты на стадии реализации', val: underway },
+									{ key: this.lang == 'ru' ? 'Действующие проекты' : this.lang == 'kz' ? 'Ағымдағы жобалар' : 'Active projects', val: ongoing },
+									{ key: this.lang == 'ru' ? 'Проекты на стадии реализации' : this.lang == 'kz' ? 'Жүзеге асырылуда Жобалар' : 'Underway projects', val: underway },
+									{ key: this.lang == 'ru' ? 'Свободные участки' : this.lang == 'kz' ? 'Бос аумақтар' : 'Free lands', val: free },
 								];
 								break;
 							case 'iz_sqi':
 								await this.set_sectors();
 								var ongoing=0, 
-									underway=0;
+									underway=0,
+									free=0;
 								await this.sectors.forEach(sector => {
 									this.zones.forEach(zone => {
 										if ( (zone.zone_type == 2) && (zone.id == sector.zone_id)) {
@@ -132,6 +138,9 @@
 												case 2:
 													underway++;
 													break;
+												case 3:
+													free++;
+													break;
 												default:
 													break;
 											}
@@ -139,8 +148,9 @@
 									});
 								});
 								this.diagram_data = [
-									{ key: 'Действующие проекты', val: ongoing },
-									{ key: 'Проекты на стадии реализации', val: underway },
+									{ key: this.lang == 'ru' ? 'Действующие проекты' : this.lang == 'kz' ? 'Ағымдағы жобалар' : 'Active projects', val: ongoing },
+									{ key: this.lang == 'ru' ? 'Проекты на стадии реализации' : this.lang == 'kz' ? 'Жүзеге асырылуда Жобалар' : 'Underway projects', val: underway },
+									{ key: this.lang == 'ru' ? 'Свободные участки' : this.lang == 'kz' ? 'Бос аумақтар' : 'Free lands', val: free },
 								];
 								break;
 						}
@@ -170,7 +180,8 @@
 							}
 						} else if (this.passport_anal_data == 'sez_sqi' || this.passport_anal_data == 'iz_sqi' || this.passport_anal_data == 'sqi') {
 							var ongoing=0, 
-								underway=0;
+								underway=0,
+								free=0;
 							await this.sectors.forEach(sector => {
 								switch(sector.project_type) {
 									case 1:
@@ -179,13 +190,17 @@
 									case 2:
 										underway++;
 										break;
+									case 3:
+										free++;
+										break;
 									default:
 										break;
 								}
 							});
 							this.diagram_data = [
-								{ key: 'Действующие проекты', val: ongoing },
-								{ key: 'Проекты на стадии реализации', val: underway },
+								{ key: this.lang == 'ru' ? 'Действующие проекты' : this.lang == 'kz' ? 'Ағымдағы жобалар' : 'Active projects', val: ongoing },
+								{ key: this.lang == 'ru' ? 'Проекты на стадии реализации' : this.lang == 'kz' ? 'Жүзеге асырылуда Жобалар' : 'Underway projects', val: underway },
+								{ key: this.lang == 'ru' ? 'Свободные участки' : this.lang == 'kz' ? 'Бос аумақтар' : 'Free lands', val: free },
 							];
 						}
 						break;
