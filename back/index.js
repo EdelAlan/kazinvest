@@ -35,6 +35,7 @@ const taxes = require('./src/api/taxes');
 const exports_volume = require('./src/api/exports_volume'); 
 const spent_foreign_investments = require('./src/api/spent_foreign_investments'); 
 const members = require('./src/api/members'); 
+const links_adilet = require('./src/api/links_adilet'); 
 
 app
   .use((_, res, next) => {
@@ -65,5 +66,6 @@ app
   .use('/back/api/exports_volume', exports_volume)
   .use('/back/api/spent_foreign_investments', spent_foreign_investments)
   .use('/back/api/members', members)
+  .use('/back/api/links_adilet', links_adilet)
 
   .listen(5000, () => console.log('Listen on 5000'));

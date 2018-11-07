@@ -99,6 +99,7 @@ export default {
 
   async mounted() {
     await this.get_all_investments();
+    await this.set_links_adilet();
   },
 
   computed: {
@@ -131,6 +132,7 @@ export default {
       "image_modal",
       "video_modal",
       "zone_sector",
+      "links_adilet",
     ]),
   },
 
@@ -164,10 +166,12 @@ export default {
       "set_spent_foreign_investments",
       "set_zone_sector",
       "set_passport_anal_title",
+      "set_links_adilet",
     ]),
 
     async get_all_investments() {
       await this.set_investments();
+      await this.set_investment();
       await this.set_foreign_investments();
       await this.set_production();
       await this.set_number_jobs();
@@ -979,8 +983,14 @@ export default {
         30,
         640
       );
+      this.investments_sum = 0;
+      this.investments.forEach(el => {
+        if (this.selected_sector.id == el.parent_id) {
+          this.investments_sum += parseInt(el.val,10);
+        }
+      });
       if (this.investments_sum) {
-        doc.text( ((this.investments_sum * 100)/this.investment).toFixed(2) + '%\r\n('+this.investments_sum.toLocaleString('en')+'/'+this.investment.toLocaleString('en')+')', 400, 650);
+        doc.text( ((this.investments_sum * 100)/this.investment).toFixed(2) + '%\r\n('+this.investments_sum.toLocaleString('en')+'/'+this.investment.toLocaleString('en')+')', 400, 640);
       } else {
         doc.text('0%', 460, 640);
       }
@@ -1139,6 +1149,13 @@ export default {
     async generate_excel() {
       await this.get_investments();
 
+      this.investments_sum = 0;
+      this.investments.forEach(el => {
+        if (this.selected_sector.id == el.parent_id) {
+          this.investments_sum += parseInt(el.val,10);
+        }
+      });
+
       let project_type;
       switch (this.selected_sector.project_type) {
         case 1:
@@ -1185,6 +1202,7 @@ export default {
         planned_jobs: this.selected_sector["plan_jobs"] ? parseInt(this.selected_sector["plan_jobs"]).toLocaleString("en") : "-",
         contacts: this.selected_sector["contacts_" + this.lang] ? this.selected_sector["contacts_" + this.lang] : "-",
         divisible: divisible,
+        share: ((this.investments_sum * 100)/this.investment).toFixed(2) + '%\r\n('+this.investments_sum.toLocaleString('en')+'/'+this.investment.toLocaleString('en')+')',
       }];
 
       let header = [[
@@ -1199,6 +1217,7 @@ export default {
         this.lang == "ru" ? "Планируемые рабочие места:" : this.lang == "kz" ? "Жоспарланған жұмыс орындары:" : "Planned jobs:",
         this.lang == "ru" ? "Контакты:" : this.lang == "kz" ? "Байланыс:" : "Contacts:",
         this.lang == "ru" ? "Делимый:" : this.lang == "kz" ? "Бөліседі:" : "Divisible:",
+        this.lang == "ru" ? "Доля выделенного финансирования по отношению\r\nк общей сумме финансирования СЭЗ/ИЗ РК:" : this.lang == "kz" ? "ҚР АЭА/ИА қаржыландырудың жалпы сомасына\r\nқатысты бөлінетін қаржыландыру үлесі:" : "The share of funding allocated in relation to\r\nthe total amount of financing of the SEZ/IZ:",
       ]];
 
       let investments = [{
@@ -1488,8 +1507,8 @@ export default {
                 :title="zone['title_' + lang]"
                 v-text="zone['title_' + lang]"></span>
               <span class="sidebar-item_desc" 
-                :title="zone.object_count + ' объектов'"
-                v-text="zone.object_count + ' объектов'"></span>
+                :title="zone.object_count + (lang == 'ru' ? ' объектов' : lang == 'kz' ? ' объект' : ' objects')"
+                v-text="zone.object_count + (lang == 'ru' ? ' объектов' : lang == 'kz' ? ' объект' : ' objects')"></span>
             </div>
             <div class="sidebar-item"
               v-if="sectors"
@@ -1516,6 +1535,9 @@ export default {
               <span class="sidebar-item_desc"
                 :title="sector['title_project_' + lang]"
                 v-text="sector['title_project_' + lang] || '-'"></span>
+              <span class="sidebar-item_desc"
+                :title="sector.area"
+                v-text="sector.area + (lang == 'en' ? ' ha' : ' Га') || '-'"></span>
             </div>
           </div>
 
@@ -1665,35 +1687,19 @@ export default {
           <div v-html="republics[1]['common_' + lang]"></div>
         </div>
         <div class="sidebar-passport_padding" slot="body" v-if="passport_content == 'level_1:sez_iz_polozh'">
-          <h3>Законодательная база СЭЗ РК</h3>
-          <a class="sidebar-link" :href="'http://adilet.zan.kz/' + (lang == 'ru' ? 'rus' : lang == 'kz' ? 'kaz' : 'eng') + '/docs/Z1100000469'" target="_blank">
-            <h4>Закон о СЭЗ</h4>
-            <p>
-              Настоящий Закон регулирует общественные отношения, возникающие при создании, функционировании и упразднении специальных экономических зон на территории Республики Казахстан
-            </p>
-          </a>
-          <a class="sidebar-link" :href="'http://adilet.zan.kz/' + (lang == 'ru' ? 'rus' : lang == 'kz' ? 'kaz' : 'eng') + '/docs/K1700000120'" target="_blank">
-            <h4>Налоговый кодекс</h4>
-            <p>
-              Глава 79. НАЛОГООБЛОЖЕНИЕ ЛИЦ, ОСУЩЕСТВЛЯЮЩИХ ДЕЯТЕЛЬНОСТЬ НА ТЕРРИТОРИЯХ СПЕЦИАЛЬНЫХ ЭКОНОМИЧЕСКИХ ЗОН
-            </p>
-          </a>
-          <a class="sidebar-link" :href="'http://adilet.zan.kz/' + (lang == 'ru' ? 'rus' : lang == 'kz' ? 'kaz' : 'eng') + '/docs/K1500000375'" target="_blank">
-            <h4>Предпринимательский кодекс</h4>
-            <p>
-              Настоящий Кодекс определяет правовые, экономические и социальные условия и гарантии, обеспечивающие свободу предпринимательства в Республике Казахстан, регулирует общественные отношения, возникающие в связи с взаимодействием субъектов предпринимательства             
-            </p>
-          </a>
-          <br>
-          <a class="sidebar-link" :href="'http://adilet.zan.kz/' + (lang == 'ru' ? 'rus' : lang == 'kz' ? 'kaz' : 'eng') + '/docs/K030000442_'" target="_blank">
-            <h4>Земельный кодекс Республики Казахстан</h4>
-          </a>
-          <a class="sidebar-link" :href="'http://adilet.zan.kz/' + (lang == 'ru' ? 'rus' : lang == 'kz' ? 'kaz' : 'eng') + '/docs/K1700000123'" target="_blank">
-            <h4>О таможенном регулировании в Республике Казахстан. Глава 29. Таможенная процедура свободной таможенной зоны</h4>
-          </a>
-         <!-- <a :href="'http://adilet.zan.kz?lang=' + (lang == 'ru' ? 'rus' : lang == 'kz' ? 'kaz' : 'eng')" target="_blank">
-            <p>Ссылка на закон</p>
-          </a>-->
+          <h3
+            v-text="{
+              'title_ru': 'Законодательная база СЭЗ РК',
+              'title_kz': 'ҚР АЭА заңнамалық базасы',
+              'title_en': 'Legislative base of the SEZ RK'
+            }['title_' + lang]"
+          ></h3>
+          <div v-for="link in links_adilet">
+            <a class="sidebar-link" :href="link['link_'+lang]" target="_blank">
+              <h4 v-text="link['link_'+lang] ? link['text_'+lang] : ''"></h4>
+              <p v-text="link['subtext_'+lang]"></p>
+            </a>  
+          </div>
         </div>
         <div slot="body" v-if="passport_content == 'level_1:iz_market'">
           <h2 v-if="republics[1].photos.length" class="sidebar-passport_subtitle"

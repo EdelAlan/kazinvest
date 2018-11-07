@@ -67,12 +67,22 @@
   <div class="maptip" :style="{ left: model.pageX-80 + 'px', top: model.pageY-45 + 'px' }">
     <button class="maptip-zone"
       v-bind:class="{ 'maptip-zone--active': show_sez }"
-      v-on:click="dropdown_menu(1)" v-text="'СЭЗ'"
+      v-on:click="dropdown_menu(1)"
+      v-text="{
+        'title_ru': 'СЭЗ', 
+        'title_kz': 'АЭА', 
+        'title_en': 'SEZ'
+      }['title_' + lang]"
     >
     </button>
     <button class="maptip-zone"
       v-bind:class="{ 'maptip-zone--active': show_iz }"
-      v-on:click="dropdown_menu(2)" v-text="'ИЗ'"
+      v-on:click="dropdown_menu(2)"
+      v-text="{
+        'title_ru': 'ИЗ', 
+        'title_kz': 'ИА', 
+        'title_en': 'IZ'
+      }['title_' + lang]"
     >
     </button>
     <ul class="maptip-dropdown"

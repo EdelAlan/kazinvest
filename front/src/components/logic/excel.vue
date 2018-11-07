@@ -76,6 +76,7 @@
             'exports_volume',
             'spent_foreign_investments',
             'zone_sector',
+            'infrastructures',
         ]),
     },
 
@@ -471,6 +472,15 @@
 
             let general_data;
             let header;
+
+            let sectors_data_header;
+            let sectors_data;
+
+            let active_sectors;
+
+            let underway_sectors;
+
+            let infrastructure;
             switch(this.active_level.id) {
                 case 1:
                     header = [[
@@ -487,7 +497,7 @@
                         this.lang == 'ru' ? 'Отрасль зоны:' : this.lang == 'kz' ? 'Аймақ өнеркәсібі:' : 'Zone industry:',
                         this.lang == 'ru' ? 'Доля свободной площади зоны:' : this.lang == 'kz' ? 'Бос аймақтың үлесі:' : 'The share of free zone area:',
                         this.lang == 'ru' ? 'Доля выделенного финансирования по отношению\r\nк общей сумме финансирования СЭЗ/ИЗ РК:' : this.lang == 'kz' ? 'ҚР АЭА/ИА қаржыландырудың жалпы сомасына\r\nқатысты бөлінетін қаржыландыру үлесі:' : 'The share of funding allocated in relation to the\r\ntotal amount of financing of the SEZ/IZ:',
-
+                        this.lang == 'ru' ? 'Контакты:' : this.lang == 'kz' ? 'Байланыс:' : 'Contacts:',
                     ]];
 
                     let industry;
@@ -541,7 +551,36 @@
                         industry: industry,
                         level: (100 - this.selected_zone.level)+'%',
                         bap: this.selected_zone.budget_allocated ? bap : '-',
+                        contacts: this.selected_zone['contacts_'+this.lang].replace(new RegExp('<br />', 'g'), '\n'),
                     }];
+
+                    sectors_data_header = [[
+                        this.lang == 'ru' ? 'Общее количество проектов:' : this.lang == 'en' ? 'Total number of projects:' : 'Жобалардың жалпы саны:',
+                        this.lang == 'ru' ? 'Действующие проекты:' : this.lang == 'kz' ? 'Ағымдағы жобалар:' : 'Active projects:',
+                        this.lang == 'ru' ? 'Проекты на стадии реализации:' : this.lang == 'kz' ? 'Жүзеге асырылуда жобалар:' : 'Underway projects:',
+                    ]];
+                    let total = this.sectors.filter(sector => sector.project_type == 1 || sector.project_type == 2);
+                    sectors_data = [{
+                        total: total.length,
+                        active: total.filter(sector => sector.project_type == 1).length,
+                        underway: total.filter(sector => sector.project_type == 2).length,
+                    }];
+
+                    active_sectors = [];
+                    underway_sectors = [];
+                    total.forEach( (sector, i) => {
+                        if (sector.project_type == 1) {
+                            active_sectors.push([sector['title_'+this.lang]]);
+                        }
+                        if (sector.project_type == 2) {
+                            underway_sectors.push([sector['title_'+this.lang]]);
+                        }
+                    });
+
+                    infrastructure = [];
+                    this.infrastructures.forEach(it => {
+                        infrastructure.push([it['title_'+this.lang] + '    ' + (it.capacity ? it.capacity+'/' : '') + (it.unit ? it.unit : '')]);
+                    });
                 break;
             }
 
@@ -611,6 +650,11 @@
             let worksheet6 = XLSX.utils.json_to_sheet(taxes);
             let worksheet7 = XLSX.utils.json_to_sheet(exports_value);
             let worksheet8 = XLSX.utils.json_to_sheet(sfi);
+            let worksheet9 = XLSX.utils.aoa_to_sheet(sectors_data_header);
+            XLSX.utils.sheet_add_json(worksheet9, sectors_data, { skipHeader: true, origin: -1});
+            let worksheet10 = XLSX.utils.aoa_to_sheet(active_sectors);
+            let worksheet11 = XLSX.utils.aoa_to_sheet(underway_sectors);
+            let worksheet12 = XLSX.utils.aoa_to_sheet(infrastructure);
             
             XLSX.utils.book_append_sheet(workbook, worksheet1, this.active_level.id == 1 ? (this.lang == 'ru' ? 'Общая информация по СЭЗ ИЗ' : this.lang == 'kz' ? 'АЭА ИА жалпы ақпарат' : 'SEZ IZ General Information') : (this.lang == 'ru' ? 'Цифровые показатели' : this.lang == 'kz' ? 'Сандық өнімділік' : 'Digital Indicator'));
             XLSX.utils.book_append_sheet(workbook, worksheet2, this.lang == "ru" ? "Инвестиции" : this.lang == "kz" ? "Инвестициялар" : "Investments");
@@ -620,6 +664,10 @@
             XLSX.utils.book_append_sheet(workbook, worksheet6, this.lang == "ru" ? "Налоговые отчисления" : this.lang == "kz" ? "Салық аударымдар" : "Tax");
             XLSX.utils.book_append_sheet(workbook, worksheet7, this.lang == "ru" ? "Объем экспорта" : this.lang == "en" ? "Export volume" : "Экспорттың көлемі");
             XLSX.utils.book_append_sheet(workbook, worksheet8, this.lang == "ru" ? "Привлечено иностр. инвестиций" : this.lang == "en" ? "Attracted foreign investments" : "Шетелдік инвестициялар тартылды");
+            XLSX.utils.book_append_sheet(workbook, worksheet9, this.lang == 'ru' ? 'Количество проектов' : this.lang == 'kz' ? 'Жобалар саны' : 'Number of projects');
+            XLSX.utils.book_append_sheet(workbook, worksheet10, this.lang == 'ru' ? 'Активные проекты' : this.lang == 'kz' ? 'Белсенді жобалар' : 'Active projects');
+            XLSX.utils.book_append_sheet(workbook, worksheet11, this.lang == 'ru' ? 'На стадии реализации' : this.lang == 'kz' ? 'Іске асыру сатысында' : 'Underway projects');
+            XLSX.utils.book_append_sheet(workbook, worksheet12, this.lang == 'ru' ? 'Инфраструктура' : this.lang == 'kz' ? 'Инфрақұрылым' : 'Infrastructure');
 
             XLSX.writeFile(workbook, this.active_level.id == 1 ? 'SEZ_IZ.xlsx' : this.selected_zone['title_' + this.lang] + ".xlsx");
         },

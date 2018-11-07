@@ -1,6 +1,8 @@
 <script>
   import { mapGetters, mapActions } from 'vuex';
   import font from '../../assets/js/font.js';
+  import passport_anal from "./passport_anal";
+  import canvg from 'canvg';
 
   export default {
     
@@ -58,7 +60,17 @@
             sfi2016: 0,
             sfi2017: 0,
             sfi2018: 0,
+
+            pdf_passport_anal: false,
         };
+    },
+
+    async mounted() {
+        await this.set_passport_anal_data('sqi');
+    },
+
+    components: {
+        passport_anal,
     },
 
     computed: {
@@ -79,6 +91,8 @@
             'exports_volume',
             'spent_foreign_investments',
             'zone_sector',
+            'passport_anal',
+            'infrastructures',
         ]),
     },
 
@@ -95,6 +109,8 @@
             'set_taxes',
             'set_exports_volume',
             'set_spent_foreign_investments',
+            'set_passport_anal_data',
+            'change_ui_visibility',
         ]),
 
         async get_zone_sector() {
@@ -464,9 +480,10 @@
                     }
                     break;
             }
-		},
+        },
 
         async generate_pdf() {
+            this.pdf_passport_anal = true;
             await this.get_investemnts();
 
             const jsPDF = require('jspdf');
@@ -484,18 +501,15 @@
             this.doc.setFont('PTSans');
             
             // header
-            this.header_pdf(this.doc);        
+            this.header_pdf(this.doc);
 
             switch(this.active_level.id) {
                 case 1:
                     this.doc.text(this.lang == 'ru' ? 'Объем затраченных средств\r\nиз бюджета на инфраструктуру по РК:' : this.lang == 'kz' ? 'ҚР инфрақұрылымға бюджеттен жұмсалған қаражат көлемі:' : 'The amount of funds spent from the budget for infrastructure in the RK:', 30, 660);
                     this.doc.text(this.investments_sum.toLocaleString('en') + (this.lang == 'ru' ? ' Тенге' : this.lang == 'kz' ? ' Теңге' : ' Tenge'), 430, 660);
-
-                    // this.doc.text(this.lang == 'ru' ? 'Информация по количеству проектов:' : this.lang == 'kz' ? 'Жобалар саны туралы ақпарат:' : 'Information on the number of projects:', 30, 715);
-                    // this.doc.
                     break;
                 case 2:
-                    this.doc.text(this.lang == 'ru' ? 'Наименование Компании – участника:' : this.lang == 'kz' ? 'Қоғамның атауы - қатысушы:' : 'Name of the Company - participant:', 30, 77);
+                    this.doc.text(this.lang == 'ru' ? 'Тип и название зоны:' : this.lang == 'kz' ? 'Аймақтың түрі мен аты:' : 'Type and name of the zone:', 30, 77);
                     var ttl = this.selected_zone['title_' + this.lang].split(' ');
                     if (ttl.length > 2) {
                         var ttl_text = '';
@@ -511,51 +525,54 @@
                         this.doc.text(this.selected_zone['title_' + this.lang], 400, 77);
                     }
 
-                    this.doc.text(this.lang == 'ru' ? 'Период действия зоны:' : this.lang == 'kz' ? 'Аймақтың әрекет ету мерзімі:' : 'Zone validity period:', 30, 122);
-                    this.doc.text(this.selected_zone.zone_time ? this.selected_zone.zone_time : '-', 400, 122);
-
-                    this.doc.text(this.lang == 'ru' ? 'Отрасль зоны:' : this.lang == 'kz' ? 'Аймақ өнеркәсібі:' : 'Zone industry:', 30, 167);
+                    this.doc.text(this.lang == 'ru' ? 'Отрасль зоны:' : this.lang == 'kz' ? 'Аймақ өнеркәсібі:' : 'Zone industry:', 30, 122);
                     switch(this.selected_zone.industries_id) {
                         case 1:
-                            this.doc.text(this.lang == 'ru' ? 'Химия' : this.lang == 'kz' ? 'Химия' : 'Chemistry', 400, 167);
+                            this.doc.text(this.lang == 'ru' ? 'Химия' : this.lang == 'kz' ? 'Химия' : 'Chemistry', 400, 122);
                             break;
                         case 2:
-                            this.doc.text(this.lang == 'ru' ? 'Нефтехимия' : this.lang == 'kz' ? 'Мұнай-химия' : 'Petrochemistry', 400, 167);
+                            this.doc.text(this.lang == 'ru' ? 'Нефтехимия' : this.lang == 'kz' ? 'Мұнай-химия' : 'Petrochemistry', 400, 122);
                             break;
                         case 3:
-                            this.doc.text(this.lang == 'ru' ? 'Металлургия' : this.lang == 'kz' ? 'Металлургия' : 'Metallurgy', 400, 167);
+                            this.doc.text(this.lang == 'ru' ? 'Металлургия' : this.lang == 'kz' ? 'Металлургия' : 'Metallurgy', 400, 122);
                             break;
                         case 4:
-                            this.doc.text(this.lang == 'ru' ? 'Машиностроение' : this.lang == 'kz' ? 'Машина жасау' : 'Engineering', 400, 167);
+                            this.doc.text(this.lang == 'ru' ? 'Машиностроение' : this.lang == 'kz' ? 'Машина жасау' : 'Engineering', 400, 122);
                             break;
                         case 5:
-                            this.doc.text(this.lang == 'ru' ? 'Логистика' : this.lang == 'kz' ? 'Логистика' : 'Logistics', 400, 167);
+                            this.doc.text(this.lang == 'ru' ? 'Логистика' : this.lang == 'kz' ? 'Логистика' : 'Logistics', 400, 122);
                             break;
                         case 6:
-                            this.doc.text(this.lang == 'ru' ? 'Нефтесервис' : this.lang == 'kz' ? 'Нефтесервис' : 'Petroservice', 400, 167);
+                            this.doc.text(this.lang == 'ru' ? 'Нефтесервис' : this.lang == 'kz' ? 'Нефтесервис' : 'Petroservice', 400, 122);
                             break;
                         case 7:
-                            this.doc.text(this.lang == 'ru' ? 'Текстиль' : this.lang == 'kz' ? 'Тоқыма' : 'Textile', 400, 167);
+                            this.doc.text(this.lang == 'ru' ? 'Текстиль' : this.lang == 'kz' ? 'Тоқыма' : 'Textile', 400, 122);
                             break;
                         case 8:
-                            this.doc.text(this.lang == 'ru' ? 'ИКТ и НИОКР' : this.lang == 'kz' ? 'АКТ' : 'ICT & R&D', 400, 167);
+                            this.doc.text(this.lang == 'ru' ? 'ИКТ и НИОКР' : this.lang == 'kz' ? 'АКТ' : 'ICT & R&D', 400, 122);
                             break;
                         case 9:
-                            this.doc.text(this.lang == 'ru' ? 'Продукты питания' : this.lang == 'kz' ? 'Тамақ өнімдері' : 'Food', 400, 167);
+                            this.doc.text(this.lang == 'ru' ? 'Продукты питания' : this.lang == 'kz' ? 'Тамақ өнімдері' : 'Food', 400, 122);
                             break;
                         case 10:
-                            this.doc.text(this.lang == 'ru' ? 'Туризм' : this.lang == 'kz' ? 'Туризм' : 'Tourism', 400, 167);
+                            this.doc.text(this.lang == 'ru' ? 'Туризм' : this.lang == 'kz' ? 'Туризм' : 'Tourism', 400, 122);
                             break;
                         case 11:
-                            this.doc.text(this.lang == 'ru' ? 'Смешанная' : this.lang == 'kz' ? 'Аралас' : 'Mixed', 400, 167);
+                            this.doc.text(this.lang == 'ru' ? 'Смешанная' : this.lang == 'kz' ? 'Аралас' : 'Mixed', 400, 122);
                             break;
                         case 12:
-                            this.doc.text(this.lang == 'ru' ? 'Торговля' : this.lang == 'kz' ? 'Сауда' : 'Trade', 400, 167);
+                            this.doc.text(this.lang == 'ru' ? 'Торговля' : this.lang == 'kz' ? 'Сауда' : 'Trade', 400, 122);
                             break;
                     }
 
+                    this.doc.text(this.lang == 'ru' ? 'Период действия зоны:' : this.lang == 'kz' ? 'Аймақтың әрекет ету мерзімі:' : 'Zone validity period:', 30, 167);
+                    this.doc.text(this.selected_zone.zone_time ? this.selected_zone.zone_time : '-', 400, 167);
+
                     this.doc.text(this.lang == 'ru' ? 'Доля свободной площади зоны:' : this.lang == 'kz' ? 'Бос аймақтың үлесі:' : 'The share of free zone area:', 30, 212);
                     this.doc.text((100 - this.selected_zone.level)+'%', 400, 212);
+
+                    this.doc.text(this.lang == 'ru' ? 'Контакты:' : this.lang == 'kz' ? 'Байланыс:' : 'Contacts:', 30, 257);
+                    this.doc.text(this.selected_zone['contacts_'+this.lang].replace(new RegExp('<br />', 'g'), '\n'), 400, 257);
 
                     this.doc.setDrawColor('#D2D2D2');
                     this.doc.setLineWidth(1);
@@ -680,7 +697,56 @@
             this.doc.line(30, this.doc.autoTable.previous.finalY + 25, 565, this.doc.autoTable.previous.finalY + 25);
             this.doc.line(30, this.doc.autoTable.previous.finalY + 85, 565, this.doc.autoTable.previous.finalY + 85);
 
+            /// Diagram
+            this.doc.addPage();
+            this.header_pdf(this.doc);
+
+            this.generate_svg(this.doc);
+
+            this.doc.setFont('PTSans');
+
+            this.doc.text(this.lang == 'ru' ? 'Информация по количеству проектов:' : this.lang == 'kz' ? 'Жобалар саны туралы ақпарат:' : 'Information on the number of projects:', 30, 75);
+
+            let total = this.$refs.passport_anal.$data.diagram_data.reduce((acc, it) => acc + it.val, 0);
+            this.doc.text( this.lang == 'ru' ? 'Общее колличество: ' + total : this.lang == 'en' ? 'Total: ' + total : 'Барлығы: ' + total, 300, 140);
+            this.doc.setTextColor('#7ED767');
+            this.doc.text( this.$refs.passport_anal.$data.diagram_data[0].key + " : " + this.$refs.passport_anal.$data.diagram_data[0].val + ' (' + (this.$refs.passport_anal.$data.diagram_data[0].val * 100 / total).toFixed(0) + ' %)', 300, 180);
+            this.doc.setTextColor('#03A0E3');
+            this.doc.text( this.$refs.passport_anal.$data.diagram_data[1].key + " : " + this.$refs.passport_anal.$data.diagram_data[1].val + ' (' + (this.$refs.passport_anal.$data.diagram_data[1].val * 100 / total).toFixed(0) + ' %)', 300, 220);
+
+            if (this.active_level.id == 2) {
+                this.doc.addPage();
+                this.header_pdf(this.doc);
+
+                this.doc.text(this.lang == 'ru' ? 'Список действующих проектов:' : this.lang == 'kz' ? 'Белсенді жобалардың тізімі:' : 'List of active projects:', 30, 60);
+                let margin1 = 70;
+                this.sectors.forEach(sector => {
+                    if (sector.project_type == 1)
+                        this.doc.text(sector['title_'+this.lang], 30, margin1+=20);
+                });
+
+                this.doc.addPage();
+                this.header_pdf(this.doc);
+
+                this.doc.text(this.lang == 'ru' ? 'Список проектов на стадии реализации:' : this.lang == 'kz' ? 'Іске асыру сатысында жобалардың тізімі:' : 'List of projects at the implementation stage:', 30, 60);
+                let margin2 = 70;
+                this.sectors.forEach(sector => {
+                    if (sector.project_type == 2)
+                        this.doc.text(sector['title_'+this.lang], 30, margin2+=20);
+                });
+
+                this.doc.addPage();
+                this.header_pdf(this.doc);
+
+                this.doc.text(this.lang == 'ru' ? 'Информация по объектам инфраструктуры:' : this.lang == 'kz' ? 'Инфрақұрылымдық ақпарат:' : 'Infrastructure Information:', 30, 60);
+                let margin3 = 70;
+                this.infrastructures.forEach(it => {
+                    this.doc.text(it['title_'+this.lang] + '    ' + (it.capacity ? it.capacity+'/' : '') + (it.unit ? it.unit : ''), 30, margin3+=20);
+                });
+            }
+
             this.doc.save(this.active_level.id == 1 ? 'SEZ_IZ.pdf' : this.selected_zone.title_en + '.pdf');
+            this.pdf_passport_anal = false;
         },
 
         header_pdf(doc) {
@@ -703,16 +769,38 @@
             this.doc.setTextColor('#484D5E');
         },
 
+        generate_svg(doc) {
+            let el = this.$el.querySelector('.passport_anal').querySelector('.passport_anal-body').querySelector('.piechart').querySelector('.piechart-svg').outerHTML;
+            if (el) {
+                el = el.replace(/\r?\n|\r/g, '').trim();
+            }
+            let canvas = document.createElement('canvas');
+            let context = canvas.getContext('2d');
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            canvg(canvas, el);
+            let img = canvas.toDataURL('image/png');
+            doc.addImage(img, 'PNG', 40, 100, canvas.width, canvas.height);
+        },
+
     }
 
   }
 </script>
 
 <template>
-	<div
-        class="pdf"
-        @click="generate_pdf"
-        v-text="lang == 'ru' ? 'Экспорт PDF' : lang == 'en' ? 'Export PDF' : 'PDF экспорттау'">
+    <div>
+        <div
+            class="pdf"
+            @click="generate_pdf"
+            v-text="lang == 'ru' ? 'Экспорт PDF' : lang == 'en' ? 'Export PDF' : 'PDF экспорттау'">
+        </div>
+
+        <passport_anal
+            :style="{ width : 0, height: 0, visibility: 'hidden' }"
+            v-if="pdf_passport_anal"
+            ref="passport_anal"
+        />
+
     </div>
 </template>
 

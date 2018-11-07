@@ -42,6 +42,31 @@
 				switch(this.active_level.id) {
 					case 1:
 						switch(this.passport_anal_data) {
+							case 'sqi':
+								await this.set_sectors();
+								var ongoing=0, 
+									underway=0;
+								await this.sectors.forEach(sector => {
+									this.zones.forEach(zone => {
+										if (zone.id == sector.zone_id) {
+											switch(sector.project_type) {
+												case 1:
+													ongoing++;
+													break;
+												case 2:
+													underway++;
+													break;
+												default:
+													break;
+											}
+										}
+									});
+								});
+								this.diagram_data = [
+									{ key: 'Действующие проекты', val: ongoing },
+									{ key: 'Проекты на стадии реализации', val: underway },
+								];
+								break;
 							case 'sez_bie':
 								if (parseInt(this.republics[0].demand, 10) == 0 && parseInt(this.republics[0].allocated, 10) == 0) {
 									this.diagram_data = [
@@ -143,7 +168,7 @@
 									{ key: 'Выделено', val: parseInt(this.active_level.properties.budget_allocated, 10) },
 								];
 							}
-						} else if (this.passport_anal_data == 'sez_sqi' || this.passport_anal_data == 'iz_sqi') {
+						} else if (this.passport_anal_data == 'sez_sqi' || this.passport_anal_data == 'iz_sqi' || this.passport_anal_data == 'sqi') {
 							var ongoing=0, 
 								underway=0;
 							await this.sectors.forEach(sector => {

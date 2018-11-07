@@ -212,8 +212,8 @@
               v-on:click="signout"
               v-text="{
                 'title_ru': 'Выйти', 
-                'title_kz': 'Кіру', 
-                'title_en': 'Sign in'
+                'title_kz': 'Шығу', 
+                'title_en': 'Sign out'
               }['title_' + lang]">
               </button>
 
@@ -363,13 +363,21 @@
                 <div class="menu_body">
                     <div v-if="profile">
                       <router-link v-if="profile" to="/editpanel" class="btn"
-                        :style="{ 'font-size' : '16px' }"
+                        :style="{ 'font-size' : '16px', 'width' : '100%' }"
                         v-text="{
                           'title_ru': 'Панель редактирования', 
                           'title_kz': 'Редакциялау тақтасы', 
                           'title_en': 'Edit panel'
                         }['title_' + lang]"
                       ></router-link>
+                      <a target="_blank" rel="noopener noreferrer" href="https://tu.invest.gov.kz/" class="btn"
+                        :style="{ 'font-size' : '16px' }"
+                        v-text="{
+                          'title_ru': 'Портал «Технические условия»', 
+                          'title_kz': '«Техникалық сипаттамалар» порталы', 
+                          'title_en': '«Technical specifications» portal'
+                        }['title_' + lang]"
+                      ></a>
                       <a href="#" class="btn"
                         :style="{ 'width' : '100%', 'font-size' : '16px' }"
                         v-on:click="call_feedback()"
@@ -389,13 +397,12 @@
                           'title_en': 'I want to be a participant'
                         }['title_' + lang]"
                       ></a>
-                      <a href="#" class="btn"
+                      <a target="_blank" rel="noopener noreferrer" href="https://tu.invest.gov.kz/" class="btn"
                         :style="{ 'font-size' : '16px' }"
-                        v-on:click="call_signup()"
                         v-text="{
-                          'title_ru': 'Я участник СЭЗ / ИЗ', 
-                          'title_kz': 'Мен АЭА / ИА қатысушымын', 
-                          'title_en': 'I am a participant of SEZ / IZ'
+                          'title_ru': 'Портал «Технические условия»', 
+                          'title_kz': '«Техникалық сипаттамалар» порталы', 
+                          'title_en': '«Technical specifications» portal'
                         }['title_' + lang]"
                       ></a>
 
