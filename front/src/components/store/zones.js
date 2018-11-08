@@ -60,7 +60,6 @@ export default {
           this.getters.search_query
         + (search_string != '' ? `&search_string=${search_string}` : '')
         + (lang != '' ? `&lang=${lang}` : '') : '');
-      console.log(path);
       return fetcher({ path }).then(zones => commit('set_zones', zones));
     },
     async set_all_zones({ commit }) {

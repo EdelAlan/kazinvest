@@ -1516,7 +1516,7 @@ export default {
               :class="{ 'sidebar-item--active': selected_sector && selected_sector.id == sector.id  }"
               @click="
                 set_passport_content(''),
-                set_passport_title(sector['title_'+lang]),
+                set_passport_title({ title_ru: sector.title_ru, title_kz: sector.title_kz, title_en: sector.title_en }),
                 set_level({
                   id: 3,
                   title_ru: sector.title_ru,
@@ -1525,6 +1525,7 @@ export default {
                   properties: sector
                 })
               ">
+              <!-- set_passport_title(sector['title_'+lang]), -->
               <span class="sidebar-item_title"
                 :style="{ 
                   'color': sector.color,
@@ -1956,7 +1957,7 @@ export default {
         <div class="reference-item"
           @click="
           set_passport_anal_bar_data(item.id),
-          set_passport_anal_title(item['title_'+lang]),
+          set_passport_anal_title({ title_ru: item.title_ru, title_kz: item.title_kz, title_en: item.title_en }),
           change_ui_visibility({
             ui_component: 'passport_anal_bar',
             ui_component_state: true,
@@ -2036,7 +2037,7 @@ export default {
         <div class="reference-item"
           @click="
             set_passport_anal_bar_data(item.id),
-            set_passport_anal_title(item['title_'+lang]),
+            set_passport_anal_title({ title_ru: item.title_ru, title_kz: item.title_kz, title_en: item.title_en }),
             change_ui_visibility({
             ui_component: 'passport_anal_bar',
             ui_component_state: true,
@@ -2116,7 +2117,7 @@ export default {
         <div class="reference-item"
           @click="
           set_passport_anal_data(item.id),
-          set_passport_anal_title(item['title_'+lang]),
+          set_passport_anal_title({ title_ru: item.title_ru, title_kz: item.title_kz, title_en: item.title_en }),
           change_ui_visibility({
             ui_component: 'passport_anal',
             ui_component_state: true,
@@ -2141,7 +2142,7 @@ export default {
         <div class="reference-item"
           @click="
           set_passport_anal_data(item.id),
-          set_passport_anal_title(item['title_'+lang]),
+          set_passport_anal_title({ title_ru: item.title_ru, title_kz: item.title_kz, title_en: item.title_en }),
           change_ui_visibility({
             ui_component: 'passport_anal',
             ui_component_state: true,
@@ -2167,7 +2168,7 @@ export default {
         <div class="reference-item"
           @click="
           set_passport_anal_data(item.id),
-          set_passport_anal_title(item['title_'+lang]),
+          set_passport_anal_title({ title_ru: item.title_ru, title_kz: item.title_kz, title_en: item.title_en }),
           change_ui_visibility({
             ui_component: 'passport_anal',
             ui_component_state: true,
@@ -2192,7 +2193,7 @@ export default {
         <div class="reference-item"
           @click="
             set_passport_anal_bar_data(item.id),
-            set_passport_anal_title(item['title_'+lang]),
+            set_passport_anal_title({ title_ru: item.title_ru, title_kz: item.title_kz, title_en: item.title_en }),
             change_ui_visibility({
             ui_component: 'passport_anal_bar',
             ui_component_state: true,
@@ -2272,7 +2273,7 @@ export default {
       <div slot="body" v-if="passport_content == 'level_3:numeric'">
         <div class="reference-item"
           @click="set_passport_anal_bar_data(item.id),
-            set_passport_anal_title(item['title_'+lang]),
+            set_passport_anal_title({ title_ru: item.title_ru, title_kz: item.title_kz, title_en: item.title_en }),
             change_ui_visibility({
             ui_component: 'passport_anal_bar',
             ui_component_state: true,

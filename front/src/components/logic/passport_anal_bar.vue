@@ -367,7 +367,7 @@
 	<div class="passport_anal_bar">
 		<div class="passport_anal_bar-header">
 			<span class="passport_anal_bar-header_title"
-				v-text="passport_anal_title"></span>
+				v-text="lang == 'ru' ? passport_anal_title.title_ru : lang == 'kz' ? passport_anal_title.title_kz : passport_anal_title.title_en"></span>
 			<span class="passport_anal_bar-close"
 				@click="change_ui_visibility({
 					ui_component: 'passport_anal_bar',

@@ -12,7 +12,7 @@
       ]),
       async select (item) {
         await this.set_passport_content(item.passport_content);
-        await this.set_passport_title(item['title_' + this.lang]);
+        await this.set_passport_title({ title_ru: item.title_ru, title_kz: item.title_kz, title_en: item.title_en });
         if (item.passport_content == '9999') {
           this.change_ui_visibility({
             ui_component: 'passport',

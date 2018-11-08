@@ -113,7 +113,7 @@
         <div
           class="piechart-legend_item_color"
           :style="{ 'border': '3px solid ' + colors[idx] }"></div>
-        <div class="piechart-legend_item_key" v-text="key"></div>
+        <div class="piechart-legend_item_key" v-text="key['title_'+lang]"></div>
         <div class="piechart-legend_item_val">
           <span v-text="val == sectors[1].val/100*0.1 && val < sectors[1].val ? 0 + ' (0 %)' : 
                         val == sectors[0].val/100*0.1 && val < sectors[0].val ? 0 + ' (0 %)' : 
