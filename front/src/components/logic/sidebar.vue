@@ -1695,8 +1695,11 @@ export default {
             }['title_' + lang]"
           ></h3>
           <div v-for="link in links_adilet">
-            <a class="sidebar-link" :href="link['link_'+lang]" target="_blank">
-              <h4 v-text="link['link_'+lang] ? link['text_'+lang] : ''"></h4>
+            <a
+              class="sidebar-link" :href="link['link_'+lang]" target="_blank">
+              <h4 
+                :style="{ margin: '25px 0 10px 0' }"
+                v-text="link['link_'+lang] ? link['text_'+lang] : ''"></h4>
               <p v-text="link['subtext_'+lang]"></p>
             </a>  
           </div>
@@ -2525,4 +2528,13 @@ export default {
 .reference-item--active .reference-item-title {
   color: #fff;
 }
+
+.sidebar-link {
+  color: black;
+  text-decoration: none;
+}
+.sidebar-link:hover {
+  text-decoration: underline;
+}
+
 </style>
