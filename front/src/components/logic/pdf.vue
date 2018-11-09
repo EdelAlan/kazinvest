@@ -1,7 +1,8 @@
 <script>
   import { mapGetters, mapActions } from 'vuex';
   import font from '../../assets/js/font.js';
-  import piechart from '../ui/piechart'
+  import passport_anal from "./passport_anal";
+  import canvg from 'canvg';
 
   export default {
     
@@ -9,6 +10,14 @@
         return {
             doc: null,
             label_img: 'data:image/png;base64,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',
+
+            investments_sum: 0,
+            production_sum: 0,
+            foreign_investments_sum: 0,
+            number_jobs_sum: 0,
+            taxes_sum: 0,
+            exports_volume_sum: 0,
+            spent_foreign_investments_sum: 0,
 
             iv2014: 0,
             iv2015: 0,
@@ -28,34 +37,40 @@
 			fdi2017: 0,
             fdi2018: 0,
             
-            fdi2014: 0,
-            fdi2015: 0,
-			fdi2016: 0,
-			fdi2017: 0,
-            fdi2018: 0,
-            
             njc2014: 0,
             njc2015: 0,
 			njc2016: 0,
 			njc2017: 0,
             njc2018: 0,
             
-            fdi2014: 0,
-            fdi2015: 0,
-			fdi2016: 0,
-			fdi2017: 0,
-            fdi2018: 0,
-            
             tv2014: 0,
             tv2015: 0,
 			tv2016: 0,
 			tv2017: 0,
-			tv2018: 0,
+            tv2018: 0,
+            
+            ev2014: 0,
+            ev2015: 0,
+            ev2016: 0,
+            ev2017: 0,
+            ev2018: 0,
+
+            sfi2014: 0,
+            sfi2015: 0,
+            sfi2016: 0,
+            sfi2017: 0,
+            sfi2018: 0,
+
+            pdf_passport_anal: false,
         };
     },
 
+    async mounted() {
+        await this.set_passport_anal_data('sqi');
+    },
+
     components: {
-        piechart,
+        passport_anal,
     },
 
     computed: {
@@ -73,47 +88,130 @@
             'foreign_investments',
             'number_jobs',
             'taxes',
-            'investments_sum',
+            'exports_volume',
+            'spent_foreign_investments',
+            'zone_sector',
+            'passport_anal',
+            'infrastructures',
         ]),
-
-        // diagram_data: async () => {
-        //     await this.set_sectors();
-		// 	var ongoing=0, 
-		// 		underway=0;
-		// 	await this.sectors.forEach(sector => {
-		// 		this.zones.forEach(zone => {
-		// 			if (zone.id == sector.zone_id) {
-		// 				switch(sector.project_type) {
-		// 					case 1:
-		// 						ongoing++;
-		// 						break;
-		// 					case 2:
-		// 						underway++;
-		// 						break;
-		// 					default:
-		// 						break;
-		// 				}
-		// 			}
-		// 		});
-		// 	});
-		// 	return [
-        //             { key: 'Действующие проекты', val: ongoing },
-        //             { key: 'Проекты на стадии реализации', val: underway },
-		// 	    ];
-        // }
     },
 
     methods: {
         ...mapActions([
             'set_all_zones',
             'set_sectors',
+            'set_zone_sector',
             'set_foreign_investments',
             'set_investments',
             'set_investment',
 			'set_number_jobs',
 			'set_production',
-			'set_taxes',
+            'set_taxes',
+            'set_exports_volume',
+            'set_spent_foreign_investments',
+            'set_passport_anal_data',
+            'change_ui_visibility',
         ]),
+
+        async get_zone_sector() {
+            switch (this.active_level.id) {
+                case 1:
+                    await this.set_all_zones();
+                    await this.set_sectors();
+                    await this.set_zone_sector();
+                    this.investments_sum = 0;
+                    this.foreign_investments_sum = 0;
+                    this.production_sum = 0;
+                    this.number_jobs_sum = 0;
+                    this.taxes_sum = 0;
+                    this.exports_volume_sum = 0;
+                    this.spent_foreign_investments_sum = 0;
+                    this.zone_sector.forEach( zone => {
+                        zone.sectors.forEach(sector => {
+                        this.investments_sum += sector.investments.length != 0 ? sector.investments.reduce( (a, it) => {
+                            return a + parseInt(it.val,10) 
+                        }, 0) : 0;
+
+                        this.production_sum += sector.production.length != 0 ? sector.production.reduce( (a, it) => {
+                            return a + parseInt(it.val,10) 
+                        }, 0) : 0;
+
+                        this.foreign_investments_sum += sector.foreign_investments.length != 0 ? sector.foreign_investments.reduce( (a, it) => {
+                            return a + parseInt(it.val,10) 
+                        }, 0) : 0;
+
+                        this.number_jobs_sum += sector.number_jobs.length != 0 ? sector.number_jobs.reduce( (a, it) => {
+                            return a + parseInt(it.val,10) 
+                        }, 0) : 0;
+
+                        this.taxes_sum += sector.taxes.length != 0 ? sector.taxes.reduce( (a, it) => {
+                            return a + parseInt(it.val,10) 
+                        }, 0) : 0;
+
+                        this.exports_volume_sum += sector.exports_volume.length != 0 ? sector.exports_volume.reduce( (a, it) => {
+                            return a + parseInt(it.val,10) 
+                        }, 0) : 0;
+
+                        this.spent_foreign_investments_sum += sector.spent_foreign_investments.length != 0 ? sector.spent_foreign_investments.reduce( (a, it) => {
+                            return a + parseInt(it.val,10) 
+                        }, 0) : 0;
+                        });
+                    });
+                    break; 
+                case 2:
+                    this.investments_sum = 0;
+                    this.foreign_investments_sum = 0;
+                    this.production_sum = 0;
+                    this.number_jobs_sum = 0;
+                    this.taxes_sum = 0;
+                    this.exports_volume_sum = 0;
+                    this.spent_foreign_investments_sum = 0;
+                    this.sectors.forEach(sector => {
+                        this.investments.forEach(el => {
+                        if (sector.id == el.parent_id) {
+                            this.investments_sum += parseInt(el.val,10);
+                        }
+                        });
+                        
+                        this.foreign_investments.forEach(el => {
+                        if (sector.id == el.parent_id) {
+                            this.foreign_investments_sum += parseInt(el.val,10);
+                        }
+                        });
+
+                        this.production.forEach(el => {
+                        if (sector.id == el.parent_id) {
+                            this.production_sum += parseInt(el.val,10);
+                        }
+                        });
+
+                        this.number_jobs.forEach(el => {
+                        if (sector.id == el.parent_id) {
+                            this.number_jobs_sum += parseInt(el.val,10);
+                        }
+                        });
+
+                        this.taxes.forEach(el => {
+                        if (sector.id == el.parent_id) {
+                            this.taxes_sum += parseInt(el.val,10);
+                        }
+                        });
+
+                        this.exports_volume.forEach(el => {
+                        if (sector.id == el.parent_id) {
+                            this.exports_volume_sum += parseInt(el.val,10);
+                        }
+                        });
+
+                        this.spent_foreign_investments.forEach(el => {
+                        if (sector.id == el.parent_id) {
+                            this.spent_foreign_investments_sum += parseInt(el.val,10);
+                        }
+                        });
+                    });
+                    break;
+                }
+        },
 
         async get_investemnts() {
             this.iv2014 = 0; 
@@ -134,35 +232,38 @@
 			this.fdi2017 = 0;
             this.fdi2018 = 0;
             
-            this.fdi2014 = 0;
-            this.fdi2015 = 0;
-			this.fdi2016 = 0;
-			this.fdi2017 = 0;
-            this.fdi2018 = 0;
-            
             this.njc2014 = 0;
             this.njc2015 = 0;
 			this.njc2016 = 0;
 			this.njc2017 = 0;
             this.njc2018 = 0;
-            
-            this.fdi2014 = 0;
-            this.fdi2015 = 0;
-			this.fdi2016 = 0;
-			this.fdi2017 = 0;
-            this.fdi2018 = 0;
-            
+
             this.tv2014 = 0;
             this.tv2015 = 0;
 			this.tv2016 = 0;
 			this.tv2017 = 0;
             this.tv2018 = 0;
+
+            this.ev2014 = 0;
+            this.ev2015 = 0;
+            this.ev2016 = 0;
+            this.ev2017 = 0;
+            this.ev2018 = 0;
+
+            this.sfi2014 = 0;
+            this.sfi2015 = 0;
+            this.sfi2016 = 0;
+            this.sfi2017 = 0;
+            this.sfi2018 = 0;
             
             await this.set_investments();
             await this.set_foreign_investments();
             await this.set_production();
             await this.set_number_jobs();
             await this.set_taxes();
+            await this.set_exports_volume();
+            await this.set_spent_foreign_investments();
+            await this.get_zone_sector();
 
             switch(this.active_level.id) {
                     case 1:
@@ -180,6 +281,12 @@
                         });
                         this.taxes.forEach(el => {
                             this.put_data(el, 'tv');
+                        });
+                        this.exports_volume.forEach(el => {
+                            this.put_data(el, 'ev');
+                        });
+                        this.spent_foreign_investments.forEach(el => {
+                            this.put_data(el, 'sfi');
                         });
                         break;
                     case 2:
@@ -215,6 +322,20 @@
                             this.sectors.forEach(sector => {
 							    if (sector.id == el.parent_id) {
                                     this.put_data(el, 'tv');
+                                }
+                            });
+                        });
+                        this.exports_volume.forEach(el => {
+                            this.sectors.forEach(sector => {
+							    if (sector.id == el.parent_id) {
+                                    this.put_data(el, 'ev');
+                                }
+                            });
+                        });
+                        this.spent_foreign_investments.forEach(el => {
+                            this.sectors.forEach(sector => {
+							    if (sector.id == el.parent_id) {
+                                    this.put_data(el, 'sfi');
                                 }
                             });
                         });
@@ -320,10 +441,49 @@
                             break;
                     }
                     break;
+                case 'ev':
+                    switch(el.year) {
+                        case 2014:
+                            this.ev2014 += parseInt(el.val, 10);
+                            break;
+                        case 2015:
+                            this.ev2015 += parseInt(el.val, 10);
+                            break;
+                        case 2016:
+                            this.ev2016 += parseInt(el.val, 10);
+                            break;
+                        case 2017:
+                            this.ev2017 += parseInt(el.val, 10);
+                            break;
+                        case 2018:
+                            this.ev2018 += parseInt(el.val, 10);
+                            break;
+                    }
+                    break;
+                case 'sfi':
+                    switch(el.year) {
+                        case 2014:
+                            this.sfi2014 += parseInt(el.val, 10);
+                            break;
+                        case 2015:
+                            this.sfi2015 += parseInt(el.val, 10);
+                            break;
+                        case 2016:
+                            this.sfi2016 += parseInt(el.val, 10);
+                            break;
+                        case 2017:
+                            this.sfi2017 += parseInt(el.val, 10);
+                            break;
+                        case 2018:
+                            this.sfi2018 += parseInt(el.val, 10);
+                            break;
+                    }
+                    break;
             }
-		},
+        },
 
         async generate_pdf() {
+            this.pdf_passport_anal = true;
             await this.get_investemnts();
 
             const jsPDF = require('jspdf');
@@ -341,18 +501,15 @@
             this.doc.setFont('PTSans');
             
             // header
-            this.header_pdf(this.doc);        
+            this.header_pdf(this.doc);
 
             switch(this.active_level.id) {
                 case 1:
-                    this.doc.text(this.lang == 'ru' ? 'Объем затраченных средств\r\nиз бюджета на инфраструктуру по РК:' : this.lang == 'kz' ? 'ҚР инфрақұрылымға бюджеттен жұмсалған қаражат көлемі:' : 'The amount of funds spent from the budget for infrastructure in the RK:', 30, 510);
-                    this.doc.text(this.investments_sum.toLocaleString('en') + (this.lang == 'ru' ? ' Тенге' : this.lang == 'kz' ? ' Теңге' : ' Tenge'), 430, 510);
-
-                    this.doc.text(this.lang == 'ru' ? 'Информация по количеству проектов:' : this.lang == 'kz' ? 'Жобалар саны туралы ақпарат:' : 'Information on the number of projects:', 30, 565);
-                    // this.doc.
+                    this.doc.text(this.lang == 'ru' ? 'Объем затраченных средств\r\nиз бюджета на инфраструктуру по РК:' : this.lang == 'kz' ? 'ҚР инфрақұрылымға бюджеттен жұмсалған қаражат көлемі:' : 'The amount of funds spent from the budget for infrastructure in the RK:', 30, 660);
+                    this.doc.text(this.investments_sum.toLocaleString('en') + (this.lang == 'ru' ? ' Тенге' : this.lang == 'kz' ? ' Теңге' : ' Tenge'), 430, 660);
                     break;
                 case 2:
-                    this.doc.text(this.lang == 'ru' ? 'Наименование Компании – участника:' : this.lang == 'kz' ? 'Қоғамның атауы - қатысушы:' : 'Name of the Company - participant:', 30, 77);
+                    this.doc.text(this.lang == 'ru' ? 'Тип и название зоны:' : this.lang == 'kz' ? 'Аймақтың түрі мен аты:' : 'Type and name of the zone:', 30, 77);
                     var ttl = this.selected_zone['title_' + this.lang].split(' ');
                     if (ttl.length > 2) {
                         var ttl_text = '';
@@ -368,51 +525,54 @@
                         this.doc.text(this.selected_zone['title_' + this.lang], 400, 77);
                     }
 
-                    this.doc.text(this.lang == 'ru' ? 'Период действия зоны:' : this.lang == 'kz' ? 'Аймақтың әрекет ету мерзімі:' : 'Zone validity period:', 30, 122);
-                    this.doc.text(this.selected_zone.zone_time ? this.selected_zone.zone_time : '-', 400, 122);
-
-                    this.doc.text(this.lang == 'ru' ? 'Отрасаль зоны:' : this.lang == 'kz' ? 'Аймақ өнеркәсібі:' : 'Zone industry:', 30, 167);
+                    this.doc.text(this.lang == 'ru' ? 'Отрасль зоны:' : this.lang == 'kz' ? 'Аймақ өнеркәсібі:' : 'Zone industry:', 30, 122);
                     switch(this.selected_zone.industries_id) {
                         case 1:
-                            this.doc.text(this.lang == 'ru' ? 'Химия' : this.lang == 'kz' ? 'Химия' : 'Chemistry', 400, 167);
+                            this.doc.text(this.lang == 'ru' ? 'Химия' : this.lang == 'kz' ? 'Химия' : 'Chemistry', 400, 122);
                             break;
                         case 2:
-                            this.doc.text(this.lang == 'ru' ? 'Нефтехимия' : this.lang == 'kz' ? 'Мұнай-химия' : 'Petrochemistry', 400, 167);
+                            this.doc.text(this.lang == 'ru' ? 'Нефтехимия' : this.lang == 'kz' ? 'Мұнай-химия' : 'Petrochemistry', 400, 122);
                             break;
                         case 3:
-                            this.doc.text(this.lang == 'ru' ? 'Металлургия' : this.lang == 'kz' ? 'Металлургия' : 'Metallurgy', 400, 167);
+                            this.doc.text(this.lang == 'ru' ? 'Металлургия' : this.lang == 'kz' ? 'Металлургия' : 'Metallurgy', 400, 122);
                             break;
                         case 4:
-                            this.doc.text(this.lang == 'ru' ? 'Машиностроение' : this.lang == 'kz' ? 'Машина жасау' : 'Engineering', 400, 167);
+                            this.doc.text(this.lang == 'ru' ? 'Машиностроение' : this.lang == 'kz' ? 'Машина жасау' : 'Engineering', 400, 122);
                             break;
                         case 5:
-                            this.doc.text(this.lang == 'ru' ? 'Логистика' : this.lang == 'kz' ? 'Логистика' : 'Logistics', 400, 167);
+                            this.doc.text(this.lang == 'ru' ? 'Логистика' : this.lang == 'kz' ? 'Логистика' : 'Logistics', 400, 122);
                             break;
                         case 6:
-                            this.doc.text(this.lang == 'ru' ? 'Нефтесервис' : this.lang == 'kz' ? 'Нефтесервис' : 'Petroservice', 400, 167);
+                            this.doc.text(this.lang == 'ru' ? 'Нефтесервис' : this.lang == 'kz' ? 'Нефтесервис' : 'Petroservice', 400, 122);
                             break;
                         case 7:
-                            this.doc.text(this.lang == 'ru' ? 'Текстиль' : this.lang == 'kz' ? 'Тоқыма' : 'Textile', 400, 167);
+                            this.doc.text(this.lang == 'ru' ? 'Текстиль' : this.lang == 'kz' ? 'Тоқыма' : 'Textile', 400, 122);
                             break;
                         case 8:
-                            this.doc.text(this.lang == 'ru' ? 'ИКТ и НИОКР' : this.lang == 'kz' ? 'АКТ' : 'ICT & R&D', 400, 167);
+                            this.doc.text(this.lang == 'ru' ? 'ИКТ и НИОКР' : this.lang == 'kz' ? 'АКТ' : 'ICT & R&D', 400, 122);
                             break;
                         case 9:
-                            this.doc.text(this.lang == 'ru' ? 'Продукты питания' : this.lang == 'kz' ? 'Тамақ өнімдері' : 'Food', 400, 167);
+                            this.doc.text(this.lang == 'ru' ? 'Продукты питания' : this.lang == 'kz' ? 'Тамақ өнімдері' : 'Food', 400, 122);
                             break;
                         case 10:
-                            this.doc.text(this.lang == 'ru' ? 'Туризм' : this.lang == 'kz' ? 'Туризм' : 'Tourism', 400, 167);
+                            this.doc.text(this.lang == 'ru' ? 'Туризм' : this.lang == 'kz' ? 'Туризм' : 'Tourism', 400, 122);
                             break;
                         case 11:
-                            this.doc.text(this.lang == 'ru' ? 'Смешанная' : this.lang == 'kz' ? 'Аралас' : 'Mixed', 400, 167);
+                            this.doc.text(this.lang == 'ru' ? 'Смешанная' : this.lang == 'kz' ? 'Аралас' : 'Mixed', 400, 122);
                             break;
                         case 12:
-                            this.doc.text(this.lang == 'ru' ? 'Торговля' : this.lang == 'kz' ? 'Сауда' : 'Trade', 400, 167);
+                            this.doc.text(this.lang == 'ru' ? 'Торговля' : this.lang == 'kz' ? 'Сауда' : 'Trade', 400, 122);
                             break;
                     }
 
+                    this.doc.text(this.lang == 'ru' ? 'Период действия зоны:' : this.lang == 'kz' ? 'Аймақтың әрекет ету мерзімі:' : 'Zone validity period:', 30, 167);
+                    this.doc.text(this.selected_zone.zone_time ? this.selected_zone.zone_time : '-', 400, 167);
+
                     this.doc.text(this.lang == 'ru' ? 'Доля свободной площади зоны:' : this.lang == 'kz' ? 'Бос аймақтың үлесі:' : 'The share of free zone area:', 30, 212);
                     this.doc.text((100 - this.selected_zone.level)+'%', 400, 212);
+
+                    this.doc.text(this.lang == 'ru' ? 'Контакты:' : this.lang == 'kz' ? 'Байланыс:' : 'Contacts:', 30, 257);
+                    this.doc.text(this.selected_zone['contacts_'+this.lang].replace(new RegExp('<br />', 'g'), '\n'), 400, 257);
 
                     this.doc.setDrawColor('#D2D2D2');
                     this.doc.setLineWidth(1);
@@ -423,14 +583,14 @@
 
                     this.doc.addPage();
                     
-                    this.doc.text(this.lang == 'ru' ? 'Доля выделенного финансирования по отношению\r\nк общей сумме финансирования СЭЗ/ИЗ РК:' : this.lang == 'kz' ? 'ҚР АЭА/ИА қаржыландырудың жалпы сомасына\r\nқатысты бөлінетін қаржыландыру үлесі:' : 'The share of funding allocated in relation to the\r\ntotal amount of financing of the SEZ/IZ:', 30, 510);
+                    this.doc.text(this.lang == 'ru' ? 'Доля выделенного финансирования по отношению\r\nк общей сумме финансирования СЭЗ/ИЗ РК:' : this.lang == 'kz' ? 'ҚР АЭА/ИА қаржыландырудың жалпы сомасына\r\nқатысты бөлінетін қаржыландыру үлесі:' : 'The share of funding allocated in relation to the\r\ntotal amount of financing of the SEZ/IZ:', 30, 660);
                     await this.set_all_zones();
                     var budget_allocated_sum = 0;
                     this.all_zones.forEach(zone => {
                         budget_allocated_sum += zone.budget_allocated ? parseInt(zone.budget_allocated, 10) : 0;
                     });
                     var bap = ((parseInt(this.selected_zone.budget_allocated, 10) * 100)/budget_allocated_sum).toFixed(2)+'%\r\n(' + parseInt(this.selected_zone.budget_allocated, 10).toLocaleString('en') + '/' + budget_allocated_sum.toLocaleString('en')+')';
-                    this.doc.text(this.selected_zone.budget_allocated ? bap : '-', 400, 510);
+                    this.doc.text(this.selected_zone.budget_allocated ? bap : '-', 400, 660);
 
                     break;
             }
@@ -443,6 +603,16 @@
             this.doc.text(this.lang == 'ru' ? 'Прямые иностранные инвестиций по годам:' : this.lang == 'kz' ? 'Жыл сайын шетелдік тікелей инвестициялар:' : 'Foreign direct investment by year:', 30, 265);
             this.doc.text(this.lang == 'ru' ? 'Количество рабочих мест по годам:' : this.lang == 'kz' ? 'Жыл сайын жұмыс орындарының саны:' : 'Number of jobs by year:', 30, 340);
             this.doc.text(this.lang == 'ru' ? 'Объем налоговых отчислений по проектам по годам:' : this.lang == 'kz' ? 'Жыл бойынша салық аударымдарының сомасы:' : 'The amount of tax deductions by year:', 30, 420);
+            this.doc.text(
+                this.lang == "ru" ? "Объем экспорта" : this.lang == "en" ? "Export volume" : "Экспорттың көлемі",
+                30,
+                500
+            );
+            this.doc.text(
+                this.lang == "ru" ? "Привлечено иностранных инвестиций на 1 тг., затраченных бюджетом" : this.lang == "en" ? "Attracted foreign investments for 1 tenge spent by the budget" : "Бюджеттен жұмсалған 1 теңгеге шетелдік инвестициялар тартылды",
+                30,
+                580
+            );
 
             // table Объем вложенных инвестиций по годам:
             const columns = [2014, 2015, 2016, 2017, 2018];
@@ -496,6 +666,30 @@
                 ]];
             this.doc.autoTable(columns, data, {startY: this.doc.autoTable.previous.finalY + 45});
 
+            // table Объем экспорта
+            data = [[
+                this.ev2014.toLocaleString("en") != 0 ? this.ev2014.toLocaleString("en") : '-',
+                this.ev2015.toLocaleString("en") != 0 ? this.ev2015.toLocaleString("en") : '-',
+                this.ev2016.toLocaleString("en") != 0 ? this.ev2016.toLocaleString("en") : '-',
+                this.ev2017.toLocaleString("en") != 0 ? this.ev2017.toLocaleString("en") : '-',
+                this.ev2018.toLocaleString("en") != 0 ? this.ev2018.toLocaleString("en") : '-',
+            ]];
+            this.doc.autoTable(columns, data, {
+                startY: this.doc.autoTable.previous.finalY + 45
+            });
+
+            // table 
+            data = [[
+                this.sfi2014.toLocaleString("en") != 0 ? this.sfi2014.toLocaleString("en") : '-',
+                this.sfi2015.toLocaleString("en") != 0 ? this.sfi2015.toLocaleString("en") : '-',
+                this.sfi2016.toLocaleString("en") != 0 ? this.sfi2016.toLocaleString("en") : '-',
+                this.sfi2017.toLocaleString("en") != 0 ? this.sfi2017.toLocaleString("en") : '-',
+                this.sfi2018.toLocaleString("en") != 0 ? this.sfi2018.toLocaleString("en") : '-',
+            ]];
+            this.doc.autoTable(columns, data, {
+                startY: this.doc.autoTable.previous.finalY + 45
+            });
+
             this.doc.setFont('PTSans');
 
             this.doc.setDrawColor('#D2D2D2');
@@ -503,7 +697,56 @@
             this.doc.line(30, this.doc.autoTable.previous.finalY + 25, 565, this.doc.autoTable.previous.finalY + 25);
             this.doc.line(30, this.doc.autoTable.previous.finalY + 85, 565, this.doc.autoTable.previous.finalY + 85);
 
-            this.doc.save(this.active_level.id == 1 ? 'sez_iz.pdf' : this.selected_zone.title_en + '.pdf');
+            /// Diagram
+            this.doc.addPage();
+            this.header_pdf(this.doc);
+
+            this.generate_svg(this.doc);
+
+            this.doc.setFont('PTSans');
+
+            this.doc.text(this.lang == 'ru' ? 'Информация по количеству проектов:' : this.lang == 'kz' ? 'Жобалар саны туралы ақпарат:' : 'Information on the number of projects:', 30, 75);
+
+            let total = this.$refs.passport_anal.$data.diagram_data.reduce((acc, it) => acc + it.val, 0);
+            this.doc.text( this.lang == 'ru' ? 'Общее колличество: ' + total : this.lang == 'en' ? 'Total: ' + total : 'Барлығы: ' + total, 300, 140);
+            this.doc.setTextColor('#7ED767');
+            this.doc.text( this.$refs.passport_anal.$data.diagram_data[0].key + " : " + this.$refs.passport_anal.$data.diagram_data[0].val + ' (' + (this.$refs.passport_anal.$data.diagram_data[0].val * 100 / total).toFixed(0) + ' %)', 300, 180);
+            this.doc.setTextColor('#03A0E3');
+            this.doc.text( this.$refs.passport_anal.$data.diagram_data[1].key + " : " + this.$refs.passport_anal.$data.diagram_data[1].val + ' (' + (this.$refs.passport_anal.$data.diagram_data[1].val * 100 / total).toFixed(0) + ' %)', 300, 220);
+
+            if (this.active_level.id == 2) {
+                this.doc.addPage();
+                this.header_pdf(this.doc);
+
+                this.doc.text(this.lang == 'ru' ? 'Список действующих проектов:' : this.lang == 'kz' ? 'Белсенді жобалардың тізімі:' : 'List of active projects:', 30, 60);
+                let margin1 = 70;
+                this.sectors.forEach(sector => {
+                    if (sector.project_type == 1)
+                        this.doc.text(sector['title_'+this.lang], 30, margin1+=20);
+                });
+
+                this.doc.addPage();
+                this.header_pdf(this.doc);
+
+                this.doc.text(this.lang == 'ru' ? 'Список проектов на стадии реализации:' : this.lang == 'kz' ? 'Іске асыру сатысында жобалардың тізімі:' : 'List of projects at the implementation stage:', 30, 60);
+                let margin2 = 70;
+                this.sectors.forEach(sector => {
+                    if (sector.project_type == 2)
+                        this.doc.text(sector['title_'+this.lang], 30, margin2+=20);
+                });
+
+                this.doc.addPage();
+                this.header_pdf(this.doc);
+
+                this.doc.text(this.lang == 'ru' ? 'Информация по объектам инфраструктуры:' : this.lang == 'kz' ? 'Инфрақұрылымдық ақпарат:' : 'Infrastructure Information:', 30, 60);
+                let margin3 = 70;
+                this.infrastructures.forEach(it => {
+                    this.doc.text(it['title_'+this.lang] + '    ' + (it.capacity ? it.capacity+'/' : '') + (it.unit ? it.unit : ''), 30, margin3+=20);
+                });
+            }
+
+            this.doc.save(this.active_level.id == 1 ? 'SEZ_IZ.pdf' : this.selected_zone.title_en + '.pdf');
+            this.pdf_passport_anal = false;
         },
 
         header_pdf(doc) {
@@ -526,23 +769,38 @@
             this.doc.setTextColor('#484D5E');
         },
 
-        generate_excel() {
-            
+        generate_svg(doc) {
+            let el = this.$el.querySelector('.passport_anal').querySelector('.passport_anal-body').querySelector('.piechart').querySelector('.piechart-svg').outerHTML;
+            if (el) {
+                el = el.replace(/\r?\n|\r/g, '').trim();
+            }
+            let canvas = document.createElement('canvas');
+            let context = canvas.getContext('2d');
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            canvg(canvas, el);
+            let img = canvas.toDataURL('image/png');
+            doc.addImage(img, 'PNG', 40, 100, canvas.width, canvas.height);
         },
+
     }
 
   }
 </script>
 
 <template>
-	<div
-        class="pdf"
-        @click="generate_pdf(),
-            generate_excel()"
-        v-text="lang == 'ru' ? 'Экспорт PDF' : lang == 'en' ? 'Export PDF' : 'PDF экспорттау'">
-        <!-- <piechart
-			:sectors="diagram_data"
-		></piechart> -->
+    <div>
+        <div
+            class="pdf"
+            @click="generate_pdf"
+            v-text="lang == 'ru' ? 'Экспорт PDF' : lang == 'en' ? 'Export PDF' : 'PDF экспорттау'">
+        </div>
+
+        <passport_anal
+            :style="{ width : 0, height: 0, visibility: 'hidden' }"
+            v-if="pdf_passport_anal"
+            ref="passport_anal"
+        />
+
     </div>
 </template>
 

@@ -14,9 +14,9 @@ export default {
     }, {
       active: false,
       id: 'members',
-      title_ru: 'Участники',
-      title_kz: 'Қатысушылар',
-      title_en: 'Participants',
+      title_ru: 'Пользователи',
+      title_kz: 'Пайдаланушылар',
+      title_en: 'Users',
     }],
   }),
 
@@ -132,8 +132,7 @@ export default {
     },
     
     update_zone ({ commit }, zone) {
-      const path = this.getters.api_path + `/back/api/zones/${zone.id}?lang=${this.getters.lang}`;
-      console.log(path);
+      const path = this.getters.api_path + `/back/api/zones/${zone.id}`;
       return fetcher({ 
         method: 'put',
         path,
@@ -144,7 +143,6 @@ export default {
     },
     update_sector ({ commit }, sector) {
       const path = this.getters.api_path + `/back/api/sectors/${sector.id}`;
-      console.log(path);
       return fetcher({ 
         method: 'put',
         path,

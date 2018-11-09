@@ -17,7 +17,7 @@
 	<div class="passport">
 		<div class="passport-header">
 			<span class="passport-header_title"
-				v-text="passport_title"></span>
+				v-text="lang == 'ru' ? passport_title.title_ru : lang == 'kz' ? passport_title.title_kz : passport_title.title_en"></span>
 			<span class="passport-close"
 				@click="change_ui_visibility({
 					ui_component: 'passport',

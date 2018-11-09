@@ -4,6 +4,7 @@
   import selector from '../ui/selector.vue';
   import filter_checker from '../logic/filter_checker.vue';
 
+  import feedback from '../logic/feedback.vue';
   import signup from '../logic/signup.vue';
   import signin from '../logic/signin.vue';
   import lang_home from '../logic/lang_home.vue';
@@ -19,6 +20,7 @@
       filter_checker,
       signin,
       lang_home,
+      feedback,
     },
 
     data() {
@@ -30,6 +32,7 @@
 
     computed: mapGetters([
       'signup_signin_modal',
+      'feedback_modal',
       'industries_filter',
       'zone_filter',
       'provinces_filter',
@@ -75,6 +78,12 @@
           ui_component_state: true,
         });
       },
+      call_feedback() {
+        this.change_ui_visibility({
+          ui_component: 'feedback_modal',
+          ui_component_state: true,
+        })
+      },
 		},
 
     async mounted () {
@@ -98,6 +107,38 @@
 
 <template>
   <div class="home">
+
+    <modal
+      v-if="feedback_modal"
+      v-on:close="change_ui_visibility({
+        ui_component: 'feedback_modal',
+        ui_component_state: false,
+      })">
+
+      <div class="home-feedback_container">
+        <tabs
+          :titles_style="{
+            'font-size': '20px',
+            'padding': '22px',
+          }"
+          :active_page=0>
+
+          <span slot="tab_title_0"
+            v-text="{
+              'title_ru': 'Задать вопрос', 
+              'title_kz': 'Сұрақ қою', 
+              'title_en': 'Ask question'
+            }['title_' + lang]"
+          ></span>
+
+          <div slot="tab_0">
+            <feedback></feedback>
+          </div>
+
+        </tabs>
+      </div>
+
+    </modal>
 
     <modal
       v-if="signup_signin_modal"
@@ -171,8 +212,8 @@
               v-on:click="signout"
               v-text="{
                 'title_ru': 'Выйти', 
-                'title_kz': 'Кіру', 
-                'title_en': 'Sign in'
+                'title_kz': 'Шығу', 
+                'title_en': 'Sign out'
               }['title_' + lang]">
               </button>
 
@@ -322,40 +363,50 @@
                 <div class="menu_body">
                     <div v-if="profile">
                       <router-link v-if="profile" to="/editpanel" class="btn"
+                        :style="{ 'font-size' : '16px', 'width' : '100%' }"
                         v-text="{
                           'title_ru': 'Панель редактирования', 
                           'title_kz': 'Редакциялау тақтасы', 
                           'title_en': 'Edit panel'
                         }['title_' + lang]"
                       ></router-link>
+                      <a target="_blank" rel="noopener noreferrer" href="https://tu.invest.gov.kz/" class="btn"
+                        :style="{ 'font-size' : '16px' }"
+                        v-text="{
+                          'title_ru': 'Портал «Технические условия»', 
+                          'title_kz': '«Техникалық сипаттамалар» порталы', 
+                          'title_en': '«Technical specifications» portal'
+                        }['title_' + lang]"
+                      ></a>
+                      <a href="#" class="btn"
+                        :style="{ 'width' : '100%', 'font-size' : '16px' }"
+                        v-on:click="call_feedback()"
+                        v-text="{
+                          'title_ru': 'Задать вопрос', 
+                          'title_kz': 'Сұрақ қою', 
+                          'title_en': 'Ask question'
+                        }['title_' + lang]"
+                      ></a>
                     </div>
                     <template v-else>
                       <a href="https://invest.gov.kz/cabinet/registration/" class="btn"
+                        :style="{ 'font-size' : '16px' }"
                         v-text="{
                           'title_ru': 'Хочу стать участником', 
                           'title_kz': 'Мен қатысушы болғым келеді', 
                           'title_en': 'I want to be a participant'
                         }['title_' + lang]"
                       ></a>
-                      <a href="#" class="btn"
-                        v-on:click="call_signup()"
+                      <a target="_blank" rel="noopener noreferrer" href="https://tu.invest.gov.kz/" class="btn"
+                        :style="{ 'font-size' : '16px' }"
                         v-text="{
-                          'title_ru': 'Я участник СЭЗ / ИЗ', 
-                          'title_kz': 'Мен АЭА / ИА қатысушымын', 
-                          'title_en': 'I am a participant of SEZ / IZ'
+                          'title_ru': 'Портал «Технические условия»', 
+                          'title_kz': '«Техникалық сипаттамалар» порталы', 
+                          'title_en': '«Technical specifications» portal'
                         }['title_' + lang]"
                       ></a>
 
                     </template>
-                    <!--
-                    <a href="#" class="btn"
-                      v-text="{
-                        'title_ru': 'Задать вопрос', 
-                        'title_kz': 'Сұрақ қою', 
-                        'title_en': 'Ask question'
-                      }['title_' + lang]"
-                    ></a>
-                    -->
                 </div>
             </div>
         </div>
@@ -377,6 +428,11 @@
   }
 
   .home-signup_signin_container {
+    width: 730px;
+    margin: 0 auto;
+  }
+
+  .home-feedback_container {
     width: 730px;
     margin: 0 auto;
   }
@@ -581,9 +637,9 @@
     align-items: flex-end;
   }
 
-.assistant--menu {
-  position: fixed;
-}
+  .assistant--menu {
+    position: fixed;
+  }
   .assistant--menu .menu,
   .menu_body {
       display: flex;

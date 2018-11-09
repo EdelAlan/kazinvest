@@ -26,6 +26,11 @@
           files: null,
           videos: null,
           photos: null,
+          physic_photo: {
+            ru: null,
+            kz: null,
+            en: null,
+          },
 
           budget_allocated: null,
           budget_need: null,
@@ -211,7 +216,7 @@
 
       <div class="editpanel_editzone-tab" slot="tab_1">
         <h3 class="editpanel_editzone-tab-title"
-          v-text="lang == 'ru' ? 'Объем затраченных средств из бюджета на инфаструктуру' : lang == 'en' ? 'Budget infrastructural expenses' : 'Бюджеттен инфрақұрылымға жұмсалған қаражаттар'"
+          v-text="lang == 'ru' ? 'Объем затраченных средств из бюджета на инфраструктуру' : lang == 'en' ? 'Budget infrastructural expenses' : 'Бюджеттен инфрақұрылымға жұмсалған қаражаттар'"
         ></h3>
         <p class="editpanel_editzone-tab-input_title" 
           v-text="lang == 'ru' ? 'Потребность' : lang == 'en' ? 'Budget need' : 'Мұқтаждық'"></p>
@@ -222,8 +227,9 @@
         <input class="editpanel_editzone-input" type="number" min="0"
           v-model="zonemodel.budget_allocated"/>
         <p class="editpanel_editzone-tab-input_title" 
-          v-text="lang == 'ru' ? 'Доля выделенного финансирования по отношению к общей сумме финансирования СЭЗ РК' : lang == 'en' ? 'The share of funding allocated in relation to the total amount of financing of the SEZ/IZ of RK' : 'ҚР АЭА/ИА қаржыландырудың жалпы сомасына қатысты бөлінетін қаржыландыру үлесі'"></p>
-        <input class="editpanel_editzone-input" type="number" min="0"
+          v-text="lang == 'ru' ? 'Соотношение свободных и занятых земель' : lang == 'en' ? 'Free and taken land share' : 'Бос және қабылданған жер үлесі'"></p>
+        <input type="number" min="0"
+          class="editpanel_editzone-tab-input"
           v-model="zonemodel.level"/>
       </div>
 

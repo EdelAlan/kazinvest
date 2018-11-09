@@ -43,6 +43,14 @@ export default {
         ui_component: 'passport',
         ui_component_state: false,
       });
+      this.dispatch('change_ui_visibility', {
+        ui_component: 'passport_anal',
+        ui_component_state: false,
+      });
+      this.dispatch('change_ui_visibility', {
+        ui_component: 'passport_anal_bar',
+        ui_component_state: false,
+      });
       this.dispatch('reset_sector');
       const { lang } = this.state.lang;
       const { search_string } = this.state.filters;
@@ -50,8 +58,8 @@ export default {
         + `/back/api/zones?lang=${lang}`
         + (filter ?
           this.getters.search_query
-        + (search_string != '' ? `&search_string=${search_string}` : '') : '');
-      console.log(path);
+        + (search_string != '' ? `&search_string=${search_string}` : '')
+        + (lang != '' ? `&lang=${lang}` : '') : '');
       return fetcher({ path }).then(zones => commit('set_zones', zones));
     },
     async set_all_zones({ commit }) {

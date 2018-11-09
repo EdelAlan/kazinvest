@@ -156,7 +156,7 @@ router.get('/:id', async (req, res) => {
 
 
 router.put('/:id', body_parser.json({ limit: '100mb' }), async (req, res) => {
-  // FILES
+  // PHOTOS
   const dir = zonefilespath + req.params.id;
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir);
@@ -193,7 +193,7 @@ router.put('/:id', body_parser.json({ limit: '100mb' }), async (req, res) => {
       ]);
     });
   }
-  // END FILES
+  // END PHOTOS
 
 
 

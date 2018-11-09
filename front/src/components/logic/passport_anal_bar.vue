@@ -45,6 +45,7 @@
 				'selected_sector',
 				'zones',
 				'zone_sector',
+				'passport_anal_title',
 			]),
 		},
 
@@ -365,6 +366,8 @@
 <template>
 	<div class="passport_anal_bar">
 		<div class="passport_anal_bar-header">
+			<span class="passport_anal_bar-header_title"
+				v-text="lang == 'ru' ? passport_anal_title.title_ru : lang == 'kz' ? passport_anal_title.title_kz : passport_anal_title.title_en"></span>
 			<span class="passport_anal_bar-close"
 				@click="change_ui_visibility({
 					ui_component: 'passport_anal_bar',
@@ -393,6 +396,12 @@
 	}
 	.passport_anal_bar-header_title {
 		margin: 0;
+		display: block;
+		padding: 15px 10px;
+		font-size: 16px;
+	}
+	.passport_anal_bar-header_title {
+		margin: 0 0 0 25px;
 		display: block;
 		padding: 15px 10px;
 		font-size: 16px;

@@ -1,6 +1,7 @@
 export default {
   state: () => ({
     signup_signin_modal: false,
+    feedback_modal: false,
     image_modal: false,
     video_modal: false,
     passport: false,// паспорт объекта, "sector" - название из базы
@@ -10,6 +11,7 @@ export default {
     passport_anal_bar_data: null,
     passport_content: '',// временно
     passport_title: '',// временно
+    passport_anal_title: '',// временно
   }),
 
   mutations: {
@@ -22,6 +24,9 @@ export default {
     set_passport_title (state, passport_title) {
       state.passport_title = passport_title;
     },
+    set_passport_anal_title (state, passport_anal_title) {
+      state.passport_anal_title = passport_anal_title;
+    },
     set_passport_anal_data (state, passport_anal_data) {
       state.passport_anal_data = passport_anal_data;
     },
@@ -32,11 +37,13 @@ export default {
 
   getters: {
     signup_signin_modal: state => state.signup_signin_modal,
+    feedback_modal: state => state.feedback_modal,
     video_modal: state => state.video_modal,
     image_modal: state => state.image_modal,
     passport: state => state.passport,
     passport_content: state => state.passport_content,
     passport_title: state => state.passport_title,
+    passport_anal_title: state => state.passport_anal_title,
     passport_anal: state => state.passport_anal,
     passport_anal_data: state => state.passport_anal_data,
     passport_anal_bar: state => state.passport_anal_bar,
@@ -53,10 +60,11 @@ export default {
     set_passport_title({ commit }, passport_title) {
       commit('set_passport_title', passport_title);
     },
+    set_passport_anal_title({ commit }, passport_anal_title) {
+      commit('set_passport_anal_title', passport_anal_title);
+    },
     set_passport_anal_data({ commit }, passport_anal_data) {
       commit('set_passport_anal_data', passport_anal_data);
-      console.log(passport_anal_data)
-      console.log(this.getters.passport_anal_data)
     },
     set_passport_anal_bar_data({ commit }, passport_anal_bar_data) {
       commit('set_passport_anal_bar_data', passport_anal_bar_data);

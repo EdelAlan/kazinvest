@@ -1,5 +1,6 @@
 <script>
 
+  import { mapGetters, mapActions } from 'vuex';
   import colors from '../../assets/libs/colors';
 
 	export default {
@@ -14,6 +15,10 @@
     },
 
     computed: {
+      ...mapGetters([
+        'lang',
+      ]),
+
       total () {
         return this.sectors.reduce((acc, it) => acc + it.val, 0);
       },
@@ -73,6 +78,10 @@
         }
         return newnum.split('').reverse().join('');
       },
+
+      b_formatter(num) {
+        return num > 999999 ? (num/1000000000).toFixed(2) + (this.lang == 'en' ? ' B.tg.' : ' млрд.тг') : num;
+      },
     },
 
 	}
@@ -80,7 +89,7 @@
 
 <template>
 	<div class="piechart">
-    <span class="piechart-total" v-text="this.sectors[0].val == this.sectors[1].val/100*0.1 ? this.sectors[1].val : this.sectors[1].val == this.sectors[0].val/100*0.1 ? this.sectors[0].val : separated_num(total)"></span>
+    <span class="piechart-total" v-text="sectors[0].val == sectors[1].val/100*0.1 ? b_formatter(parseInt(sectors[1].val,10)) : sectors[1].val == sectors[0].val/100*0.1 ? b_formatter(parseInt(sectors[0].val,10)) : b_formatter(parseInt(total,10))"></span>
     <svg class="piechart-svg" :width="size * 1.1" :height="size * 1.1">
       <defs>
         <mask id="circleClip" >
@@ -104,11 +113,11 @@
         <div
           class="piechart-legend_item_color"
           :style="{ 'border': '3px solid ' + colors[idx] }"></div>
-        <div class="piechart-legend_item_key" v-text="key"></div>
+        <div class="piechart-legend_item_key" v-text="key['title_'+lang]"></div>
         <div class="piechart-legend_item_val">
           <span v-text="val == sectors[1].val/100*0.1 && val < sectors[1].val ? 0 + ' (0 %)' : 
                         val == sectors[0].val/100*0.1 && val < sectors[0].val ? 0 + ' (0 %)' : 
-                        separated_num(val) + ' (' + (val * 100 / total).toFixed(0) + ' %)'"></span>
+                        b_formatter(val) + ' (' + (val * 100 / total).toFixed(0) + ' %)'"></span>
         </div>
       </div>
     </div>
