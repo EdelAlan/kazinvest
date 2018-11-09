@@ -110,33 +110,40 @@
                     this.spent_foreign_investments_sum = 0;
                     this.zone_sector.forEach( zone => {
                         zone.sectors.forEach(sector => {
-                        this.investments_sum += sector.investments.length != 0 ? sector.investments.reduce( (a, it) => {
-                            return a + parseInt(it.val,10) 
-                        }, 0) : 0;
+                            if (sector.investments)
+                                this.investments_sum += sector.investments.length != 0 ? sector.investments.reduce( (a, it) => {
+                                    return a + parseInt(it.val,10) 
+                                }, 0) : 0;
 
-                        this.production_sum += sector.production.length != 0 ? sector.production.reduce( (a, it) => {
-                            return a + parseInt(it.val,10) 
-                        }, 0) : 0;
+                            if (sector.production)
+                                this.production_sum += sector.production.length != 0 ? sector.production.reduce( (a, it) => {
+                                    return a + parseInt(it.val,10) 
+                                }, 0) : 0;
 
-                        this.foreign_investments_sum += sector.foreign_investments.length != 0 ? sector.foreign_investments.reduce( (a, it) => {
-                            return a + parseInt(it.val,10) 
-                        }, 0) : 0;
+                            if (sector.foreign_investments)
+                                this.foreign_investments_sum += sector.foreign_investments.length != 0 ? sector.foreign_investments.reduce( (a, it) => {
+                                    return a + parseInt(it.val,10) 
+                                }, 0) : 0;
 
-                        this.number_jobs_sum += sector.number_jobs.length != 0 ? sector.number_jobs.reduce( (a, it) => {
-                            return a + parseInt(it.val,10) 
-                        }, 0) : 0;
+                            if (sector.number_jobs)
+                                this.number_jobs_sum += sector.number_jobs.length != 0 ? sector.number_jobs.reduce( (a, it) => {
+                                    return a + parseInt(it.val,10) 
+                                }, 0) : 0;
 
-                        this.taxes_sum += sector.taxes.length != 0 ? sector.taxes.reduce( (a, it) => {
-                            return a + parseInt(it.val,10) 
-                        }, 0) : 0;
+                            if (sector.taxes)
+                                this.taxes_sum += sector.taxes.length != 0 ? sector.taxes.reduce( (a, it) => {
+                                    return a + parseInt(it.val,10) 
+                                }, 0) : 0;
 
-                        this.exports_volume_sum += sector.exports_volume.length != 0 ? sector.exports_volume.reduce( (a, it) => {
-                            return a + parseInt(it.val,10) 
-                        }, 0) : 0;
+                            if (sector.exports_volume)
+                                this.exports_volume_sum += sector.exports_volume.length != 0 ? sector.exports_volume.reduce( (a, it) => {
+                                    return a + parseInt(it.val,10) 
+                                }, 0) : 0;
 
-                        this.spent_foreign_investments_sum += sector.spent_foreign_investments.length != 0 ? sector.spent_foreign_investments.reduce( (a, it) => {
-                            return a + parseInt(it.val,10) 
-                        }, 0) : 0;
+                            if (sector.spent_foreign_investments)
+                                this.spent_foreign_investments_sum += sector.spent_foreign_investments.length != 0 ? sector.spent_foreign_investments.reduce( (a, it) => {
+                                    return a + parseInt(it.val,10) 
+                                }, 0) : 0;
                         });
                     });
                     break; 
@@ -561,9 +568,9 @@
                     ]];
                     let total = this.sectors.filter(sector => sector.project_type == 1 || sector.project_type == 2);
                     sectors_data = [{
-                        total: total.length,
-                        active: total.filter(sector => sector.project_type == 1).length,
-                        underway: total.filter(sector => sector.project_type == 2).length,
+                        total: total ? total.length : 0,
+                        active: total.filter(sector => sector.project_type == 1) ? total.filter(sector => sector.project_type == 1).length : 0,
+                        underway: total.filter(sector => sector.project_type == 2) ? total.filter(sector => sector.project_type == 2).length : 0,
                     }];
 
                     active_sectors = [];
@@ -643,18 +650,25 @@
 
             let worksheet1 = XLSX.utils.aoa_to_sheet(header);
             XLSX.utils.sheet_add_json(worksheet1, general_data, { skipHeader: true, origin: -1});
-            let worksheet2 = XLSX.utils.json_to_sheet(investments);
-            let worksheet3 = XLSX.utils.json_to_sheet(productions);
-            let worksheet4 = XLSX.utils.json_to_sheet(foreign_investments);
-            let worksheet5 = XLSX.utils.json_to_sheet(new_jobs_created);
-            let worksheet6 = XLSX.utils.json_to_sheet(taxes);
-            let worksheet7 = XLSX.utils.json_to_sheet(exports_value);
-            let worksheet8 = XLSX.utils.json_to_sheet(sfi);
-            let worksheet9 = XLSX.utils.aoa_to_sheet(sectors_data_header);
-            XLSX.utils.sheet_add_json(worksheet9, sectors_data, { skipHeader: true, origin: -1});
-            let worksheet10 = XLSX.utils.aoa_to_sheet(active_sectors);
-            let worksheet11 = XLSX.utils.aoa_to_sheet(underway_sectors);
-            let worksheet12 = XLSX.utils.aoa_to_sheet(infrastructure);
+            let worksheet2 = XLSX.utils.json_to_sheet(investments ? investments : '');
+            let worksheet3 = XLSX.utils.json_to_sheet(productions ? productions : '');
+            let worksheet4 = XLSX.utils.json_to_sheet(foreign_investments ? foreign_investments : '');
+            let worksheet5 = XLSX.utils.json_to_sheet(new_jobs_created ? new_jobs_created : '');
+            let worksheet6 = XLSX.utils.json_to_sheet(taxes ? taxes : '');
+            let worksheet7 = XLSX.utils.json_to_sheet(exports_value ? exports_value : '');
+            let worksheet8 = XLSX.utils.json_to_sheet(sfi ? sfi : '');
+
+            let worksheet9; 
+            let worksheet10;
+            let worksheet11;
+            let worksheet12;
+            if (this.active_level.id == 2) {
+                worksheet9 = XLSX.utils.aoa_to_sheet(sectors_data_header ? sectors_data_header : '');
+                XLSX.utils.sheet_add_json(worksheet9, sectors_data ? sectors_data : '', { skipHeader: true, origin: -1});
+                worksheet10 = XLSX.utils.aoa_to_sheet(active_sectors ? active_sectors : '');
+                worksheet11 = XLSX.utils.aoa_to_sheet(underway_sectors ? underway_sectors : '');
+                worksheet12 = XLSX.utils.aoa_to_sheet(infrastructure ? infrastructure : '');
+            }
             
             XLSX.utils.book_append_sheet(workbook, worksheet1, this.active_level.id == 1 ? (this.lang == 'ru' ? 'Общая информация по СЭЗ ИЗ' : this.lang == 'kz' ? 'АЭА ИА жалпы ақпарат' : 'SEZ IZ General Information') : (this.lang == 'ru' ? 'Цифровые показатели' : this.lang == 'kz' ? 'Сандық өнімділік' : 'Digital Indicator'));
             XLSX.utils.book_append_sheet(workbook, worksheet2, this.lang == "ru" ? "Инвестиции" : this.lang == "kz" ? "Инвестициялар" : "Investments");
@@ -664,10 +678,12 @@
             XLSX.utils.book_append_sheet(workbook, worksheet6, this.lang == "ru" ? "Налоговые отчисления" : this.lang == "kz" ? "Салық аударымдар" : "Tax");
             XLSX.utils.book_append_sheet(workbook, worksheet7, this.lang == "ru" ? "Объем экспорта" : this.lang == "en" ? "Export volume" : "Экспорттың көлемі");
             XLSX.utils.book_append_sheet(workbook, worksheet8, this.lang == "ru" ? "Привлечено иностр. инвестиций" : this.lang == "en" ? "Attracted foreign investments" : "Шетелдік инвестициялар тартылды");
-            XLSX.utils.book_append_sheet(workbook, worksheet9, this.lang == 'ru' ? 'Количество проектов' : this.lang == 'kz' ? 'Жобалар саны' : 'Number of projects');
-            XLSX.utils.book_append_sheet(workbook, worksheet10, this.lang == 'ru' ? 'Активные проекты' : this.lang == 'kz' ? 'Белсенді жобалар' : 'Active projects');
-            XLSX.utils.book_append_sheet(workbook, worksheet11, this.lang == 'ru' ? 'На стадии реализации' : this.lang == 'kz' ? 'Іске асыру сатысында' : 'Underway projects');
-            XLSX.utils.book_append_sheet(workbook, worksheet12, this.lang == 'ru' ? 'Инфраструктура' : this.lang == 'kz' ? 'Инфрақұрылым' : 'Infrastructure');
+            if (this.active_level.id == 2) {
+                XLSX.utils.book_append_sheet(workbook, worksheet9, this.lang == 'ru' ? 'Количество проектов' : this.lang == 'kz' ? 'Жобалар саны' : 'Number of projects');
+                XLSX.utils.book_append_sheet(workbook, worksheet10, this.lang == 'ru' ? 'Активные проекты' : this.lang == 'kz' ? 'Белсенді жобалар' : 'Active projects');
+                XLSX.utils.book_append_sheet(workbook, worksheet11, this.lang == 'ru' ? 'На стадии реализации' : this.lang == 'kz' ? 'Іске асыру сатысында' : 'Underway projects');
+                XLSX.utils.book_append_sheet(workbook, worksheet12, this.lang == 'ru' ? 'Инфраструктура' : this.lang == 'kz' ? 'Инфрақұрылым' : 'Infrastructure');
+            }
 
             XLSX.writeFile(workbook, this.active_level.id == 1 ? 'SEZ_IZ.xlsx' : this.selected_zone['title_' + this.lang] + ".xlsx");
         },

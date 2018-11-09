@@ -1492,7 +1492,7 @@ export default {
           <div slot="tab_1">
             <div class="sidebar-item"
               v-for="zone in zones"
-              v-if="!sectors"
+              v-if="active_level.id == 1"
               @click="
                 set_passport_content(''),
                 set_level({
@@ -1511,7 +1511,7 @@ export default {
                 v-text="zone.object_count + (lang == 'ru' ? ' объектов' : lang == 'kz' ? ' объект' : ' objects')"></span>
             </div>
             <div class="sidebar-item"
-              v-if="sectors"
+              v-if="sectors && active_level.id == 2"
               v-for="sector in sectors"
               :class="{ 'sidebar-item--active': selected_sector && selected_sector.id == sector.id  }"
               @click="
