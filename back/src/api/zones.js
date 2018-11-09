@@ -122,7 +122,7 @@ router.get('/', async (req, res) => {
     'SELECT * FROM zone_files',
   );
   const zones_photos = await db_query(
-    `SELECT * FROM zone_photos WHERE src_${lang} IS NOT NULL`,
+    `SELECT * FROM zone_photos`,
   );
   zones = zones.map(zone => {
     return {
