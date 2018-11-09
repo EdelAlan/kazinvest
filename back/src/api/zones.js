@@ -1,7 +1,9 @@
 const router = require('express-async-router').AsyncRouter();
 const body_parser = require('body-parser');
 const db_query = require('../util/db_query');
-const file_upload = require('express-fileupload');
+const decodebase64img = require('../util/decodebase64img');
+const fs = require('fs');
+const zonefilespath = __dirname + '/../../../front/public/files/zones/';
 
 const zone_type_str = [{
   "id": 1,
@@ -120,7 +122,7 @@ router.get('/', async (req, res) => {
     'SELECT * FROM zone_files',
   );
   const zones_photos = await db_query(
-    'SELECT * FROM zone_photos',
+    `SELECT * FROM zone_photos WHERE src_${lang} IS NOT NULL`,
   );
   zones = zones.map(zone => {
     return {
@@ -150,11 +152,53 @@ router.get('/:id', async (req, res) => {
 });
 
 
-router.put('/:id', body_parser.json(), async (req, res) => {
-  const filespath = '/files/zones/' + req.body.id + '/';
-  const photos = req.body.physic_photos;
-  // console.log(filespath)
-  // console.log(req.files)
+
+
+
+router.put('/:id', body_parser.json({ limit: '100mb' }), async (req, res) => {
+  // PHOTOS
+  const dir = zonefilespath + req.params.id;
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir);
+  }
+  if (req.body.physic_photo.ru != null && req.body.physic_photo.kz != null && req.body.physic_photo.en != null) {
+    await new Promise((resolve, reject) => {
+      const img_name = Math.random(10).toString(32).slice(2);
+      let types = [];
+      Object.keys(req.body.physic_photo).filter(it => it != null).forEach(lang => {
+        const img = decodebase64img(req.body.physic_photo[lang]);
+        types = [...types, img.type.split('/')[1]];
+        const path = dir + '/' + img_name + '_' + lang + '.' + img.type.split('/')[1];
+        fs.writeFile(path, img.data, async err => {
+          if (err) return reject(err);
+          console.log('file was saved');
+        });
+      });
+      return resolve({ img_name, types});
+    }).then(async({ img_name, types }) => {
+      console.log(img_name, types)
+      const sql = `
+        INSERT INTO zone_photos (name_ru, name_kz, name_en, zone_id, src_ru, src_kz, src_en ) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
+      `;
+      const path = '/files/zones/' + req.params.id + '/';
+      await db_query(sql, [
+        img_name + '_ru', 
+        img_name + '_kz', 
+        img_name + '_en', 
+        req.params.id,
+        path + img_name + '_ru.' + types[0],
+        path + img_name + '_kz.' + types[1],
+        path + img_name + '_en.' + types[2],
+      ]);
+    });
+  }
+  // END PHOTOS
+
+
+
+
+
 
   req.body.infrastructures.forEach(infrastructure => {
     const to_infrastructures = JSON.parse(JSON.stringify({
@@ -205,7 +249,7 @@ router.put('/:id', body_parser.json(), async (req, res) => {
     files: undefined,
     videos: undefined,
     photos: undefined,
-    physic_photos: undefined,
+    physic_photo: undefined,
     infrastructures: undefined,
     objects: undefined,
   }));
@@ -221,8 +265,6 @@ router.put('/:id', body_parser.json(), async (req, res) => {
       }).join(', ')}
     WHERE zone.id = ${req.body.id}
   `;
-  // console.log(sql)
-  // return;
   return await db_query(sql, [...to_zone_values])
     .then(_ => res.json({
       msg: 'zone updated',
