@@ -37,8 +37,6 @@
         await this.set_taxes();
         await this.set_exports_volume();
         await this.set_spent_foreign_investments();
-        await this.set_all_infrastructures();
-        await this.set_all_objects();
         return this.set_zone_sectors();
       } else {
         await this.set_selected_zone(this.profile.member_zone);
@@ -61,8 +59,6 @@
       'set_taxes',
       'set_exports_volume',
       'set_spent_foreign_investments',
-      'set_all_infrastructures',
-      'set_all_objects',
     ]),
 
   }

@@ -28,7 +28,7 @@ export default {
   actions: {
     set_infrastructures_list ({ commit }) {
       return fetcher({
-        path: this.getters.api_path + '/back/api/infrastructures_list?zone_id=' + this.getters.selected_zone.id,
+        path: this.getters.api_path + '/back/api/infrastructures_list?zone_id=' + (this.getters.selected_zone ? this.getters.selected_zone.id : this.getters.edited_zone.id),
       }).then(spec_zone_infrastructures => {
         commit('set_infrastructures_list', spec_zone_infrastructures);
         return;
@@ -36,7 +36,7 @@ export default {
     },
     set_objects_list ({ commit }) {
       return fetcher({
-        path: this.getters.api_path + '/back/api/objects_list?zone_id=' + this.getters.selected_zone.id,
+        path: this.getters.api_path + '/back/api/objects_list?zone_id=' + (this.getters.selected_zone ? this.getters.selected_zone.id : this.getters.edited_zone.id),
       }).then(spec_zone_objects => {
         return commit('set_objects_list', spec_zone_objects);
       });

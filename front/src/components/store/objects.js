@@ -23,7 +23,7 @@ export default {
   actions: {
     set_objects ({ commit }) {
       const path = this.getters.api_path + '/back/api/objects?zone_id=' +
-        this.getters.selected_zone.id +
+      (this.getters.selected_zone ? this.getters.selected_zone.id : this.getters.edited_zone.id) +
         (this.getters.objects_list.filter(it => !it.selected).length > 0
         ? ('&legend_filter=[' + this.getters.objects_list.filter(it => !it.selected).map(it => it.type) + ']') : '');
       return fetcher({

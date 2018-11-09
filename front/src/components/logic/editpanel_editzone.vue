@@ -47,19 +47,26 @@
       'lang',
       'profile',
       'edited_zone',
+      'infrastructures',
+      'objects',
     ]),
 
     methods: {
       ...mapActions([
         'update_zone',
         'set_basemap',
+        'show_on_map',
+        'set_infrastructures',
+        'set_objects',
+        'set_infrastructures_list',
+        'set_objects_list',
       ]),
       set_photo ({ target: { files }}) {
         this.zonemodel.physic_photos = files[0];
       },
     },
 
-    mounted () {
+    async mounted () {
       Object.keys(this.zonemodel).forEach(it => {
         if (
           it == 'title_ru' || 
@@ -75,8 +82,10 @@
         0: null,
       };
 
-      console.log(this.zonemodel.infrastructures);
-      console.log(this.zonemodel.objects);
+      await this.set_infrastructures_list();
+      await this.set_objects_list();
+      await this.set_infrastructures();
+      await this.set_objects();
     }
   }
 </script>
@@ -217,9 +226,10 @@
           v-text="lang == 'ru' ? 'Инфраструктура' : lang == 'en' ? 'Infrastructure' : 'Инфрақұрылым'"
         ></h3>
         <div
-          v-for="infrastructure in zonemodel.infrastructures"
+          v-for="infrastructure in infrastructures"
         >
-          <p class="editpanel_editzone-tab-input_title" 
+          <p class="editpanel_editzone-tab-input_title-infrastructure" 
+            v-on:click="show_on_map(infrastructure)"
             v-text="infrastructure['title_' + lang]"></p>
 
           <div class="editpanel_editzone-tab-input_subtitle" 
@@ -238,9 +248,10 @@
           v-text="lang == 'ru' ? 'Объекты' : lang == 'en' ? 'Objects' : 'Объектілер'"
         ></h3>
         <div
-          v-for="object in zonemodel.objects"
+          v-for="object in objects"
         >
-          <p class="editpanel_editzone-tab-input_title" 
+          <p class="editpanel_editzone-tab-input_title-infrastructure" 
+            v-on:click="show_on_map(object)"
             v-text="object['title_' + lang]"></p>
 
           <div class="editpanel_editzone-tab-input_subtitle" 
@@ -255,10 +266,11 @@
             v-model="object.unit"/>
         </div>
 
-        <!-- <editmap class="editpanel_editzone-map"/>
-        <reset_sector_map />
-        <basemaps class="editpanel_editzone-basemaps" :style="{ top: '385px' }"
-          v-on:click="set_basemap"/> -->
+        <editmap class="editpanel_editzone-map"
+          :is_sector="false"
+        />
+        <basemaps class="editpanel_editzone-basemaps" :style="{ top: '315px' }"
+          v-on:click="set_basemap"/>
       </div>
     </tabs>
   </div>
@@ -305,6 +317,17 @@
     font-weight: normal;
     font-size: 16px;
     color: #50C7F9;
+  }
+
+  .editpanel_editzone-tab-input_title-infrastructure {
+    font-weight: normal;
+    font-size: 16px;
+    color: #50C7F9;
+  }
+
+  .editpanel_editzone-tab-input_title-infrastructure:hover {
+    cursor: pointer;
+    text-decoration: underline;
   }
 
   .editpanel_editzone-tab-input_subtitle {

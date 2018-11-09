@@ -326,7 +326,9 @@
           class="editpanel_editsector-tab-input-oi"
           v-model="sectormodel['contacts_' + lang]"/>
 
-        <editmap class="editpanel_editsector-map"/>
+        <editmap class="editpanel_editsector-map"
+          :is_sector="true"
+        />
         <reset_sector_map />
         <basemaps class="editpanel_editsector-basemaps" :style="{ top: '385px' }"
           v-on:click="set_basemap"/>
