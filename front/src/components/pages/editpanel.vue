@@ -3,12 +3,14 @@
   import editpanel_sidebar from '../logic/editpanel_sidebar';
   import editpanel_members from '../logic/editpanel_members';
   import editpanel_sectorstable from '../logic/editpanel_sectorstable';
+  import editpanel_feedback from '../logic/editpanel_feedback';
 
   export default {
     components: {
       editpanel_sidebar,
       editpanel_sectorstable,
       editpanel_members,
+      editpanel_feedback,
     },
 
     computed: mapGetters([
@@ -27,6 +29,7 @@
       <div class="editpanel-content_item">
         <editpanel_sectorstable v-if="views[0] && views[0].active" />
         <editpanel_members v-if="views[1] && views[1].active && profile && profile.member_role == 'superadmin'" />
+        <editpanel_feedback v-if="views[2] && views[2].active && profile && profile.member_role == 'superadmin'" />
       </div>
     </div>
   </div>

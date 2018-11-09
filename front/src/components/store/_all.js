@@ -22,6 +22,7 @@ import investments from './investments';
 import editpanel from './editpanel';
 import members from './members';
 import links_adilet from './links_adilet';
+import feedback from './feedback';
 
 Vue.use(Vuex);
 
@@ -54,5 +55,6 @@ export default new Vuex.Store({
 		editpanel,
 		members,
 		links_adilet,
+		feedback,
 	},
 });
