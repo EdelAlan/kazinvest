@@ -2,6 +2,7 @@
   import { mapGetters, mapActions } from 'vuex';  
   import tabs from '../ui/tabs';  
   import editmap from '../logic/editmap';
+  import filebase64 from '../../util/filebase64';
   import reset_sector_map from '../logic/editpanel_reset_sector_map';
   import basemaps from '../logic/basemaps';
 
@@ -29,7 +30,6 @@
           budget_allocated: null,
           budget_need: null,
           level: null,
-
           infrastructures: null,
           objects: null,
         },
@@ -54,30 +54,34 @@
         'update_zone',
         'set_basemap',
       ]),
-      set_photo ({ target: { files }}) {
-        this.zonemodel.physic_photos = files[0];
+  
+      set_photo ({ target: { files }}, lang) {
+        if (!files.length) {
+          console.log('empty')
+          return;
+        }
+        filebase64(files[0])
+        .then(result => {
+          this.zonemodel.physic_photo[lang] = result;
+          return;
+        }).then(_ => {
+          console.log(this.zonemodel.physic_photo);
+        })
       },
+
     },
 
+
     mounted () {
-      Object.keys(this.zonemodel).forEach(it => {
-        if (
-          it == 'title_ru' || 
-          it == 'title_kz' || 
-          it == 'title_en'
-        ) {
+      Object.keys(this.zonemodel).filter(it => it != 'physic_photo').forEach(it => {
+        if (it == 'title_ru' || it == 'title_kz' || it == 'title_en') {
           this.zonemodel[it] = this.edited_zone[it].slice(4);
           return;
         }
         this.zonemodel[it] = this.edited_zone[it];
       });
-      this.zonemodel.physic_photos = {
-        0: null,
-      };
-
-      console.log(this.zonemodel.infrastructures);
-      console.log(this.zonemodel.objects);
     }
+
   }
 </script>
 
@@ -127,21 +131,9 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
       <div class="editpanel_editzone-tab" slot="tab_0">
         <h3 class="editpanel_editzone-tab-title" v-text="lang == 'ru' ? 'Название' : lang == 'en' ? 'Title' : 'Атауы'"></h3>
-        <input
+        <input class="editpanel_editzone-input"
           v-model="zonemodel['title_' + lang]"
         />
         <h3 class="editpanel_editzone-tab-title"
@@ -163,7 +155,33 @@
           <div v-for="photo in zonemodel.photos" class="sidebar-passport_photo">
             <img :src="photo['src_' + lang]" />
           </div>
-          <input type="file" v-on:change="set_photo" />
+
+
+
+
+          <div style="clear: both">
+          <div class="editpanel_editzone-add">
+            <input id="zone_photo_input" type="file" v-on:change="set_photo($event, 'ru')" />
+            <span class="editpanel_editzone-lang">RU</span>
+          </div>
+          <div class="editpanel_editzone-add">
+            <input id="zone_photo_input" type="file" v-on:change="set_photo($event, 'kz')" />
+            <span class="editpanel_editzone-lang">KZ</span>
+          </div>
+          <div class="editpanel_editzone-add">
+            <input id="zone_photo_input" type="file" v-on:change="set_photo($event, 'en')" />
+            <span class="editpanel_editzone-lang">EN</span>
+          </div>
+          </div>
+      
+      
+      
+      
+      
+      
+      
+      
+      
         </div>
         <h3 class="editpanel_editzone-tab-title"
           v-text="lang == 'en' ? 'Video' : 'Видео'"
@@ -197,18 +215,15 @@
         ></h3>
         <p class="editpanel_editzone-tab-input_title" 
           v-text="lang == 'ru' ? 'Потребность' : lang == 'en' ? 'Budget need' : 'Мұқтаждық'"></p>
-        <input type="number" min="0"
-          class="editpanel_editzone-tab-input"
+        <input class="editpanel_editzone-input" type="number" min="0"
           v-model="zonemodel.budget_need"/>
         <p class="editpanel_editzone-tab-input_title" 
           v-text="lang == 'ru' ? 'Выделено' : lang == 'en' ? 'Budget allocated' : 'Белгіленген'"></p>
-        <input type="number" min="0"
-          class="editpanel_editzone-tab-input"
+        <input class="editpanel_editzone-input" type="number" min="0"
           v-model="zonemodel.budget_allocated"/>
         <p class="editpanel_editzone-tab-input_title" 
           v-text="lang == 'ru' ? 'Доля выделенного финансирования по отношению к общей сумме финансирования СЭЗ РК' : lang == 'en' ? 'The share of funding allocated in relation to the total amount of financing of the SEZ/IZ of RK' : 'ҚР АЭА/ИА қаржыландырудың жалпы сомасына қатысты бөлінетін қаржыландыру үлесі'"></p>
-        <input type="number" min="0"
-          class="editpanel_editzone-tab-input"
+        <input class="editpanel_editzone-input" type="number" min="0"
           v-model="zonemodel.level"/>
       </div>
 
@@ -224,13 +239,11 @@
 
           <div class="editpanel_editzone-tab-input_subtitle" 
             v-text="'Атрибут'"></div>
-          <input type="text"
-            class="editpanel_editzone-tab-input"
+          <input class="editpanel_editzone-input" type="text"
             v-model="infrastructure.capacity"/>
           <div class="editpanel_editzone-tab-input_subtitle" 
             v-text="'Единица измерения'"></div>
-          <input type="text"
-            class="editpanel_editzone-tab-input"
+          <input class="editpanel_editzone-input" type="text"
             v-model="infrastructure.unit"/>
         </div>
 
@@ -245,13 +258,11 @@
 
           <div class="editpanel_editzone-tab-input_subtitle" 
             v-text="'Атрибут'"></div>
-          <input type="text"
-            class="editpanel_editzone-tab-input"
+          <input class="editpanel_editzone-input" type="text"
             v-model="object.capacity"/>
           <div class="editpanel_editzone-tab-input_subtitle" 
             v-text="'Единица измерения'"></div>
-          <input type="text"
-            class="editpanel_editzone-tab-input"
+          <input class="editpanel_editzone-input" type="text"
             v-model="object.unit"/>
         </div>
 
@@ -319,11 +330,66 @@
     color: #03A0E3;
   }
 
+  .editpanel_editzone-add {
+    width: 92px;
+    height: 53px;
+    background: #555;
+    float: left;
+    margin: 5px;
+    overflow: hidden;
+    color: transparent;
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+  }
+  .editpanel_editzone-lang {
+    position: absolute;
+    top: 0;
+    color: #fff;
+    left: 5px;
+    z-index: 2;
+    font-size: 12px;
+  }
+  .editpanel_editzone-add::before {
+    content: '';
+    background-image: url("../../assets/images/add-plus-button.svg");
+    position: absolute;
+    top: 50%;
+    opacity: .8;
+    transform: translate(-50%, -50%);
+    height: 25PX;
+    width: 25PX;
+    background-size: contain;
+    left: 50%;
+  }
+  #zone_photo_input {
+    opacity: 0;
+    cursor: pointer;
+    width: 92px;
+    height: 53px;
+    background: #aaa;
+    overflow: hidden;
+    color: transparent;
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+  }
+
+  input[type=file], /* FF, IE7+, chrome (except button) */
+  input[type=file]::-webkit-file-upload-button { /* chromes and blink button */
+      cursor: pointer; 
+  }
+
   .editpanel_editzone-map {
     height: 100%;
     width: 50%;
     right: 0;
     top: 126px
+  }
+
+  .editpanel_editzone-input {
+    border: none;
+    border-bottom: 1px solid #aaa;
   }
 
   /* .mapboxgl-map {
@@ -336,6 +402,17 @@
 
   .editpanel_editzone-basemaps {
     z-index: 1000;
+  }
+
+  .sidebar-passport_photo_meta {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    color: #fff;
+    font-size: 10px;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    line-height: 13px;
   }
  
 </style>

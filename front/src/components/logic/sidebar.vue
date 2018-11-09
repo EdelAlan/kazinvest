@@ -2231,7 +2231,7 @@ export default {
 .sidebar-passport_photo {
   width: 92px;
   height: 53px;
-  background: #000;
+  background: #aaa;
   float: left;
   margin: 5px;
   overflow: hidden;

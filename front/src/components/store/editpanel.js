@@ -132,7 +132,7 @@ export default {
     },
     
     update_zone ({ commit }, zone) {
-      const path = this.getters.api_path + `/back/api/zones/${zone.id}`;
+      const path = this.getters.api_path + `/back/api/zones/${zone.id}?lang=${this.getters.lang}`;
       console.log(path);
       return fetcher({ 
         method: 'put',
