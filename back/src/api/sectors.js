@@ -339,12 +339,6 @@ router.put('/:id', body_parser.json(), async (req, res) => {
   });
 
   console.log(req.body.geom)
-  const to_sectors_geom = JSON.parse(JSON.stringify({
-    geom: req.body.geom.features ? req.body.geom[0].geometry : req.body.geom,
-  }));
-  const to_sectors_geom_value = Object.keys(to_sectors_geom).map(key => {
-    return to_sectors_geom[key];
-  });
   const sql_geom = `
     UPDATE sectors SET geom = ST_GeomFromGeoJSON( $1 )
     WHERE sectors.id = ${req.params.id}
@@ -388,6 +382,18 @@ router.put('/:id', body_parser.json(), async (req, res) => {
     taxes2016: undefined,
     taxes2017: undefined,
     taxes2018: undefined,
+
+    exports_volume2014: undefined,
+    exports_volume2015: undefined,
+    exports_volume2016: undefined,
+    exports_volume2017: undefined,
+    exports_volume2018: undefined,
+
+    spent_foreign_investments2014: undefined,
+    spent_foreign_investments2015: undefined,
+    spent_foreign_investments2016: undefined,
+    spent_foreign_investments2017: undefined,
+    spent_foreign_investments2018: undefined,
   }));
   const to_sectors_values = Object.keys(to_sectors).map(key => {
     return to_sectors[key];

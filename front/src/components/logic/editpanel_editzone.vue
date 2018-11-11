@@ -5,6 +5,7 @@
   import filebase64 from '../../util/filebase64';
   import reset_sector_map from '../logic/editpanel_reset_sector_map';
   import basemaps from '../logic/basemaps';
+  import save_geom from '../logic/save_geom';
 
   export default {
     data () {
@@ -46,6 +47,7 @@
       editmap,
       reset_sector_map,
       basemaps,
+      save_geom,
     },
 
     computed: mapGetters([
@@ -54,6 +56,7 @@
       'edited_zone',
       'infrastructures',
       'objects',
+      'show_on_map_geom',
     ]),
 
     methods: {
@@ -66,6 +69,12 @@
         'set_infrastructures_list',
         'set_objects_list',
       ]),
+
+      reset_geom() {
+        let geom = this.show_on_map_geom;
+        this.show_on_map();
+        this.show_on_map(geom);
+      },
   
       set_photo ({ target: { files }}, lang) {
         if (!files.length) {
@@ -289,8 +298,12 @@
         <editmap class="editpanel_editzone-map"
           :is_sector="false"
         />
-        <basemaps class="editpanel_editzone-basemaps" :style="{ top: '315px' }"
+        <reset_sector_map
+          v-on:click="reset_geom"
+        />
+        <basemaps class="editpanel_editzone-basemaps" :style="{ top: '415px', right: '45px' }"
           v-on:click="set_basemap"/>
+        <save_geom class="editpanel_editzone-basemaps" />
       </div>
     </tabs>
   </div>
@@ -413,10 +426,16 @@
   }
 
   .editpanel_editzone-map {
+    position: fixed;
     height: 100%;
-    width: 50%;
-    right: 0;
-    top: 126px
+    width: 40%;
+    right: 35px;
+    top: 157px
+  }
+
+  .mapboxgl-canvas {
+    height: 100%;
+    width: 100%;
   }
 
   .editpanel_editzone-input {
@@ -433,6 +452,7 @@
   } */
 
   .editpanel_editzone-basemaps {
+    position: fixed;
     z-index: 1000;
   }
 

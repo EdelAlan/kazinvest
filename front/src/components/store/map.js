@@ -6,7 +6,6 @@ export default {
       is_reset_sector: false,
       edited_sector_geom: false,
       is_reset_zone: false,
-      edited_zone_geom: false,
       show_on_map_geom: null,
     }),
 
@@ -28,9 +27,6 @@ export default {
       },
       set_reset_zone (state) {
         state.is_reset_zone = !state.is_reset_zone;
-      },
-      set_edited_zone_geom (state, geom) {
-        state.edited_zone_geom = geom;
       },
       show_on_map (state, geom) {
         state.show_on_map_geom = geom;
@@ -59,9 +55,6 @@ export default {
       set_reset_zone ({ commit }) {
         commit('set_reset_zone');
       },
-      set_edited_zone_geom ({ commit }, geom) {
-        commit('set_edited_zone_geom', geom);
-      },
       show_on_map({ commit }, geom) {
         commit('show_on_map', geom);
       },
@@ -74,7 +67,6 @@ export default {
       map_edited_sector: state => state.map_edited_sector,
       edited_sector_geom: state => state.edited_sector_geom,
       is_reset_sector: state => state.is_reset_sector,
-      edited_zone_geom: state => state.edited_zone_geom,
       is_reset_zone: state => state.is_reset_zone,
       show_on_map_geom: state => state.show_on_map_geom,
     },

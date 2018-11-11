@@ -1304,6 +1304,22 @@ export default {
                 });
               });
               break;
+            case 'MultiPoint':
+              console.log(turf.explode(JSON.parse(el.st_asgeojson)));
+              turf.explode(JSON.parse(el.st_asgeojson)).features.forEach( obj => {
+                source_points.data.features.push({
+                  'type': 'Feature',
+                  'geometry': obj.geometry,
+                  'properties': {
+                    'capacity': el.capacity && el.unit ? '<br>' + el.capacity + ' ' + el.unit : '',
+                    'color': el.color,
+                    'title_ru': el.title_ru,
+                    'title_en': el.title_en,
+                    'title_kz': el.title_kz,
+                  }
+                });
+              });
+            break;
           }
         }
       });

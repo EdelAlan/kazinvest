@@ -37,6 +37,7 @@ const spent_foreign_investments = require('./src/api/spent_foreign_investments')
 const members = require('./src/api/members'); 
 const links_adilet = require('./src/api/links_adilet');
 const feedback = require('./src/api/feedback');
+const save_geom = require('./src/api/save_geom');
 
 app
   .use((_, res, next) => {
@@ -69,5 +70,6 @@ app
   .use('/back/api/members', members)
   .use('/back/api/links_adilet', links_adilet)
   .use('/back/api/feedback', feedback)
+  .use('/back/api/save_geom', save_geom)
   
   .listen(5000, () => console.log('Listen on 5000'));

@@ -1,29 +1,18 @@
 <template>
 	<div class="reset_sector_map">
         <button class="reset_sector_map-toggler"
-            v-on:click="set_reset_sector"
+            v-on:click="$emit('click')"
         ></button>
     </div>
 </template>
 
-<script>
-import { mapGetters, mapActions } from 'vuex';
-
-export default {
-  methods: mapActions([
-      'set_reset_sector',
-  ]),
-}
-</script>
-
-
 <style>
 .reset_sector_map {
+  top: 375px; 
+  right: 45px; 
+  position: fixed;
   width: 30px;
   height: 30px;
-  position: absolute;
-  right: 10px;
-  top: 345px;
 }
 
 .reset_sector_map-toggler:hover {

@@ -23,6 +23,7 @@ import editpanel from './editpanel';
 import members from './members';
 import links_adilet from './links_adilet';
 import feedback from './feedback';
+import save_geom from './save_geom';
 
 Vue.use(Vuex);
 
@@ -56,5 +57,6 @@ export default new Vuex.Store({
 		members,
 		links_adilet,
 		feedback,
+		save_geom,
 	},
 });

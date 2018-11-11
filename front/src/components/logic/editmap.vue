@@ -35,12 +35,8 @@ export default {
       'show_on_map_geom',
       'infrastructures',
       'objects',
+      'geom',
     ]),
-
-    watch: {
-        is_reset_sector: 'reset_sector',
-        basemap: 'change_basemap',
-    },
 
     methods: {
       ...mapActions([
@@ -48,7 +44,8 @@ export default {
         'set_reset_zone',
         'set_edited_sector_geom',
         'set_reset_sector',
-        'show_on_map',
+        'save_geom',
+        'set_active',
       ]),
 
       reset_sector() {
@@ -76,23 +73,44 @@ export default {
         );
       },
 
-      set_geom() {
-            this.draw.deleteAll();
-            if (this.show_on_map_geom) {   
-                // if (this.show_on_map_geom.type > 12) {
-                //     this.add_objects(this.show_on_map_geom);
-                // } else {
-                //     this.add_infrastructures(this.show_on_map_geom);
-                // }
-                this.draw.add({
-                    'type': 'Feature',
-                    'geometry': JSON.parse(this.show_on_map_geom.st_asgeojson),
-                    'properties': {
-                        'id': this.show_on_map_geom.id,
-                        'type': this.show_on_map_geom.type,
-                    }
-                });
-            }
+      async set_geom() {
+        let geom = {
+            'type': 'Feature',
+            'geometry': JSON.parse(this.show_on_map_geom.st_asgeojson),
+            'properties': {}
+        };
+        this.set_active(false);
+        if (this.show_on_map_geom.type > 12) {
+            this._mapboxgl_map.removeControl(this.draw);
+            this.draw = new MapboxDraw({
+                displayControlsDefault: false,
+                controls: {
+                    point: true,
+                    trash: true,
+                }
+            });
+            this._mapboxgl_map.addControl(this.draw);
+            this.draw.add(turf.explode(geom));
+        } else {
+            this._mapboxgl_map.removeControl(this.draw);
+            this.draw = new MapboxDraw({
+                displayControlsDefault: false,
+                controls: {
+                    line_string: true,
+                    trash: true,
+                }
+            });
+            this._mapboxgl_map.addControl(this.draw);
+            this.draw.add(geom);
+        }
+
+        if (this.show_on_map_geom) {
+            this.save_geom({
+                geom: geom,
+                id: this.show_on_map_geom.id,
+                type: this.show_on_map_geom.type,
+            });
+        }
       },
 
       add_infrastructures(show_on_map_geom) {
@@ -207,6 +225,8 @@ export default {
 
     watch: {
         show_on_map_geom: 'set_geom',
+        basemap: 'change_basemap',
+        is_reset_sector: 'reset_sector',
     },
 
     async mounted() {
@@ -263,13 +283,20 @@ export default {
                 });
 
                 this._mapboxgl_map.on('draw.update', () => {
-                    this.set_edited_sector_geom(this.draw.getAll());
+                    this.set_edited_sector_geom(turf.combine(this.draw.getAll()).features[0]);
+                });
+                this._mapboxgl_map.on('draw.create', () => {
+                    this.set_edited_sector_geom(turf.combine(this.draw.getAll()).features[0]);
+                });
+                this._mapboxgl_map.on('draw.delete', () => {
+                    this.set_edited_sector_geom(turf.combine(this.draw.getAll()).features[0]);
                 });
             break;
             case false:
                 this.draw = new MapboxDraw({
                     displayControlsDefault: false,
                     controls: {
+                        line_string: true,
                         trash: true,
                     }
                 });
@@ -284,38 +311,33 @@ export default {
                         padding: 50 
                     });
 
-                    this._mapboxgl_map.on('draw.update', () => {
-                        let new_geom = this.draw.getAll();
-                        this.set_edited_zone_geom(this.draw.getAll());
+                    this._mapboxgl_map.on('draw.create', () => {
+                        this.save_geom({
+                            geom: turf.combine(this.draw.getAll()).features[0],
+                            id: this.show_on_map_geom.id,
+                            type: this.show_on_map_geom.type,
+                        });
+                        this.set_active(true);
                     });
-                });
-
-                this._mapboxgl_map.on('draw.delete', () => {
-                    this.show_on_map();
+                    this._mapboxgl_map.on('draw.update', () => {
+                        this.save_geom({
+                            geom: turf.combine(this.draw.getAll()).features[0],
+                            id: this.show_on_map_geom.id,
+                            type: this.show_on_map_geom.type,
+                        });
+                        this.set_active(true);
+                    });
+                    this._mapboxgl_map.on('draw.delete', () => {
+                        this.save_geom({
+                            geom: turf.combine(this.draw.getAll()).features[0],
+                            id: this.show_on_map_geom.id,
+                            type: this.show_on_map_geom.type,
+                        });
+                        this.set_active(true);
+                    });
                 });
             break;
         }
-
-        // this._mapboxgl_map.on('click', e => {
-        //     if (this._mapboxgl_map.isStyleLoaded()) {
-        //         var objects = this._mapboxgl_map.queryRenderedFeatures(e.point, {
-        //             layers: ['objects']
-        //         });
-        //         var infrastructures = this._mapboxgl_map.queryRenderedFeatures(e.point, {
-        //             layers: ['infrastructures']
-        //         });
-        //         // if (features == 1) {
-        //             this.draw.add({
-        //                 'type': 'Feature',
-        //                 'geometry': JSON.parse(this.show_on_map_geom.st_asgeojson),
-        //                 'properties': {
-        //                     'id': this.show_on_map_geom.id,
-        //                     'type': this.show_on_map_geom.type,
-        //                 }
-        //             });
-        //         // }
-        //     }
-        // });
 
         this._mapboxgl_map.on('mousemove', 'object-points', e => {
             var features = this._mapboxgl_map.queryRenderedFeatures(e.point, {

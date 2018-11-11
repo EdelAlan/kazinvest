@@ -121,6 +121,7 @@
       ...mapActions([
         'update_sector',
         'set_basemap',
+        'set_reset_sector',
       ]),
 
       assign_geom() {
@@ -329,8 +330,10 @@
         <editmap class="editpanel_editsector-map"
           :is_sector="true"
         />
-        <reset_sector_map />
-        <basemaps class="editpanel_editsector-basemaps" :style="{ top: '385px' }"
+        <reset_sector_map
+          v-on:click="set_reset_sector"
+        />
+        <basemaps class="editpanel_editsector-basemaps" :style="{ top: '415px', right: '45px' }"
           v-on:click="set_basemap"/>
 
       </div>
@@ -612,13 +615,15 @@
   }
 
   .editpanel_editsector-map {
+    position: fixed;
     height: 100%;
-    width: 50%;
-    right: 0;
-    top: 126px
+    width: 40%;
+    right: 35px;
+    top: 157px
   }
 
   .editpanel_editsector-basemaps {
+    position: fixed;
     z-index: 1000;
   }
 
