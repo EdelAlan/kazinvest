@@ -49,7 +49,7 @@ export default {
     views(state, getters) {
       return state.views.filter(it => {
         if (getters.profile) {
-          return getters.profile.member_role == 'superadmin' ? it : it.id != 'members';
+          return getters.profile.member_role == 'superadmin' ? it : it.id != 'members' && it.id != 'feedback';
         }
       });
     },

@@ -36,8 +36,6 @@
           budget_allocated: null,
           budget_need: null,
           level: null,
-          infrastructures: null,
-          objects: null,
         },
       }
     },
