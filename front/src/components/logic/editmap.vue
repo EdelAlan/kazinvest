@@ -50,16 +50,15 @@ export default {
 
       reset_sector() {
           if (this.is_reset_sector) {
-            this.set_edited_sector_geom({
+            let geom = {
                 'type': 'Feature',
                 'geometry': JSON.parse(this.edited_sector.st_asgeojson),
                 'properties': {}
-            });
+            };
+            this.set_edited_sector_geom(geom);
             this.draw.deleteAll();
-            this.draw.add({
-                'type': 'Feature',
-                'geometry': JSON.parse(this.edited_sector.st_asgeojson),
-                'properties': {}
+            turf.flatten(geom).features.forEach(sector => {
+                this.draw.add(sector);
             });
             this.set_reset_sector();
           }
@@ -268,16 +267,15 @@ export default {
                     }, { 
                         padding: 50 
                     });
-                    this.set_edited_sector_geom({
-                        'type': 'Feature',
-                        'geometry': JSON.parse(this.edited_sector.st_asgeojson),
-                        'properties': {}
-                    });
 
-                    this.draw.add({
+                    let geom = {
                         'type': 'Feature',
                         'geometry': JSON.parse(this.edited_sector.st_asgeojson),
                         'properties': {}
+                    };
+                    this.set_edited_sector_geom(geom);
+                    turf.flatten(geom).features.forEach(sector => {
+                        this.draw.add(sector);
                     });
 
                 });
