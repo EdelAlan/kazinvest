@@ -6,7 +6,6 @@ export default {
     edited_zone: null,
     edited_sector: null,
     new_data: null,
-    edited_data: null,
     views: [{
       active: true,
       id: 'sectors',
@@ -54,9 +53,6 @@ export default {
     set_new_data(state, new_data) {
       state.new_data = new_data;
     },
-    set_edited_data(state, data) {
-      state.edited_data = data;
-    },
   },
 
   getters: {
@@ -72,7 +68,6 @@ export default {
     edited_zone: state => state.edited_zone,
     edited_sector: state => state.edited_sector,
     new_data: state => state.new_data,
-    edited_data: state => state.edited_data,
   },
 
   actions: {
@@ -151,7 +146,7 @@ export default {
       commit('set_edited_sector', sector);
     },
     
-    update_zone ({ commit }, zone) {
+    update_zone ({ commit, dispatch }, zone) {
       if (this.getters.profile.member_role != 'superadmin') {
         const path = this.getters.api_path + `/back/api/new_data/zone`;
         return fetcher({ 
@@ -168,11 +163,15 @@ export default {
           path,
           body: zone,
         }).then(res => {
-          console.log(res)
+          dispatch('set_new_data');
+          const path = this.getters.api_path + `/back/api/new_data/reject/${this.getters.edited_zone.id}`;
+          fetcher({ method: 'put', path});
+          commit('set_edited_zone', false);
+          commit('set_edited_sector', false);
         });
       }
     },
-    update_sector ({ commit }, sector) {
+    update_sector ({ commit, dispatch }, sector) {
       if (this.getters.profile.member_role != 'superadmin') {
         const path = this.getters.api_path + `/back/api/new_data/sector`;
         return fetcher({ 
@@ -189,17 +188,18 @@ export default {
           path,
           body: sector,
         }).then(res => {
-          console.log(res)
-        });
+          dispatch('set_new_data');
+          const path = this.getters.api_path + `/back/api/new_data/reject/${this.getters.edited_sector.id}`;
+          fetcher({ method: 'put', path});
+          commit('set_edited_zone', false);
+          commit('set_edited_sector', false);
+        })
       }
     },
     set_new_data({ commit }) {
       return fetcher({
         path: this.getters.api_path + '/back/api/new_data'
       }).then(new_data => commit('set_new_data', new_data));
-    },
-    set_edited_data({ commit }, edited_data) {
-      commit('set_edited_data', edited_data);
     },
 
     reject_data({ commit }, data) {
@@ -209,7 +209,9 @@ export default {
         path,
       }).then(res => {
         console.log(res)
-        commit('set_edited_data', false);
+        commit('set_edited_zone', false);
+        commit('set_edited_sector', false);
+        // commit('set_edited_inf', false);
       });
     },
   },

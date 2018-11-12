@@ -14,9 +14,9 @@ router.put('/zone', body_parser.json({
         ...req.body,
     }));
     const sql = `
-    INSERT INTO new_data (model, type)
-    VALUES ($1, $2)
-  `;
+        INSERT INTO new_data (model, type)
+        VALUES ($1, $2)
+    `;
     return await db_query(sql, [to_zone, 'zone'])
         .then(_ => res.json({
             msg: 'new data zone updated',

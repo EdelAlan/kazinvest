@@ -1,13 +1,13 @@
 <script>
   import { mapGetters, mapActions } from 'vuex';  
   import editpanel_editzone_reconciliation from './editpanel_editzone_reconciliation';
-  // import editpanel_editsector_reconciliation from './editpanel_editsector_reconciliation';
+  import editpanel_editsector_reconciliation from './editpanel_editsector_reconciliation';
   // import editpanel_editinf_reconciliation from './editpanel_editinf_reconciliation';
 
   export default {
     components: {
       editpanel_editzone_reconciliation,
-      // editpanel_editsector_reconciliation,
+      editpanel_editsector_reconciliation,
       // editpanel_editinf_reconciliation,
     },
 
@@ -21,31 +21,31 @@
 
     computed: mapGetters([
       'new_data',
-      'edited_data',
+      'edited_sector',
+      'edited_zone',
       'lang',
     ]),
 
     async mounted () {
       await this.set_new_data();
-      this.new_data.forEach(it => {
-        console.log(JSON.parse(it.model));
-      });
     },
 
     methods: {
       ...mapActions([
         'set_new_data',
         'collapse_zone_sectors',
-        'set_edited_data',
+        'set_edited_zone',
+        'set_edited_sector',
       ]),
 
       edit_state(data) {
-        this.set_edited_data(data);
         switch(data.type) {
           case 'zone':
+            this.set_edited_zone(data);
             this.editzone_state = true;
           break;
           case 'sector':
+            this.set_edited_sector(data);
             this.editsector_state = true;
           break;
           case 'inf':
@@ -55,9 +55,13 @@
       },
 
       is_rejected() {
-        if (!this.edited_data) {
+        if (!this.edited_zone) {
           this.editzone_state = false;
-          this.editsector_state = false;
+        }
+        if (!this.edited_sector) {
+           this.editsector_state = false;
+        } else {
+        // if (!this.edited_inf) {
           this.editinf_state = false;
         }
       },
@@ -65,7 +69,9 @@
     },
 
     watch: {
-      edited_data: 'is_rejected',
+      edited_zone: 'is_rejected',
+      edited_sector: 'is_rejected',
+      // edited_inf: 'is_rejected',
     }
 
   }
@@ -76,8 +82,8 @@
   <div class="editpanel_reconciliation">
 
     <editpanel_editzone_reconciliation v-if="editzone_state" />
-    <!-- <editpanel_editsector_reconciliation v-if="editsector_state" />
-    <editpanel_editinf_reconciliation v-if="editinf_state" /> -->
+    <editpanel_editsector_reconciliation v-if="editsector_state" />
+    <!-- <editpanel_editinf_reconciliation v-if="editinf_state" /> -->
 
     <div v-if="!editzone_state && !editsector_state && !editinf_state" class="editpanel_reconciliation-list">
       <div v-for="data in new_data" class="editpanel_reconciliation-item">

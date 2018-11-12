@@ -22,8 +22,6 @@
     async mounted () {
       await this.set_feedback();
 
-      console.log(this.feedback)
-
       function decodeBase64Image(dataString) {
         var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
           response = {};

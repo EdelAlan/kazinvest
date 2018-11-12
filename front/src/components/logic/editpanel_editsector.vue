@@ -328,7 +328,7 @@
           v-model="sectormodel['contacts_' + lang]"/>
 
         <editmap class="editpanel_editsector-map"
-          :is_sector="true"
+          :is_sector="'sector'"
         />
         <reset_sector_map
           v-on:click="set_reset_sector"

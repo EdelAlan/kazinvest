@@ -22,7 +22,7 @@
 
     computed: mapGetters([
       'lang',
-      'edited_data',
+      'edited_zone',
       'zones',
     ]),
 
@@ -38,9 +38,8 @@
     },
 
     async mounted () {
-      this.zonemodel = JSON.parse(this.edited_data.model);
+      this.zonemodel = JSON.parse(this.edited_zone.model);
       await this.set_zone(this.zonemodel.id);
-      console.log(this.zones[0]);
     },
 
   }
@@ -173,7 +172,7 @@
       <button v-on:click="update_zone(zonemodel)" 
         v-text="lang == 'ru' ? 'Сохранить' : lang == 'en' ? 'Save' : 'Cақтау'"
       ></button>
-      <button v-on:click="reject_data(edited_data)" 
+      <button v-on:click="reject_data(edited_zone)" 
         v-text="lang == 'ru' ? 'Отклонить' : lang == 'en' ? 'Reject' : 'Қабылдамау'"
       ></button>
 
