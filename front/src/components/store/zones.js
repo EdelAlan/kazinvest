@@ -55,7 +55,7 @@ export default {
       const { lang } = this.state.lang;
       const { search_string } = this.state.filters;
       const path = this.getters.api_path 
-        + `/back/api/zones?lang=${lang}`
+        + `/back/api/zones?`
         + (filter ?
           this.getters.search_query
         + (search_string != '' ? `&search_string=${search_string}` : '')
