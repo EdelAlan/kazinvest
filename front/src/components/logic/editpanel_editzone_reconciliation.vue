@@ -22,7 +22,7 @@
 
     computed: mapGetters([
       'lang',
-      'edited_data',
+      'edited_zone',
       'zones',
     ]),
 
@@ -38,9 +38,8 @@
     },
 
     async mounted () {
-      this.zonemodel = JSON.parse(this.edited_data.model);
+      this.zonemodel = JSON.parse(this.edited_zone.model);
       await this.set_zone(this.zonemodel.id);
-      console.log(this.zones[0]);
     },
 
   }

@@ -46,7 +46,6 @@ export default {
                     }) => {
                         if (msg == 'geom updated' || msg == 'infrastructure new data updated') {
                             commit('geom_update', false);
-                            console.log(msg + ' infra');
                         }
                     });
                 }
@@ -66,7 +65,6 @@ export default {
                     }) => {
                         if (msg == 'geom updated' || msg == 'infrastructure new data updated') {
                             commit('geom_update', false);
-                            console.log(msg + ' objects');
                         }
                     });
                 }

@@ -33,6 +33,7 @@ const FIELDS = `
   zone.region_description_kz,
   zone.region_description_en,
   zone.contacts_ru,
+  zone.province_id,
   zone.contacts_kz,
   zone.contacts_en,
   created_date,
@@ -158,9 +159,9 @@ router.get('/:id', async (req, res) => {
 router.put('/:id', body_parser.json({ limit: '100mb' }), async (req, res) => {
   // PHOTOS
   const dir = zonefilespath + req.params.id;
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir);
-  }
+  // if (!fs.existsSync(dir)) {
+  //   fs.mkdirSync(dir);
+  // }
   if (req.body.physic_photo.ru != null && req.body.physic_photo.kz != null && req.body.physic_photo.en != null) {
     await new Promise((resolve, reject) => {
       const img_name = Math.random(10).toString(32).slice(2);

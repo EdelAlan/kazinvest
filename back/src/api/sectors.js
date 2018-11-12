@@ -104,7 +104,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   let sectors = await db_query(
-    'SELECT * from sectors where id = $1',
+    `SELECT ${FIELDS} from sectors where id = $1`,
     [req.params.id],
   );
 

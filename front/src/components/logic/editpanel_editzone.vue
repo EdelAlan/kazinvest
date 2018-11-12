@@ -294,7 +294,7 @@
         </div>
 
         <editmap class="editpanel_editzone-map"
-          :is_sector="false"
+          :is_sector="'zone'"
         />
         <reset_sector_map
           v-on:click="reset_geom"
