@@ -94,7 +94,7 @@
     async mounted () {
       Object.keys(this.zonemodel).filter(it => it != 'physic_photo').forEach(it => {
         if (it == 'title_ru' || it == 'title_kz' || it == 'title_en') {
-          this.zonemodel[it] = this.edited_zone[it].slice(4);
+          this.profile.member_role == 'superadmin' ? this.zonemodel[it] = this.edited_zone[it].slice(4) : this.zonemodel[it] = this.edited_zone[it];
           return;
         }
         this.zonemodel[it] = this.edited_zone[it];
