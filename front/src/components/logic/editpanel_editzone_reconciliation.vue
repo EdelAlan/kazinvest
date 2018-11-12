@@ -38,6 +38,8 @@
     },
 
     async mounted () {
+      console.log(32423)
+      console.log(this.edited_zone)
       this.zonemodel = JSON.parse(this.edited_zone.model);
       await this.set_zone(this.zonemodel.id);
     },
@@ -169,16 +171,16 @@
           'title_en': 'New data'
         }['title_' + lang]) 
         + ', ' 
-        + edited_data.member_firstname + ' ' 
-        + edited_data.member_lastname + 
-        ' (' + edited_data.member_id + ')'"
+        + edited_zone.member_firstname + ' ' 
+        + edited_zone.member_lastname + 
+        ' (' + edited_zone.member_id + ')'"
       ></h2>
-      <span class="editpanel_editzone_reconciliation-date" v-text="edited_data.timestamp.replace('T', ' ').slice(0, 19)"></span>
+      <span class="editpanel_editzone_reconciliation-date" v-text="edited_zone.timestamp.replace('T', ' ').slice(0, 19)"></span>
       <div class="editpanel_editzone_reconciliation-buttons">
         <button class="editpanel_editzone_reconciliation-button" v-on:click="update_zone(zonemodel)" 
           v-text="lang == 'ru' ? 'Сохранить' : lang == 'en' ? 'Save' : 'Cақтау'"
         ></button>
-        <button class="editpanel_editzone_reconciliation-button" v-on:click="reject_data(edited_data)" 
+        <button class="editpanel_editzone_reconciliation-button" v-on:click="reject_data(edited_zone)" 
           v-text="lang == 'ru' ? 'Отклонить' : lang == 'en' ? 'Reject' : 'Қабылдамау'"
         ></button>
       </div>
