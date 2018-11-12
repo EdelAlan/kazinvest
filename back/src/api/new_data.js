@@ -10,22 +10,27 @@ router.get('/', async (req, res) => {
 router.put('/zone', body_parser.json({
     limit: '100mb'
 }), async (req, res) => {
+    const {
+        member_id, 
+        member_firstname, 
+        member_lastname,
+    } = req.body.member;
     const to_zone = JSON.parse(JSON.stringify({
-        ...req.body,
+        ...req.body.zone,
     }));
     const sql = `
-    INSERT INTO new_data (model, type)
-    VALUES ($1, $2)
-  `;
-    return await db_query(sql, [to_zone, 'zone'])
-        .then(_ => res.json({
-            msg: 'new data zone updated',
-        })).catch(err => {
-            console.err(err);
-            res.status(500).json({
-                msg: 'something broke',
-            });
+        INSERT INTO new_data (model, type, member_id, member_firstname, member_lastname)
+        VALUES ($1, $2, $3, $4, $5)
+    `;
+    return await db_query(sql, [to_zone, 'zone', member_id, member_firstname, member_lastname ])
+    .then(_ => res.json({
+        msg: 'new data zone updated',
+    })).catch(err => {
+        console.err(err);
+        res.status(500).json({
+            msg: 'something broke',
         });
+    });
 });
 
 router.put('/sector', body_parser.json(), async (req, res) => {

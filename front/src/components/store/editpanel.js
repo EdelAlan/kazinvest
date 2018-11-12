@@ -157,7 +157,14 @@ export default {
         return fetcher({ 
           method: 'put',
           path,
-          body: zone,
+          body: {
+            zone,
+            member: {
+              member_firstname: this.getters.profile.member_firstname,
+              member_lastname: this.getters.profile.member_lastname,
+              member_id: this.getters.profile.member_id,
+            },
+          },
         }).then(res => {
           console.log(res)
         });
