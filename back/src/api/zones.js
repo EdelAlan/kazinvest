@@ -145,7 +145,7 @@ router.get('/:id', async (req, res) => {
       FROM zone 
       left join provinces
       ON zone.province_id = provinces.id
-      WHERE id = $1
+      WHERE zone.id = $1
     `,
     [req.params.id],
   ));

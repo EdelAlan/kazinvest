@@ -4,6 +4,7 @@
   import editpanel_members from '../logic/editpanel_members';
   import editpanel_sectorstable from '../logic/editpanel_sectorstable';
   import editpanel_feedback from '../logic/editpanel_feedback';
+  import editpanel_reconciliation from '../logic/editpanel_reconciliation';
 
   export default {
     components: {
@@ -11,6 +12,7 @@
       editpanel_sectorstable,
       editpanel_members,
       editpanel_feedback,
+      editpanel_reconciliation,
     },
 
     computed: mapGetters([
@@ -29,7 +31,8 @@
       <div class="editpanel-content_item">
         <editpanel_sectorstable v-if="views[0] && views[0].active" />
         <editpanel_members v-if="views[1] && views[1].active && profile && profile.member_role == 'superadmin'" />
-        <editpanel_feedback v-if="views[2] && views[2].active && profile && profile.member_role == 'superadmin'" />
+        <editpanel_reconciliation v-if="views[2] && views[2].active && profile && profile.member_role == 'superadmin'"/>
+        <editpanel_feedback v-if="views[3] && views[3].active && profile && profile.member_role == 'superadmin'" />
       </div>
     </div>
   </div>

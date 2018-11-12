@@ -69,6 +69,12 @@ export default {
         commit('set_all_zones', all_zones);
       });
     },
+    set_zone({ commit }, zone_id) {
+      this.dispatch('reset_sector');
+      const path = this.getters.api_path 
+        + `/back/api/zones/${zone_id}`;
+      return fetcher({ path }).then(zone => commit('set_zones', zone));
+    },
     set_zone_sector ({ commit, getters }) {
       commit('set_zone_sector', getters.all_zones.map(zone => {
         return {

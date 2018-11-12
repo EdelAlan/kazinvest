@@ -35,7 +35,7 @@ export default {
                 if (it.id == this.getters.geom.id) {
                     return fetcher({
                         method: 'post',
-                        path: this.getters.api_path + '/back/api/save_geom',
+                        path: this.getters.api_path + (this.getters.profile.member_role == 'superadmin' ? '/back/api/save_geom' : '/back/api/new_data/infrastructure'),
                         body: { 
                             ...this.getters.geom,
                             capacity: it.capacity,
@@ -44,7 +44,7 @@ export default {
                     }).then(({
                         msg
                     }) => {
-                        if (msg == 'geom updated') {
+                        if (msg == 'geom updated' || msg == 'infrastructure new data updated') {
                             commit('geom_update', false);
                             console.log(msg + ' infra');
                         }
@@ -55,7 +55,7 @@ export default {
                 if (it.id == this.getters.geom.id) {
                     return fetcher({
                         method: 'post',
-                        path: this.getters.api_path + '/back/api/save_geom',
+                        path: this.getters.api_path + (this.getters.profile.member_role == 'superadmin' ? '/back/api/save_geom' : '/back/api/new_data/infrastructure'),
                         body: { 
                             ...this.getters.geom,
                             capacity: it.capacity,
@@ -64,7 +64,7 @@ export default {
                     }).then(({
                         msg
                     }) => {
-                        if (msg == 'geom updated') {
+                        if (msg == 'geom updated' || msg == 'infrastructure new data updated') {
                             commit('geom_update', false);
                             console.log(msg + ' objects');
                         }
