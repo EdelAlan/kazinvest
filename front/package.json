@@ -11,6 +11,7 @@
     "@mapbox/mapbox-gl-draw": "^1.0.9",
     "@turf/turf": "^5.1.6",
     "canvg": "^1.5.3",
+    "diff": "^3.5.0",
     "j": "^1.0.0",
     "jspdf": "^1.4.1",
     "jspdf-autotable": "^2.3.5",
