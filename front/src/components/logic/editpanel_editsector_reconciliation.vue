@@ -1025,7 +1025,7 @@
             :is_sector="'admin'"
           />
           <basemaps class="editpanel_editsector_reconciliation-basemaps"
-            :style="{ top: '415px', right: '45px' }"
+            :style="{ top: '315px', right: '10px', position: 'absolute' }"
             v-on:click="set_basemap"/>
         </div>
 

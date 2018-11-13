@@ -3,7 +3,7 @@ const body_parser = require('body-parser');
 const db_query = require('../util/db_query');
 
 router.get('/', async (req, res) => {
-    return res.send(await db_query('SELECT * FROM new_data'));
+    return res.send(await db_query(`SELECT * FROM new_data WHERE is_checked = 'false'`));
 });
 
 
@@ -14,10 +14,10 @@ router.put('/zone', body_parser.json({
         ...req.body,
     }));
     const sql = `
-        INSERT INTO new_data (model, type)
-        VALUES ($1, $2)
+        INSERT INTO new_data (model, type, is_checked)
+        VALUES ($1, $2, $3)
     `;
-    return await db_query(sql, [to_zone, 'zone'])
+    return await db_query(sql, [to_zone, 'zone', false])
         .then(_ => res.json({
             msg: 'new data zone updated',
         })).catch(err => {
@@ -33,10 +33,10 @@ router.put('/sector', body_parser.json(), async (req, res) => {
         ...req.body,
     }));
     sql = `
-    INSERT INTO new_data (model, type) 
-    VALUES ($1 , $2)
+    INSERT INTO new_data (model, type, is_checked) 
+    VALUES ($1, $2, $3)
   `;
-    await db_query(sql, [to_sector, 'sector'])
+    await db_query(sql, [to_sector, 'sector', false])
         .then(_ => res.json({
             msg: 'sectors new data updated',
         })).catch(err => {
@@ -68,12 +68,18 @@ router.put('/infrastructure', body_parser.json(), async (req, res) => {
 
 router.put('/reject/:id', body_parser.json(), async (req, res) => {
     const sql = `
-      DELETE FROM new_data
-      WHERE new_data.id = $1
-    `;
+        UPDATE new_data SET 
+            is_checked = 'true'
+        WHERE 
+            new_data.id = $1`
+    // const sql = `
+    //   DELETE FROM new_data
+    //   WHERE new_data.id = $1
+    // `;
+    console.log(sql)
     return await db_query(sql, [req.params.id])
       .then(_ => res.json({
-        msg: 'new data deleted',
+        msg: 'new data updated',
       })).catch (err => {
         console.err(err);
         res.status(500).json({

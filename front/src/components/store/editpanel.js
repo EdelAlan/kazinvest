@@ -163,9 +163,13 @@ export default {
           path,
           body: zone,
         }).then(res => {
+          console.log(res)
+          commit('set_new_data', '');
           dispatch('set_new_data');
           const path = this.getters.api_path + `/back/api/new_data/reject/${this.getters.edited_zone.id}`;
-          fetcher({ method: 'put', path});
+          fetcher({ method: 'put', path}).then(res => {
+            console.log(res);
+          });
           commit('set_edited_zone', false);
           commit('set_edited_sector', false);
         });
@@ -188,9 +192,13 @@ export default {
           path,
           body: sector,
         }).then(res => {
+          console.log(res)
+          commit('set_new_data', '');
           dispatch('set_new_data');
           const path = this.getters.api_path + `/back/api/new_data/reject/${this.getters.edited_sector.id}`;
-          fetcher({ method: 'put', path});
+          fetcher({ method: 'put', path}).then(res => {
+            console.log(res);
+          });
           commit('set_edited_zone', false);
           commit('set_edited_sector', false);
         })
@@ -202,13 +210,15 @@ export default {
       }).then(new_data => commit('set_new_data', new_data));
     },
 
-    reject_data({ commit }, data) {
+    reject_data({ commit, dispatch }, data) {
       const path = this.getters.api_path + `/back/api/new_data/reject/${data.id}`;
       return fetcher({ 
         method: 'put',
         path,
       }).then(res => {
         console.log(res)
+        commit('set_new_data', '');
+        dispatch('set_new_data');
         commit('set_edited_zone', false);
         commit('set_edited_sector', false);
         // commit('set_edited_inf', false);
