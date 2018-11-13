@@ -47,8 +47,7 @@ export default {
                         }) => {
                             if (msg == 'geom updated') {
                                 commit('geom_update', false);
-                                if (this.getters.edited_inf)
-                                    dispatch('reject_data', this.getters.geom);
+                                dispatch('reject_data', this.getters.geom);
                             }
                         });
                     } else {
@@ -71,8 +70,6 @@ export default {
                         }).then(({msg}) => {
                             if (msg == 'infrastructure new data updated') {
                                 commit('geom_update', false);
-                                if (this.getters.edited_inf)
-                                    dispatch('reject_data', this.getters.geom);
                             }
                         });
                     }
@@ -94,8 +91,8 @@ export default {
                         }) => {
                             if (msg == 'geom updated') {
                                 commit('geom_update', false);
-                                if (this.getters.edited_inf)
-                                    dispatch('reject_data', this.getters.geom);
+                                console.log(this.getters.geom)
+                                dispatch('reject_data', this.getters.edited_inf);
                             }
                         });
                     } else {
@@ -118,8 +115,6 @@ export default {
                         }).then(({msg}) => {
                             if (msg == 'infrastructure new data updated') {
                                 commit('geom_update', false);
-                                if (this.getters.edited_inf)
-                                    dispatch('reject_data', this.getters.geom);
                             }
                         });
                     }

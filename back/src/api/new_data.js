@@ -88,6 +88,7 @@ router.put('/reject/:id', body_parser.json(), async (req, res) => {
         WHERE 
             new_data.id = $1`;
     console.log(sql)
+    console.log(req.params.id)
     return await db_query(sql, [req.params.id])
       .then(_ => res.json({
         msg: 'new data updated',
