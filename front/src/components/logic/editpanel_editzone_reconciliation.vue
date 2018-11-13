@@ -41,7 +41,7 @@
       this.zonemodel = JSON.parse(this.edited_zone.model);
       await this.set_zone(this.zonemodel.id);
 
-      const compares = [{
+      [{
         old: String(this.zones[0].contacts_ru),
         new: String(this.zonemodel.contacts_ru),
         el: '#compare_contact_ru',
@@ -53,23 +53,7 @@
         old: String(this.zones[0].contacts_en),
         new: String(this.zonemodel.contacts_en),
         el: '#compare_contact_en',
-      }, 
-      
-      {
-        old: String(this.zones[0].region_description_ru),
-        new: String(this.zonemodel.region_description_ru),
-        el: '#compare_region_description_ru',
       }, {
-        old: String(this.zones[0].region_description_kz),
-        new: String(this.zonemodel.region_description_kz),
-        el: '#compare_region_description_kz',
-      }, {
-        old: String(this.zones[0].region_description_en),
-        new: String(this.zonemodel.region_description_en),
-        el: '#compare_region_description_en',
-      }, 
-
-      {
         old: String(this.zones[0].description_ru),
         new: String(this.zonemodel.description_ru),
         el: '#compare_description_ru',
@@ -81,9 +65,7 @@
         old: String(this.zones[0].description_en),
         new: String(this.zonemodel.description_en),
         el: '#compare_description_en',
-      }, 
-      
-      {
+      }, {
         old: String(this.zones[0].title_ru),
         new: String(this.zonemodel.title_ru),
         el: '#compare_title_ru',
@@ -95,9 +77,7 @@
         old: String(this.zones[0].title_en),
         new: String(this.zonemodel.title_en),
         el: '#compare_title_en',
-      }, 
-      
-      {
+      }, {
         old: String(this.zones[0].budget_allocated),
         new: String(this.zonemodel.budget_allocated),
         el: '#compare_budget_allocated',
@@ -109,9 +89,7 @@
         old: String(this.zones[0].level),
         new: String(this.zonemodel.level),
         el: '#compare_level',
-      }];
-
-      compares.forEach(it => {
+      }].forEach(it => {
         let color = '', 
           span = null,
           diff = jsdiff.diffWords(it.old, it.new),
@@ -154,21 +132,18 @@
       <div class="editpanel_editzone_reconcilation-value" id="compare_title_kz"></div>
       <div class="editpanel_editzone_reconcilation-value" id="compare_title_en"></div>
       
-      <div class="editpanel_editzone_reconcilation-separator"></div>
 
       <h3 class="editpanel_editzone_reconciliation-tab-title" v-text="(lang == 'ru' ? 'Описание' : lang == 'en' ? 'Description' : 'Сипаттама') + ' (рус, қаз, eng)'"></h3>
       <div class="editpanel_editzone_reconcilation-value" id="compare_description_ru"></div>
       <div class="editpanel_editzone_reconcilation-value" id="compare_description_kz"></div>
       <div class="editpanel_editzone_reconcilation-value" id="compare_description_en"></div>
 
-      <div class="editpanel_editzone_reconcilation-separator"></div>
 
       <h3 class="editpanel_editzone_reconciliation-tab-title" v-text="(lang == 'ru' ? 'Описание региона' : lang == 'en' ? 'Region description' : 'Аймақтың сипаттамасы') + ' (рус, қаз, eng)'"></h3>
       <div class="editpanel_editzone_reconcilation-value" id="compare_region_description_ru"></div>
       <div class="editpanel_editzone_reconcilation-value" id="compare_region_description_kz"></div>
       <div class="editpanel_editzone_reconcilation-value" id="compare_region_description_en"></div>
     
-      <div class="editpanel_editzone_reconcilation-separator"></div>
   
       <h3 class="editpanel_editzone_reconciliation-tab-title" v-text="(lang == 'ru' ? 'Контакты' : lang == 'en' ? 'Contacts' : 'Байланыс') + ' (рус, қаз, eng)'"></h3>
       <div class="editpanel_editzone_reconcilation-value" id="compare_contact_ru"></div>
@@ -176,7 +151,6 @@
       <div class="editpanel_editzone_reconcilation-value" id="compare_contact_en"></div>
      
  
-      <div class="editpanel_editzone_reconcilation-separator"></div>
 
       <h3 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Потребность' : lang == 'en' ? 'Budget need' : 'Мұқтаждық'"></h3>
       <div class="editpanel_editzone_reconcilation-value" id="compare_budget_need"></div>
@@ -184,7 +158,6 @@
       <h3 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Выделено' : lang == 'en' ? 'Budget allocated' : 'Белгіленген'"></h3>
       <div class="editpanel_editzone_reconcilation-value" id="compare_budget_allocated"></div>
       
-      <div class="editpanel_editzone_reconcilation-separator"></div>
 
       <h3 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Соотношение свободных и занятых земель' : lang == 'en' ? 'Free and taken land share' : 'Бос және қабылданған жер үлесі'"></h3>
       <div class="editpanel_editzone_reconcilation-value" id="compare_level"></div>
@@ -202,7 +175,6 @@
         </div>
       </div>
       
-      <div class="editpanel_editzone_reconcilation-separator"></div>
 
       <h3 class="editpanel_editzone_reconciliation-tab-title"
         v-text="lang == 'en' ? 'Video' : 'Видео'"></h3>
@@ -210,7 +182,6 @@
         <div v-for="video in zonemodel.videos" class="sidebar-passport_video"></div>
       </div>
       
-      <div class="editpanel_editzone_reconcilation-separator"></div>
 
       <h3 class="editpanel_editzone_reconciliation-tab-title"
         v-text="lang == 'ru' ? 'Файлы' : lang == 'en' ? 'Files' : 'Файлдар'"></h3>
