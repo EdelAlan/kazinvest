@@ -106,7 +106,6 @@ export default {
         });
         this._mapboxgl_map.addControl(this.draw);
         geom.geometry.coordinates.forEach(coord => {
-          console.log(turf.lineString(coord))
           this.draw.add(turf.lineString(coord));
         });
       }
