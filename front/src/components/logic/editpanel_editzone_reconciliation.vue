@@ -29,15 +29,13 @@
       ]),
     },
 
-    methods: {
-      ...mapActions([
-        'set_basemap',
-        'show_on_map',
-        'update_zone',
-        'reject_data',
-        'set_zone',
-      ]),
-    },
+    methods: mapActions([
+      'set_basemap',
+      'show_on_map',
+      'update_zone',
+      'reject_data',
+      'set_zone',
+    ]),
 
     async mounted () {
       this.zonemodel = JSON.parse(this.edited_zone.model);
@@ -130,15 +128,15 @@
 
       <div class="editpanel_editzone_reconciliation-tab" slot="tab_0">
         <h3 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Название' : lang == 'en' ? 'Title' : 'Атауы'"></h3>
-        <span id="compare_title"></span>
+        <span class="editpanel_editzone_reconcilation-value" id="compare_title"></span>
         <h3 class="editpanel_editzone_reconciliation-tab-title"
           v-text="lang == 'ru' ? 'Описание' : lang == 'en' ? 'Description' : 'Сипаттама'"
         ></h3>
-        <span id="compare_description"></span>
+        <span class="editpanel_editzone_reconcilation-value" id="compare_description"></span>
         <h3 class="editpanel_editzone_reconciliation-tab-title"
           v-text="lang == 'ru' ? 'Описание региона' : lang == 'en' ? 'Region description' : 'Аймақтың сипаттамасы'"
         ></h3>
-        <span id="compare_region_description"></span>
+        <span class="editpanel_editzone_reconcilation-value" id="compare_region_description"></span>
         <h3 class="editpanel_editzone_reconciliation-tab-title"
           v-text="lang == 'ru' ? 'Маркетинговые материалы' : lang == 'en' ? 'Merketing materials' : 'Маркетингтік материалдар'"
         ></h3>
@@ -165,7 +163,7 @@
         <h3 class="editpanel_editzone_reconciliation-tab-title"
           v-text="lang == 'ru' ? 'Контакты' : lang == 'en' ? 'Contacts' : 'Байланыс'"
         ></h3>
-        <span id="compare_contact"></span>
+        <span class="editpanel_editzone_reconcilation-value" id="compare_contact"></span>
       </div>
 
       <div class="editpanel_editzone_reconciliation-tab" slot="tab_1">
@@ -198,11 +196,14 @@
     background: #fff;
     box-shadow: 0 0 5px 0 rgba(0,0,0,.2);
     border-radius: 3px;
-    overflow-y: auto;
     padding: 0;
     margin: 30px;
     padding-bottom: 20px;
-    height: calc(100vh - 60px);
+  }
+
+  .editpanel_editzone_reconcilation-value {
+    font-size: 12px;
+    line-height: 12px;
   }
 
   .editpanel_editzone_reconciliation-title {
@@ -215,6 +216,9 @@
 
   .editpanel_editzone_reconciliation-tab {
     padding: 0 20px;
+    overflow-y: auto;
+    height: calc(100vh - 240px);
+
   }
 
   .editpanel_editzone_reconciliation-tab-input {
@@ -253,7 +257,7 @@
 
   .editpanel_editzone_reconciliation-tab-title {
     font-weight: normal;
-    font-size: 20px;
+    font-size: 16px;
     margin: 20px 0 7px 0;
     color: #03A0E3;
   }
@@ -326,14 +330,6 @@
     border-bottom: 1px solid #aaa;
   }
 
-  /* .mapboxgl-map {
-    height: 100%;
-    width: 50%;
-    position: absolute;
-    right: 0;
-    top: 126px;
-  } */
-
   .editpanel_editzone_reconciliation-basemaps {
     position: fixed;
     z-index: 1000;
@@ -350,16 +346,23 @@
     line-height: 13px;
   }
   .editpanel_editzone_reconciliation-button {
-    padding: 5px;
+    padding: 8px 15px;
     color: #777;
-    background: #fff;
-    border: 1px solid #eee;
+    margin-right: 10px;
+    background: #f1f1f1;
+    font-size: 12px;
+    transition: 200ms;
+    cursor: pointer;
+    border: none;
+
+  }
+  .editpanel_editzone_reconciliation-button:hover {
+    background: #50C7F9;
+    color: #fff;
   }
   .editpanel_editzone_reconciliation-buttons {
-    position: fixed;
-    top: 30px;
     z-index: 10;
-    right: 40px;
+    margin: 0 20px 20px;
   }
   .editpanel_editzone_reconciliation-date {
     position: absolute;
