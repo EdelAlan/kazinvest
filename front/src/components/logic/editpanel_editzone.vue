@@ -259,7 +259,7 @@
           <div
             v-for="infrastructure in infrastructures"
           >
-            <p class="editpanel_editzone_reconciliation-tab-title-infrastructure" 
+            <p class="editpanel_editzone_reconciliation-tab-title" 
               v-on:click="show_on_map(infrastructure)"
               v-text="infrastructure['title_' + lang]"></p>
 
@@ -279,7 +279,7 @@
           <div
             v-for="object in objects"
           >
-            <p class="editpanel_editzone_reconciliation-tab-title-infrastructure" 
+            <p class="editpanel_editzone_reconciliation-tab-title" 
               v-on:click="show_on_map(object)"
               v-text="object['title_' + lang]"></p>
 
@@ -319,6 +319,7 @@
 
 .left-col {
   width: 45%;
+  padding-bottom: 20px;
 }
 
 .map-container {
@@ -360,14 +361,10 @@
     padding: 0 20px;
   }
 
-  .editpanel_editzone-tab-input {
-    width: 150px; 
-    height: 25px; 
-    border: none; 
-    border-bottom: 1px solid #ccc; 
-    outline: none;
-    font-size: 14px;
-    margin: 0 0 30px 0;
+  .editpanel_editzone_reconciliation-tab-title {
+    font-weight: normal;
+    font-size: 16px;
+    color: #50C7F9;
   }
 
   .editpanel_editzone_reconciliation-tab-title {
@@ -376,13 +373,7 @@
     color: #50C7F9;
   }
 
-  .editpanel_editzone_reconciliation-tab-title-infrastructure {
-    font-weight: normal;
-    font-size: 16px;
-    color: #50C7F9;
-  }
-
-  .editpanel_editzone_reconciliation-tab-title-infrastructure:hover {
+  .editpanel_editzone_reconciliation-tab-title:hover {
     cursor: pointer;
     text-decoration: underline;
   }
