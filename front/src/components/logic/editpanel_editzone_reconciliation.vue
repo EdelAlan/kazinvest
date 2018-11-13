@@ -38,6 +38,8 @@
     },
 
     async mounted () {
+      console.log(32423)
+      console.log(this.edited_zone)
       this.zonemodel = JSON.parse(this.edited_zone.model);
       await this.set_zone(this.zonemodel.id);
     },
@@ -163,18 +165,25 @@
     <div class="editpanel_editzone_reconciliation editpanel_editzone_reconciliation-new">
 
       <h2 class="editpanel_editzone_reconciliation-title" 
-        v-text="{
-          'title_ru': 'Новые данные', 
-          'title_kz': 'Жана деректер', 
-          'title_en': 'New data'
-        }['title_' + lang]"
+        v-text="({
+          title_ru: 'Новые данные', 
+          title_kz: 'Жана деректер', 
+          title_en: 'New data'
+        }['title_' + lang])
+        + ', ' 
+        + edited_zone.member_firstname + ' ' 
+        + edited_zone.member_lastname + 
+        ' (' + edited_zone.member_id + ')'"
       ></h2>
-      <button v-on:click="update_zone(zonemodel)" 
-        v-text="lang == 'ru' ? 'Сохранить' : lang == 'en' ? 'Save' : 'Cақтау'"
-      ></button>
-      <button v-on:click="reject_data(edited_zone)" 
-        v-text="lang == 'ru' ? 'Отклонить' : lang == 'en' ? 'Reject' : 'Қабылдамау'"
-      ></button>
+      <span class="editpanel_editzone_reconciliation-date" v-text="edited_zone.timestamp.replace('T', ' ').slice(0, 19)"></span>
+      <div class="editpanel_editzone_reconciliation-buttons">
+        <button class="editpanel_editzone_reconciliation-button" v-on:click="update_zone(zonemodel)" 
+          v-text="lang == 'ru' ? 'Сохранить' : lang == 'en' ? 'Save' : 'Cақтау'"
+        ></button>
+        <button class="editpanel_editzone_reconciliation-button" v-on:click="reject_data(edited_zone)" 
+          v-text="lang == 'ru' ? 'Отклонить' : lang == 'en' ? 'Reject' : 'Қабылдамау'"
+        ></button>
+      </div>
 
       <tabs
         :titles_style="{
@@ -300,7 +309,7 @@
   }
 
   .editpanel_editzone_reconciliation-title {
-    font-size: 18px;
+    font-size: 16px;
     color: #555;
     font-weight: normal;
     padding: 20px;
@@ -440,6 +449,25 @@
     transform: translate(-50%, -50%);
     text-align: center;
     line-height: 13px;
+  }
+  .editpanel_editzone_reconciliation-button {
+    padding: 5px;
+    color: #777;
+    background: #fff;
+    border: 1px solid #eee;
+  }
+  .editpanel_editzone_reconciliation-buttons {
+    position: fixed;
+    top: 30px;
+    z-index: 10;
+    right: 40px;
+  }
+  .editpanel_editzone_reconciliation-date {
+    position: absolute;
+    top: 41px;
+    left: 20px;
+    color: #bbb;
+    font-size: 12px;
   }
  
 </style>

@@ -149,10 +149,25 @@ export default {
     update_zone ({ commit, dispatch }, zone) {
       if (this.getters.profile.member_role != 'superadmin') {
         const path = this.getters.api_path + `/back/api/new_data/zone`;
+        console.log({
+          zone,
+          member: {
+            member_firstname: this.getters.profile.member_firstname,
+            member_lastname: this.getters.profile.member_lastname,
+            member_id: this.getters.profile.member_id,
+          },
+        })
         return fetcher({ 
           method: 'put',
           path,
-          body: zone,
+          body: {
+            zone,
+            member: {
+              member_firstname: this.getters.profile.member_firstname,
+              member_lastname: this.getters.profile.member_lastname,
+              member_id: this.getters.profile.member_id,
+            },
+          },
         }).then(res => {
           console.log(res)
         });
@@ -181,7 +196,14 @@ export default {
         return fetcher({ 
           method: 'put',
           path,
-          body: sector,
+          body: {
+            sector,
+            member: {
+              member_firstname: this.getters.profile.member_firstname,
+              member_lastname: this.getters.profile.member_lastname,
+              member_id: this.getters.profile.member_id,
+            },
+          },
         }).then(res => {
           console.log(res)
         });
