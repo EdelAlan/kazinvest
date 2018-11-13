@@ -28,9 +28,9 @@
 					userid: this.user_model.userid,
 					password: this.user_model.password,
 				}).then(msg => {
-					if (msg == 'user entered') {
-						this.$router.push('/map');
-					}
+					// if (msg == 'user entered') {
+					//   this.$router.push('/map');
+					// }
 					return console.log(msg);
 				});
 			},
