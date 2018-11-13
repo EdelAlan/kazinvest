@@ -3,6 +3,7 @@
   import tabs from '../ui/tabs';  
   import editmap from '../logic/editmap';
   import basemaps from '../logic/basemaps';
+  import * as jsdiff from 'diff';
 
   export default {
     data () {
@@ -126,910 +127,500 @@
         spent_foreign_investments2017: this.spent_foreign_investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2017)[0] ? this.spent_foreign_investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2017)[0].val : 0,
         spent_foreign_investments2018: this.spent_foreign_investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2018)[0] ? this.spent_foreign_investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2018)[0].val : 0,
       };
+
+
+      [{
+        old: String(this.selected_sector.project_price),
+        new: String(this.sectormodel.project_price),
+        el: '#compare_project_price',
+      }, {
+        old: String(this.selected_sector.project_date),
+        new: String(this.sectormodel.project_date),
+        el: '#compare_project_date',
+      }, {
+        old: String(this.selected_sector.power),
+        new: String(this.sectormodel.power),
+        el: '#compare_power',
+      }, {
+        old: String(this.selected_sector.plan_jobs),
+        new: String(this.sectormodel.plan_jobs),
+        el: '#compare_plan_jobs',
+      }, {
+        old: String(this.selected_sector.investments2014),
+        new: String(this.sectormodel.investments2014),
+        el: '#compare_investments2014',
+      }, {
+        old: String(this.selected_sector.investments2015),
+        new: String(this.sectormodel.investments2015),
+        el: '#compare_investments2015',
+      }, {
+        old: String(this.selected_sector.investments2016),
+        new: String(this.sectormodel.investments2016),
+        el: '#compare_investments2016',
+      }, {
+        old: String(this.selected_sector.investments2017),
+        new: String(this.sectormodel.investments2017),
+        el: '#compare_investments2017',
+      }, {
+        old: String(this.selected_sector.investments2018),
+        new: String(this.sectormodel.investments2018),
+        el: '#compare_investments2018',
+      }, {
+        old: String(this.selected_sector.production2014),
+        new: String(this.sectormodel.production2014),
+        el: '#compare_production2014',
+      }, {
+        old: String(this.selected_sector.production2015),
+        new: String(this.sectormodel.production2015),
+        el: '#compare_production2015',
+      }, {
+        old: String(this.selected_sector.production2016),
+        new: String(this.sectormodel.production2016),
+        el: '#compare_production2016',
+      }, {
+        old: String(this.selected_sector.production2017),
+        new: String(this.sectormodel.production2017),
+        el: '#compare_production2017',
+      }, {
+        old: String(this.selected_sector.production2018),
+        new: String(this.sectormodel.production2018),
+        el: '#compare_production2018',
+      }, {
+        old: String(this.selected_sector.foreign_investments2014),
+        new: String(this.sectormodel.foreign_investments2014),
+        el: '#compare_foreign_investments2014',
+      }, {
+        old: String(this.selected_sector.foreign_investments2015),
+        new: String(this.sectormodel.foreign_investments2015),
+        el: '#compare_foreign_investments2015',
+      }, {
+        old: String(this.selected_sector.foreign_investments2016),
+        new: String(this.sectormodel.foreign_investments2016),
+        el: '#compare_foreign_investments2016',
+      }, {
+        old: String(this.selected_sector.foreign_investments2017),
+        new: String(this.sectormodel.foreign_investments2017),
+        el: '#compare_foreign_investments2017',
+      }, {
+        old: String(this.selected_sector.foreign_investments2018),
+        new: String(this.sectormodel.foreign_investments2018),
+        el: '#compare_foreign_investments2018',
+      }, {
+        old: String(this.selected_sector.number_jobs2014),
+        new: String(this.sectormodel.number_jobs2014),
+        el: '#compare_number_jobs2014',
+      }, {
+        old: String(this.selected_sector.number_jobs2015),
+        new: String(this.sectormodel.number_jobs2015),
+        el: '#compare_number_jobs2015',
+      }, {
+        old: String(this.selected_sector.number_jobs2016),
+        new: String(this.sectormodel.number_jobs2016),
+        el: '#compare_number_jobs2016',
+      }, {
+        old: String(this.selected_sector.number_jobs2017),
+        new: String(this.sectormodel.number_jobs2017),
+        el: '#compare_number_jobs2017',
+      }, {
+        old: String(this.selected_sector.number_jobs2018),
+        new: String(this.sectormodel.number_jobs2018),
+        el: '#compare_number_jobs2018',
+      }, {
+        old: String(this.selected_sector.taxes2014),
+        new: String(this.sectormodel.taxes2014),
+        el: '#compare_taxes2014',
+      }, {
+        old: String(this.selected_sector.taxes2015),
+        new: String(this.sectormodel.taxes2015),
+        el: '#compare_taxes2015',
+      }, {
+        old: String(this.selected_sector.taxes2016),
+        new: String(this.sectormodel.taxes2016),
+        el: '#compare_taxes2016',
+      }, {
+        old: String(this.selected_sector.taxes2017),
+        new: String(this.sectormodel.taxes2017),
+        el: '#compare_taxes2017',
+      }, {
+        old: String(this.selected_sector.taxes2018),
+        new: String(this.sectormodel.taxes2018),
+        el: '#compare_taxes2018',
+      }, {
+        old: String(this.selected_sector.exports_volume2014),
+        new: String(this.sectormodel.exports_volume2014),
+        el: '#compare_exports_volume2014',
+      }, {
+        old: String(this.selected_sector.exports_volume2015),
+        new: String(this.sectormodel.exports_volume2015),
+        el: '#compare_exports_volume2015',
+      }, {
+        old: String(this.selected_sector.exports_volume2016),
+        new: String(this.sectormodel.exports_volume2016),
+        el: '#compare_exports_volume2016',
+      }, {
+        old: String(this.selected_sector.exports_volume2017),
+        new: String(this.sectormodel.exports_volume2017),
+        el: '#compare_exports_volume2017',
+      }, {
+        old: String(this.selected_sector.exports_volume2018),
+        new: String(this.sectormodel.exports_volume2018),
+        el: '#compare_exports_volume2018',
+      }, {
+        old: String(this.selected_sector.spent_foreign_investments2014),
+        new: String(this.sectormodel.spent_foreign_investments2014),
+        el: '#compare_spent_foreign_investments2014',
+      }, {
+        old: String(this.selected_sector.spent_foreign_investments2015),
+        new: String(this.sectormodel.spent_foreign_investments2015),
+        el: '#compare_spent_foreign_investments2015',
+      }, {
+        old: String(this.selected_sector.spent_foreign_investments2016),
+        new: String(this.sectormodel.spent_foreign_investments2016),
+        el: '#compare_spent_foreign_investments2016',
+      }, {
+        old: String(this.selected_sector.spent_foreign_investments2017),
+        new: String(this.sectormodel.spent_foreign_investments2017),
+        el: '#compare_spent_foreign_investments2017',
+      }, {
+        old: String(this.selected_sector.spent_foreign_investments2018),
+        new: String(this.sectormodel.spent_foreign_investments2018),
+        el: '#compare_spent_foreign_investments2018',
+      }, {
+        old: String(this.selected_sector.current_status_ru),
+        new: String(this.sectormodel.current_status_ru),
+        el: '#compare_current_status_ru',
+      }, {
+        old: String(this.selected_sector.current_status_kz),
+        new: String(this.sectormodel.current_status_kz),
+        el: '#compare_current_status_kz',
+      }, {
+        old: String(this.selected_sector.current_status_en),
+        new: String(this.sectormodel.current_status_en),
+        el: '#compare_current_status_en',
+      }, {
+        old: String(this.selected_sector.title_project_ru),
+        new: String(this.sectormodel.title_project_ru),
+        el: '#compare_title_project_ru',
+      }, {
+        old: String(this.selected_sector.title_project_kz),
+        new: String(this.sectormodel.title_project_kz),
+        el: '#compare_title_project_kz',
+      }, {
+        old: String(this.selected_sector.title_project_en),
+        new: String(this.sectormodel.title_project_en),
+        el: '#compare_title_project_en',
+      }, {
+        old: String(this.selected_sector.title_ru),
+        new: String(this.sectormodel.title_ru),
+        el: '#compare_title_ru',
+      }, {
+        old: String(this.selected_sector.title_kz),
+        new: String(this.sectormodel.title_kz),
+        el: '#compare_title_kz',
+      }, {
+        old: String(this.selected_sector.title_en),
+        new: String(this.sectormodel.title_en),
+        el: '#compare_title_en',
+      }, {
+        old: String(this.selected_sector.products_ru),
+        new: String(this.sectormodel.products_ru),
+        el: '#compare_products_ru',
+      }, {
+        old: String(this.selected_sector.products_kz),
+        new: String(this.sectormodel.products_kz),
+        el: '#compare_products_kz',
+      }, {
+        old: String(this.selected_sector.products_en),
+        new: String(this.sectormodel.products_en),
+        el: '#compare_products_en',
+      }, {
+        old: String(this.selected_sector.time_realization_ru),
+        new: String(this.sectormodel.time_realization_ru),
+        el: '#compare_time_realization_ru',
+      }, {
+        old: String(this.selected_sector.time_realization_kz),
+        new: String(this.sectormodel.time_realization_kz),
+        el: '#compare_time_realization_kz',
+      }, {
+        old: String(this.selected_sector.time_realization_en),
+        new: String(this.sectormodel.time_realization_en),
+        el: '#compare_time_realization_en',
+      }, {
+        old: String(this.selected_sector.contacts_ru),
+        new: String(this.sectormodel.contacts_ru),
+        el: '#compare_contacts_ru',
+      }, {
+        old: String(this.selected_sector.contacts_kz),
+        new: String(this.sectormodel.contacts_kz),
+        el: '#compare_contacts_kz',
+      }, {
+        old: String(this.selected_sector.contacts_en),
+        new: String(this.sectormodel.contacts_en),
+        el: '#compare_contacts_en',
+      }].forEach(it => {
+        let color = '', 
+          span = null,
+          diff = jsdiff.diffWords(it.old, it.new),
+          display = document.querySelector(it.el),
+          fragment = document.createDocumentFragment();
+        diff.forEach(part => {
+          span = document.createElement('span');
+          span.style.background = part.added ? '#0ACF00' : part.removed ? '#FF6440' : '#fff';
+          span.style.color = part.added ? '#fff' : part.removed ? '#fff' : '#000';
+          span.appendChild(document.createTextNode(part.value));
+          fragment.appendChild(span);
+        });
+        display.appendChild(fragment);
+      });
+
     }
   }
 </script>
 
 
 <template>
-  <div>
-    <div class="editpanel_editsector_reconciliation">
-
-      <h2 class="editpanel_editsector_reconciliation-title" 
-        v-text="{
-          'title_ru': 'Существующие данные', 
-          'title_kz': 'Бар деректер', 
-          'title_en': 'Existing data'
-        }['title_' + lang]"
-      ></h2>
-
-      <tabs
-        :titles_style="{
-          'font-size': '14px',
-          'padding': '10px',
-        }"
-        :active_page="0"
-      >
-
-        <span slot="tab_title_0">
-          <span class="sidebar-tab">
-            <span class="sidebar-tab_icon"></span>
-            <span class="sidebar-tab_title"
-              v-text="lang == 'ru' ? 'Общая информация' : lang == 'en' ? 'General information': 'Жалпы ақпарат'"
-            ></span>
-          </span>
-        </span>
-        
-        <span slot="tab_title_1">
-          <span class="sidebar-tab">
-            <span class="sidebar-tab_icon"></span>
-            <span class="sidebar-tab_title"
-              v-text="lang == 'ru' ? 'Цифровые показатели' : lang == 'en' ? 'Digital indicators': 'Сандық көрсеткіштер'"
-            ></span>
-          </span>        
-        </span>
-        
-        <span slot="tab_title_2">
-          <span class="sidebar-tab">
-            <span class="sidebar-tab_icon"></span>
-            <span class="sidebar-tab_title"
-              v-text="lang == 'ru' ? 'Галерея' : lang == 'en' ? 'Gallery': 'Галерея'"
-            ></span>
-          </span>        
-        </span>
-
-        <span slot="tab_title_3">
-          <span class="sidebar-tab">
-            <span class="sidebar-tab_icon"></span>
-            <span class="sidebar-tab_title"
-              v-text="lang == 'ru' ? 'Файлы для скачивания' : lang == 'en' ? 'Files to download': 'Жүктелетін файлдар'"
-            ></span>
-          </span>        
-        </span>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <div class="editpanel_editsector_reconciliation-tab" slot="tab_0">
-          <h3 class="editpanel_editsector_reconciliation-tab-title"
-            v-text="lang == 'ru' ? 'Общая информация' : lang == 'en' ? 'General information': 'Жалпы ақпарат'"
-          ></h3>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title-oi" 
-            v-text="lang == 'ru' ? 'Название компании участника' : lang == 'en' ? 'Participant\'s company name': 'Қатысушының компания атауы'"
-          ></p>
-          <span 
-            class="editpanel_editsector_reconciliation-tab-input-oi"
-            v-text="selected_sector['title_'+lang]"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title-oi" 
-            v-text="lang == 'ru' ? 'Описание' : lang == 'en' ? 'Description': 'Сипаттама'"
-          ></p>
-          <span 
-            class="editpanel_editsector_reconciliation-tab-input-oi"
-            v-text="selected_sector['title_project_'+lang]"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title-oi"
-            v-text="lang == 'ru' ? 'Тип проекта' : lang == 'en' ? 'Project type': 'Жобаның түрі'"
-          ></p>
-          <span class="editpanel_editsector_reconciliation-tab-input-oi"
-              v-text="selected_sector.project_type == 1 ? (lang == 'ru' ? 'Действующий' : lang == 'kz' ? 'Ағымдағы жоба' : 'Ongoing') :
-                      selected_sector.project_type == 2 ? (lang == 'ru' ? 'На стадии реализации' : lang == 'kz' ? 'Iске асырылуда' : 'Underway') :
-                      selected_sector.project_type == 3 ? (lang == 'ru' ? 'Делимый' : lang == 'en' ? 'Divisible': 'Бөліседі') : ''"
-            >
-          </span>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title-oi"
-            v-if="selected_sector.project_type == 3" 
-            v-text="lang == 'ru' ? 'Делимый' : lang == 'en' ? 'Divisible': 'Бөліседі'"
-          ></p>
-          <select 
-            class="editpanel_editsector_reconciliation-tab-input-oi"
-            v-if="selected_sector.project_type == 3" 
-            v-text="selected_sector.divisible"
-          >
-            <option 
-              value=1
-              :selected="selected_sector.divisible == 1"
-              v-text="lang == 'ru' ? 'Да' : lang == 'kz' ? 'Иә' : 'Yes'"
-            ></option> 
-            <option 
-              value=0
-              :selected="selected_sector.divisible == 0"
-              v-text="lang == 'ru' ? 'Нет' : lang == 'kz' ? 'Жоқ' : 'No'"
-            ></option>
-          </select>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title-oi" 
-            v-text="lang == 'ru' ? 'Стоимость проекта' : lang == 'en' ? 'Project price': 'Жобаның құны'"
-          ></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input-oi"
-            v-text="selected_sector.project_price"/>
-        
-          <p class="editpanel_editsector_reconciliation-tab-input_title-oi" 
-            v-text="lang == 'ru' ? 'Текущий статус' : lang == 'en' ? 'Current status': 'Ағымдағы күй'"
-          ></p>
-          <span 
-            class="editpanel_editsector_reconciliation-tab-input-oi"
-            v-text="selected_sector['current_status_' + lang]"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title-oi" 
-            v-text="lang == 'ru' ? 'Год' : lang == 'en' ? 'Year': 'Жыл'"
-          ></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input-oi"
-            v-text="selected_sector.project_date"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title-oi" 
-            v-text="lang == 'ru' ? 'Продукция' : lang == 'en' ? 'Products': 'Өнімдер'"
-          ></p>
-          <span 
-            class="editpanel_editsector_reconciliation-tab-input-oi"
-            v-text="selected_sector['products_' + lang]"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title-oi" 
-            v-text="lang == 'ru' ? 'Сроки реализации' : lang == 'en' ? 'Implementation period': 'Іске асыру мерзімі'"
-        ></p>
-          <span 
-            class="editpanel_editsector_reconciliation-tab-input-oi"
-            v-text="selected_sector['time_realization_' + lang]"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title-oi" 
-            v-text="lang == 'ru' ? 'Рабочие места' : lang == 'en' ? 'Workplaces': 'Жұмыс орындары'"
-          ></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input-oi"
-            v-text="selected_sector.plan_jobs"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title-oi" 
-            v-text="lang == 'ru' ? 'Мощность' : lang == 'en' ? 'Power': 'Қуат'"
-          ></p>
-          <span 
-            class="editpanel_editsector_reconciliation-tab-input-oi"
-            v-text="selected_sector.power"/>
-
-
-          <h3 class="editpanel_editsector_reconciliation-tab-title"
-            v-text="lang == 'ru' ? 'Контакты' : lang == 'en' ? 'Contacts' : 'Байланыс'"
-          ></h3>
-
-          <span 
-            class="editpanel_editsector_reconciliation-tab-input-oi"
-            v-text="selected_sector['contacts_' + lang]"/>
-
-        </div>
-
-        <div class="editpanel_editsector_reconciliation-tab" slot="tab_1">
-          <h3 class="editpanel_editsector_reconciliation-tab-title"
-          v-text="lang == 'ru' ? 'Объем вложенных инвестиций' : lang == 'en' ? 'Investments volume' : 'Инвестициялар көлемі'"></h3>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2014"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.investments2014"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2015"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.investments2015"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2016"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.investments2016"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2017"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.investments2017"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2018"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.investments2018"/>
-
-
-
-          <h3 class="editpanel_editsector_reconciliation-tab-title"
-          v-text="lang == 'ru' ? 'Объем производства' : lang == 'en' ? 'Production volume' : 'Өндіріс көлемі'"></h3>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2014"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.production2014"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2015"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.production2015"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2016"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.production2016"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2017"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.production2017"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2018"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.production2018"/>
-
-
-
-          <h3 class="editpanel_editsector_reconciliation-tab-title"
-          v-text="lang == 'ru' ? 'Прямые иностранные инвестиции' : lang == 'en' ? 'Foreign direct investments' : 'Шетелдік тікелей инвестициялар'"></h3>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2014"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.foreign_investments2014"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2015"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.foreign_investments2015"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2016"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.foreign_investments2016"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2017"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.foreign_investments2017"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2018"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.foreign_investments2018"/>
-
-
-
-          <h3 class="editpanel_editsector_reconciliation-tab-title"
-          v-text="lang == 'ru' ? 'Количество созданных рабочих' : lang == 'en' ? 'Number of jobs created' : 'Жасалған жұмыс орындарының саны'"></h3>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2014"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.number_jobs2014"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2015"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.number_jobs2015"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2016"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.number_jobs2016"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2017"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.number_jobs2017"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2018"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.number_jobs2018"/>
-
-
-
-          <h3 class="editpanel_editsector_reconciliation-tab-title"
-          v-text="lang == 'ru' ? 'Объем налоговых отчислений' : lang == 'en' ? 'Tax volume' : 'Салықтық аударымдардың сомасы'"></h3>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2014"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.taxes2014"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2015"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.taxes2015"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2016"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.taxes2016"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2017"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.taxes2017"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2018"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.taxes2018"/>
-
-
-          
-          <h3 class="editpanel_editsector_reconciliation-tab-title"
-          v-text="lang == 'ru' ? 'Объем экспорта' : lang == 'en' ? 'Export volume' : 'Экспорттың көлемі'"></h3>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2014"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.exports_volume2014"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2015"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.exports_volume2015"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2016"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.exports_volume2016"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2017"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.exports_volume2017"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2018"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.exports_volume2018"/>
-          
-
-
-
-          <h3 class="editpanel_editsector_reconciliation-tab-title"
-          v-text="lang == 'ru' ? 'Привлечено иностранных инвестиций на 1 тг., затраченных бюджетом' : lang == 'en' ? 'Attracted foreign investments for 1 tenge spent by the budget' : 'Бюджеттен жұмсалған 1 теңгеге шетелдік инвестициялар тартылды'"></h3>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2014"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.spent_foreign_investments2014"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2015"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.spent_foreign_investments2015"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2016"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.spent_foreign_investments2016"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2017"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.spent_foreign_investments2017"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2018"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="investment.spent_foreign_investments2018"/>
-
-        </div>
-
-        <div slot="tab_2">
-          <h3>Маркетинговые материалы</h3>
-        </div>
-
-        <div slot="tab_3">
-          <h3>Видео</h3>
-
-          <h3>Фото</h3>
-        </div>
-
-      </tabs>
-    </div>
-    <div class="editpanel_editsector_reconciliation editpanel_editsector_reconciliation-new">
-
-      <h2 class="editpanel_editsector_reconciliation-title" 
-        v-text="{
-          'title_ru': 'Новые данные', 
-          'title_kz': 'Жана деректер', 
-          'title_en': 'New data'
-        }['title_' + lang]"
-      ></h2>
-      <button v-on:click="update_sector(sectormodel)"
+  <div class="editpanel_editzone_reconciliation">
+
+    <h2 class="editpanel_editzone_reconciliation-title" 
+      v-text="edited_sector.member_id + ', ' 
+      + edited_sector.timestamp.replace('T', ' ').slice(0, 19)"
+    ></h2>
+
+    <div class="editpanel_editzone_reconciliation-buttons">
+      <button class="editpanel_editzone_reconciliation-button" v-on:click="update_sector(sectormodel)" 
         v-text="lang == 'ru' ? 'Сохранить' : lang == 'en' ? 'Save' : 'Cақтау'"
       ></button>
-      <button v-on:click="reject_data(edited_sector)" 
+      <button class="editpanel_editzone_reconciliation-button" v-on:click="reject_data(edited_sector)" 
         v-text="lang == 'ru' ? 'Отклонить' : lang == 'en' ? 'Reject' : 'Қабылдамау'"
       ></button>
+    </div>
 
-      <tabs
-        :titles_style="{
-          'font-size': '14px',
-          'padding': '10px',
-        }"
-        :active_page="0"
+
+    <div class="editpanel_editzone_reconciliation-container">
+      
+      <h3 class="editpanel_editsector_reconciliation-tit" v-text="lang == 'ru' ? 'Общее' : lang == 'en' ? 'Common' : 'Общее'"></h3>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Название компании участника' : lang == 'en' ? 'Participant\'s company name': 'Қатысушының компания атауы'"></h2>
+      <div class="editpanel_editzone_reconcilation-value"  id="compare_title_ru"></div>
+      <div class="editpanel_editzone_reconcilation-value"  id="compare_title_kz"></div>
+      <div class="editpanel_editzone_reconcilation-value"  id="compare_title_en"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Описание' : lang == 'en' ? 'Description': 'Сипаттама'"></h2>
+      <div class="editpanel_editzone_reconcilation-value"  id="compare_title_project_ru"></div>
+      <div class="editpanel_editzone_reconcilation-value"  id="compare_title_project_kz"></div>
+      <div class="editpanel_editzone_reconcilation-value"  id="compare_title_project_en"></div>
+
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Тип проекта' : lang == 'en' ? 'Project type': 'Жобаның түрі'"></h2>
+        
+      <div v-if="selected_sector.project_type !== sectormodel.project_type">
+        <div class="editpanel_editzone_reconcilation-value">
+          <span style="color: #fff; background: rgb(255, 100, 64)"  v-text="selected_sector.project_type == 1 ? (lang == 'ru' ? 'Действующий' : lang == 'kz' ? 'Ағымдағы жоба' : 'Ongoing') :
+            selected_sector.project_type == 2 ? (lang == 'ru' ? 'На стадии реализации' : lang == 'kz' ? 'Iске асырылуда' : 'Underway') :
+            selected_sector.project_type == 3 ? (lang == 'ru' ? 'Делимый' : lang == 'en' ? 'Divisible': 'Бөліседі') : ''"
+          ></span>
+          <span style="color: #fff; background: rgb(10, 207, 0)" v-text="sectormodel.project_type == 1 ? (lang == 'ru' ? 'Действующий' : lang == 'kz' ? 'Ағымдағы жоба' : 'Ongoing') :
+            sectormodel.project_type == 2 ? (lang == 'ru' ? 'На стадии реализации' : lang == 'kz' ? 'Iске асырылуда' : 'Underway') :
+            sectormodel.project_type == 3 ? (lang == 'ru' ? 'Делимый' : lang == 'en' ? 'Divisible': 'Бөліседі') : ''"
+          ></span>
+        </div>
+      </div>
+
+      <div v-else>
+        <div class="editpanel_editzone_reconcilation-value"
+          v-text="selected_sector.project_type == 1 ? (lang == 'ru' ? 'Действующий' : lang == 'kz' ? 'Ағымдағы жоба' : 'Ongoing') :
+            selected_sector.project_type == 2 ? (lang == 'ru' ? 'На стадии реализации' : lang == 'kz' ? 'Iске асырылуда' : 'Underway') :
+            selected_sector.project_type == 3 ? (lang == 'ru' ? 'Делимый' : lang == 'en' ? 'Divisible': 'Бөліседі') : ''"
+        ></div>
+      </div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Делимый' : lang == 'en' ? 'Divisible': 'Бөліседі'"
+        v-if="sectormodel.project_type == 3"></h2>
+      <select 
+        class="editpanel_editsector_reconciliation-tab-input-oi"
+        v-if="sectormodel.project_type == 3" 
+        v-text="sectormodel.divisible"
       >
+        <option 
+          value=1
+          :selected="sectormodel.divisible == 1"
+          v-text="lang == 'ru' ? 'Да' : lang == 'kz' ? 'Иә' : 'Yes'"
+        ></option> 
+        <option 
+          value=0
+          :selected="sectormodel.divisible == 0"
+          v-text="lang == 'ru' ? 'Нет' : lang == 'kz' ? 'Жоқ' : 'No'"
+        ></option>
+      </select>
 
-        <span slot="tab_title_0">
-          <span class="sidebar-tab">
-            <span class="sidebar-tab_icon"></span>
-            <span class="sidebar-tab_title"
-              v-text="lang == 'ru' ? 'Общая информация' : lang == 'en' ? 'General information': 'Жалпы ақпарат'"
-            ></span>
-          </span>
-        </span>
-        
-        <span slot="tab_title_1">
-          <span class="sidebar-tab">
-            <span class="sidebar-tab_icon"></span>
-            <span class="sidebar-tab_title"
-              v-text="lang == 'ru' ? 'Цифровые показатели' : lang == 'en' ? 'Digital indicators': 'Сандық көрсеткіштер'"
-            ></span>
-          </span>        
-        </span>
-        
-        <span slot="tab_title_2">
-          <span class="sidebar-tab">
-            <span class="sidebar-tab_icon"></span>
-            <span class="sidebar-tab_title"
-              v-text="lang == 'ru' ? 'Галерея' : lang == 'en' ? 'Gallery': 'Галерея'"
-            ></span>
-          </span>        
-        </span>
-
-        <span slot="tab_title_3">
-          <span class="sidebar-tab">
-            <span class="sidebar-tab_icon"></span>
-            <span class="sidebar-tab_title"
-              v-text="lang == 'ru' ? 'Файлы для скачивания' : lang == 'en' ? 'Files to download': 'Жүктелетін файлдар'"
-            ></span>
-          </span>        
-        </span>
-
-        <span slot="tab_title_4">
-          <span class="sidebar-tab">
-            <span class="sidebar-tab_icon"></span>
-            <span class="sidebar-tab_title"
-              v-text="lang == 'ru' ? 'Карта' : lang == 'en' ? 'Map': 'Карта'"
-            ></span>
-          </span>        
-        </span>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <div class="editpanel_editsector_reconciliation-tab" slot="tab_0">
-          <h3 class="editpanel_editsector_reconciliation-tab-title"
-            v-text="lang == 'ru' ? 'Общая информация' : lang == 'en' ? 'General information': 'Жалпы ақпарат'"
-          ></h3>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title-oi" 
-            v-text="lang == 'ru' ? 'Название компании участника' : lang == 'en' ? 'Participant\'s company name': 'Қатысушының компания атауы'"
-          ></p>
-          <span 
-            class="editpanel_editsector_reconciliation-tab-input-oi"
-            v-text="sectormodel['title_'+lang]"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title-oi" 
-            v-text="lang == 'ru' ? 'Описание' : lang == 'en' ? 'Description': 'Сипаттама'"
-          ></p>
-          <span 
-            class="editpanel_editsector_reconciliation-tab-input-oi"
-            v-text="sectormodel['title_project_'+lang]"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title-oi"
-            v-text="lang == 'ru' ? 'Тип проекта' : lang == 'en' ? 'Project type': 'Жобаның түрі'"
-          ></p>
-          <span class="editpanel_editsector_reconciliation-tab-input-oi"
-              v-text="sectormodel.project_type == 1 ? (lang == 'ru' ? 'Действующий' : lang == 'kz' ? 'Ағымдағы жоба' : 'Ongoing') :
-                      sectormodel.project_type == 2 ? (lang == 'ru' ? 'На стадии реализации' : lang == 'kz' ? 'Iске асырылуда' : 'Underway') :
-                      sectormodel.project_type == 3 ? (lang == 'ru' ? 'Делимый' : lang == 'en' ? 'Divisible': 'Бөліседі') : ''"
-            >
-          </span>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title-oi"
-            v-if="sectormodel.project_type == 3" 
-            v-text="lang == 'ru' ? 'Делимый' : lang == 'en' ? 'Divisible': 'Бөліседі'"
-          ></p>
-          <select 
-            class="editpanel_editsector_reconciliation-tab-input-oi"
-            v-if="sectormodel.project_type == 3" 
-            v-text="sectormodel.divisible"
-          >
-            <option 
-              value=1
-              :selected="sectormodel.divisible == 1"
-              v-text="lang == 'ru' ? 'Да' : lang == 'kz' ? 'Иә' : 'Yes'"
-            ></option> 
-            <option 
-              value=0
-              :selected="sectormodel.divisible == 0"
-              v-text="lang == 'ru' ? 'Нет' : lang == 'kz' ? 'Жоқ' : 'No'"
-            ></option>
-          </select>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title-oi" 
-            v-text="lang == 'ru' ? 'Стоимость проекта' : lang == 'en' ? 'Project price': 'Жобаның құны'"
-          ></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input-oi"
-            v-text="sectormodel.project_price"/>
-        
-          <p class="editpanel_editsector_reconciliation-tab-input_title-oi" 
-            v-text="lang == 'ru' ? 'Текущий статус' : lang == 'en' ? 'Current status': 'Ағымдағы күй'"
-          ></p>
-          <span 
-            class="editpanel_editsector_reconciliation-tab-input-oi"
-            v-text="sectormodel['current_status_' + lang]"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title-oi" 
-            v-text="lang == 'ru' ? 'Год' : lang == 'en' ? 'Year': 'Жыл'"
-          ></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input-oi"
-            v-text="sectormodel.project_date"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title-oi" 
-            v-text="lang == 'ru' ? 'Продукция' : lang == 'en' ? 'Products': 'Өнімдер'"
-          ></p>
-          <span 
-            class="editpanel_editsector_reconciliation-tab-input-oi"
-            v-text="sectormodel['products_' + lang]"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title-oi" 
-            v-text="lang == 'ru' ? 'Сроки реализации' : lang == 'en' ? 'Implementation period': 'Іске асыру мерзімі'"
-        ></p>
-          <span 
-            class="editpanel_editsector_reconciliation-tab-input-oi"
-            v-text="sectormodel['time_realization_' + lang]"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title-oi" 
-            v-text="lang == 'ru' ? 'Рабочие места' : lang == 'en' ? 'Workplaces': 'Жұмыс орындары'"
-          ></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input-oi"
-            v-text="sectormodel.plan_jobs"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title-oi" 
-            v-text="lang == 'ru' ? 'Мощность' : lang == 'en' ? 'Power': 'Қуат'"
-          ></p>
-          <span 
-            class="editpanel_editsector_reconciliation-tab-input-oi"
-            v-text="sectormodel.power"/>
-
-
-          <h3 class="editpanel_editsector_reconciliation-tab-title"
-            v-text="lang == 'ru' ? 'Контакты' : lang == 'en' ? 'Contacts' : 'Байланыс'"
-          ></h3>
-
-          <span 
-            class="editpanel_editsector_reconciliation-tab-input-oi"
-            v-text="sectormodel['contacts_' + lang]"/>
-
-        </div>
-
-        <div class="editpanel_editsector_reconciliation-tab" slot="tab_1">
-          <h3 class="editpanel_editsector_reconciliation-tab-title"
-          v-text="lang == 'ru' ? 'Объем вложенных инвестиций' : lang == 'en' ? 'Investments volume' : 'Инвестициялар көлемі'"></h3>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2014"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.investments2014"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2015"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.investments2015"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2016"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.investments2016"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2017"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.investments2017"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2018"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.investments2018"/>
-
-
-
-          <h3 class="editpanel_editsector_reconciliation-tab-title"
-          v-text="lang == 'ru' ? 'Объем производства' : lang == 'en' ? 'Production volume' : 'Өндіріс көлемі'"></h3>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2014"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.production2014"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2015"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.production2015"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2016"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.production2016"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2017"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.production2017"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2018"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.production2018"/>
-
-
-
-          <h3 class="editpanel_editsector_reconciliation-tab-title"
-          v-text="lang == 'ru' ? 'Прямые иностранные инвестиции' : lang == 'en' ? 'Foreign direct investments' : 'Шетелдік тікелей инвестициялар'"></h3>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2014"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.foreign_investments2014"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2015"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.foreign_investments2015"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2016"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.foreign_investments2016"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2017"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.foreign_investments2017"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2018"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.foreign_investments2018"/>
-
-
-
-          <h3 class="editpanel_editsector_reconciliation-tab-title"
-          v-text="lang == 'ru' ? 'Количество созданных рабочих' : lang == 'en' ? 'Number of jobs created' : 'Жасалған жұмыс орындарының саны'"></h3>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2014"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.number_jobs2014"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2015"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.number_jobs2015"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2016"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.number_jobs2016"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2017"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.number_jobs2017"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2018"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.number_jobs2018"/>
-
-
-
-          <h3 class="editpanel_editsector_reconciliation-tab-title"
-          v-text="lang == 'ru' ? 'Объем налоговых отчислений' : lang == 'en' ? 'Tax volume' : 'Салықтық аударымдардың сомасы'"></h3>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2014"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.taxes2014"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2015"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.taxes2015"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2016"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.taxes2016"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2017"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.taxes2017"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2018"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.taxes2018"/>
-
-
-          
-          <h3 class="editpanel_editsector_reconciliation-tab-title"
-          v-text="lang == 'ru' ? 'Объем экспорта' : lang == 'en' ? 'Export volume' : 'Экспорттың көлемі'"></h3>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2014"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.exports_volume2014"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2015"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.exports_volume2015"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2016"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.exports_volume2016"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2017"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.exports_volume2017"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2018"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.exports_volume2018"/>
-          
-
-
-
-          <h3 class="editpanel_editsector_reconciliation-tab-title"
-          v-text="lang == 'ru' ? 'Привлечено иностранных инвестиций на 1 тг., затраченных бюджетом' : lang == 'en' ? 'Attracted foreign investments for 1 tenge spent by the budget' : 'Бюджеттен жұмсалған 1 теңгеге шетелдік инвестициялар тартылды'"></h3>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2014"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.spent_foreign_investments2014"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2015"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.spent_foreign_investments2015"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2016"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.spent_foreign_investments2016"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2017"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.spent_foreign_investments2017"/>
-
-          <p class="editpanel_editsector_reconciliation-tab-input_title" 
-            v-text="2018"></p>
-          <span type="number" min="0"
-            class="editpanel_editsector_reconciliation-tab-input"
-            v-text="sectormodel.spent_foreign_investments2018"/>
-
-        </div>
-
-        <div slot="tab_2">
-          <h3>Маркетинговые материалы</h3>
-        </div>
-
-        <div slot="tab_3">
-          <h3>Видео</h3>
-
-          <h3>Фото</h3>
-        </div>
-
-        <div slot="tab_4">
-          <editmap class="editpanel_editsector_reconciliation-map"
-            :is_sector="'admin'"
-          />
-          <basemaps class="editpanel_editsector_reconciliation-basemaps"
-            :style="{ top: '315px', right: '10px', position: 'absolute' }"
-            v-on:click="set_basemap"/>
-        </div>
-
-      </tabs>
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Стоимость проекта' : lang == 'en' ? 'Project price': 'Жобаның құны'"></h2>
+      <div class="editpanel_editzone_reconcilation-value"  id="compare_project_price"></div>
+    
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Текущий статус' : lang == 'en' ? 'Current status': 'Ағымдағы күй'"></h2>
+      <div class="editpanel_editzone_reconcilation-value"  id="compare_current_status_ru"></div>
+      <div class="editpanel_editzone_reconcilation-value"  id="compare_current_status_kz"></div>
+      <div class="editpanel_editzone_reconcilation-value"  id="compare_current_status_en"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Год' : lang == 'en' ? 'Year': 'Жыл'"></h2>
+      <div class="editpanel_editzone_reconcilation-value"  id="compare_project_date"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Продукция' : lang == 'en' ? 'Products': 'Өнімдер'"></h2>
+      <div class="editpanel_editzone_reconcilation-value"  id="compare_products_ru"></div>
+      <div class="editpanel_editzone_reconcilation-value"  id="compare_products_kz"></div>
+      <div class="editpanel_editzone_reconcilation-value"  id="compare_products_en"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Сроки реализации' : lang == 'en' ? 'Implementation period': 'Іске асыру мерзімі'"></h2>
+      <div class="editpanel_editzone_reconcilation-value"  id="compare_time_realization_ru"></div>
+      <div class="editpanel_editzone_reconcilation-value"  id="compare_time_realization_kz"></div>
+      <div class="editpanel_editzone_reconcilation-value"  id="compare_time_realization_en"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Рабочие места' : lang == 'en' ? 'Workplaces': 'Жұмыс орындары'"></h2>
+      <div class="editpanel_editzone_reconcilation-value"  id="compare_plan_jobs"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Мощность' : lang == 'en' ? 'Power': 'Қуат'"></h2>
+      <div class="editpanel_editzone_reconcilation-value"  id="compare_power"></div>
+    
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Контакты' : lang == 'en' ? 'Contacts' : 'Байланыс'"></h2>
+      <div class="editpanel_editzone_reconcilation-value"  id="compare_contacts__ru"></div>
+      <div class="editpanel_editzone_reconcilation-value"  id="compare_contacts__kz"></div>
+      <div class="editpanel_editzone_reconcilation-value"  id="compare_contacts__en"></div>
+
+
+      <br>
+      <h3 class="editpanel_editsector_reconciliation-tit" v-text="lang == 'ru' ? 'Объем вложенных инвестиций' : lang == 'en' ? 'Investments volume' : 'Инвестициялар көлемі'"></h3>
+      
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2014"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_investments2014"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2015"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_investments2015"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2016"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_investments2016"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2017"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_investments2017"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2018"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_investments2018"></div>
+
+
+      <br>
+      <h3 class="editpanel_editsector_reconciliation-tit"  v-text="lang == 'ru' ? 'Объем производства' : lang == 'en' ? 'Production volume' : 'Өндіріс көлемі'"></h3>
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2014"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_production2014"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2015"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_production2015"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2016"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_production2016"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2017"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_production2017"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2018"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_production2018"></div>
+
+
+      <br>
+      <h3 class="editpanel_editsector_reconciliation-tit" v-text="lang == 'ru' ? 'Прямые иностранные инвестиции' : lang == 'en' ? 'Foreign direct investments' : 'Шетелдік тікелей инвестициялар'"></h3>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2014"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_foreign_investments2014"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2015"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_foreign_investments2015"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2016"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_foreign_investments2016"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2017"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_foreign_investments2017"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2018"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_foreign_investments2018"></div>
+
+
+      <br>
+      <h3 class="editpanel_editsector_reconciliation-tit" v-text="lang == 'ru' ? 'Количество созданных рабочих' : lang == 'en' ? 'Number of jobs created' : 'Жасалған жұмыс орындарының саны'"></h3>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2014"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_number_jobs2014"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2015"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_number_jobs2015"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2016"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_number_jobs2016"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2017"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_number_jobs2017"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2018"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_number_jobs2018"></div>
+
+
+      <br>
+      <h3 class="editpanel_editsector_reconciliation-tit" v-text="lang == 'ru' ? 'Объем экспорта' : lang == 'en' ? 'Export volume' : 'Экспорттың көлемі'"></h3>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2014"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_taxes2014"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2015"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_taxes2015"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2016"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_taxes2016"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2017"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_taxes2017"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2018"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_taxes2018"></div>
+
+
+      <br>
+      <h3 class="editpanel_editsector_reconciliation-tit" v-text="lang == 'ru' ? 'Объем налоговых отчислений' : lang == 'en' ? 'Tax volume' : 'Салықтық аударымдардың сомасы'"></h3>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2014"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_exports_volume2014"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2015"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_exports_volume2015"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2016"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_exports_volume2016"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2017"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_exports_volume2017"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2018"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_exports_volume2018"></div>
+
+
+      <br>
+      <h3 class="editpanel_editsector_reconciliation-tit" v-text="lang == 'ru' ? 'Привлечено иностранных инвестиций на 1 тг., затраченных бюджетом' : lang == 'en' ? 'Attracted foreign investments for 1 tenge spent by the budget' : 'Бюджеттен жұмсалған 1 теңгеге шетелдік инвестициялар тартылды'"></h3>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2014"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_spent_foreign_investments2014"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2015"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_spent_foreign_investments2015"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2016"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_spent_foreign_investments2016"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2017"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_spent_foreign_investments2017"></div>
+
+      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2018"></h2>
+      <div class="editpanel_editzone_reconcilation-value" id="compare_spent_foreign_investments2018"></div>
+
+
+      <basemaps class="editpanel_editsector_reconciliation-basemaps" v-on:click="set_basemap"/>
+
+
     </div>
   </div>
 </template>
@@ -1049,6 +640,11 @@
     height: calc(100vh - 60px);
   }
 
+  .editpanel_editsector_reconciliation-tit {
+    font-size: 18px;
+    color: #03A0E3;
+  }
+
   .editpanel_editsector_reconciliation-new {
     right: 0px;
   }
@@ -1061,8 +657,6 @@
   }
 
   .editpanel_editsector_reconciliation-basemaps {
-    position: fixed;
-    z-index: 1000;
   }
 
   .editpanel_editsector_reconciliation-title {
