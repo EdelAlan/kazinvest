@@ -20,6 +20,7 @@ router.post('/', bodyparser.json(), async (req, res) => {
                     });
                 });
         } else {
+            console.log(req.body)
             await db_query(`
                 UPDATE objects
                 SET geom = ST_GeomFromGeoJSON($1), capacity = ($2), unit = ($3)
