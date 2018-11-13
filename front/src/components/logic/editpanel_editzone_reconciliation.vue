@@ -166,7 +166,6 @@
           v-text="lang == 'ru' ? 'Контакты' : lang == 'en' ? 'Contacts' : 'Байланыс'"
         ></h3>
         <span id="compare_contact"></span>
-
       </div>
 
       <div class="editpanel_editzone_reconciliation-tab" slot="tab_1">
