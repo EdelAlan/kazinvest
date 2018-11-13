@@ -5,9 +5,10 @@ const db_query = require('../util/db_query');
 router.post('/', bodyparser.json(), async (req, res) => {
     if (req.body.geom.type == 'Feature') {
         if (req.body.type <= 12) {
+            console.log(req.body.geom)
             await db_query(`
                 UPDATE infrastructures
-                SET geom = ST_GeomFromGeoJSON($1), capacity = ($2), unit = ($3)
+                SET geom = ST_SetSRID(ST_GeomFromGeoJSON($1), 4326), capacity = ($2), unit = ($3)
                 WHERE id = ($4)
               `, [req.body.geom.geometry, req.body.capacity, req.body.unit, req.body.id])
                 .then(_ => res.json({

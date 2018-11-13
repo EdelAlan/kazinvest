@@ -30,43 +30,99 @@ export default {
             commit('geom_update', bool);
         },
 
-        send_geom({ commit }) {
+        send_geom({ commit, dispatch }) {
             this.getters.infrastructures.forEach(it => {
                 if (it.id == this.getters.geom.id) {
-                    return fetcher({
-                        method: 'post',
-                        path: this.getters.api_path + (this.getters.profile.member_role == 'superadmin' ? '/back/api/save_geom' : '/back/api/new_data/infrastructure'),
-                        body: { 
-                            ...this.getters.geom,
-                            capacity: it.capacity,
-                            unit: it.unit,
-                        },
-                    }).then(({
-                        msg
-                    }) => {
-                        if (msg == 'geom updated' || msg == 'infrastructure new data updated') {
-                            commit('geom_update', false);
-                        }
-                    });
+                    if (this.getters.profile.member_role == 'superadmin') {
+                        return fetcher({
+                            method: 'post',
+                            path: this.getters.api_path + `/back/api/save_geom`,
+                            body: { 
+                                ...this.getters.geom,
+                                capacity: it.capacity,
+                                unit: it.unit,
+                            },
+                        }).then(({
+                            msg
+                        }) => {
+                            if (msg == 'geom updated') {
+                                commit('geom_update', false);
+                                if (this.getters.edited_inf)
+                                    dispatch('reject_data', this.getters.geom);
+                            }
+                        });
+                    } else {
+                        const path = this.getters.api_path + `/back/api/new_data/infrastructure`;
+                        return fetcher({ 
+                            method: 'put',
+                            path,
+                            body: {
+                                infrastructure: {
+                                    ...this.getters.geom,
+                                    capacity: it.capacity,
+                                    unit: it.unit,
+                                },
+                                member: {
+                                    member_firstname: this.getters.profile.member_firstname,
+                                    member_lastname: this.getters.profile.member_lastname,
+                                    member_id: this.getters.profile.member_id,
+                                },
+                            },
+                        }).then(({msg}) => {
+                            if (msg == 'infrastructure new data updated') {
+                                commit('geom_update', false);
+                                if (this.getters.edited_inf)
+                                    dispatch('reject_data', this.getters.geom);
+                            }
+                        });
+                    }
                 }
             });
             this.getters.objects.forEach(it => { 
                 if (it.id == this.getters.geom.id) {
-                    return fetcher({
-                        method: 'post',
-                        path: this.getters.api_path + (this.getters.profile.member_role == 'superadmin' ? '/back/api/save_geom' : '/back/api/new_data/infrastructure'),
-                        body: { 
-                            ...this.getters.geom,
-                            capacity: it.capacity,
-                            unit: it.unit,
-                        },
-                    }).then(({
-                        msg
-                    }) => {
-                        if (msg == 'geom updated' || msg == 'infrastructure new data updated') {
-                            commit('geom_update', false);
-                        }
-                    });
+                    if (this.getters.profile.member_role == 'superadmin') {
+                        return fetcher({
+                            method: 'post',
+                            path: this.getters.api_path + (this.getters.profile.member_role == 'superadmin' ? `/back/api/save_geom` : `/back/api/new_data/infrastructure`),
+                            body: { 
+                                ...this.getters.geom,
+                                capacity: it.capacity,
+                                unit: it.unit,
+                            },
+                        }).then(({
+                            msg
+                        }) => {
+                            if (msg == 'geom updated') {
+                                commit('geom_update', false);
+                                if (this.getters.edited_inf)
+                                    dispatch('reject_data', this.getters.geom);
+                            }
+                        });
+                    } else {
+                        const path = this.getters.api_path + `/back/api/new_data/infrastructure`;
+                        return fetcher({ 
+                            method: 'put',
+                            path,
+                            body: {
+                                infrastructure: {
+                                    ...this.getters.geom,
+                                    capacity: it.capacity,
+                                    unit: it.unit,
+                                },
+                                member: {
+                                    member_firstname: this.getters.profile.member_firstname,
+                                    member_lastname: this.getters.profile.member_lastname,
+                                    member_id: this.getters.profile.member_id,
+                                },
+                            },
+                        }).then(({msg}) => {
+                            if (msg == 'infrastructure new data updated') {
+                                commit('geom_update', false);
+                                if (this.getters.edited_inf)
+                                    dispatch('reject_data', this.getters.geom);
+                            }
+                        });
+                    }
                 }
             });
         },
