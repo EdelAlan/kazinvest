@@ -5,6 +5,7 @@ export default {
     zone_sectors: null,
     edited_zone: null,
     edited_sector: null,
+    edited_inf: null,
     new_data: null,
     views: [{
       active: true,
@@ -50,6 +51,9 @@ export default {
       state.edited_sector = sector;
       console.log(state.edited_sector);
     },
+    set_edited_inf(state, inf) {
+      state.edited_inf = inf;
+    },
     set_new_data(state, new_data) {
       state.new_data = new_data;
     },
@@ -67,11 +71,16 @@ export default {
     zone_sectors: state => state.zone_sectors,
     edited_zone: state => state.edited_zone,
     edited_sector: state => state.edited_sector,
+    edited_inf: state => state.edited_inf,
     new_data: state => state.new_data,
   },
 
   actions: {
     set_view ({ commit, state }, idx) {
+      console.log(state.views.filter(view => view.active == true))
+      // if (state.views.filter(view => view.active == true)[0].id == ) {
+
+      // }
       commit('set_views', state.views.map((it, key) => ({
         ...it,
         active: key == idx ? true : false,
@@ -145,6 +154,9 @@ export default {
     set_edited_sector({ commit }, sector) {
       commit('set_edited_sector', sector);
     },
+    set_edited_inf({ commit }, inf) {
+      commit('set_edited_inf', inf);
+    },
     
     update_zone ({ commit, dispatch }, zone) {
       if (this.getters.profile.member_role != 'superadmin') {
@@ -177,14 +189,14 @@ export default {
           method: 'put',
           path,
           body: zone,
-        }).then(res => {
+        }).then(async res => {
           console.log(res)
-          commit('set_new_data', '');
-          dispatch('set_new_data');
           const path = this.getters.api_path + `/back/api/new_data/reject/${this.getters.edited_zone.id}`;
-          fetcher({ method: 'put', path}).then(res => {
+          await fetcher({ method: 'put', path}).then(res => {
             console.log(res);
           });
+          commit('set_new_data', '');
+          dispatch('set_new_data');
           commit('set_edited_zone', false);
           commit('set_edited_sector', false);
         });
@@ -213,14 +225,14 @@ export default {
           method: 'put',
           path,
           body: sector,
-        }).then(res => {
+        }).then(async res => {
           console.log(res)
-          commit('set_new_data', '');
-          dispatch('set_new_data');
           const path = this.getters.api_path + `/back/api/new_data/reject/${this.getters.edited_sector.id}`;
-          fetcher({ method: 'put', path}).then(res => {
+          await fetcher({ method: 'put', path}).then(res => {
             console.log(res);
           });
+          commit('set_new_data', '');
+          dispatch('set_new_data');
           commit('set_edited_zone', false);
           commit('set_edited_sector', false);
         })
@@ -243,7 +255,7 @@ export default {
         dispatch('set_new_data');
         commit('set_edited_zone', false);
         commit('set_edited_sector', false);
-        // commit('set_edited_inf', false);
+        commit('set_edited_inf', false);
       });
     },
   },

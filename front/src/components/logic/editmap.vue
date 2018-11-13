@@ -29,6 +29,7 @@ export default {
     "edited_zone_geom",
     "edited_sector",
     "edited_sector_geom",
+    "edited_inf",
     "is_reset_sector",
     "basemap",
     "show_on_map_geom",
@@ -36,6 +37,9 @@ export default {
     "objects",
     "geom",
     'selected_sector',
+    'zones',
+    'infrastructures',
+    'objects',
   ]),
 
   methods: {
@@ -45,7 +49,8 @@ export default {
       "set_edited_sector_geom",
       "set_reset_sector",
       "save_geom",
-      "set_active"
+      "set_active",
+      "set_zone",
     ]),
 
     reset_sector() {
@@ -56,7 +61,7 @@ export default {
           properties: {}
         };
         this.set_edited_sector_geom(geom);
-        this.draw.dthis.selected_sectoreteAll();
+        this.draw.deleteAll();
         turf.flatten(geom).features.forEach(sector => {
           this.draw.add(sector);
         });
@@ -100,14 +105,23 @@ export default {
           }
         });
         this._mapboxgl_map.addControl(this.draw);
-        this.draw.add(geom);
+        geom.geometry.coordinates.forEach(coord => {
+          this.draw.add(turf.lineString(coord));
+        });
       }
 
       if (this.show_on_map_geom) {
         this.save_geom({
-          geom: geom,
+          geom: turf.combine(this.draw.getAll()).features[0],
           id: this.show_on_map_geom.id,
-          type: this.show_on_map_geom.type
+          type: this.show_on_map_geom.type,
+          title_ru: this.show_on_map_geom.title_ru,
+          title_en: this.show_on_map_geom.title_en,
+          title_kz: this.show_on_map_geom.title_kz,
+          zone_title_ru: this.edited_zone.title_ru,
+          zone_title_en: this.edited_zone.title_en,
+          zone_title_kz: this.edited_zone.title_kz,
+          zone_id: this.show_on_map_geom.zone_id,
         });
       }
     },
@@ -668,7 +682,7 @@ export default {
             turf.combine(this.draw.getAll()).features[0]
           );
         });
-        this._mapboxgl_map.on("draw.dthis.selected_sectorete", () => {
+        this._mapboxgl_map.on("draw.delete", () => {
           this.set_edited_sector_geom(
             turf.combine(this.draw.getAll()).features[0]
           );
@@ -704,7 +718,14 @@ export default {
             this.save_geom({
               geom: turf.combine(this.draw.getAll()).features[0],
               id: this.show_on_map_geom.id,
-              type: this.show_on_map_geom.type
+              type: this.show_on_map_geom.type,
+              title_ru: this.show_on_map_geom.title_ru,
+              title_en: this.show_on_map_geom.title_en,
+              title_kz: this.show_on_map_geom.title_kz,
+              zone_title_ru: this.edited_zone.title_ru,
+              zone_title_en: this.edited_zone.title_en,
+              zone_title_kz: this.edited_zone.title_kz,
+              zone_id: this.show_on_map_geom.zone_id,
             });
             this.set_active(true);
           });
@@ -712,15 +733,29 @@ export default {
             this.save_geom({
               geom: turf.combine(this.draw.getAll()).features[0],
               id: this.show_on_map_geom.id,
-              type: this.show_on_map_geom.type
+              type: this.show_on_map_geom.type,
+              title_ru: this.show_on_map_geom.title_ru,
+              title_en: this.show_on_map_geom.title_en,
+              title_kz: this.show_on_map_geom.title_kz,
+              zone_title_ru: this.edited_zone.title_ru,
+              zone_title_en: this.edited_zone.title_en,
+              zone_title_kz: this.edited_zone.title_kz,
+              zone_id: this.show_on_map_geom.zone_id,
             });
             this.set_active(true);
           });
-          this._mapboxgl_map.on("draw.dthis.selected_sectorete", () => {
+          this._mapboxgl_map.on("draw.delete", () => {
             this.save_geom({
               geom: turf.combine(this.draw.getAll()).features[0],
               id: this.show_on_map_geom.id,
-              type: this.show_on_map_geom.type
+              type: this.show_on_map_geom.type,
+              title_ru: this.show_on_map_geom.title_ru,
+              title_en: this.show_on_map_geom.title_en,
+              title_kz: this.show_on_map_geom.title_kz,
+              zone_title_ru: this.edited_zone.title_ru,
+              zone_title_en: this.edited_zone.title_en,
+              zone_title_kz: this.edited_zone.title_kz,
+              zone_id: this.show_on_map_geom.zone_id,
             });
             this.set_active(true);
           });
@@ -745,6 +780,246 @@ export default {
           this.add_sector();
         });
         break;
+      case "infrastructure":
+        this._mapboxgl_map.on("load", async () => {
+          this._mapboxgl_map.jumpTo(
+            {
+              center: turf.centerOfMass(
+                JSON.parse(this.zones[0].st_asgeojson)
+              ).geometry.coordinates,
+              zoom: 13,
+              around: turf.centerOfMass(
+                JSON.parse(this.zones[0].st_asgeojson)
+              ).geometry.coordinates
+            },
+            {
+              padding: 50
+            }
+          );
+          this._mapboxgl_map.addLayer({
+            id: 'zone',
+            type: 'line',
+            source: {
+              type: 'geojson',
+              data: turf.polygonToLine(JSON.parse(this.zones[0].st_asgeojson))
+            },
+            layout: {
+              'line-join': 'round',
+              'line-cap': 'round'
+            },
+            paint: {
+              'line-color': '#888',
+              'line-width': 3,
+              'line-dasharray': [5, 10]
+            }
+          });
+
+          if (JSON.parse(this.edited_inf.model).type <= 12) {
+            this.infrastructures.forEach(el => {
+              if (JSON.parse(this.edited_inf.model).id == el.id) {
+                var source_infrastructures = {
+                    "type": 'geojson',
+                    'data': {
+                      'type': 'FeatureCollection',
+                      'features': []
+                    }
+                };
+
+                source_infrastructures.data.features.push({
+                    'type': 'Feature',
+                    'geometry': JSON.parse(el.st_asgeojson),
+                    'properties': {
+                      'capacity': el.capacity && el.unit ? '<br>' + el.capacity + ' ' + el.unit : '',
+                      'color': el.color,
+                      'title_ru': el.title_ru,
+                      'title_en': el.title_en,
+                      'title_kz': el.title_kz,
+                    }
+                });
+
+                this._mapboxgl_map.addSource('infrastructures', source_infrastructures);
+                this._mapboxgl_map.addLayer({
+                    "id": "infrastructures",
+                    "type": "line",
+                    "source": "infrastructures",
+                    "layout": {
+                      "line-join": "round",
+                      "line-cap": "round"
+                    },
+                    "paint": {
+                      "line-color": ['get', 'color'],
+                      "line-width": 3
+                    }
+                });
+              }
+            });
+            
+
+            var source_infrastructures_new = {
+                "type": 'geojson',
+                'data': {
+                  'type': 'FeatureCollection',
+                  'features': []
+                }
+            };
+
+            source_infrastructures_new.data.features.push({
+                'type': 'Feature',
+                'geometry': JSON.parse(this.edited_inf.model).geom.geometry,
+                'properties': {
+                  'title_ru': 'Новый объект',
+                  'title_en': 'New object',
+                  'title_kz': 'Жана объект',
+                }
+            });
+
+            this._mapboxgl_map.addSource('infrastructures-new', source_infrastructures_new);
+            this._mapboxgl_map.addLayer({
+                "id": "infrastructures-new",
+                "type": "line",
+                "source": "infrastructures-new",
+                "layout": {
+                  "line-join": "round",
+                  "line-cap": "round"
+                },
+                "paint": {
+                  "line-width": 1
+                }
+            });
+          } else {
+            this.objects.forEach(el => {
+              if (JSON.parse(this.edited_inf.model).id == el.id) {
+
+                var source_points = {
+                  "type": 'geojson',
+                  'data': {
+                    'type': 'FeatureCollection',
+                    'features': []
+                  }
+                };
+
+                switch (JSON.parse(el.st_asgeojson).type) {
+                  case 'Point':
+                    source_points.data.features.push({
+                      'type': 'Feature',
+                      'geometry': JSON.parse(el.st_asgeojson),
+                      'properties': {
+                        'capacity': el.capacity && el.unit ? '<br>' + el.capacity + ' ' + el.unit : '',
+                        'color': el.color,
+                        'title_ru': el.title_ru,
+                        'title_en': el.title_en,
+                        'title_kz': el.title_kz,
+                      }
+                    });
+                  break;
+                  case 'LineString':
+                    turf.explode(JSON.parse(el.st_asgeojson)).features.forEach( obj => {
+                      source_points.data.features.push({
+                        'type': 'Feature',
+                        'geometry': obj.geometry,
+                        'properties': {
+                          'capacity': el.capacity && el.unit ? '<br>' + el.capacity + ' ' + el.unit : '',
+                          'color': el.color,
+                          'title_ru': el.title_ru,
+                          'title_en': el.title_en,
+                          'title_kz': el.title_kz,
+                        }
+                      });
+                    });
+                  break;
+                  case 'MultiPoint':
+                    turf.explode(JSON.parse(el.st_asgeojson)).features.forEach( obj => {
+                      source_points.data.features.push({
+                        'type': 'Feature',
+                        'geometry': obj.geometry,
+                        'properties': {
+                          'capacity': el.capacity && el.unit ? '<br>' + el.capacity + ' ' + el.unit : '',
+                          'color': el.color,
+                          'title_ru': el.title_ru,
+                          'title_en': el.title_en,
+                          'title_kz': el.title_kz,
+                        }
+                      });
+                    });
+                  break;
+                }
+
+                this._mapboxgl_map.addSource('object-points', source_points);
+                this._mapboxgl_map.addLayer({
+                    "id": "object-points",
+                    "type": "circle",
+                    "source": "object-points",
+                    "paint": {
+                      'circle-color': '#fff',
+                      'circle-radius': 5,
+                      'circle-stroke-width': 4,
+                      'circle-stroke-color': ["get", "color"],
+                    }
+                });
+
+              }
+            });
+
+            var source_points_new = {
+              "type": 'geojson',
+              'data': {
+                'type': 'FeatureCollection',
+                'features': []
+              }
+            };
+            switch (JSON.parse(this.edited_inf.model).geom.geometry.type) {
+                  case 'Point':
+                    source_points_new.data.features.push({
+                      'type': 'Feature',
+                      'geometry': JSON.parse(this.edited_inf.model).geom.geometry,
+                      'properties': {
+                        'title_ru': 'Новый объект',
+                        'title_en': 'New object',
+                        'title_kz': 'Жана объект',
+                      }
+                    });
+                    break;
+                  case 'LineString':
+                    turf.explode(JSON.parse(this.edited_inf.model).geom.geometry).features.forEach( obj => {
+                      source_points_new.data.features.push({
+                        'type': 'Feature',
+                        'geometry': obj.geometry,
+                        'properties': {
+                          'title_ru': 'Новый объект',
+                          'title_en': 'New object',
+                          'title_kz': 'Жана объект',
+                        }
+                      });
+                    });
+                    break;
+                  case 'MultiPoint':
+                    turf.explode(JSON.parse(this.edited_inf.model).geom.geometry).features.forEach( obj => {
+                      source_points_new.data.features.push({
+                        'type': 'Feature',
+                        'geometry': obj.geometry,
+                        'properties': {
+                          'title_ru': 'Новый объект',
+                          'title_en': 'New object',
+                          'title_kz': 'Жана объект',
+                        }
+                      });
+                    });
+                  break;
+            }
+            this._mapboxgl_map.addSource('object-points-new', source_points_new);
+            this._mapboxgl_map.addLayer({
+                "id": "object-points-new",
+                "type": "circle",
+                "source": "object-points-new",
+                "paint": {
+                  'circle-color': '#fff',
+                  'circle-radius': 3,
+                  'circle-stroke-width': 2,
+                }
+            });
+          }
+        });
+      break;
     }
 
     this._mapboxgl_map.on("mousemove", "object-points", e => {
@@ -764,7 +1039,7 @@ export default {
     });
 
     this._mapboxgl_map.on(
-      "mousthis.selected_sectoreave",
+      "mouseleave",
       "object-points",
       e => {
         this._mapboxgl_map.getCanvas().style.cursor = "";
@@ -788,8 +1063,54 @@ export default {
     });
 
     this._mapboxgl_map.on(
-      "mousthis.selected_sectoreave",
+      "mouseleave",
       "infrastructures",
+      e => {
+        this._mapboxgl_map.getCanvas().style.cursor = "";
+        this.popupm.remove();
+      }
+    );
+
+    this._mapboxgl_map.on("mousemove", "object-points-new", e => {
+      var features = this._mapboxgl_map.queryRenderedFeatures(e.point, {
+        layers: ["object-points-new", "object-points"]
+      });
+      if (features.length == 1) {
+        this._mapboxgl_map.getCanvas().style.cursor = "pointer";
+
+        this.popupm
+          .setLngLat(features[0].geometry.coordinates.slice())
+          .setHTML(features[0].properties["title_" + this.lang])
+          .addTo(this._mapboxgl_map);
+      }
+    });
+
+    this._mapboxgl_map.on(
+      "mouseleave",
+      "object-points-new",
+      e => {
+        this._mapboxgl_map.getCanvas().style.cursor = "";
+        this.popupm.remove();
+      }
+    );
+
+    this._mapboxgl_map.on("mousemove", "infrastructures-new", e => {
+      var features = this._mapboxgl_map.queryRenderedFeatures(e.point, {
+        layers: ["infrastructures-new", "infrastructures"]
+      });
+
+      if (features.length == 1) {
+        this._mapboxgl_map.getCanvas().style.cursor = "pointer";
+        this.popupm
+          .setLngLat([e.lngLat.lng, e.lngLat.lat])
+          .setHTML(features[0].properties["title_" + this.lang])
+          .addTo(this._mapboxgl_map);
+      }
+    });
+
+    this._mapboxgl_map.on(
+      "mouseleave",
+      "infrastructures-new",
       e => {
         this._mapboxgl_map.getCanvas().style.cursor = "";
         this.popupm.remove();

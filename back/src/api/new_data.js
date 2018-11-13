@@ -58,14 +58,19 @@ router.put('/sector', body_parser.json(), async (req, res) => {
 });
 
 router.put('/infrastructure', body_parser.json(), async (req, res) => {
+    const {
+        member_id, 
+        member_firstname, 
+        member_lastname,
+    } = req.body.member;
     const to_infrastructure = JSON.parse(JSON.stringify({
-        ...req.body,
+        ...req.body.infrastructure,
     }));
     sql = `
-    INSERT INTO new_data (model, type) 
-    VALUES ($1 , $2)
-  `;
-    await db_query(sql, [to_infrastructure, 'inf'])
+        INSERT INTO new_data (model, type, member_id, member_firstname, member_lastname, is_checked) 
+        VALUES ($1, $2, $3, $4, $5, $6)
+    `;
+    await db_query(sql, [to_infrastructure, 'inf', member_id, member_firstname, member_lastname, false])
         .then(_ => res.json({
             msg: 'infrastructure new data updated',
         })).catch(err => {
