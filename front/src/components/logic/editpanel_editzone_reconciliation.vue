@@ -99,93 +99,64 @@
       ></button>
     </div>
 
-    <tabs
-      :titles_style="{
-        'font-size': '14px',
-        'padding': '10px',
-      }"
-      :active_page="0"
-    >
-
-      <span slot="tab_title_0">
-        <span class="sidebar-tab">
-          <span class="sidebar-tab_icon"></span>
-          <span class="sidebar-tab_title"
-            v-text="lang == 'ru' ? 'Справочная информация' : lang == 'en' ? 'Refernce information': 'Анықтамалық ақпарат'"
-          ></span>
-        </span>
-      </span>
-      
-      <span slot="tab_title_1">
-        <span class="sidebar-tab">
-          <span class="sidebar-tab_icon"></span>
-          <span class="sidebar-tab_title"
-            v-text="lang == 'ru' ? 'Диаграммы' : lang == 'en' ? 'Diagrams': 'Диаграммалар'"
-          ></span>
-        </span>        
-      </span>
-
-
-      <div class="editpanel_editzone_reconciliation-tab" slot="tab_0">
+    <div class="editpanel_editzone_reconciliation-container">
         <h3 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Название' : lang == 'en' ? 'Title' : 'Атауы'"></h3>
         <span class="editpanel_editzone_reconcilation-value" id="compare_title"></span>
+        
         <h3 class="editpanel_editzone_reconciliation-tab-title"
-          v-text="lang == 'ru' ? 'Описание' : lang == 'en' ? 'Description' : 'Сипаттама'"
-        ></h3>
+          v-text="lang == 'ru' ? 'Описание' : lang == 'en' ? 'Description' : 'Сипаттама'"></h3>
         <span class="editpanel_editzone_reconcilation-value" id="compare_description"></span>
+        
         <h3 class="editpanel_editzone_reconciliation-tab-title"
-          v-text="lang == 'ru' ? 'Описание региона' : lang == 'en' ? 'Region description' : 'Аймақтың сипаттамасы'"
-        ></h3>
+          v-text="lang == 'ru' ? 'Описание региона' : lang == 'en' ? 'Region description' : 'Аймақтың сипаттамасы'"></h3>
         <span class="editpanel_editzone_reconcilation-value" id="compare_region_description"></span>
+        
         <h3 class="editpanel_editzone_reconciliation-tab-title"
-          v-text="lang == 'ru' ? 'Маркетинговые материалы' : lang == 'en' ? 'Merketing materials' : 'Маркетингтік материалдар'"
-        ></h3>
+          v-text="lang == 'ru' ? 'Маркетинговые материалы' : lang == 'en' ? 'Merketing materials' : 'Маркетингтік материалдар'"></h3>
         <div class="sidebar-market_wrap">
           <div v-for="photo in zonemodel.photos" class="sidebar-passport_photo">
             <img :src="photo['src_' + lang]" />
           </div>
         </div>
+        
         <h3 class="editpanel_editzone_reconciliation-tab-title"
-          v-text="lang == 'en' ? 'Video' : 'Видео'"
-        ></h3>
+          v-text="lang == 'en' ? 'Video' : 'Видео'"></h3>
         <div class="sidebar-market_wrap">
           <div v-for="video in zonemodel.videos" class="sidebar-passport_video"></div>
         </div>
+        
         <h3 class="editpanel_editzone_reconciliation-tab-title"
-          v-text="lang == 'ru' ? 'Файлы' : lang == 'en' ? 'Files' : 'Файлдар'"
-        ></h3>
+          v-text="lang == 'ru' ? 'Файлы' : lang == 'en' ? 'Files' : 'Файлдар'"></h3>
         <div class="sidebar-market_file">
           <a v-for="file in zonemodel.files" :href="file['src_' + lang]" target="_blank">
             <div class="sidebar-market_pdf"></div>
             <div class="sidebar-market_pdf_text">{{file['name_' + lang]}}</div>
           </a>
         </div>
+        
         <h3 class="editpanel_editzone_reconciliation-tab-title"
-          v-text="lang == 'ru' ? 'Контакты' : lang == 'en' ? 'Contacts' : 'Байланыс'"
-        ></h3>
+          v-text="lang == 'ru' ? 'Контакты' : lang == 'en' ? 'Contacts' : 'Байланыс'"></h3>
         <span class="editpanel_editzone_reconcilation-value" id="compare_contact"></span>
-      </div>
-
-      <div class="editpanel_editzone_reconciliation-tab" slot="tab_1">
+        
         <h3 class="editpanel_editzone_reconciliation-tab-title"
-          v-text="lang == 'ru' ? 'Объем затраченных средств из бюджета на инфраструктуру' : lang == 'en' ? 'Budget infrastructural expenses' : 'Бюджеттен инфрақұрылымға жұмсалған қаражаттар'"
-        ></h3>
-        <p class="editpanel_editzone_reconciliation-tab-input_title" 
-          v-text="lang == 'ru' ? 'Потребность' : lang == 'en' ? 'Budget need' : 'Мұқтаждық'"></p>
-        <span class="editpanel_editzone_reconciliation-input" type="number" min="0"
+          v-text="lang == 'ru' ? 'Объем затраченных средств из бюджета на инфраструктуру' : lang == 'en' ? 'Budget infrastructural expenses' : 'Бюджеттен инфрақұрылымға жұмсалған қаражаттар'"></h3>
+        
+        <h3 class="editpanel_editzone_reconciliation-tab-title" 
+          v-text="lang == 'ru' ? 'Потребность' : lang == 'en' ? 'Budget need' : 'Мұқтаждық'"></h3>
+        <span class="editpanel_editzone_reconcilation-value" type="number" min="0"
           v-text="zonemodel.budget_need"/>
-        <p class="editpanel_editzone_reconciliation-tab-input_title" 
-          v-text="lang == 'ru' ? 'Выделено' : lang == 'en' ? 'Budget allocated' : 'Белгіленген'"></p>
-        <span class="editpanel_editzone_reconciliation-input" type="number" min="0"
+        
+        <h3 class="editpanel_editzone_reconciliation-tab-title" 
+          v-text="lang == 'ru' ? 'Выделено' : lang == 'en' ? 'Budget allocated' : 'Белгіленген'"></h3>
+        <span class="editpanel_editzone_reconcilation-value" type="number" min="0"
           v-text="zonemodel.budget_allocated"/>
-        <p class="editpanel_editzone_reconciliation-tab-input_title" 
-          v-text="lang == 'ru' ? 'Соотношение свободных и занятых земель' : lang == 'en' ? 'Free and taken land share' : 'Бос және қабылданған жер үлесі'"></p>
+        
+        <h3 class="editpanel_editzone_reconciliation-tab-title" 
+          v-text="lang == 'ru' ? 'Соотношение свободных и занятых земель' : lang == 'en' ? 'Free and taken land share' : 'Бос және қабылданған жер үлесі'"></h3>
         <span type="number" min="0"
-          class="editpanel_editzone_reconciliation-tab-input"
+          class="editpanel_editzone_reconcilation-value"
           v-text="zonemodel.level"/>
       </div>
-
-    </tabs>
   </div>
 </template>
 
@@ -194,16 +165,14 @@
   .editpanel_editzone_reconciliation {
     z-index: 10;
     background: #fff;
+    position: relative;
     box-shadow: 0 0 5px 0 rgba(0,0,0,.2);
     border-radius: 3px;
-    padding: 0;
     margin: 30px;
-    padding-bottom: 20px;
   }
 
   .editpanel_editzone_reconcilation-value {
-    font-size: 12px;
-    line-height: 12px;
+    font-size: 13px;
   }
 
   .editpanel_editzone_reconciliation-title {
@@ -214,11 +183,11 @@
     margin: 0;
   }
 
-  .editpanel_editzone_reconciliation-tab {
-    padding: 0 20px;
+  .editpanel_editzone_reconciliation-container {
+    padding: 0 20px 20px 20px;
+    border-top: 1px solid #eee;
     overflow-y: auto;
-    height: calc(100vh - 240px);
-
+    height: calc(100vh - 125px);
   }
 
   .editpanel_editzone_reconciliation-tab-input {
@@ -231,19 +200,19 @@
     margin: 0 0 30px 0;
   }
 
-  .editpanel_editzone_reconciliation-tab-input_title {
+  .editpanel_editzone_reconciliation-tab-title {
     font-weight: normal;
     font-size: 16px;
     color: #50C7F9;
   }
 
-  .editpanel_editzone_reconciliation-tab-input_title-infrastructure {
+  .editpanel_editzone_reconciliation-tab-title-infrastructure {
     font-weight: normal;
     font-size: 16px;
     color: #50C7F9;
   }
 
-  .editpanel_editzone_reconciliation-tab-input_title-infrastructure:hover {
+  .editpanel_editzone_reconciliation-tab-title-infrastructure:hover {
     cursor: pointer;
     text-decoration: underline;
   }
@@ -254,11 +223,10 @@
     color: #747474;
   }
 
-
   .editpanel_editzone_reconciliation-tab-title {
     font-weight: normal;
     font-size: 16px;
-    margin: 20px 0 7px 0;
+    margin: 20px 0 5px 0;
     color: #03A0E3;
   }
 
@@ -348,7 +316,7 @@
   .editpanel_editzone_reconciliation-button {
     padding: 8px 15px;
     color: #777;
-    margin-right: 10px;
+    margin-left: 10px;
     background: #f1f1f1;
     font-size: 12px;
     transition: 200ms;
@@ -357,12 +325,14 @@
 
   }
   .editpanel_editzone_reconciliation-button:hover {
-    background: #50C7F9;
+    backgroufnd: #50C7F9;
     color: #fff;
   }
   .editpanel_editzone_reconciliation-buttons {
     z-index: 10;
-    margin: 0 20px 20px;
+    position: absolute;
+    right: 20px;
+    top: 15px;
   }
   .editpanel_editzone_reconciliation-date {
     position: absolute;
