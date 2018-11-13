@@ -8,9 +8,6 @@
 
 <style>
 .reset_sector_map {
-  top: 375px; 
-  right: 45px; 
-  position: fixed;
   width: 30px;
   height: 30px;
 }

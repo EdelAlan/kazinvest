@@ -114,9 +114,13 @@
   <div class="editpanel_editzone">
 
     <h2 class="editpanel_editzone-title" v-text="edited_zone['title_' + lang]"></h2>
-    <button v-on:click="update_zone(zonemodel)" 
-      v-text="lang == 'ru' ? 'Сохранить' : lang == 'en' ? 'Save' : 'Cақтау'"
-    ></button>
+
+
+    <div class="editpanel_editzone_reconciliation-buttons">
+      <button class="editpanel_editzone_reconciliation-button" v-on:click="update_zone(zonemodel)" 
+        v-text="lang == 'ru' ? 'Сохранить' : lang == 'en' ? 'Save' : 'Cақтау'"
+      ></button>
+    </div>
 
     <tabs
       :titles_style="{
@@ -155,24 +159,29 @@
 
 
 
-      <div class="editpanel_editzone-tab" slot="tab_0">
-        <h3 class="editpanel_editzone-tab-title" v-text="lang == 'ru' ? 'Название' : lang == 'en' ? 'Title' : 'Атауы'"></h3>
+      <div class="editpanel_editzone-tab editpanel_editzone-container" slot="tab_0">
+
+      
+        <h3 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Название' : lang == 'en' ? 'Title' : 'Атауы'"></h3>
         <input class="editpanel_editzone-input"
           v-model="zonemodel['title_' + lang]"
         />
-        <h3 class="editpanel_editzone-tab-title"
+        <h3 class="editpanel_editzone_reconciliation-tab-title"
            v-text="lang == 'ru' ? 'Описание' : lang == 'en' ? 'Description' : 'Сипаттама'"
         ></h3>
-        <textarea style="width: 100%; height: 100px;"
-          v-model="zonemodel['description_' + lang]">
-        </textarea>
-        <h3 class="editpanel_editzone-tab-title"
+     
+        <wysiwyg v-model="zonemodel['description_' + lang]" />
+
+        <h3 class="editpanel_editzone_reconciliation-tab-title"
            v-text="lang == 'ru' ? 'Описание региона' : lang == 'en' ? 'Region description' : 'Аймақтың сипаттамасы'"
         ></h3>
-        <textarea style="width: 100%; height: 100px;"
-          v-model="zonemodel['region_description_' + lang]">
-        </textarea>
-        <h3 class="editpanel_editzone-tab-title"
+
+        <wysiwyg v-model="zonemodel['region_description_' + lang]" />
+
+
+
+<!--
+        <h3 class="editpanel_editzone_reconciliation-tab-title"
           v-text="lang == 'ru' ? 'Маркетинговые материалы' : lang == 'en' ? 'Merketing materials' : 'Маркетингтік материалдар'"
         ></h3>
         <div class="sidebar-market_wrap">
@@ -197,23 +206,14 @@
             <span class="editpanel_editzone-lang">EN</span>
           </div>
           </div>
-      
-      
-      
-      
-      
-      
-      
-      
-      
         </div>
-        <h3 class="editpanel_editzone-tab-title"
+        <h3 class="editpanel_editzone_reconciliation-tab-title"
           v-text="lang == 'en' ? 'Video' : 'Видео'"
         ></h3>
         <div class="sidebar-market_wrap">
           <div v-for="video in zonemodel.videos" class="sidebar-passport_video"></div>
         </div>
-        <h3 class="editpanel_editzone-tab-title"
+        <h3 class="editpanel_editzone_reconciliation-tab-title"
           v-text="lang == 'ru' ? 'Файлы' : lang == 'en' ? 'Files' : 'Файлдар'"
         ></h3>
         <div class="sidebar-market_file">
@@ -222,92 +222,113 @@
             <div class="sidebar-market_pdf_text">{{file['name_' + lang]}}</div>
           </a>
         </div>
-        <h3 class="editpanel_editzone-tab-title"
+        -->
+        <h3 class="editpanel_editzone_reconciliation-tab-title"
           v-text="lang == 'ru' ? 'Контакты' : lang == 'en' ? 'Contacts' : 'Байланыс'"
         ></h3>
-        <div class="sidebar-passport_padding">
-          <textarea style="width: 100%; height: 100px;"
-            v-model="zonemodel['contacts_' + lang]">
-          </textarea>
-        </div>
+        <wysiwyg v-model="zonemodel['contacts_' + lang]" />
+
 
       </div>
 
-      <div class="editpanel_editzone-tab" slot="tab_1">
-        <h3 class="editpanel_editzone-tab-title"
+      <div class="editpanel_editzone-tab editpanel_editzone-container" slot="tab_1">
+        <h3 class="editpanel_editsector_reconciliation-tit"
           v-text="lang == 'ru' ? 'Объем затраченных средств из бюджета на инфраструктуру' : lang == 'en' ? 'Budget infrastructural expenses' : 'Бюджеттен инфрақұрылымға жұмсалған қаражаттар'"
         ></h3>
-        <p class="editpanel_editzone-tab-input_title" 
+        <p class="editpanel_editzone_reconciliation-tab-title" 
           v-text="lang == 'ru' ? 'Потребность' : lang == 'en' ? 'Budget need' : 'Мұқтаждық'"></p>
         <input class="editpanel_editzone-input" type="number" min="0"
           v-model="zonemodel.budget_need"/>
-        <p class="editpanel_editzone-tab-input_title" 
+        <p class="editpanel_editzone_reconciliation-tab-title" 
           v-text="lang == 'ru' ? 'Выделено' : lang == 'en' ? 'Budget allocated' : 'Белгіленген'"></p>
         <input class="editpanel_editzone-input" type="number" min="0"
           v-model="zonemodel.budget_allocated"/>
-        <p class="editpanel_editzone-tab-input_title" 
+        <p class="editpanel_editzone_reconciliation-tab-title" 
           v-text="lang == 'ru' ? 'Соотношение свободных и занятых земель' : lang == 'en' ? 'Free and taken land share' : 'Бос және қабылданған жер үлесі'"></p>
         <input type="number" min="0"
           class="editpanel_editzone-tab-input"
           v-model="zonemodel.level"/>
       </div>
 
-      <div class="editpanel_editzone-tab" slot="tab_2">
-        <h3 class="editpanel_editzone-tab-title"
-          v-text="lang == 'ru' ? 'Инфраструктура' : lang == 'en' ? 'Infrastructure' : 'Инфрақұрылым'"
-        ></h3>
-        <div
-          v-for="infrastructure in infrastructures"
-        >
-          <p class="editpanel_editzone-tab-input_title-infrastructure" 
-            v-on:click="show_on_map(infrastructure)"
-            v-text="infrastructure['title_' + lang]"></p>
+      <div class="editpanel_editzone-tab editpanel_editzone-container" slot="tab_2">
+        <div class="left-col">
+          <h3 class="editpanel_editsector_reconciliation-tit"
+            v-text="lang == 'ru' ? 'Инфраструктура' : lang == 'en' ? 'Infrastructure' : 'Инфрақұрылым'"
+          ></h3>
 
-          <div class="editpanel_editzone-tab-input_subtitle" 
-            v-text="'Атрибут'"></div>
-          <input class="editpanel_editzone-input" type="text"
-            v-model="infrastructure.capacity"/>
-          <div class="editpanel_editzone-tab-input_subtitle" 
-            v-text="'Единица измерения'"></div>
-          <input class="editpanel_editzone-input" type="text"
-            v-model="infrastructure.unit"/>
+          <div
+            v-for="infrastructure in infrastructures"
+          >
+            <p class="editpanel_editzone_reconciliation-tab-title-infrastructure" 
+              v-on:click="show_on_map(infrastructure)"
+              v-text="infrastructure['title_' + lang]"></p>
+
+            <div class="editpanel_editzone-tab-input_subtitle" 
+              v-text="'Атрибут'"></div>
+            <input class="editpanel_editzone-input" type="text"
+              v-model="infrastructure.capacity"/>
+            <div class="editpanel_editzone-tab-input_subtitle" 
+              v-text="'Единица измерения'"></div>
+            <input class="editpanel_editzone-input" type="text"
+              v-model="infrastructure.unit"/>
+          </div>
+
+          <h3 class="editpanel_editzone_reconciliation-tab-title"
+            v-text="lang == 'ru' ? 'Объекты' : lang == 'en' ? 'Objects' : 'Объектілер'"
+          ></h3>
+          <div
+            v-for="object in objects"
+          >
+            <p class="editpanel_editzone_reconciliation-tab-title-infrastructure" 
+              v-on:click="show_on_map(object)"
+              v-text="object['title_' + lang]"></p>
+
+            <div class="editpanel_editzone-tab-input_subtitle" 
+              v-text="'Атрибут'"></div>
+            <input class="editpanel_editzone-input" type="text"
+              v-model="object.capacity"/>
+            <div class="editpanel_editzone-tab-input_subtitle" 
+              v-text="'Единица измерения'"></div>
+            <input class="editpanel_editzone-input" type="text"
+              v-model="object.unit"/>
+          </div>
+
         </div>
 
-        <h3 class="editpanel_editzone-tab-title"
-          v-text="lang == 'ru' ? 'Объекты' : lang == 'en' ? 'Objects' : 'Объектілер'"
-        ></h3>
-        <div
-          v-for="object in objects"
-        >
-          <p class="editpanel_editzone-tab-input_title-infrastructure" 
-            v-on:click="show_on_map(object)"
-            v-text="object['title_' + lang]"></p>
+      <div class="map-container">
+          <editmap class="editpanel_editzone-map"
+            :is_sector="'zone'"
+          />
+          <reset_sector_map 
+            :style="{ top: '150px', right: '10px', position: 'absolute' }"
+            v-on:click="reset_geom"
+          />
+          <basemaps class="editpanel_editzone-basemaps" 
+            :style="{ bottom: '10px', right: '10px' }"
+            v-on:click="set_basemap"/>
+          <save_geom class="editpanel_editzone-basemaps" 
+            :style="{ position: 'absolute', top: '10px', right: '50px' }" />
 
-          <div class="editpanel_editzone-tab-input_subtitle" 
-            v-text="'Атрибут'"></div>
-          <input class="editpanel_editzone-input" type="text"
-            v-model="object.capacity"/>
-          <div class="editpanel_editzone-tab-input_subtitle" 
-            v-text="'Единица измерения'"></div>
-          <input class="editpanel_editzone-input" type="text"
-            v-model="object.unit"/>
         </div>
-
-        <editmap class="editpanel_editzone-map"
-          :is_sector="'zone'"
-        />
-        <reset_sector_map
-          v-on:click="reset_geom"
-        />
-        <basemaps class="editpanel_editzone-basemaps" :style="{ top: '415px', right: '45px' }"
-          v-on:click="set_basemap"/>
-        <save_geom class="editpanel_editzone-basemaps" />
       </div>
     </tabs>
   </div>
 </template>
 
 <style>
+
+.left-col {
+  width: 45%;
+}
+
+.map-container {
+  position: fixed;
+  top: 145px;
+  bottom: 45px;
+  background: #eee;
+  right: 45px;
+  width: 35%;
+}
 
   .editpanel_editzone {
     position: absolute;
@@ -316,10 +337,15 @@
     background: #fff;
     box-shadow: 0 0 5px 0 rgba(0,0,0,.2);
     border-radius: 3px;
-    overflow-y: auto;
     padding: 0;
     margin: 30px;
-    height: calc(100vh - 60px);
+  }
+
+  .editpanel_editzone-container {
+    padding: 0 20px 20px 20px;
+    border-top: 1px solid #eee;
+    overflow-y: auto;
+    height: calc(100vh - 165px);
   }
 
   .editpanel_editzone-title {
@@ -344,19 +370,19 @@
     margin: 0 0 30px 0;
   }
 
-  .editpanel_editzone-tab-input_title {
+  .editpanel_editzone_reconciliation-tab-title {
     font-weight: normal;
     font-size: 16px;
     color: #50C7F9;
   }
 
-  .editpanel_editzone-tab-input_title-infrastructure {
+  .editpanel_editzone_reconciliation-tab-title-infrastructure {
     font-weight: normal;
     font-size: 16px;
     color: #50C7F9;
   }
 
-  .editpanel_editzone-tab-input_title-infrastructure:hover {
+  .editpanel_editzone_reconciliation-tab-title-infrastructure:hover {
     cursor: pointer;
     text-decoration: underline;
   }
@@ -367,7 +393,7 @@
     color: #747474;
   }
 
-  .editpanel_editzone-tab-title {
+  .editpanel_editzone_reconciliation-tab-title {
     font-weight: normal;
     font-size: 20px;
     color: #03A0E3;
@@ -424,11 +450,10 @@
   }
 
   .editpanel_editzone-map {
-    position: fixed;
-    height: 100%;
-    width: 40%;
-    right: 35px;
-    top: 157px
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
   }
 
   .mapboxgl-canvas {
@@ -438,20 +463,14 @@
 
   .editpanel_editzone-input {
     border: none;
-    border-bottom: 1px solid #aaa;
+    font-size: 13px;
+    outline: none;
+    border-bottom: 2px solid #50C7F9;
+    width: 100%;
   }
 
-  /* .mapboxgl-map {
-    height: 100%;
-    width: 50%;
-    position: absolute;
-    right: 0;
-    top: 126px;
-  } */
-
   .editpanel_editzone-basemaps {
-    position: fixed;
-    z-index: 1000;
+    z-index: 100;
   }
 
   .sidebar-passport_photo_meta {
@@ -464,5 +483,7 @@
     text-align: center;
     line-height: 13px;
   }
+
+  
  
 </style>

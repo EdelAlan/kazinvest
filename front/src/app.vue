@@ -72,5 +72,6 @@
   ::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.2);
     border-radius: .3em;
+
 }
 </style>
