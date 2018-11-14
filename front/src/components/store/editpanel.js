@@ -201,19 +201,16 @@ export default {
     update_zone ({ commit, dispatch }, zone) {
       if (this.getters.profile.member_role != 'superadmin') {
         const path = this.getters.api_path + `/back/api/new_data/zone`;
-        console.log({
-          zone,
-          member: {
-            member_firstname: this.getters.profile.member_firstname,
-            member_lastname: this.getters.profile.member_lastname,
-            member_id: this.getters.profile.member_id,
-          },
-        })
         return fetcher({ 
           method: 'put',
           path,
           body: {
-            zone,
+            zone: {
+              model: zone,
+              zone_title_en: this.getters.edited_zone.title_en,
+              zone_title_ru: this.getters.edited_zone.title_ru,
+              zone_title_kz: this.getters.edited_zone.title_kz,
+            },
             member: {
               member_firstname: this.getters.profile.member_firstname,
               member_lastname: this.getters.profile.member_lastname,
@@ -249,7 +246,15 @@ export default {
           method: 'put',
           path,
           body: {
-            sector,
+            sector: {
+              model: sector,
+              zone_title_en: this.getters.zones[0].title_en,
+              zone_title_ru: this.getters.zones[0].title_ru,
+              zone_title_kz: this.getters.zones[0].title_kz,
+              title_en: this.getters.edited_sector.title_en,
+              title_ru: this.getters.edited_sector.title_ru,
+              title_kz: this.getters.edited_sector.title_kz,
+            },
             member: {
               member_firstname: this.getters.profile.member_firstname,
               member_lastname: this.getters.profile.member_lastname,

@@ -596,7 +596,7 @@ export default {
                 'type': 'geojson',
                 'data': {
                     'type': 'Feature',
-                    'geometry': JSON.parse(JSON.parse(this.edited_sector.model).st_asgeojson),
+                    'geometry': JSON.parse(JSON.parse(this.edited_sector.model).model.st_asgeojson),
                 }
             },
             'layout': {},
@@ -1085,11 +1085,11 @@ export default {
           this._mapboxgl_map.jumpTo(
             {
               center: turf.centerOfMass(
-                JSON.parse(JSON.parse(this.edited_sector.model).st_asgeojson)
+                JSON.parse(JSON.parse(this.edited_sector.model).model.st_asgeojson)
               ).geometry.coordinates,
               zoom: 13,
               around: turf.centerOfMass(
-                JSON.parse(JSON.parse(this.edited_sector.model).st_asgeojson)
+                JSON.parse(JSON.parse(this.edited_sector.model).model.st_asgeojson)
               ).geometry.coordinates
             },
             {

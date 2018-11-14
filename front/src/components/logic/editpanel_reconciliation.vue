@@ -129,7 +129,10 @@
     <div v-if="!editzone_state && !editsector_state && !editinf_state" class="editpanel_reconciliation-list">
       <div v-for="data in new_data" class="editpanel_reconciliation-item">
         <h2 class="editpanel_reconciliation-header_title" 
-          v-text="JSON.parse(data.model)['title_'+lang] + ' – ' + data.type"></h2>
+          v-text="data.type == 'zone' ? (JSON.parse(data.model)['zone_title_'+lang]) : data.type == 'sector' ? (JSON.parse(data.model)['zone_title_'+lang] + ', ' + JSON.parse(data.model)['title_'+lang]) : JSON.parse(data.model)['zone_title_'+lang] + ', ' + JSON.parse(data.model)['title_'+lang]"></h2>
+        <span class="editpanel_reconciliation-date" v-text="data.member_firstname + ' ' 
+        + data.member_lastname + 
+        ' (' + data.member_id + ') ' + data.timestamp.replace('T', ' ').slice(0, 19)"></span>
         <button class="editpanel_reconciliation-edit" 
           v-on:click="edit_state(data)"
         ></button>
@@ -153,6 +156,7 @@
     height: calc(100vh - 60px);
   }
   .editpanel_reconciliation-item {
+    height: 70px;
     border-top: 1px solid #eee;
     position: relative;
   }
@@ -182,5 +186,12 @@
   }
   .editpanel_reconciliation-sector_item_title--leftpd {
     padding-left: 45px;
+  }
+  .editpanel_reconciliation-date {
+    position: absolute;
+    top: 41px;
+    left: 20px;
+    color: #bbb;
+    font-size: 12px;
   }
 </style>

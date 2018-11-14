@@ -38,7 +38,7 @@
     ]),
 
     async mounted () {
-      this.zonemodel = JSON.parse(this.edited_zone.model);
+      this.zonemodel = JSON.parse(this.edited_zone.model).model;
       await this.set_zone(this.zonemodel.id);
 
       [{

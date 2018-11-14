@@ -122,6 +122,7 @@
         'update_sector',
         'set_basemap',
         'set_reset_sector',
+        'set_zone',
       ]),
 
       assign_geom() {
@@ -135,7 +136,7 @@
       Object.keys(this.sectormodel).forEach(it => {
         this.sectormodel[it] = this.edited_sector[it];
       });
-
+      this.set_zone(this.edited_sector.zone_id);
     }
   }
 </script>

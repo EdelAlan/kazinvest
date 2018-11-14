@@ -82,8 +82,8 @@
     },
 
     async mounted () {
-      this.sectormodel = await JSON.parse(this.edited_sector.model);
-      await this.set_selected_sector(JSON.parse(this.edited_sector.model));
+      this.sectormodel = await JSON.parse(this.edited_sector.model).model;
+      await this.set_selected_sector(JSON.parse(this.edited_sector.model).model);
       this.investment = {
         investments2014: this.investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2014)[0] ? this.investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2014)[0].val : 0,
         investments2015: this.investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2015)[0] ? this.investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2015)[0].val : 0,
