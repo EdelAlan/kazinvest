@@ -8,6 +8,7 @@ const FIELDS = `
   member_timestamp,
   member_firstname,
   member_lastname,
+  member_role,
   member_zone
 `;
 

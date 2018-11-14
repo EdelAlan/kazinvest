@@ -46,5 +46,8 @@ async function allow_only_member (to, from, next) {
 	if (!store.getters.profile) {
 		return next('/');
 	}
+	if (store.getters.profile.member_role == 'member_min') {
+		return next('/');
+	}
 	next();
 }
