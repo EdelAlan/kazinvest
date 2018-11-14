@@ -77,10 +77,6 @@ export default {
 
   actions: {
     set_view ({ commit, state }, idx) {
-      console.log(state.views.filter(view => view.active == true))
-      // if (state.views.filter(view => view.active == true)[0].id == ) {
-
-      // }
       commit('set_views', state.views.map((it, key) => ({
         ...it,
         active: key == idx ? true : false,
@@ -243,7 +239,6 @@ export default {
         path: this.getters.api_path + '/back/api/new_data'
       }).then(new_data => commit('set_new_data', new_data));
     },
-
     reject_data({ commit, dispatch }, data) {
       const path = this.getters.api_path + `/back/api/new_data/reject/${data.id}`;
       return fetcher({ 

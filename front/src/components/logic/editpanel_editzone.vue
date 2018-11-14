@@ -259,7 +259,7 @@
           <div
             v-for="infrastructure in infrastructures"
           >
-            <p class="editpanel_editzone_reconciliation-tab-title" 
+            <p class="editpanel_editzone_reconciliation-tab-title editpanel_editzone_reconciliation-tab-title-active" 
               v-on:click="show_on_map(infrastructure)"
               v-text="infrastructure['title_' + lang]"></p>
 
@@ -279,7 +279,7 @@
           <div
             v-for="object in objects"
           >
-            <p class="editpanel_editzone_reconciliation-tab-title" 
+            <p class="editpanel_editzone_reconciliation-tab-title editpanel_editzone_reconciliation-tab-title-active" 
               v-on:click="show_on_map(object)"
               v-text="object['title_' + lang]"></p>
 
@@ -452,6 +452,9 @@
     line-height: 13px;
   }
 
-  
+  .editpanel_editzone_reconciliation-tab-title-active:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
  
 </style>

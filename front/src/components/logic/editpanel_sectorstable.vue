@@ -88,8 +88,7 @@
         <button class="editpanel_sectorstable-zone_edit" 
           v-on:click="
             set_edited_zone(zone),
-            editzone_state = true
-          "
+            editzone_state = true"
         ></button>
 
         <button class="editpanel_sectorstable-collape"

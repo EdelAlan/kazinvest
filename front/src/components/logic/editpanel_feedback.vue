@@ -108,11 +108,11 @@
             :title="it.created_date"
             v-text="it.created_date"></span>
         </div>
-        <div class="editpanel_feedback-member_item">
+        <!-- <div class="editpanel_feedback-member_item">
           <img 
             :src="image"
           />
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
