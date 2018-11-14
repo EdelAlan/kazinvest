@@ -1,17 +1,30 @@
 <script>
   import { mapGetters, mapActions } from 'vuex';  
+  import selector from '../ui/selector';
 
   export default {
+    components: {
+      selector,
+    },
 
     computed: mapGetters([
       'lang',
       'members',
     ]),
 
-    methods: mapActions([
-      'set_members',
-      'update_member',
-    ]),
+    methods: {
+      select_role (member) {
+        this.update_member({
+          member_id: member.member_id,
+          member_verification: member.member_verification,
+          member_role: member.member_role,
+        });
+      },
+      ...mapActions([
+        'set_members',
+        'update_member',
+      ])
+    },
 
     async mounted () {
       await this.set_members();
@@ -33,6 +46,7 @@
         <div v-text="'Время регистрации'" class="editpanel_members-table_header_item"></div>
         <div v-text="'ФИО'" class="editpanel_members-table_header_item"></div>
         <div v-text="'Зона'" class="editpanel_members-table_header_item"></div>
+        <div v-text="'Роль'" class="editpanel_members-table_header_item"></div>
       </div>
     </div>
     <div class="editpanel_members-sectors">
@@ -46,10 +60,9 @@
         <div class="editpanel_members-member_item">
           <input type="checkbox" 
             v-on:click="update_member({
-              member_firstname: member.member_firstname,
-              member_lastname: member.member_lastname,
               member_id: member.member_id,
               member_verification: !member.member_verification,
+              member_role: member.member_role,
             })"
             :checked="member.member_verification"
           />
@@ -69,6 +82,45 @@
             :title="member.member_zone['title_' + lang]"
             v-text="member.member_zone['title_' + lang]"></span>
         </div>
+        <div class="editpanel_members-member_item editpanel_members-member_item--visible">
+   
+          <selector
+            :list="[{
+              title_ru: 'Пониженный',
+              title_ru: 'Downgrade',
+              title_ru: 'Пониженный',
+              member_role: 'member_min',
+              member_id: member.member_id,
+              member_verification: member.member_verification,
+            }, {
+              title_ru: 'Стандартный',
+              title_ru: 'Standart',
+              title_ru: 'Стандартный',
+              member_role: 'member',
+              member_id: member.member_id,
+              member_verification: member.member_verification,
+            }]"
+            :styles="{
+              'font-size': '14px',
+            }"
+            v-on:select="select_role"
+            :selected="
+              member.member_role == 'member' ? {
+                title_ru: 'Стандартный',
+                title_ru: 'Standart',
+                title_ru: 'Стандартный',
+                member_role: 'member',
+              }
+              : 
+              member.member_role == 'member_min' ? {
+                title_ru: 'Пониженный',
+                title_ru: 'Downgrade',
+                title_ru: 'Пониженный',
+                member_role: 'member_min',
+              } : ''
+            "
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -84,6 +136,7 @@
     box-shadow: 0 0 5px 0 rgba(0,0,0,.2);
     border-radius: 3px;
   }
+
   .editpanel_members-sectors {
     overflow-y: auto;
     padding: 0;
@@ -117,6 +170,7 @@
     position: relative;
     flex: 1;
     padding: 15px 20px;
+    font-size: 14px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -139,5 +193,8 @@
   }
   .editpanel_members-member_item_title--leftpd {
     padding-left: 45px;
+  }
+  .editpanel_members-member_item--visible {
+    overflow: visible;
   }
 </style>

@@ -8,6 +8,7 @@ const FIELDS = `
   member_timestamp,
   member_firstname,
   member_lastname,
+  member_role,
   member_zone
 `;
 
@@ -32,24 +33,20 @@ router.get('/', async (_, res) => {
 router.put('/:id', bodyparser.json(), async (req, res) => {
   const {
     member_verification,
-    member_firstname,
-    member_lastname,
     member_id,
+    member_role,
   } = req.body;
 
   await db_query(`
     UPDATE member SET 
       member_verification = $1,
-      member_firstname = $2,
-      member_lastname = $3,
-      member_id = $4
+      member_role = $2
     WHERE 
-      member_id = $4
+      member_id = $3
   `, 
     [
       member_verification,
-      member_firstname,
-      member_lastname,
+      member_role,
       member_id,
     ],
   );

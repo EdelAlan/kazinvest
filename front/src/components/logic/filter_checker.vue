@@ -63,8 +63,11 @@
       
       <button class="filters-btn"
         v-on:click="toggle"
-        v-text="selected_all ? lang == 'ru' ? 'Готово' : lang == 'kz' ? 'Готово' : 'Done' :
-                lang == 'ru' ? 'Выбрать все' : lang == 'kz' ? 'Барлығын таңдау' : 'Check all'"
+        v-text="{
+          title_ru: 'Готово',
+          title_en: 'Done',
+          title_kz: 'Готово'
+        }['title_' + lang]"
       ></button>
       
       <button class="filters-btn"

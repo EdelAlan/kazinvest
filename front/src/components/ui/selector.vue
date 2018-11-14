@@ -18,6 +18,7 @@
     },
 
     mounted () {
+      this.selected_item = this.selected['title_'+ this.lang];
       this.filtered_list = this.list;
     },
 
