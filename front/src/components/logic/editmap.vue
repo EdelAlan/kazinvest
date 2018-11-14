@@ -713,6 +713,23 @@ export default {
               padding: 50
             }
           );
+          this._mapboxgl_map.addLayer({
+            id: 'zone',
+            type: 'line',
+            source: {
+              type: 'geojson',
+              data: turf.polygonToLine(JSON.parse(this.edited_zone.st_asgeojson))
+            },
+            layout: {
+              'line-join': 'round',
+              'line-cap': 'round'
+            },
+            paint: {
+              'line-color': '#888',
+              'line-width': 3,
+              'line-dasharray': [5, 10]
+            }
+          });
 
           this._mapboxgl_map.on("draw.create", () => {
             this.save_geom({
