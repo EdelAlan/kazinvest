@@ -11,9 +11,14 @@
       ...mapActions([
         'set_view',
         'set_crumb_first',
+        'set_crumbs_admin',
       ]),
 
       set_crumbs(view) {
+        this.set_crumbs_admin([{
+          ...view,
+          level: 1,
+        }]);
         this.set_crumb_first({
           ...view,
           level: 1,
