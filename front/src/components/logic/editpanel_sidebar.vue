@@ -7,9 +7,19 @@
       lang,
     },
     
-    methods: mapActions([
-      'set_view',
-    ]),
+    methods: {
+      ...mapActions([
+        'set_view',
+        'set_crumb_first',
+      ]),
+
+      set_crumbs(view) {
+        this.set_crumb_first({
+          ...view,
+          level: 1,
+        });
+      },
+    },
 
     computed: mapGetters([
       'lang',
@@ -34,7 +44,9 @@
         class="editpanel_sidebar-item"
         :class="{ 'editpanel_sidebar-item--active': view.active }"
         v-text="view['title_' + lang]"
-        v-on:click="set_view(idx)"
+        v-on:click="
+        set_view(idx),
+        set_crumbs(view)"
       ></div>
     </div>
   </div>

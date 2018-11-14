@@ -638,7 +638,9 @@
       <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="2018"></h2>
       <div class="editpanel_editzone_reconcilation-value" id="compare_spent_foreign_investments2018"></div>
 
-
+      <editmap class="editpanel_editsector_reconciliation-map"
+        :is_sector="'admin'"
+      />
       <basemaps class="editpanel_editsector_reconciliation-basemaps" v-on:click="set_basemap"/>
 
 
@@ -671,13 +673,18 @@
   }
 
   .editpanel_editsector_reconciliation-map {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    top: 165px;
+    position: fixed;
+    top: 123px;
+    background: #eee;
+    right: 34px;
+    width: 35%;
+    height: 650px;
   }
 
   .editpanel_editsector_reconciliation-basemaps {
+    top: 215px;
+    background: #eee;
+    right: 14px;
   }
 
   .editpanel_editsector_reconciliation-title {

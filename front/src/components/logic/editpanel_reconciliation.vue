@@ -26,6 +26,7 @@
       'edited_inf',
       'zones',
       'lang',
+      'crumbs_admin',
     ]),
 
     async mounted () {
@@ -44,6 +45,7 @@
         'set_objects_list',
         'set_infrastructures',
         'set_objects',
+        'set_crumbs_admin',
       ]),
 
       async edit_state(data) {
@@ -51,10 +53,22 @@
           case 'zone':
             this.set_edited_zone(data);
             this.editzone_state = true;
+            this.set_crumbs_admin([this.crumbs_admin[0],{
+              level: 2,
+              title_ru: 'Согласование зоны',
+              title_kz: 'Аймақты салыстырып тексеру',
+              title_en: 'Zone reconciliation',
+            }]);
           break;
           case 'sector':
             this.set_edited_sector(data);
             this.editsector_state = true;
+            this.set_crumbs_admin([this.crumbs_admin[0],{
+              level: 2,
+              title_ru: 'Согласование сектора',
+              title_kz: 'Секторды салыстырып тексеру',
+              title_en: 'Sector reconciliation',
+            }]);
           break;
           case 'inf':
             this.set_edited_inf(data);
@@ -65,6 +79,12 @@
             this.set_infrastructures();
             this.set_objects();
             this.editinf_state = true;
+            this.set_crumbs_admin([this.crumbs_admin[0],{
+              level: 2,
+              title_ru: 'Согласование инфраструктуры',
+              title_kz: 'Инфрақұрылымды салыстырып тексеру',
+              title_en: 'Infrastructure reconciliation',
+            }]);
           break;
         }
       },
@@ -96,8 +116,14 @@
 <template>
   <div class="editpanel_reconciliation">
 
-    <editpanel_editzone_reconciliation v-if="editzone_state" />
-    <editpanel_editsector_reconciliation v-if="editsector_state" />
+    <editpanel_editzone_reconciliation 
+      v-if="editzone_state"
+      :style="{ margin: '60px 30px 30px 30px'}"
+    />
+    <editpanel_editsector_reconciliation 
+      v-if="editsector_state"
+      :style="{ margin: '60px 30px 30px 30px'}"
+    />
     <editpanel_editinf_reconciliation v-if="editinf_state" />
 
     <div v-if="!editzone_state && !editsector_state && !editinf_state" class="editpanel_reconciliation-list">

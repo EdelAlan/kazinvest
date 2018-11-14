@@ -2,11 +2,21 @@ import fetcher from '../../util/fetcher';
 
 export default {
   state: () => ({
+    editzone_state: false,
+    editsector_state: false,
     zone_sectors: null,
     edited_zone: null,
     edited_sector: null,
     edited_inf: null,
     new_data: null,
+    crumbs_admin: [{
+      active: true,
+      id: 'sectors',
+      level: 1,
+      title_ru: 'Участки',
+      title_kz: 'Аумақтар',
+      title_en: 'Zones',
+    }],
     views: [{
       active: true,
       id: 'sectors',
@@ -35,6 +45,12 @@ export default {
   }),
 
   mutations: {
+    set_editzone_state(state, editzone_state) {
+      state.editzone_state = editzone_state;
+    },
+    set_editsector_state(state, editsector_state) {
+      state.editsector_state = editsector_state;
+    },
     set_views(state, views) {
       state.views = views;
     },
@@ -57,6 +73,9 @@ export default {
     set_new_data(state, new_data) {
       state.new_data = new_data;
     },
+    set_crumbs_admin(state, crumbs_admin) {
+      state.crumbs_admin = crumbs_admin;
+    },
   },
 
   getters: {
@@ -68,11 +87,14 @@ export default {
       });
     },
 
+    editzone_state: state => state.editzone_state,
+    editsector_state: state => state.editsector_state,
     zone_sectors: state => state.zone_sectors,
     edited_zone: state => state.edited_zone,
     edited_sector: state => state.edited_sector,
     edited_inf: state => state.edited_inf,
     new_data: state => state.new_data,
+    crumbs_admin: state => state.crumbs_admin,
   },
 
   actions: {
@@ -81,6 +103,13 @@ export default {
         ...it,
         active: key == idx ? true : false,
       })));
+    },
+
+    set_editzone_state({ commit }, bool) {
+      commit('set_editzone_state', bool);
+    },
+    set_editsector_state({ commit }, bool) {
+      commit('set_editsector_state', bool);
     },
     set_zone_sectors ({ commit, getters }) {
       commit('set_zone_sectors', getters.zones.map(zone => {
@@ -152,6 +181,21 @@ export default {
     },
     set_edited_inf({ commit }, inf) {
       commit('set_edited_inf', inf);
+    },
+    set_crumbs_admin({ commit }, crumbs_admin) {
+      commit('set_crumbs_admin', crumbs_admin);
+    },
+    set_crumb_first({ commit, dispatch }, data) {
+      if (data.level == 1) {
+        commit('set_crumbs_admin', [this.getters.crumbs_admin[0]]);
+        commit('set_new_data', '');
+        dispatch('set_new_data');
+        commit('set_edited_zone', false);
+        commit('set_edited_sector', false);
+        commit('set_edited_inf', false);
+        commit('set_editzone_state', false);
+        commit('set_editsector_state', false);
+      }
     },
     
     update_zone ({ commit, dispatch }, zone) {

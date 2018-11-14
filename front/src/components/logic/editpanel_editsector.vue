@@ -341,7 +341,7 @@
             :is_sector="'sector'"
           />
           <reset_sector_map
-            :style="{ top: '150px', right: '10px', position: 'absolute' }"
+            :style="{ top: '220px', right: '10px', position: 'absolute' }"
             v-on:click="set_reset_sector"
           />
           <basemaps class="editpanel_editsector-basemaps"

@@ -300,7 +300,7 @@
             :is_sector="'zone'"
           />
           <reset_sector_map 
-            :style="{ top: '150px', right: '10px', position: 'absolute' }"
+            :style="{ top: '220px', right: '10px', position: 'absolute' }"
             v-on:click="reset_geom"
           />
           <basemaps class="editpanel_editzone-basemaps" 

@@ -284,7 +284,7 @@
   }
   .editpanel_editinf_reconciliation-buttons {
     position: fixed;
-    top: 30px;
+    top: 60px;
     z-index: 10;
     right: 40px;
   }

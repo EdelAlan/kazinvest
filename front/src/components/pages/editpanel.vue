@@ -5,6 +5,8 @@
   import editpanel_sectorstable from '../logic/editpanel_sectorstable';
   import editpanel_feedback from '../logic/editpanel_feedback';
   import editpanel_reconciliation from '../logic/editpanel_reconciliation';
+  import breadcrumb_admin from '../logic/breadcrumb_admin';
+  import popup from '../ui/popup';
 
   export default {
     components: {
@@ -13,11 +15,14 @@
       editpanel_members,
       editpanel_feedback,
       editpanel_reconciliation,
+      breadcrumb_admin,
+      popup,
     },
 
     computed: mapGetters([
       'profile',
       'views',
+      'popup',
     ]),
 
 	}
@@ -28,6 +33,18 @@
   <div class="editpanel">
     <editpanel_sidebar class="editpanel_sidebar-sidebar"></editpanel_sidebar>
     <div class="editpanel-content">
+      <breadcrumb_admin
+        class="editpanel-breadcrumb"
+      />
+      <popup v-if="popup"
+        :style="{ 'z-index': 10000 }"
+        :model="{
+          is_piechart: false,
+          pageX: this.popup.pageX,
+          pageY: this.popup.pageY,
+          feature: this.popup.feature
+        }"
+      ></popup>
       <div class="editpanel-content_item">
         <editpanel_sectorstable v-if="views[0] && views[0].active" />
         <editpanel_members v-if="views[1] && views[1].active && profile && profile.member_role == 'superadmin'" />
@@ -54,6 +71,17 @@
     top: 0;
     bottom: 0;
     right: 0;
+  }
+  .editpanel-content_item {
+    margin-top: 30px;
+  }
+
+  .editpanel-breadcrumb {
+    position: absolute;
+    z-index: 8;
+    left: 27px;
+    transition: all .5s ease-in-out;
+    top: 7px;
   }
 
 </style>

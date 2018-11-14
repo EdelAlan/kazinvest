@@ -51,6 +51,7 @@ export default {
       "save_geom",
       "set_active",
       "set_zone",
+      'show_popup',
     ]),
 
     reset_sector() {
@@ -1339,6 +1340,50 @@ export default {
         });
       break;
     }
+
+    this._mapboxgl_map.on('mousemove', e => {
+      if (this._mapboxgl_map.isStyleLoaded()) {
+        var sectors = this._mapboxgl_map.queryRenderedFeatures(e.point, {
+          layers: ['current-sector', 'processing-sector', 'free-sector', 'current-sector-multi', 'processing-sector-multi', 'free-sector-multi']
+        });
+        if (sectors[0]) {
+          this._mapboxgl_map.getCanvas().style.cursor = 'pointer';
+
+          this.show_popup({
+            is_piechart: false,
+            pageX: e.originalEvent.pageX - 480,
+            pageY: e.originalEvent.pageY - 7,
+            feature: sectors[0]
+          });
+        }
+      }
+    });
+
+    this._mapboxgl_map.on('mouseleave', 'current-sector', e => {
+      this._mapboxgl_map.getCanvas().style.cursor = '';
+      this.show_popup();
+    });
+    this._mapboxgl_map.on('mouseleave', 'processing-sector', e => {
+      this._mapboxgl_map.getCanvas().style.cursor = '';
+      this.show_popup();
+    });
+    this._mapboxgl_map.on('mouseleave', 'free-sector', e => {
+      this._mapboxgl_map.getCanvas().style.cursor = '';
+      this.show_popup();
+    });
+
+    this._mapboxgl_map.on('mouseleave', 'current-sector-multi', e => {
+      this._mapboxgl_map.getCanvas().style.cursor = '';
+      this.show_popup();
+    });
+    this._mapboxgl_map.on('mouseleave', 'processing-sector-multi', e => {
+      this._mapboxgl_map.getCanvas().style.cursor = '';
+      this.show_popup();
+    });
+    this._mapboxgl_map.on('mouseleave', 'free-sector-multi', e => {
+      this._mapboxgl_map.getCanvas().style.cursor = '';
+      this.show_popup();
+    });
 
     this._mapboxgl_map.on("mousemove", "object-points", e => {
       var features = this._mapboxgl_map.queryRenderedFeatures(e.point, {

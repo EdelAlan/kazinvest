@@ -9,22 +9,19 @@
       editpanel_editsector,
     },
 
-    data () {
-      return {
-        editzone_state: false,
-        editsector_state: false,
-      }
-    },
-
     computed: mapGetters([
       'zone_sectors',
       'lang',
       'republics',
       'profile',
       'selected_zone',
+      'crumbs_admin',
+      'editzone_state',
+      'editsector_state',
     ]),
 
     async mounted () {
+      console.log(this.crumbs_admin);
       if (this.profile && this.profile.member_role == 'superadmin') {
         await this.set_zones({
           filter: false,
@@ -68,6 +65,9 @@
       'set_taxes',
       'set_exports_volume',
       'set_spent_foreign_investments',
+      'set_crumbs_admin',
+      'set_editzone_state',
+      'set_editsector_state',
     ]),
 
   }
@@ -88,7 +88,13 @@
         <button class="editpanel_sectorstable-zone_edit" 
           v-on:click="
             set_edited_zone(zone),
-            editzone_state = true"
+            set_crumbs_admin([crumbs_admin[0],{
+              level: 2,
+              title_ru: 'Редактирование зоны',
+              title_kz: 'Аймақты редакталау',
+              title_en: 'Edit zone',
+            }]),
+            set_editzone_state(true)"
         ></button>
 
         <button class="editpanel_sectorstable-collape"
@@ -111,7 +117,13 @@
                 <button class="editpanel_sectorstable-sector_item_edit"
                   v-on:click="
                     set_edited_sector(sector),
-                    editsector_state = true
+                    set_crumbs_admin([crumbs_admin[0],{
+                      level: 2,
+                      title_ru: 'Редактирование сектора',
+                      title_kz: 'Секторды редакталау',
+                      title_en: 'Edit sector',
+                    }]),
+                    set_editsector_state(true)
                   "
                 ></button>
                 <span class="editpanel_sectorstable-sector_item_title editpanel_sectorstable-sector_item_title--leftpd" 
