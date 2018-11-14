@@ -398,16 +398,25 @@
 
     <div class="editpanel_editzone_reconciliation-container">
       
+  
+      
+
       <h3 class="editpanel_editsector_reconciliation-tit" v-text="lang == 'ru' ? 'Общее' : lang == 'en' ? 'Common' : 'Общее'"></h3>
 
       <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Название компании участника' : lang == 'en' ? 'Participant\'s company name': 'Қатысушының компания атауы'"></h2>
+      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'рус'"></h4>
       <div class="editpanel_editzone_reconcilation-value"  id="compare_title_ru"></div>
+      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'қаз'"></h4>
       <div class="editpanel_editzone_reconcilation-value"  id="compare_title_kz"></div>
+      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'eng'"></h4>
       <div class="editpanel_editzone_reconcilation-value"  id="compare_title_en"></div>
 
       <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Описание' : lang == 'en' ? 'Description': 'Сипаттама'"></h2>
+      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'рус'"></h4>
       <div class="editpanel_editzone_reconcilation-value"  id="compare_title_project_ru"></div>
+      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'қаз'"></h4>
       <div class="editpanel_editzone_reconcilation-value"  id="compare_title_project_kz"></div>
+      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'eng'"></h4>
       <div class="editpanel_editzone_reconcilation-value"  id="compare_title_project_en"></div>
 
 
@@ -455,23 +464,32 @@
 
       <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Стоимость проекта' : lang == 'en' ? 'Project price': 'Жобаның құны'"></h2>
       <div class="editpanel_editzone_reconcilation-value"  id="compare_project_price"></div>
-    
+      
       <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Текущий статус' : lang == 'en' ? 'Current status': 'Ағымдағы күй'"></h2>
+      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'рус'"></h4>
       <div class="editpanel_editzone_reconcilation-value"  id="compare_current_status_ru"></div>
+      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'қаз'"></h4>
       <div class="editpanel_editzone_reconcilation-value"  id="compare_current_status_kz"></div>
+      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'eng'"></h4>
       <div class="editpanel_editzone_reconcilation-value"  id="compare_current_status_en"></div>
 
       <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Год' : lang == 'en' ? 'Year': 'Жыл'"></h2>
       <div class="editpanel_editzone_reconcilation-value"  id="compare_project_date"></div>
 
       <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Продукция' : lang == 'en' ? 'Products': 'Өнімдер'"></h2>
+      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'рус'"></h4>
       <div class="editpanel_editzone_reconcilation-value"  id="compare_products_ru"></div>
+      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'қаз'"></h4>
       <div class="editpanel_editzone_reconcilation-value"  id="compare_products_kz"></div>
+      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'eng'"></h4>
       <div class="editpanel_editzone_reconcilation-value"  id="compare_products_en"></div>
 
       <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Сроки реализации' : lang == 'en' ? 'Implementation period': 'Іске асыру мерзімі'"></h2>
+      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'рус'"></h4>
       <div class="editpanel_editzone_reconcilation-value"  id="compare_time_realization_ru"></div>
+      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'қаз'"></h4>
       <div class="editpanel_editzone_reconcilation-value"  id="compare_time_realization_kz"></div>
+      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'eng'"></h4>
       <div class="editpanel_editzone_reconcilation-value"  id="compare_time_realization_en"></div>
 
       <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Рабочие места' : lang == 'en' ? 'Workplaces': 'Жұмыс орындары'"></h2>
@@ -481,8 +499,11 @@
       <div class="editpanel_editzone_reconcilation-value"  id="compare_power"></div>
     
       <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Контакты' : lang == 'en' ? 'Contacts' : 'Байланыс'"></h2>
+      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'рус'"></h4>
       <div class="editpanel_editzone_reconcilation-value"  id="compare_contacts__ru"></div>
+      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'қаз'"></h4>
       <div class="editpanel_editzone_reconcilation-value"  id="compare_contacts__kz"></div>
+      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'eng'"></h4>
       <div class="editpanel_editzone_reconcilation-value"  id="compare_contacts__en"></div>
 
 

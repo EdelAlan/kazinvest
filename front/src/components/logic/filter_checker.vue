@@ -62,11 +62,16 @@
       v-if="list_is_shown">
       
       <button class="filters-btn"
+        v-on:click="toggle"
+        v-text="selected_all ? lang == 'ru' ? 'Готово' : lang == 'kz' ? 'Готово' : 'Done' :
+                lang == 'ru' ? 'Выбрать все' : lang == 'kz' ? 'Барлығын таңдау' : 'Check all'"
+      ></button>
+      
+      <button class="filters-btn"
         v-on:click="toggle_selection"
         v-text="selected_all ? lang == 'ru' ? 'Убрать все' : lang == 'kz' ? 'Алып тастау' : 'Uncheck all' :
                 lang == 'ru' ? 'Выбрать все' : lang == 'kz' ? 'Барлығын таңдау' : 'Check all'"
       ></button>
-  
 
       <div class="filter-item"
         v-for="item, key in list">
@@ -83,8 +88,9 @@
           class="filter-item_check"
           :checked="item.checked" 
           @click="select(item.id)" />
-         
       </div>
+
+
     </div>
   </div>
 

@@ -127,31 +127,42 @@
     </div>
 
     <div class="editpanel_editzone_reconciliation-container">
-      <h3 class="editpanel_editzone_reconciliation-tab-title" v-text="(lang == 'ru' ? 'Название' : lang == 'en' ? 'Title' : 'Атауы') + ' (рус, қаз, eng)'"></h3>
+      <h3 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Название' : lang == 'en' ? 'Title' : 'Атауы'"></h3>
+      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'рус'"></h4>
       <div class="editpanel_editzone_reconcilation-value" id="compare_title_ru"></div>
+      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'қаз'"></h4>
       <div class="editpanel_editzone_reconcilation-value" id="compare_title_kz"></div>
+      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'eng'"></h4>
       <div class="editpanel_editzone_reconcilation-value" id="compare_title_en"></div>
       
-
+ 
       <h3 class="editpanel_editzone_reconciliation-tab-title" v-text="(lang == 'ru' ? 'Описание' : lang == 'en' ? 'Description' : 'Сипаттама') + ' (рус, қаз, eng)'"></h3>
+      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'рус'"></h4>
       <div class="editpanel_editzone_reconcilation-value" id="compare_description_ru"></div>
+      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'қаз'"></h4>
       <div class="editpanel_editzone_reconcilation-value" id="compare_description_kz"></div>
+      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'eng'"></h4>
       <div class="editpanel_editzone_reconcilation-value" id="compare_description_en"></div>
 
 
       <h3 class="editpanel_editzone_reconciliation-tab-title" v-text="(lang == 'ru' ? 'Описание региона' : lang == 'en' ? 'Region description' : 'Аймақтың сипаттамасы') + ' (рус, қаз, eng)'"></h3>
+      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'рус'"></h4>
       <div class="editpanel_editzone_reconcilation-value" id="compare_region_description_ru"></div>
+      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'қаз'"></h4>
       <div class="editpanel_editzone_reconcilation-value" id="compare_region_description_kz"></div>
+      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'eng'"></h4>
       <div class="editpanel_editzone_reconcilation-value" id="compare_region_description_en"></div>
     
-  
+      
       <h3 class="editpanel_editzone_reconciliation-tab-title" v-text="(lang == 'ru' ? 'Контакты' : lang == 'en' ? 'Contacts' : 'Байланыс') + ' (рус, қаз, eng)'"></h3>
+      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'рус'"></h4>
       <div class="editpanel_editzone_reconcilation-value" id="compare_contact_ru"></div>
+      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'қаз'"></h4>
       <div class="editpanel_editzone_reconcilation-value" id="compare_contact_kz"></div>
+      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'eng'"></h4>
       <div class="editpanel_editzone_reconcilation-value" id="compare_contact_en"></div>
      
  
-
       <h3 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Потребность' : lang == 'en' ? 'Budget need' : 'Мұқтаждық'"></h3>
       <div class="editpanel_editzone_reconcilation-value" id="compare_budget_need"></div>
 
@@ -197,6 +208,12 @@
 </template>
 
 <style>
+
+  .editpanel_editzone_reconciliation-tab-sub_title {
+    font-size: 12px;
+    color: #03A0E3;
+    margin: 5px 0 0 0;
+  }
 
   .editpanel_editzone_reconciliation {
     z-index: 10;
@@ -245,11 +262,6 @@
     margin: 0 0 30px 0;
   }
 
-  .editpanel_editzone_reconciliation-tab-title {
-    font-weight: normal;
-    font-size: 16px;
-    color: #50C7F9;
-  }
 
   .editpanel_editzone_reconciliation-tab-title-infrastructure {
     font-weight: normal;
@@ -271,7 +283,7 @@
   .editpanel_editzone_reconciliation-tab-title {
     font-weight: normal;
     font-size: 16px;
-    margin: 20px 0 5px 0;
+    margin: 25px 0 5px 0;
     color: #03A0E3;
   }
 

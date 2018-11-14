@@ -31,8 +31,8 @@
         <div v-text="'Логин'" class="editpanel_members-table_header_item"></div>
         <div v-text="'Одобрен'" class="editpanel_members-table_header_item"></div>
         <div v-text="'Время регистрации'" class="editpanel_members-table_header_item"></div>
-        <div v-text="'Имя'" class="editpanel_members-table_header_item"></div>
-        <div v-text="'Фамилия'" class="editpanel_members-table_header_item"></div>
+        <div v-text="'ФИО'" class="editpanel_members-table_header_item"></div>
+        <div v-text="'Зона'" class="editpanel_members-table_header_item"></div>
       </div>
     </div>
     <div class="editpanel_members-sectors">
@@ -61,13 +61,13 @@
         </div>
         <div class="editpanel_members-member_item">
           <span class="editpanel_members-member_item_title" 
-            :title="member.member_firstname"
-            v-text="member.member_firstname"></span>
+            :title="`${member.member_firstname} ${member.member_lastname}`"
+            v-text="`${member.member_firstname} ${member.member_lastname}`"></span>
         </div>
         <div class="editpanel_members-member_item">
           <span class="editpanel_members-member_item_title" 
-            :title="member.member_lastname"
-            v-text="member.member_lastname"></span>
+            :title="member.member_zone['title_' + lang]"
+            v-text="member.member_zone['title_' + lang]"></span>
         </div>
       </div>
     </div>

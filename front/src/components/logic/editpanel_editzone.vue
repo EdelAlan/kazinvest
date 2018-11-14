@@ -361,33 +361,10 @@
     padding: 0 20px;
   }
 
-  .editpanel_editzone_reconciliation-tab-title {
-    font-weight: normal;
-    font-size: 16px;
-    color: #50C7F9;
-  }
-
-  .editpanel_editzone_reconciliation-tab-title {
-    font-weight: normal;
-    font-size: 16px;
-    color: #50C7F9;
-  }
-
-  .editpanel_editzone_reconciliation-tab-title:hover {
-    cursor: pointer;
-    text-decoration: underline;
-  }
-
   .editpanel_editzone-tab-input_subtitle {
     font-weight: normal;
     font-size: 12px;
     color: #747474;
-  }
-
-  .editpanel_editzone_reconciliation-tab-title {
-    font-weight: normal;
-    font-size: 20px;
-    color: #03A0E3;
   }
 
   .editpanel_editzone-add {
