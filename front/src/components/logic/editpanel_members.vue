@@ -13,8 +13,12 @@
     ]),
 
     methods: {
-      some () {
-        console.log(234234);
+      select_role (member) {
+        this.update_member({
+          member_id: member.member_id,
+          member_verification: member.member_verification,
+          member_role: member.member_role,
+        });
       },
       ...mapActions([
         'set_members',
@@ -56,10 +60,9 @@
         <div class="editpanel_members-member_item">
           <input type="checkbox" 
             v-on:click="update_member({
-              member_firstname: member.member_firstname,
-              member_lastname: member.member_lastname,
               member_id: member.member_id,
               member_verification: !member.member_verification,
+              member_role: member.member_role,
             })"
             :checked="member.member_verification"
           />
@@ -87,16 +90,20 @@
               title_ru: 'Downgrade',
               title_ru: 'Пониженный',
               member_role: 'member_min',
+              member_id: member.member_id,
+              member_verification: member.member_verification,
             }, {
               title_ru: 'Стандартный',
               title_ru: 'Standart',
               title_ru: 'Стандартный',
               member_role: 'member',
+              member_id: member.member_id,
+              member_verification: member.member_verification,
             }]"
             :styles="{
               'font-size': '14px',
             }"
-            v-on:select="some"
+            v-on:select="select_role"
             :selected="
               member.member_role == 'member' ? {
                 title_ru: 'Стандартный',
