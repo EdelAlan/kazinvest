@@ -26,8 +26,8 @@
       ])
     },
 
-    async mounted () {
-      await this.set_members();
+    mounted () {
+       this.set_members();
     },
 
   }

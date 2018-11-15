@@ -200,10 +200,12 @@ export default {
       commit('set_crumbs_admin', crumbs_admin);
     },
     set_crumb_first({ commit, dispatch }, data) {
-      if (data.level == 1) {
-        commit('set_crumbs_admin', [this.getters.crumbs_admin[0]]);
+      if (data.id == 'reconciliation') {
         commit('set_new_data', '');
         dispatch('set_new_data');
+      }
+      if (data.level == 1) {
+        commit('set_crumbs_admin', [this.getters.crumbs_admin[0]]);
         commit('set_edited_zone', false);
         commit('set_edited_sector', false);
         commit('set_edited_inf', false);

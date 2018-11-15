@@ -27,24 +27,24 @@
           filter: false,
         });
         await this.set_sectors();
-        await this.set_investments();
-        await this.set_foreign_investments();
-        await this.set_production();
-        await this.set_number_jobs();
-        await this.set_taxes();
-        await this.set_exports_volume();
-        await this.set_spent_foreign_investments();
+        this.set_investments();
+        this.set_foreign_investments();
+        this.set_production();
+        this.set_number_jobs();
+        this.set_taxes();
+        this.set_exports_volume();
+        this.set_spent_foreign_investments();
         return this.set_zone_sectors();
       } else {
         await this.set_zone(this.profile.member_zone.id);
         await this.set_sectors(this.profile.member_zone.id);
-        await this.set_investments();
-        await this.set_foreign_investments();
-        await this.set_production();
-        await this.set_number_jobs();
-        await this.set_taxes();
-        await this.set_exports_volume();
-        await this.set_spent_foreign_investments();
+        this.set_investments();
+        this.set_foreign_investments();
+        this.set_production();
+        this.set_number_jobs();
+        this.set_taxes();
+        this.set_exports_volume();
+        this.set_spent_foreign_investments();
         return this.set_zone_sectors();
       }
     },
