@@ -190,13 +190,13 @@
     </lang_home>
 
         <div class="content">
-            <router-link to="/editpanel" v-if="profile && (profile.member_role == 'member' || profile.member_role == 'superadmin')" class="home-profile">
+            <a href="/editpanel" v-if="profile && (profile.member_role == 'member' || profile.member_role == 'superadmin')" class="home-profile">
               <span v-text="profile.member_firstname + ' '"></span>
               <span v-text="profile.member_lastname"></span>
               <span v-text="profile.member_zone ? ' (' + profile.member_zone['title_' + lang] + ')' : ''"></span>
-            </router-link>
+            </a>
 
-            <div to="/editpanel" v-if="profile && profile.member_role == 'member_min'" class="home-profile">
+            <div v-if="profile && profile.member_role == 'member_min'" class="home-profile">
               <span v-text="profile.member_firstname + ' '"></span>
               <span v-text="profile.member_lastname"></span>
             </div>
@@ -367,14 +367,14 @@
                 <div class="close_btn" @click="toggleMenu"></div>
                 <div class="menu_body">
                     <div v-if="profile">
-                      <router-link v-if="profile.member_role == 'member' || profile.member_role == 'superadmin'" to="/editpanel" class="btn"
+                      <a v-if="profile.member_role == 'member' || profile.member_role == 'superadmin'" href="/editpanel" class="btn"
                         :style="{ 'font-size' : '16px', 'width' : '100%' }"
                         v-text="{
                           'title_ru': 'Панель редактирования', 
                           'title_kz': 'Редакциялау тақтасы', 
                           'title_en': 'Edit panel'
                         }['title_' + lang]"
-                      ></router-link>
+                      ></a>
                       <a target="_blank" rel="noopener noreferrer" href="https://tu.invest.gov.kz/" class="btn"
                         :style="{ 'font-size' : '16px' }"
                         v-text="{

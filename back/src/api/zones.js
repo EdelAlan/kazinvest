@@ -39,6 +39,8 @@ const FIELDS = `
   created_date,
   budget_need,
   budget_allocated,
+  last_updated_member,
+  last_updated_date,
   user_id,
   map,
   level,

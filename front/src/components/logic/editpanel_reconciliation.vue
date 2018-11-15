@@ -118,18 +118,16 @@
 
     <editpanel_editzone_reconciliation 
       v-if="editzone_state"
-      :style="{ margin: '60px 30px 30px 30px'}"
     />
     <editpanel_editsector_reconciliation 
       v-if="editsector_state"
-      :style="{ margin: '60px 30px 30px 30px'}"
     />
     <editpanel_editinf_reconciliation v-if="editinf_state" />
 
     <div v-if="!editzone_state && !editsector_state && !editinf_state" class="editpanel_reconciliation-list">
       <div v-for="data in new_data" class="editpanel_reconciliation-item">
         <h2 class="editpanel_reconciliation-header_title" 
-          v-text="data.type == 'zone' ? (JSON.parse(data.model)['zone_title_'+lang]) : data.type == 'sector' ? (JSON.parse(data.model)['zone_title_'+lang] + ', ' + JSON.parse(data.model)['title_'+lang]) : JSON.parse(data.model)['zone_title_'+lang] + ', ' + JSON.parse(data.model)['title_'+lang]"></h2>
+          v-text="data['origin_title_' + lang]"></h2>
         <span class="editpanel_reconciliation-date" v-text="data.member_firstname + ' ' 
         + data.member_lastname + 
         ' (' + data.member_id + ') ' + data.timestamp.replace('T', ' ').slice(0, 19)"></span>
@@ -144,16 +142,21 @@
 
 <style>
   .editpanel_reconciliation-list {
-    position: absolute;
-    z-index: 10;
-    width: calc(100% - 60px);
     background: #fff;
-    box-shadow: 0 0 5px 0 rgba(0,0,0,.2);
     border-radius: 3px;
     overflow-y: auto;
-    padding: 0;
-    margin: 30px;
-    height: calc(100vh - 60px);
+    top: 60px;
+    right: 30px;
+    bottom: 30px;
+    position: absolute;
+    left: 30px;
+    z-index: 10;
+    box-shadow: 0 0 5px 0 rgba(0,0,0,.2);
+  }
+  .editpanel_reconciliation {
+    background: #fff;
+    border-radius: 3px;
+    overflow-y: auto;
   }
   .editpanel_reconciliation-item {
     height: 70px;
@@ -164,7 +167,10 @@
     color: #03A0E3;
     font-size: 16px;
     font-weight: lighter;
-    padding-left: 20px;
+    padding: 0 50px 0 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .editpanel_reconciliation-edit {
     position: absolute;

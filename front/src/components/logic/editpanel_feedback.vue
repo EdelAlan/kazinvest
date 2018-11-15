@@ -47,7 +47,6 @@
 
 <template>
   <div class="editpanel_feedback"
-    :style="{ 'width': '100%' }"
   >
     <div class="editpanel_feedback-header">
       <h2 class="editpanel_feedback-header_title" 
@@ -122,9 +121,11 @@
   .editpanel_feedback {
     position: absolute;
     z-index: 10;
-
+    top: 60px;
+    bottom: 30px;
+    left: 30px;
+    right: 30px;
     background: #fff;
-    margin: 30px;
     box-shadow: 0 0 5px 0 rgba(0,0,0,.2);
     border-radius: 3px;
   }

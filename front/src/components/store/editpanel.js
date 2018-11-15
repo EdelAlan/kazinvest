@@ -213,9 +213,11 @@ export default {
           body: {
             zone: {
               model: zone,
-              zone_title_en: this.getters.edited_zone.title_en,
-              zone_title_ru: this.getters.edited_zone.title_ru,
-              zone_title_kz: this.getters.edited_zone.title_kz,
+              last_updated_member: this.getters.edited_zone.last_updated_member,
+              last_updated_date: this.getters.edited_zone.last_updated_date,
+              origin_title_en: this.getters.edited_zone.title_en,
+              origin_title_ru: this.getters.edited_zone.title_ru,
+              origin_title_kz: this.getters.edited_zone.title_kz,
             },
             member: {
               member_firstname: this.getters.profile.member_firstname,
@@ -254,9 +256,9 @@ export default {
           body: {
             sector: {
               model: sector,
-              zone_title_en: this.getters.zones[0].title_en,
-              zone_title_ru: this.getters.zones[0].title_ru,
-              zone_title_kz: this.getters.zones[0].title_kz,
+              origin_title_en: this.getters.zones[0].title_en,
+              origin_title_ru: this.getters.zones[0].title_ru,
+              origin_title_kz: this.getters.zones[0].title_kz,
               title_en: this.getters.edited_sector.title_en,
               title_ru: this.getters.edited_sector.title_ru,
               title_kz: this.getters.edited_sector.title_kz,
