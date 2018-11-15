@@ -130,9 +130,12 @@
   .editpanel_members {
     position: absolute;
     z-index: 10;
-
+    left: 30px;
+    top: 60px;
+    right: 30px;
+    bottom: 30px;
+    overflow: hidden;
     background: #fff;
-    margin: 30px;
     box-shadow: 0 0 5px 0 rgba(0,0,0,.2);
     border-radius: 3px;
   }

@@ -21,6 +21,8 @@
           region_description_ru: null,
           region_description_kz: null,
           region_description_en: null,
+          last_updated_date: null,
+          last_updated_member: null,
           contacts_ru: null,
           contacts_kz: null,
           contacts_en: null,
@@ -114,6 +116,7 @@
   <div class="editpanel_editzone">
 
     <h2 class="editpanel_editzone-title" v-text="edited_zone['title_' + lang]"></h2>
+    <h3 class="editpanel_editzone-last_title">Предыдущее согласование: {{edited_zone.last_updated_member}}, {{edited_zone.last_updated_date.replace('T', ' ').slice(0, 19)}} </h3>
 
 
     <div class="editpanel_editzone_reconciliation-buttons">
@@ -317,19 +320,19 @@
 
 <style>
 
-.left-col {
-  width: 45%;
-  padding-bottom: 20px;
-}
+  .left-col {
+    width: 45%;
+    padding-bottom: 20px;
+  }
 
-.map-container {
-  position: fixed;
-  top: 145px;
-  bottom: 45px;
-  background: #eee;
-  right: 45px;
-  width: 35%;
-}
+  .map-container {
+    position: fixed;
+    top: 145px;
+    bottom: 45px;
+    background: #eee;
+    right: 45px;
+    width: 35%;
+  }
 
   .editpanel_editzone {
     position: absolute;
@@ -346,7 +349,7 @@
     padding: 0 20px 20px 20px;
     border-top: 1px solid #eee;
     overflow-y: auto;
-    height: calc(100vh - 165px);
+    height: calc(100vh - 205px);
   }
 
   .editpanel_editzone-title {
@@ -356,6 +359,8 @@
     padding: 20px;
     margin: 0;
   }
+
+
 
   .editpanel_editzone-tab {
     padding: 0 20px;
@@ -456,5 +461,14 @@
     text-decoration: underline;
     cursor: pointer;
   }
+  .editpanel_editzone-last_title {
+    font-size: 15px;
+    color: #888;
+    font-weight: normal;
+    margin: 0 20px 20px 20px;
+  }
+
+
+  
  
 </style>

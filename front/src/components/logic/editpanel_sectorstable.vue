@@ -155,14 +155,15 @@
   .editpanel_sectorstable-zones {
     position: absolute;
     z-index: 10;
-    width: calc(100% - 60px);
     background: #fff;
     box-shadow: 0 0 5px 0 rgba(0,0,0,.2);
     border-radius: 3px;
     overflow-y: auto;
     padding: 0;
-    margin: 30px;
-    height: calc(100vh - 60px);
+    right: 30px;
+    bottom: 30px;
+    top: 60px;
+    left: 30px;
   }
   .editpanel_sectorstable-sectors {
   }

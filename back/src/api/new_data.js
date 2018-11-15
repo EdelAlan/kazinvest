@@ -11,19 +11,48 @@ router.put('/zone', body_parser.json({
     limit: '100mb'
 }), async (req, res) => {
     const {
+        model,
+        last_updated_member,
+        last_updated_date,
+        origin_title_ru,
+        origin_title_en,
+        origin_title_kz,
+    } = req.body.zone;
+    const {
         member_id, 
         member_firstname, 
         member_lastname,
     } = req.body.member;
-    const to_zone = JSON.parse(JSON.stringify({
-        ...req.body.zone,
-    }));
     const sql = `
-        INSERT INTO new_data (model, type, member_id, member_firstname, member_lastname, is_checked)
-        VALUES ($1, $2, $3, $4, $5, $6)
+        INSERT INTO new_data (
+            model, 
+            type, 
+            member_id, 
+            member_firstname, 
+            member_lastname, 
+            is_checked, 
+            last_updated_member, 
+            last_updated_date,
+            origin_title_ru,
+            origin_title_kz,
+            origin_title_en
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
     `;
-    return await db_query(sql, [to_zone, 'zone', member_id, member_firstname, member_lastname, false ])
-    .then(_ => res.json({
+    return await db_query(
+        sql, 
+        [   model, 
+            'zone', 
+            member_id, 
+            member_firstname, 
+            member_lastname, 
+            false, 
+            last_updated_member, 
+            last_updated_date, 
+            origin_title_ru,
+            origin_title_kz,
+            origin_title_en, 
+        ]
+    ).then(_ => res.json({
         msg: 'new data zone updated',
     })).catch(err => {
         console.err(err);

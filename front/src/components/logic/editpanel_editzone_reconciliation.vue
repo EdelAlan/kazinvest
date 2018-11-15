@@ -38,7 +38,7 @@
     ]),
 
     async mounted () {
-      this.zonemodel = JSON.parse(this.edited_zone.model).model;
+      this.zonemodel = JSON.parse(this.edited_zone.model);
       await this.set_zone(this.zonemodel.id);
 
       [{
@@ -114,9 +114,13 @@
   <div class="editpanel_editzone_reconciliation">
 
     <h2 class="editpanel_editzone_reconciliation-title" 
-      v-text="edited_zone.member_id + ', ' 
+      v-text="'Изменение: ' + edited_zone.member_id + ', ' 
       + edited_zone.timestamp.replace('T', ' ').slice(0, 19)"
     ></h2>
+    <h3 class="editpanel_editzone-last_title" 
+      v-text="'Предыдущее согласование: ' + edited_zone.last_updated_member + ', ' 
+      + edited_zone.last_updated_date.replace('T', ' ').slice(0, 19)"
+    ></h3>
     <div class="editpanel_editzone_reconciliation-buttons">
       <button class="editpanel_editzone_reconciliation-button" v-on:click="update_zone(zonemodel)" 
         v-text="lang == 'ru' ? 'Сохранить' : lang == 'en' ? 'Save' : 'Cақтау'"
@@ -218,10 +222,14 @@
   .editpanel_editzone_reconciliation {
     z-index: 10;
     background: #fff;
-    position: relative;
+    position: absolute;
     box-shadow: 0 0 5px 0 rgba(0,0,0,.2);
     border-radius: 3px;
-    margin: 30px;
+    top: 60px;
+    right: 30px;
+    left: 30px;
+    bottom: 30px;
+
   }
 
   .editpanel_editzone_reconcilation-separator {
@@ -249,7 +257,11 @@
     padding: 0 20px 20px 20px;
     border-top: 1px solid #eee;
     overflow-y: auto;
-    height: calc(100vh - 125px);
+    position: absolute;
+    top: 100px;
+    left: 0;
+    bottom: 0;
+    right: 0;
   }
 
   .editpanel_editzone_reconciliation-tab-input {

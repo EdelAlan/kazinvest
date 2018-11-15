@@ -39,9 +39,9 @@
 <template>
   <div class="editpanel_sidebar">
     <div class="editpanel_sidebar-header">
-      <router-link to="/">
+      <a href="/">
         <div class="editpanel_sidebar-logo"></div>
-      </router-link>
+      </a>
       <lang class="editpanel_sidebar-lang"></lang>
     </div>
     <div class="editpanel_sidebar-items">
