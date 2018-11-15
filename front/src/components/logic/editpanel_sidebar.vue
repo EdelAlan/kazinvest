@@ -66,7 +66,7 @@
     box-shadow: 0 0 5px 0 rgba(0,0,0,.2);
   }
   .editpanel_sidebar-item {
-    height: 53px;
+    height: 65px;
     padding: 15px;
     cursor: pointer;
     top: 0;

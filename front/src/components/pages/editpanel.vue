@@ -5,6 +5,7 @@
   import editpanel_sectorstable from '../logic/editpanel_sectorstable';
   import editpanel_feedback from '../logic/editpanel_feedback';
   import editpanel_reconciliation from '../logic/editpanel_reconciliation';
+  import editpanel_editrepublics from '../logic/editpanel_editrepublics';
   import breadcrumb_admin from '../logic/breadcrumb_admin';
   import popup from '../ui/popup';
 
@@ -15,6 +16,7 @@
       editpanel_members,
       editpanel_feedback,
       editpanel_reconciliation,
+      editpanel_editrepublics,
       breadcrumb_admin,
       popup,
     },
@@ -53,6 +55,7 @@
         <div v-if="views[3] && views[3].active && profile && profile.member_role == 'superadmin'">{{views[3]['title_' + lang]}}</div>
         <div v-if="views[4] && views[4].active && profile && profile.member_role == 'superadmin'">{{views[4]['title_' + lang]}}</div>
         <editpanel_feedback v-if="views[5] && views[5].active && profile && profile.member_role == 'superadmin'" />
+        <editpanel_editrepublics v-if="views[6] && views[6].active && profile.member_role == 'superadmin'" />
       </div>
     </div>
   </div>
