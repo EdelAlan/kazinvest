@@ -37,6 +37,18 @@ export default {
       title_en: 'Data reconciliation',
     }, {
       active: false,
+      id: 'rejected',
+      title_ru: 'Отклоненные изменения',
+      title_kz: 'Отклоненные изменения',
+      title_en: 'Rejected changes',
+    }, {
+      active: false,
+      id: 'allowed',
+      title_ru: 'Согласованные изменения',
+      title_kz: 'Согласованные изменения',
+      title_en: 'Allowed changes',
+    }, {
+      active: false,
       id: 'feedback',
       title_ru: 'Обратная связь',
       title_kz: 'Кері байланыс',
@@ -58,14 +70,10 @@ export default {
       state.zone_sectors = zone_sectors;
     },
     set_edited_zone(state, zone) {
-      console.log(zone)
       state.edited_zone = zone;
-      console.log(state.edited_zone);
     },
     set_edited_sector(state, sector) {
-      console.log(sector)
       state.edited_sector = sector;
-      console.log(state.edited_sector);
     },
     set_edited_inf(state, inf) {
       state.edited_inf = inf;
@@ -82,7 +90,7 @@ export default {
     views(state, getters) {
       return state.views.filter(it => {
         if (getters.profile) {
-        return getters.profile.member_role == 'superadmin' ? it : it.id != 'members' && it.id != 'feedback' && it.id != 'reconciliation';
+          return getters.profile.member_role == 'superadmin' ? it : it.id != 'members' && it.id != 'feedback' && it.id != 'rejected' && it.id != 'allowed' && it.id != 'reconciliation';
         }
       });
     },
@@ -98,10 +106,10 @@ export default {
   },
 
   actions: {
-    set_view ({ commit, state }, idx) {
-      commit('set_views', state.views.map((it, key) => ({
+    set_view ({ commit, state }, id) {
+      commit('set_views', state.views.map(it => ({
         ...it,
-        active: key == idx ? true : false,
+        active: it.id == id ? true : false,
       })));
     },
 
@@ -198,7 +206,7 @@ export default {
       }
     },
     
-    update_zone ({ commit, dispatch }, zone) {
+    update_zone ({ commit, dispatch }, new_data) {
       if (this.getters.profile.member_role != 'superadmin') {
         const path = this.getters.api_path + `/back/api/new_data/zone`;
         return fetcher({ 
@@ -206,7 +214,14 @@ export default {
           path,
           body: {
             zone: {
-              model: zone,
+              new_data,
+              old_data: {
+                ...this.getters.edited_zone,
+                last_updated_date: undefined,
+                last_updated_member: undefined,
+                sectors: undefined,
+                collapsed: undefined,
+              },
               last_updated_member: this.getters.edited_zone.last_updated_member,
               last_updated_date: this.getters.edited_zone.last_updated_date,
               origin_title_en: this.getters.edited_zone.title_en,
@@ -223,11 +238,11 @@ export default {
           console.log(res)
         });
       } else {
-        const path = this.getters.api_path + `/back/api/zones/${zone.id}`;
+        const path = this.getters.api_path + `/back/api/zones/${zone.id}?who=${this.getters.profile.member_id}`;
         return fetcher({ 
           method: 'put',
           path,
-          body: zone,
+          body: new_data,
         }).then(async res => {
           console.log(res)
           const path = this.getters.api_path + `/back/api/new_data/reject/${this.getters.edited_zone.id}`;
@@ -241,7 +256,7 @@ export default {
         });
       }
     },
-    update_sector ({ commit, dispatch }, sector) {
+    update_sector ({ commit, dispatch }, new_data) {
       if (this.getters.profile.member_role != 'superadmin') {
         const path = this.getters.api_path + `/back/api/new_data/sector`;
         return fetcher({ 
@@ -249,13 +264,17 @@ export default {
           path,
           body: {
             sector: {
-              model: sector,
-              origin_title_en: this.getters.zones[0].title_en,
-              origin_title_ru: this.getters.zones[0].title_ru,
-              origin_title_kz: this.getters.zones[0].title_kz,
-              title_en: this.getters.edited_sector.title_en,
-              title_ru: this.getters.edited_sector.title_ru,
-              title_kz: this.getters.edited_sector.title_kz,
+              new_data,
+              old_data: {
+                ...this.getters.edited_sector,
+                last_updated_date: undefined,
+                last_updated_member: undefined,
+              },
+              last_updated_member: this.getters.edited_sector.last_updated_member,
+              last_updated_date: this.getters.edited_sector.last_updated_date,
+              origin_title_en: this.getters.edited_sector.title_en,
+              origin_title_ru: this.getters.edited_sector.title_ru,
+              origin_title_kz: this.getters.edited_sector.title_kz,
             },
             member: {
               member_firstname: this.getters.profile.member_firstname,
@@ -267,7 +286,7 @@ export default {
           console.log(res)
         });
       } else {
-        const path = this.getters.api_path + `/back/api/sectors/${sector.id}`;
+        const path = this.getters.api_path + `/back/api/sectors/${sector.id}?who=${this.getters.profile.member_id}`;
         return fetcher({ 
           method: 'put',
           path,

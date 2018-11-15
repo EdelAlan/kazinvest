@@ -15,14 +15,15 @@
           title_ru: null,
           title_kz: null,
           title_en: null,
+          status: null,
+          zone_time: null,
+          zone_type: null,
           description_ru: null,
           description_kz: null,
           description_en: null,
           region_description_ru: null,
           region_description_kz: null,
           region_description_en: null,
-          last_updated_date: null,
-          last_updated_member: null,
           contacts_ru: null,
           contacts_kz: null,
           contacts_en: null,
@@ -249,7 +250,7 @@
         <p class="editpanel_editzone_reconciliation-tab-title" 
           v-text="lang == 'ru' ? 'Соотношение свободных и занятых земель' : lang == 'en' ? 'Free and taken land share' : 'Бос және қабылданған жер үлесі'"></p>
         <input type="number" min="0"
-          class="editpanel_editzone-tab-input"
+          class="editpanel_editzone-input"
           v-model="zonemodel.level"/>
       </div>
 

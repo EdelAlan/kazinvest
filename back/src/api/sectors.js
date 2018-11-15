@@ -40,10 +40,11 @@ const FIELDS = `
   sectors.count_participant_problem_project,
   sectors.project_price,
   sectors.foreign_participation,
+  sectors.last_updated_member,
+  sectors.last_updated_date,
   sectors.power,
   sectors.plan_jobs,
   sectors.status,
-  sectors.user_updated,
   sectors.comment,
   ST_AsGeoJson(sectors.geom)
 `;
@@ -402,7 +403,9 @@ router.put('/:id', body_parser.json(), async (req, res) => {
     UPDATE sectors SET
       ${Object.keys(to_sectors).map((key, idx) => {
         return key + ' = $' + (++idx)
-      }).join(', ')}
+      }).join(', ')},
+      , last_updated_member = '${req.query.who}'
+      , last_updated_date = now()::timestamp
     WHERE sectors.id = ${req.params.id}
   `;
   await db_query(sql, [...to_sectors_values])

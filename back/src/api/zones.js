@@ -160,6 +160,8 @@ router.get('/:id', async (req, res) => {
 
 router.put('/:id', body_parser.json({ limit: '100mb' }), async (req, res) => {
   // PHOTOS
+
+  console.log(req.query.who)
   const dir = zonefilespath + req.params.id;
   // if (!fs.existsSync(dir)) {
   //   fs.mkdirSync(dir);
@@ -205,7 +207,11 @@ router.put('/:id', body_parser.json({ limit: '100mb' }), async (req, res) => {
     videos: undefined,
     photos: undefined,
     physic_photo: undefined,
+    last_updated_member: undefined,
+    last_updated_date: undefined,
   }));
+
+  console.log(to_zone)
   // console.log(photos)
   // return;
   const to_zone_values = Object.keys(to_zone).map(key => {
@@ -216,8 +222,11 @@ router.put('/:id', body_parser.json({ limit: '100mb' }), async (req, res) => {
       ${Object.keys(to_zone).map((key, idx) => {
         return key + ' = $' + (++idx)
       }).join(', ')}
+      , last_updated_member = '${req.query.who}'
+      , last_updated_date = now()::timestamp
     WHERE zone.id = ${req.body.id}
   `;
+  console.log(sql)
   return await db_query(sql, [...to_zone_values])
     .then(_ => res.json({
       msg: 'zone updated',

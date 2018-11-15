@@ -48,7 +48,6 @@
           title_project_en: null,
           title_project_kz: null,
           title_project_ru: null,
-          user_updated: null,
           
           photos: null,
           videos: null,
