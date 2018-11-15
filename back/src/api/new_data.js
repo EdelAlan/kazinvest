@@ -3,7 +3,14 @@ const body_parser = require('body-parser');
 const db_query = require('../util/db_query');
 
 router.get('/', async (req, res) => {
-    return res.send(await db_query(`SELECT * FROM new_data ORDER BY id DESC`));
+    return res.send(await db_query(`SELECT * FROM new_data WHERE state = 'not_verified' ORDER BY id DESC`));
+});
+
+router.get('/allowed', async (req, res) => {
+    return res.send(await db_query(`SELECT * FROM new_data WHERE state = 'allowed' ORDER BY id DESC`));
+});
+router.get('/rejected', async (req, res) => {
+    return res.send(await db_query(`SELECT * FROM new_data WHERE state = 'rejected' ORDER BY id DESC`));
 });
 
 
@@ -148,13 +155,30 @@ router.put('/infrastructure', body_parser.json(), async (req, res) => {
 });
 
 router.put('/reject/:id', body_parser.json(), async (req, res) => {
-    
-    return;
-    // const sql = `
-    //     UPDATE new_data SET 
-    //         is_checked = 'true'
-    //     WHERE 
-    //         new_data.id = $1`;
+    const sql = `
+        UPDATE new_data SET 
+            state = 'rejected'
+        WHERE 
+            new_data.id = $1`;
+    console.log(sql)
+    console.log(req.params.id)
+    return await db_query(sql, [req.params.id])
+      .then(_ => res.json({
+        msg: 'new data updated',
+      })).catch (err => {
+        console.err(err);
+        res.status(500).json({
+          msg: 'something broke',
+        });
+      });
+  });
+
+router.put('/allow/:id', body_parser.json(), async (req, res) => {
+    const sql = `
+        UPDATE new_data SET 
+            state = 'allowed'
+        WHERE 
+            new_data.id = $1`;
     console.log(sql)
     console.log(req.params.id)
     return await db_query(sql, [req.params.id])

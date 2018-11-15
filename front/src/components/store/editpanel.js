@@ -244,14 +244,14 @@ export default {
           console.log(res)
         });
       } else {
-        const path = this.getters.api_path + `/back/api/zones/${zone.id}?who=${this.getters.profile.member_id}`;
+        const path = this.getters.api_path + `/back/api/zones/${new_data.id}?who=${this.getters.profile.member_id}`;
         return fetcher({ 
           method: 'put',
           path,
           body: new_data,
         }).then(async res => {
           console.log(res)
-          const path = this.getters.api_path + `/back/api/new_data/reject/${this.getters.edited_zone.id}`;
+          const path = this.getters.api_path + `/back/api/new_data/allow/${this.getters.edited_zone.id}`;
           await fetcher({ method: 'put', path}).then(res => {
             console.log(res);
           });

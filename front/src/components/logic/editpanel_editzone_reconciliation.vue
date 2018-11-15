@@ -124,7 +124,7 @@
       + edited_zone.last_updated_date.replace('T', ' ').slice(0, 19)"
     ></h3>
     <div class="editpanel_editzone_reconciliation-buttons">
-      <button class="editpanel_editzone_reconciliation-button" v-on:click="update_zone(zonemodel)" 
+      <button class="editpanel_editzone_reconciliation-button" v-on:click="update_zone(new_data)" 
         v-text="lang == 'ru' ? 'Сохранить' : lang == 'en' ? 'Save' : 'Cақтау'"
       ></button>
       <button class="editpanel_editzone_reconciliation-button" v-on:click="reject_data(edited_zone)" 
@@ -187,7 +187,7 @@
       <h3 class="editpanel_editzone_reconciliation-tab-title"
         v-text="lang == 'ru' ? 'Маркетинговые материалы' : lang == 'en' ? 'Merketing materials' : 'Маркетингтік материалдар'"></h3>
       <div class="sidebar-market_wrap">
-        <div v-for="photo in zonemodel.photos" class="sidebar-passport_photo">
+        <div v-for="photo in new_data.photos" class="sidebar-passport_photo">
           <img :src="photo['src_' + lang]" />
         </div>
       </div>
@@ -196,14 +196,14 @@
       <h3 class="editpanel_editzone_reconciliation-tab-title"
         v-text="lang == 'en' ? 'Video' : 'Видео'"></h3>
       <div class="sidebar-market_wrap">
-        <div v-for="video in zonemodel.videos" class="sidebar-passport_video"></div>
+        <div v-for="video in new_data.videos" class="sidebar-passport_video"></div>
       </div>
       
 
       <h3 class="editpanel_editzone_reconciliation-tab-title"
         v-text="lang == 'ru' ? 'Файлы' : lang == 'en' ? 'Files' : 'Файлдар'"></h3>
       <div class="sidebar-market_file">
-        <a v-for="file in zonemodel.files" :href="file['src_' + lang]" target="_blank">
+        <a v-for="file in new_data.files" :href="file['src_' + lang]" target="_blank">
           <div class="sidebar-market_pdf"></div>
           <div class="sidebar-market_pdf_text">{{file['name_' + lang]}}</div>
         </a>

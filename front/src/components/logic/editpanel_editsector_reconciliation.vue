@@ -423,45 +423,48 @@
 
       <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Тип проекта' : lang == 'en' ? 'Project type': 'Жобаның түрі'"></h2>
         
-      <div v-if="new_data.project_type !== new_data.project_type">
-        <div class="editpanel_editzone_reconcilation-value">
-          <span style="color: #fff; background: rgb(255, 100, 64)"  v-text="new_data.project_type == 1 ? (lang == 'ru' ? 'Действующий' : lang == 'kz' ? 'Ағымдағы жоба' : 'Ongoing') :
-            new_data.project_type == 2 ? (lang == 'ru' ? 'На стадии реализации' : lang == 'kz' ? 'Iске асырылуда' : 'Underway') :
-            new_data.project_type == 3 ? (lang == 'ru' ? 'Делимый' : lang == 'en' ? 'Divisible': 'Бөліседі') : ''"
-          ></span>
-          <span style="color: #fff; background: rgb(10, 207, 0)" v-text="new_data.project_type == 1 ? (lang == 'ru' ? 'Действующий' : lang == 'kz' ? 'Ағымдағы жоба' : 'Ongoing') :
-            new_data.project_type == 2 ? (lang == 'ru' ? 'На стадии реализации' : lang == 'kz' ? 'Iске асырылуда' : 'Underway') :
-            new_data.project_type == 3 ? (lang == 'ru' ? 'Делимый' : lang == 'en' ? 'Divisible': 'Бөліседі') : ''"
-          ></span>
+      <template v-if="new_data">
+        <div v-if="new_data.project_type !== new_data.project_type">
+          <div class="editpanel_editzone_reconcilation-value">
+            <span style="color: #fff; background: rgb(255, 100, 64)"  v-text="new_data.project_type == 1 ? (lang == 'ru' ? 'Действующий' : lang == 'kz' ? 'Ағымдағы жоба' : 'Ongoing') :
+              new_data.project_type == 2 ? (lang == 'ru' ? 'На стадии реализации' : lang == 'kz' ? 'Iске асырылуда' : 'Underway') :
+              new_data.project_type == 3 ? (lang == 'ru' ? 'Делимый' : lang == 'en' ? 'Divisible': 'Бөліседі') : ''"
+            ></span>
+            <span style="color: #fff; background: rgb(10, 207, 0)" v-text="new_data.project_type == 1 ? (lang == 'ru' ? 'Действующий' : lang == 'kz' ? 'Ағымдағы жоба' : 'Ongoing') :
+              new_data.project_type == 2 ? (lang == 'ru' ? 'На стадии реализации' : lang == 'kz' ? 'Iске асырылуда' : 'Underway') :
+              new_data.project_type == 3 ? (lang == 'ru' ? 'Делимый' : lang == 'en' ? 'Divisible': 'Бөліседі') : ''"
+            ></span>
+          </div>
         </div>
-      </div>
 
-      <div v-else>
-        <div class="editpanel_editzone_reconcilation-value"
-          v-text="new_data.project_type == 1 ? (lang == 'ru' ? 'Действующий' : lang == 'kz' ? 'Ағымдағы жоба' : 'Ongoing') :
-            new_data.project_type == 2 ? (lang == 'ru' ? 'На стадии реализации' : lang == 'kz' ? 'Iске асырылуда' : 'Underway') :
-            new_data.project_type == 3 ? (lang == 'ru' ? 'Делимый' : lang == 'en' ? 'Divisible': 'Бөліседі') : ''"
-        ></div>
-      </div>
+        <div v-else>
+          <div class="editpanel_editzone_reconcilation-value"
+            v-text="new_data.project_type == 1 ? (lang == 'ru' ? 'Действующий' : lang == 'kz' ? 'Ағымдағы жоба' : 'Ongoing') :
+              new_data.project_type == 2 ? (lang == 'ru' ? 'На стадии реализации' : lang == 'kz' ? 'Iске асырылуда' : 'Underway') :
+              new_data.project_type == 3 ? (lang == 'ru' ? 'Делимый' : lang == 'en' ? 'Divisible': 'Бөліседі') : ''"
+          ></div>
+        </div>
 
-      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Делимый' : lang == 'en' ? 'Divisible': 'Бөліседі'"
-        v-if="new_data.project_type == 3"></h2>
-      <select 
-        class="editpanel_editsector_reconciliation-tab-input-oi"
-        v-if="new_data.project_type == 3" 
-        v-text="new_data.divisible"
-      >
-        <option 
-          value=1
-          :selected="new_data.divisible == 1"
-          v-text="lang == 'ru' ? 'Да' : lang == 'kz' ? 'Иә' : 'Yes'"
-        ></option> 
-        <option 
-          value=0
-          :selected="new_data.divisible == 0"
-          v-text="lang == 'ru' ? 'Нет' : lang == 'kz' ? 'Жоқ' : 'No'"
-        ></option>
-      </select>
+        <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Делимый' : lang == 'en' ? 'Divisible': 'Бөліседі'"
+          v-if="new_data.project_type == 3"></h2>
+        <select 
+          class="editpanel_editsector_reconciliation-tab-input-oi"
+          v-if="new_data.project_type == 3" 
+          v-text="new_data.divisible"
+        >
+          <option 
+            value=1
+            :selected="new_data.divisible == 1"
+            v-text="lang == 'ru' ? 'Да' : lang == 'kz' ? 'Иә' : 'Yes'"
+          ></option> 
+          <option 
+            value=0
+            :selected="new_data.divisible == 0"
+            v-text="lang == 'ru' ? 'Нет' : lang == 'kz' ? 'Жоқ' : 'No'"
+          ></option>
+        </select>
+
+      </template>
 
       <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Стоимость проекта' : lang == 'en' ? 'Project price': 'Жобаның құны'"></h2>
       <div class="editpanel_editzone_reconcilation-value"  id="compare_project_price"></div>
