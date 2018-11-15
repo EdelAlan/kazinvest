@@ -64,14 +64,10 @@ export default {
       state.zone_sectors = zone_sectors;
     },
     set_edited_zone(state, zone) {
-      console.log(zone)
       state.edited_zone = zone;
-      console.log(state.edited_zone);
     },
     set_edited_sector(state, sector) {
-      console.log(sector)
       state.edited_sector = sector;
-      console.log(state.edited_sector);
     },
     set_edited_inf(state, inf) {
       state.edited_inf = inf;
