@@ -41,6 +41,12 @@ export default {
       title_ru: 'Обратная связь',
       title_kz: 'Кері байланыс',
       title_en: 'Feedback',
+    }, {
+      active: false,
+      id: 'republics',
+      title_ru: 'Общая информация по СЭЗ/ИЗ',
+      title_kz: 'АЭА/ИА туралы жалпы ақпарат',
+      title_en: 'SEZ/IZ general info',
     }],
   }),
 
@@ -302,5 +308,40 @@ export default {
         commit('set_edited_inf', false);
       });
     },
+    update_republic ({ commit }, republicmodel) {
+      const path = this.getters.api_path + `/back/api/republics/`;
+      return fetcher({ 
+        method: 'put',
+        path,
+        body: republicmodel,
+      }).then(async res => {
+        console.log(res);
+      });
+    },
+    update_contacts ({ commit }, sezmodel) {
+      const path = this.getters.api_path + `/back/api/republics/contacts`;
+      return fetcher({ 
+        method: 'put',
+        path,
+        body: {
+          contacts_ru: sezmodel.contacts_ru,
+          contacts_kz: sezmodel.contacts_kz,
+          contacts_en: sezmodel.contacts_en,
+        },
+      }).then(async res => {
+        console.log(res);
+      });
+    },
+    update_links_adilet ({ commit }, links_adilet) {
+      const path = this.getters.api_path + `/back/api/links_adilet/`;
+      return fetcher({ 
+        method: 'put',
+        path,
+        body: links_adilet,
+      }).then(async res => {
+        console.log(res);
+      });
+    },
+
   },
 };

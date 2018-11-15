@@ -1,4 +1,5 @@
 const router = require('express-async-router').AsyncRouter();
+const body_parser = require('body-parser');
 const db_query = require('../util/db_query');
 
 router.get('/', async (_, res) => {
@@ -28,6 +29,59 @@ router.get('/', async (_, res) => {
   });
 
   res.send(republics);
+});
+
+router.put('/', body_parser.json({ limit: '100mb' }), async (req, res) => {
+  // PHOTOS
+
+  const to_republic = JSON.parse(JSON.stringify({
+    ...req.body,
+    videos: undefined,
+    photos: undefined,
+    files: undefined,
+  }));
+  const to_republic_values = Object.keys(to_republic).map(key => {
+    return to_republic[key];
+  });
+  const sql = `
+    UPDATE republics SET
+      ${Object.keys(to_republic).map((key, idx) => {
+        return key + ' = $' + (++idx)
+      }).join(', ')}
+    WHERE republics.id = ${req.body.id}
+  `;
+  return await db_query(sql, [...to_republic_values])
+    .then(_ => res.json({
+      msg: 'republic updated',
+    })).catch (err => {
+      console.err(err);
+      res.status(500).json({
+        msg: 'something broke',
+      });
+    });
+});
+
+router.put('/contacts', body_parser.json(), async (req, res) => {
+  const to_contacts = JSON.parse(JSON.stringify({
+    ...req.body,
+  }));
+  const to_contacts_values = Object.keys(to_contacts).map(key => {
+    return to_contacts[key];
+  });
+  const sql = `
+    UPDATE republics 
+    SET contacts_ru = $1, contacts_kz = $2, contacts_en = $3
+    WHERE republics.id = 1
+  `;
+  return await db_query(sql, [...to_contacts_values])
+    .then(_ => res.json({
+      msg: 'contacts updated',
+    })).catch (err => {
+      console.err(err);
+      res.status(500).json({
+        msg: 'something broke',
+      });
+    });
 });
 
 module.exports = router;
