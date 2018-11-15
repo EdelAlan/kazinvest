@@ -10,7 +10,8 @@
   export default {
     data () {
       return {
-        zonemodel: null,
+        new_data: null,
+        old_data: null,
       }
     },
 
@@ -38,56 +39,56 @@
     ]),
 
     async mounted () {
-      this.zonemodel = JSON.parse(this.edited_zone.model);
-      await this.set_zone(this.zonemodel.id);
+      this.old_data = this.edited_zone.old_data;
+      this.new_data = this.edited_zone.new_data;
 
       [{
-        old: String(this.zones[0].contacts_ru),
-        new: String(this.zonemodel.contacts_ru),
+        old: String(this.old_data.contacts_ru),
+        new: String(this.new_data.contacts_ru),
         el: '#compare_contact_ru',
       }, {
-        old: String(this.zones[0].contacts_kz),
-        new: String(this.zonemodel.contacts_kz),
+        old: String(this.old_data.contacts_kz),
+        new: String(this.new_data.contacts_kz),
         el: '#compare_contact_kz',
       }, {
-        old: String(this.zones[0].contacts_en),
-        new: String(this.zonemodel.contacts_en),
+        old: String(this.old_data.contacts_en),
+        new: String(this.new_data.contacts_en),
         el: '#compare_contact_en',
       }, {
-        old: String(this.zones[0].description_ru),
-        new: String(this.zonemodel.description_ru),
+        old: String(this.old_data.description_ru),
+        new: String(this.new_data.description_ru),
         el: '#compare_description_ru',
       }, {
-        old: String(this.zones[0].description_kz),
-        new: String(this.zonemodel.description_kz),
+        old: String(this.old_data.description_kz),
+        new: String(this.new_data.description_kz),
         el: '#compare_description_kz',
       }, {
-        old: String(this.zones[0].description_en),
-        new: String(this.zonemodel.description_en),
+        old: String(this.old_data.description_en),
+        new: String(this.new_data.description_en),
         el: '#compare_description_en',
       }, {
-        old: String(this.zones[0].title_ru),
-        new: String(this.zonemodel.title_ru),
+        old: String(this.old_data.title_ru),
+        new: String(this.new_data.title_ru),
         el: '#compare_title_ru',
       }, {
-        old: String(this.zones[0].title_kz),
-        new: String(this.zonemodel.title_kz),
+        old: String(this.old_data.title_kz),
+        new: String(this.new_data.title_kz),
         el: '#compare_title_kz',
       }, {
-        old: String(this.zones[0].title_en),
-        new: String(this.zonemodel.title_en),
+        old: String(this.old_data.title_en),
+        new: String(this.new_data.title_en),
         el: '#compare_title_en',
       }, {
-        old: String(this.zones[0].budget_allocated),
-        new: String(this.zonemodel.budget_allocated),
+        old: String(this.old_data.budget_allocated),
+        new: String(this.new_data.budget_allocated),
         el: '#compare_budget_allocated',
       }, {
-        old: String(this.zones[0].budget_need),
-        new: String(this.zonemodel.budget_need),
+        old: String(this.old_data.budget_need),
+        new: String(this.new_data.budget_need),
         el: '#compare_budget_need',
       }, {
-        old: String(this.zones[0].level),
-        new: String(this.zonemodel.level),
+        old: String(this.old_data.level),
+        new: String(this.new_data.level),
         el: '#compare_level',
       }].forEach(it => {
         let color = '', 
@@ -114,7 +115,8 @@
   <div class="editpanel_editzone_reconciliation">
 
     <h2 class="editpanel_editzone_reconciliation-title" 
-      v-text="'Изменение: ' + edited_zone.member_id + ', ' 
+      v-text="edited_zone.member_firstname + ' ' + edited_zone.member_lastname + 
+        ' (' + edited_zone.member_id + ') ' 
       + edited_zone.timestamp.replace('T', ' ').slice(0, 19)"
     ></h2>
     <h3 class="editpanel_editzone-last_title" 
@@ -122,7 +124,7 @@
       + edited_zone.last_updated_date.replace('T', ' ').slice(0, 19)"
     ></h3>
     <div class="editpanel_editzone_reconciliation-buttons">
-      <button class="editpanel_editzone_reconciliation-button" v-on:click="update_zone(zonemodel)" 
+      <button class="editpanel_editzone_reconciliation-button" v-on:click="update_zone(new_data)" 
         v-text="lang == 'ru' ? 'Сохранить' : lang == 'en' ? 'Save' : 'Cақтау'"
       ></button>
       <button class="editpanel_editzone_reconciliation-button" v-on:click="reject_data(edited_zone)" 
@@ -185,7 +187,7 @@
       <h3 class="editpanel_editzone_reconciliation-tab-title"
         v-text="lang == 'ru' ? 'Маркетинговые материалы' : lang == 'en' ? 'Merketing materials' : 'Маркетингтік материалдар'"></h3>
       <div class="sidebar-market_wrap">
-        <div v-for="photo in zonemodel.photos" class="sidebar-passport_photo">
+        <div v-for="photo in new_data.photos" class="sidebar-passport_photo">
           <img :src="photo['src_' + lang]" />
         </div>
       </div>
@@ -194,14 +196,14 @@
       <h3 class="editpanel_editzone_reconciliation-tab-title"
         v-text="lang == 'en' ? 'Video' : 'Видео'"></h3>
       <div class="sidebar-market_wrap">
-        <div v-for="video in zonemodel.videos" class="sidebar-passport_video"></div>
+        <div v-for="video in new_data.videos" class="sidebar-passport_video"></div>
       </div>
       
 
       <h3 class="editpanel_editzone_reconciliation-tab-title"
         v-text="lang == 'ru' ? 'Файлы' : lang == 'en' ? 'Files' : 'Файлдар'"></h3>
       <div class="sidebar-market_file">
-        <a v-for="file in zonemodel.files" :href="file['src_' + lang]" target="_blank">
+        <a v-for="file in new_data.files" :href="file['src_' + lang]" target="_blank">
           <div class="sidebar-market_pdf"></div>
           <div class="sidebar-market_pdf_text">{{file['name_' + lang]}}</div>
         </a>

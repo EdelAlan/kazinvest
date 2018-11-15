@@ -50,7 +50,7 @@
         :class="{ 'editpanel_sidebar-item--active': view.active }"
         v-text="view['title_' + lang]"
         v-on:click="
-        set_view(idx),
+        set_view(view.id),
         set_crumbs(view)"
       ></div>
     </div>

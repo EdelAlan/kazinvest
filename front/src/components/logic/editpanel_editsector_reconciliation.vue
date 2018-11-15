@@ -8,7 +8,8 @@
   export default {
     data () {
       return {
-        sectormodel: null,
+        new_data: null,
+        old_data: null,
         investment: {
           investments2014: '',
           investments2015: '',
@@ -60,7 +61,6 @@
       'profile',
       'edited_sector_geom',
       'edited_sector',
-      'selected_sector',
       "investments",
       "production",
       "foreign_investments",
@@ -75,287 +75,288 @@
         'update_sector',
         'set_basemap',
         'reject_data',
-        'set_selected_sector',
+        'set_new_data',
         'set_edited_sector_geom',
       ]),
 
     },
 
     async mounted () {
-      this.sectormodel = await JSON.parse(this.edited_sector.model).model;
-      await this.set_selected_sector(JSON.parse(this.edited_sector.model).model);
+      this.old_data = this.edited_sector.old_data;
+      this.new_data = this.edited_sector.new_data;
+      
       this.investment = {
-        investments2014: this.investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2014)[0] ? this.investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2014)[0].val : 0,
-        investments2015: this.investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2015)[0] ? this.investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2015)[0].val : 0,
-        investments2016: this.investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2016)[0] ? this.investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2016)[0].val : 0,
-        investments2017: this.investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2017)[0] ? this.investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2017)[0].val : 0,
-        investments2018: this.investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2018)[0] ? this.investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2018)[0].val : 0,
+        investments2014: this.investments.filter(el => el.parent_id == this.new_data.id && el.year == 2014)[0] ? this.investments.filter(el => el.parent_id == this.new_data.id && el.year == 2014)[0].val : 0,
+        investments2015: this.investments.filter(el => el.parent_id == this.new_data.id && el.year == 2015)[0] ? this.investments.filter(el => el.parent_id == this.new_data.id && el.year == 2015)[0].val : 0,
+        investments2016: this.investments.filter(el => el.parent_id == this.new_data.id && el.year == 2016)[0] ? this.investments.filter(el => el.parent_id == this.new_data.id && el.year == 2016)[0].val : 0,
+        investments2017: this.investments.filter(el => el.parent_id == this.new_data.id && el.year == 2017)[0] ? this.investments.filter(el => el.parent_id == this.new_data.id && el.year == 2017)[0].val : 0,
+        investments2018: this.investments.filter(el => el.parent_id == this.new_data.id && el.year == 2018)[0] ? this.investments.filter(el => el.parent_id == this.new_data.id && el.year == 2018)[0].val : 0,
 
-        production2014: this.production.filter(el => el.parent_id == this.selected_sector.id && el.year == 2014)[0] ? this.production.filter(el => el.parent_id == this.selected_sector.id && el.year == 2014)[0].val : 0,
-        production2015: this.production.filter(el => el.parent_id == this.selected_sector.id && el.year == 2015)[0] ? this.production.filter(el => el.parent_id == this.selected_sector.id && el.year == 2015)[0].val : 0,
-        production2016: this.production.filter(el => el.parent_id == this.selected_sector.id && el.year == 2016)[0] ? this.production.filter(el => el.parent_id == this.selected_sector.id && el.year == 2016)[0].val : 0,
-        production2017: this.production.filter(el => el.parent_id == this.selected_sector.id && el.year == 2017)[0] ? this.production.filter(el => el.parent_id == this.selected_sector.id && el.year == 2017)[0].val : 0,
-        production2018: this.production.filter(el => el.parent_id == this.selected_sector.id && el.year == 2018)[0] ? this.production.filter(el => el.parent_id == this.selected_sector.id && el.year == 2018)[0].val : 0,
+        production2014: this.production.filter(el => el.parent_id == this.new_data.id && el.year == 2014)[0] ? this.production.filter(el => el.parent_id == this.new_data.id && el.year == 2014)[0].val : 0,
+        production2015: this.production.filter(el => el.parent_id == this.new_data.id && el.year == 2015)[0] ? this.production.filter(el => el.parent_id == this.new_data.id && el.year == 2015)[0].val : 0,
+        production2016: this.production.filter(el => el.parent_id == this.new_data.id && el.year == 2016)[0] ? this.production.filter(el => el.parent_id == this.new_data.id && el.year == 2016)[0].val : 0,
+        production2017: this.production.filter(el => el.parent_id == this.new_data.id && el.year == 2017)[0] ? this.production.filter(el => el.parent_id == this.new_data.id && el.year == 2017)[0].val : 0,
+        production2018: this.production.filter(el => el.parent_id == this.new_data.id && el.year == 2018)[0] ? this.production.filter(el => el.parent_id == this.new_data.id && el.year == 2018)[0].val : 0,
 
-        foreign_investments2014: this.foreign_investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2014)[0] ? this.foreign_investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2014)[0].val : 0,
-        foreign_investments2015: this.foreign_investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2015)[0] ? this.foreign_investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2015)[0].val : 0,
-        foreign_investments2016: this.foreign_investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2016)[0] ? this.foreign_investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2016)[0].val : 0,
-        foreign_investments2017: this.foreign_investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2017)[0] ? this.foreign_investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2017)[0].val : 0,
-        foreign_investments2018: this.foreign_investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2018)[0] ? this.foreign_investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2018)[0].val : 0,
+        foreign_investments2014: this.foreign_investments.filter(el => el.parent_id == this.new_data.id && el.year == 2014)[0] ? this.foreign_investments.filter(el => el.parent_id == this.new_data.id && el.year == 2014)[0].val : 0,
+        foreign_investments2015: this.foreign_investments.filter(el => el.parent_id == this.new_data.id && el.year == 2015)[0] ? this.foreign_investments.filter(el => el.parent_id == this.new_data.id && el.year == 2015)[0].val : 0,
+        foreign_investments2016: this.foreign_investments.filter(el => el.parent_id == this.new_data.id && el.year == 2016)[0] ? this.foreign_investments.filter(el => el.parent_id == this.new_data.id && el.year == 2016)[0].val : 0,
+        foreign_investments2017: this.foreign_investments.filter(el => el.parent_id == this.new_data.id && el.year == 2017)[0] ? this.foreign_investments.filter(el => el.parent_id == this.new_data.id && el.year == 2017)[0].val : 0,
+        foreign_investments2018: this.foreign_investments.filter(el => el.parent_id == this.new_data.id && el.year == 2018)[0] ? this.foreign_investments.filter(el => el.parent_id == this.new_data.id && el.year == 2018)[0].val : 0,
 
-        number_jobs2014: this.number_jobs.filter(el => el.parent_id == this.selected_sector.id && el.year == 2014)[0] ? this.number_jobs.filter(el => el.parent_id == this.selected_sector.id && el.year == 2014)[0].val : 0,
-        number_jobs2015: this.number_jobs.filter(el => el.parent_id == this.selected_sector.id && el.year == 2015)[0] ? this.number_jobs.filter(el => el.parent_id == this.selected_sector.id && el.year == 2015)[0].val : 0,
-        number_jobs2016: this.number_jobs.filter(el => el.parent_id == this.selected_sector.id && el.year == 2016)[0] ? this.number_jobs.filter(el => el.parent_id == this.selected_sector.id && el.year == 2016)[0].val : 0,
-        number_jobs2017: this.number_jobs.filter(el => el.parent_id == this.selected_sector.id && el.year == 2017)[0] ? this.number_jobs.filter(el => el.parent_id == this.selected_sector.id && el.year == 2017)[0].val : 0,
-        number_jobs2018: this.number_jobs.filter(el => el.parent_id == this.selected_sector.id && el.year == 2018)[0] ? this.number_jobs.filter(el => el.parent_id == this.selected_sector.id && el.year == 2018)[0].val : 0,
+        number_jobs2014: this.number_jobs.filter(el => el.parent_id == this.new_data.id && el.year == 2014)[0] ? this.number_jobs.filter(el => el.parent_id == this.new_data.id && el.year == 2014)[0].val : 0,
+        number_jobs2015: this.number_jobs.filter(el => el.parent_id == this.new_data.id && el.year == 2015)[0] ? this.number_jobs.filter(el => el.parent_id == this.new_data.id && el.year == 2015)[0].val : 0,
+        number_jobs2016: this.number_jobs.filter(el => el.parent_id == this.new_data.id && el.year == 2016)[0] ? this.number_jobs.filter(el => el.parent_id == this.new_data.id && el.year == 2016)[0].val : 0,
+        number_jobs2017: this.number_jobs.filter(el => el.parent_id == this.new_data.id && el.year == 2017)[0] ? this.number_jobs.filter(el => el.parent_id == this.new_data.id && el.year == 2017)[0].val : 0,
+        number_jobs2018: this.number_jobs.filter(el => el.parent_id == this.new_data.id && el.year == 2018)[0] ? this.number_jobs.filter(el => el.parent_id == this.new_data.id && el.year == 2018)[0].val : 0,
         
-        taxes2014: this.taxes.filter(el => el.parent_id == this.selected_sector.id && el.year == 2014)[0] ? this.taxes.filter(el => el.parent_id == this.selected_sector.id && el.year == 2014)[0].val : 0,
-        taxes2015: this.taxes.filter(el => el.parent_id == this.selected_sector.id && el.year == 2015)[0] ? this.taxes.filter(el => el.parent_id == this.selected_sector.id && el.year == 2015)[0].val : 0,
-        taxes2016: this.taxes.filter(el => el.parent_id == this.selected_sector.id && el.year == 2016)[0] ? this.taxes.filter(el => el.parent_id == this.selected_sector.id && el.year == 2016)[0].val : 0,
-        taxes2017: this.taxes.filter(el => el.parent_id == this.selected_sector.id && el.year == 2017)[0] ? this.taxes.filter(el => el.parent_id == this.selected_sector.id && el.year == 2017)[0].val : 0,
-        taxes2018: this.taxes.filter(el => el.parent_id == this.selected_sector.id && el.year == 2018)[0] ? this.taxes.filter(el => el.parent_id == this.selected_sector.id && el.year == 2018)[0].val : 0,
+        taxes2014: this.taxes.filter(el => el.parent_id == this.new_data.id && el.year == 2014)[0] ? this.taxes.filter(el => el.parent_id == this.new_data.id && el.year == 2014)[0].val : 0,
+        taxes2015: this.taxes.filter(el => el.parent_id == this.new_data.id && el.year == 2015)[0] ? this.taxes.filter(el => el.parent_id == this.new_data.id && el.year == 2015)[0].val : 0,
+        taxes2016: this.taxes.filter(el => el.parent_id == this.new_data.id && el.year == 2016)[0] ? this.taxes.filter(el => el.parent_id == this.new_data.id && el.year == 2016)[0].val : 0,
+        taxes2017: this.taxes.filter(el => el.parent_id == this.new_data.id && el.year == 2017)[0] ? this.taxes.filter(el => el.parent_id == this.new_data.id && el.year == 2017)[0].val : 0,
+        taxes2018: this.taxes.filter(el => el.parent_id == this.new_data.id && el.year == 2018)[0] ? this.taxes.filter(el => el.parent_id == this.new_data.id && el.year == 2018)[0].val : 0,
 
-        exports_volume2014: this.exports_volume.filter(el => el.parent_id == this.selected_sector.id && el.year == 2014)[0] ? this.exports_volume.filter(el => el.parent_id == this.selected_sector.id && el.year == 2014)[0].val : 0,
-        exports_volume2015: this.exports_volume.filter(el => el.parent_id == this.selected_sector.id && el.year == 2015)[0] ? this.exports_volume.filter(el => el.parent_id == this.selected_sector.id && el.year == 2015)[0].val : 0,
-        exports_volume2016: this.exports_volume.filter(el => el.parent_id == this.selected_sector.id && el.year == 2016)[0] ? this.exports_volume.filter(el => el.parent_id == this.selected_sector.id && el.year == 2016)[0].val : 0,
-        exports_volume2017: this.exports_volume.filter(el => el.parent_id == this.selected_sector.id && el.year == 2017)[0] ? this.exports_volume.filter(el => el.parent_id == this.selected_sector.id && el.year == 2017)[0].val : 0,
-        exports_volume2018: this.exports_volume.filter(el => el.parent_id == this.selected_sector.id && el.year == 2018)[0] ? this.exports_volume.filter(el => el.parent_id == this.selected_sector.id && el.year == 2018)[0].val : 0,
+        exports_volume2014: this.exports_volume.filter(el => el.parent_id == this.new_data.id && el.year == 2014)[0] ? this.exports_volume.filter(el => el.parent_id == this.new_data.id && el.year == 2014)[0].val : 0,
+        exports_volume2015: this.exports_volume.filter(el => el.parent_id == this.new_data.id && el.year == 2015)[0] ? this.exports_volume.filter(el => el.parent_id == this.new_data.id && el.year == 2015)[0].val : 0,
+        exports_volume2016: this.exports_volume.filter(el => el.parent_id == this.new_data.id && el.year == 2016)[0] ? this.exports_volume.filter(el => el.parent_id == this.new_data.id && el.year == 2016)[0].val : 0,
+        exports_volume2017: this.exports_volume.filter(el => el.parent_id == this.new_data.id && el.year == 2017)[0] ? this.exports_volume.filter(el => el.parent_id == this.new_data.id && el.year == 2017)[0].val : 0,
+        exports_volume2018: this.exports_volume.filter(el => el.parent_id == this.new_data.id && el.year == 2018)[0] ? this.exports_volume.filter(el => el.parent_id == this.new_data.id && el.year == 2018)[0].val : 0,
         
-        spent_foreign_investments2014: this.spent_foreign_investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2014)[0] ? this.spent_foreign_investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2014)[0].val : 0,
-        spent_foreign_investments2015: this.spent_foreign_investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2015)[0] ? this.spent_foreign_investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2015)[0].val : 0,
-        spent_foreign_investments2016: this.spent_foreign_investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2016)[0] ? this.spent_foreign_investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2016)[0].val : 0,
-        spent_foreign_investments2017: this.spent_foreign_investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2017)[0] ? this.spent_foreign_investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2017)[0].val : 0,
-        spent_foreign_investments2018: this.spent_foreign_investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2018)[0] ? this.spent_foreign_investments.filter(el => el.parent_id == this.selected_sector.id && el.year == 2018)[0].val : 0,
+        spent_foreign_investments2014: this.spent_foreign_investments.filter(el => el.parent_id == this.new_data.id && el.year == 2014)[0] ? this.spent_foreign_investments.filter(el => el.parent_id == this.new_data.id && el.year == 2014)[0].val : 0,
+        spent_foreign_investments2015: this.spent_foreign_investments.filter(el => el.parent_id == this.new_data.id && el.year == 2015)[0] ? this.spent_foreign_investments.filter(el => el.parent_id == this.new_data.id && el.year == 2015)[0].val : 0,
+        spent_foreign_investments2016: this.spent_foreign_investments.filter(el => el.parent_id == this.new_data.id && el.year == 2016)[0] ? this.spent_foreign_investments.filter(el => el.parent_id == this.new_data.id && el.year == 2016)[0].val : 0,
+        spent_foreign_investments2017: this.spent_foreign_investments.filter(el => el.parent_id == this.new_data.id && el.year == 2017)[0] ? this.spent_foreign_investments.filter(el => el.parent_id == this.new_data.id && el.year == 2017)[0].val : 0,
+        spent_foreign_investments2018: this.spent_foreign_investments.filter(el => el.parent_id == this.new_data.id && el.year == 2018)[0] ? this.spent_foreign_investments.filter(el => el.parent_id == this.new_data.id && el.year == 2018)[0].val : 0,
       };
 
 
       [{
-        old: String(this.selected_sector.project_price),
-        new: String(this.sectormodel.project_price),
+        old: String(this.old_data.project_price),
+        new: String(this.new_data.project_price),
         el: '#compare_project_price',
       }, {
-        old: String(this.selected_sector.project_date),
-        new: String(this.sectormodel.project_date),
+        old: String(this.old_data.project_date),
+        new: String(this.new_data.project_date),
         el: '#compare_project_date',
       }, {
-        old: String(this.selected_sector.power),
-        new: String(this.sectormodel.power),
+        old: String(this.old_data.power),
+        new: String(this.new_data.power),
         el: '#compare_power',
       }, {
-        old: String(this.selected_sector.plan_jobs),
-        new: String(this.sectormodel.plan_jobs),
+        old: String(this.old_data.plan_jobs),
+        new: String(this.new_data.plan_jobs),
         el: '#compare_plan_jobs',
       }, {
-        old: String(this.selected_sector.investments2014),
-        new: String(this.sectormodel.investments2014),
+        old: String(this.old_data.investments2014),
+        new: String(this.new_data.investments2014),
         el: '#compare_investments2014',
       }, {
-        old: String(this.selected_sector.investments2015),
-        new: String(this.sectormodel.investments2015),
+        old: String(this.old_data.investments2015),
+        new: String(this.new_data.investments2015),
         el: '#compare_investments2015',
       }, {
-        old: String(this.selected_sector.investments2016),
-        new: String(this.sectormodel.investments2016),
+        old: String(this.old_data.investments2016),
+        new: String(this.new_data.investments2016),
         el: '#compare_investments2016',
       }, {
-        old: String(this.selected_sector.investments2017),
-        new: String(this.sectormodel.investments2017),
+        old: String(this.old_data.investments2017),
+        new: String(this.new_data.investments2017),
         el: '#compare_investments2017',
       }, {
-        old: String(this.selected_sector.investments2018),
-        new: String(this.sectormodel.investments2018),
+        old: String(this.old_data.investments2018),
+        new: String(this.new_data.investments2018),
         el: '#compare_investments2018',
       }, {
-        old: String(this.selected_sector.production2014),
-        new: String(this.sectormodel.production2014),
+        old: String(this.old_data.production2014),
+        new: String(this.new_data.production2014),
         el: '#compare_production2014',
       }, {
-        old: String(this.selected_sector.production2015),
-        new: String(this.sectormodel.production2015),
+        old: String(this.old_data.production2015),
+        new: String(this.new_data.production2015),
         el: '#compare_production2015',
       }, {
-        old: String(this.selected_sector.production2016),
-        new: String(this.sectormodel.production2016),
+        old: String(this.old_data.production2016),
+        new: String(this.new_data.production2016),
         el: '#compare_production2016',
       }, {
-        old: String(this.selected_sector.production2017),
-        new: String(this.sectormodel.production2017),
+        old: String(this.old_data.production2017),
+        new: String(this.new_data.production2017),
         el: '#compare_production2017',
       }, {
-        old: String(this.selected_sector.production2018),
-        new: String(this.sectormodel.production2018),
+        old: String(this.old_data.production2018),
+        new: String(this.new_data.production2018),
         el: '#compare_production2018',
       }, {
-        old: String(this.selected_sector.foreign_investments2014),
-        new: String(this.sectormodel.foreign_investments2014),
+        old: String(this.old_data.foreign_investments2014),
+        new: String(this.new_data.foreign_investments2014),
         el: '#compare_foreign_investments2014',
       }, {
-        old: String(this.selected_sector.foreign_investments2015),
-        new: String(this.sectormodel.foreign_investments2015),
+        old: String(this.old_data.foreign_investments2015),
+        new: String(this.new_data.foreign_investments2015),
         el: '#compare_foreign_investments2015',
       }, {
-        old: String(this.selected_sector.foreign_investments2016),
-        new: String(this.sectormodel.foreign_investments2016),
+        old: String(this.old_data.foreign_investments2016),
+        new: String(this.new_data.foreign_investments2016),
         el: '#compare_foreign_investments2016',
       }, {
-        old: String(this.selected_sector.foreign_investments2017),
-        new: String(this.sectormodel.foreign_investments2017),
+        old: String(this.old_data.foreign_investments2017),
+        new: String(this.new_data.foreign_investments2017),
         el: '#compare_foreign_investments2017',
       }, {
-        old: String(this.selected_sector.foreign_investments2018),
-        new: String(this.sectormodel.foreign_investments2018),
+        old: String(this.old_data.foreign_investments2018),
+        new: String(this.new_data.foreign_investments2018),
         el: '#compare_foreign_investments2018',
       }, {
-        old: String(this.selected_sector.number_jobs2014),
-        new: String(this.sectormodel.number_jobs2014),
+        old: String(this.old_data.number_jobs2014),
+        new: String(this.new_data.number_jobs2014),
         el: '#compare_number_jobs2014',
       }, {
-        old: String(this.selected_sector.number_jobs2015),
-        new: String(this.sectormodel.number_jobs2015),
+        old: String(this.old_data.number_jobs2015),
+        new: String(this.new_data.number_jobs2015),
         el: '#compare_number_jobs2015',
       }, {
-        old: String(this.selected_sector.number_jobs2016),
-        new: String(this.sectormodel.number_jobs2016),
+        old: String(this.old_data.number_jobs2016),
+        new: String(this.new_data.number_jobs2016),
         el: '#compare_number_jobs2016',
       }, {
-        old: String(this.selected_sector.number_jobs2017),
-        new: String(this.sectormodel.number_jobs2017),
+        old: String(this.old_data.number_jobs2017),
+        new: String(this.new_data.number_jobs2017),
         el: '#compare_number_jobs2017',
       }, {
-        old: String(this.selected_sector.number_jobs2018),
-        new: String(this.sectormodel.number_jobs2018),
+        old: String(this.old_data.number_jobs2018),
+        new: String(this.new_data.number_jobs2018),
         el: '#compare_number_jobs2018',
       }, {
-        old: String(this.selected_sector.taxes2014),
-        new: String(this.sectormodel.taxes2014),
+        old: String(this.old_data.taxes2014),
+        new: String(this.new_data.taxes2014),
         el: '#compare_taxes2014',
       }, {
-        old: String(this.selected_sector.taxes2015),
-        new: String(this.sectormodel.taxes2015),
+        old: String(this.old_data.taxes2015),
+        new: String(this.new_data.taxes2015),
         el: '#compare_taxes2015',
       }, {
-        old: String(this.selected_sector.taxes2016),
-        new: String(this.sectormodel.taxes2016),
+        old: String(this.old_data.taxes2016),
+        new: String(this.new_data.taxes2016),
         el: '#compare_taxes2016',
       }, {
-        old: String(this.selected_sector.taxes2017),
-        new: String(this.sectormodel.taxes2017),
+        old: String(this.old_data.taxes2017),
+        new: String(this.new_data.taxes2017),
         el: '#compare_taxes2017',
       }, {
-        old: String(this.selected_sector.taxes2018),
-        new: String(this.sectormodel.taxes2018),
+        old: String(this.old_data.taxes2018),
+        new: String(this.new_data.taxes2018),
         el: '#compare_taxes2018',
       }, {
-        old: String(this.selected_sector.exports_volume2014),
-        new: String(this.sectormodel.exports_volume2014),
+        old: String(this.old_data.exports_volume2014),
+        new: String(this.new_data.exports_volume2014),
         el: '#compare_exports_volume2014',
       }, {
-        old: String(this.selected_sector.exports_volume2015),
-        new: String(this.sectormodel.exports_volume2015),
+        old: String(this.old_data.exports_volume2015),
+        new: String(this.new_data.exports_volume2015),
         el: '#compare_exports_volume2015',
       }, {
-        old: String(this.selected_sector.exports_volume2016),
-        new: String(this.sectormodel.exports_volume2016),
+        old: String(this.old_data.exports_volume2016),
+        new: String(this.new_data.exports_volume2016),
         el: '#compare_exports_volume2016',
       }, {
-        old: String(this.selected_sector.exports_volume2017),
-        new: String(this.sectormodel.exports_volume2017),
+        old: String(this.old_data.exports_volume2017),
+        new: String(this.new_data.exports_volume2017),
         el: '#compare_exports_volume2017',
       }, {
-        old: String(this.selected_sector.exports_volume2018),
-        new: String(this.sectormodel.exports_volume2018),
+        old: String(this.old_data.exports_volume2018),
+        new: String(this.new_data.exports_volume2018),
         el: '#compare_exports_volume2018',
       }, {
-        old: String(this.selected_sector.spent_foreign_investments2014),
-        new: String(this.sectormodel.spent_foreign_investments2014),
+        old: String(this.old_data.spent_foreign_investments2014),
+        new: String(this.new_data.spent_foreign_investments2014),
         el: '#compare_spent_foreign_investments2014',
       }, {
-        old: String(this.selected_sector.spent_foreign_investments2015),
-        new: String(this.sectormodel.spent_foreign_investments2015),
+        old: String(this.old_data.spent_foreign_investments2015),
+        new: String(this.new_data.spent_foreign_investments2015),
         el: '#compare_spent_foreign_investments2015',
       }, {
-        old: String(this.selected_sector.spent_foreign_investments2016),
-        new: String(this.sectormodel.spent_foreign_investments2016),
+        old: String(this.old_data.spent_foreign_investments2016),
+        new: String(this.new_data.spent_foreign_investments2016),
         el: '#compare_spent_foreign_investments2016',
       }, {
-        old: String(this.selected_sector.spent_foreign_investments2017),
-        new: String(this.sectormodel.spent_foreign_investments2017),
+        old: String(this.old_data.spent_foreign_investments2017),
+        new: String(this.new_data.spent_foreign_investments2017),
         el: '#compare_spent_foreign_investments2017',
       }, {
-        old: String(this.selected_sector.spent_foreign_investments2018),
-        new: String(this.sectormodel.spent_foreign_investments2018),
+        old: String(this.old_data.spent_foreign_investments2018),
+        new: String(this.new_data.spent_foreign_investments2018),
         el: '#compare_spent_foreign_investments2018',
       }, {
-        old: String(this.selected_sector.current_status_ru),
-        new: String(this.sectormodel.current_status_ru),
+        old: String(this.old_data.current_status_ru),
+        new: String(this.new_data.current_status_ru),
         el: '#compare_current_status_ru',
       }, {
-        old: String(this.selected_sector.current_status_kz),
-        new: String(this.sectormodel.current_status_kz),
+        old: String(this.old_data.current_status_kz),
+        new: String(this.new_data.current_status_kz),
         el: '#compare_current_status_kz',
       }, {
-        old: String(this.selected_sector.current_status_en),
-        new: String(this.sectormodel.current_status_en),
+        old: String(this.old_data.current_status_en),
+        new: String(this.new_data.current_status_en),
         el: '#compare_current_status_en',
       }, {
-        old: String(this.selected_sector.title_project_ru),
-        new: String(this.sectormodel.title_project_ru),
+        old: String(this.old_data.title_project_ru),
+        new: String(this.new_data.title_project_ru),
         el: '#compare_title_project_ru',
       }, {
-        old: String(this.selected_sector.title_project_kz),
-        new: String(this.sectormodel.title_project_kz),
+        old: String(this.old_data.title_project_kz),
+        new: String(this.new_data.title_project_kz),
         el: '#compare_title_project_kz',
       }, {
-        old: String(this.selected_sector.title_project_en),
-        new: String(this.sectormodel.title_project_en),
+        old: String(this.old_data.title_project_en),
+        new: String(this.new_data.title_project_en),
         el: '#compare_title_project_en',
       }, {
-        old: String(this.selected_sector.title_ru),
-        new: String(this.sectormodel.title_ru),
+        old: String(this.old_data.title_ru),
+        new: String(this.new_data.title_ru),
         el: '#compare_title_ru',
       }, {
-        old: String(this.selected_sector.title_kz),
-        new: String(this.sectormodel.title_kz),
+        old: String(this.old_data.title_kz),
+        new: String(this.new_data.title_kz),
         el: '#compare_title_kz',
       }, {
-        old: String(this.selected_sector.title_en),
-        new: String(this.sectormodel.title_en),
+        old: String(this.old_data.title_en),
+        new: String(this.new_data.title_en),
         el: '#compare_title_en',
       }, {
-        old: String(this.selected_sector.products_ru),
-        new: String(this.sectormodel.products_ru),
+        old: String(this.old_data.products_ru),
+        new: String(this.new_data.products_ru),
         el: '#compare_products_ru',
       }, {
-        old: String(this.selected_sector.products_kz),
-        new: String(this.sectormodel.products_kz),
+        old: String(this.old_data.products_kz),
+        new: String(this.new_data.products_kz),
         el: '#compare_products_kz',
       }, {
-        old: String(this.selected_sector.products_en),
-        new: String(this.sectormodel.products_en),
+        old: String(this.old_data.products_en),
+        new: String(this.new_data.products_en),
         el: '#compare_products_en',
       }, {
-        old: String(this.selected_sector.time_realization_ru),
-        new: String(this.sectormodel.time_realization_ru),
+        old: String(this.old_data.time_realization_ru),
+        new: String(this.new_data.time_realization_ru),
         el: '#compare_time_realization_ru',
       }, {
-        old: String(this.selected_sector.time_realization_kz),
-        new: String(this.sectormodel.time_realization_kz),
+        old: String(this.old_data.time_realization_kz),
+        new: String(this.new_data.time_realization_kz),
         el: '#compare_time_realization_kz',
       }, {
-        old: String(this.selected_sector.time_realization_en),
-        new: String(this.sectormodel.time_realization_en),
+        old: String(this.old_data.time_realization_en),
+        new: String(this.new_data.time_realization_en),
         el: '#compare_time_realization_en',
       }, {
-        old: String(this.selected_sector.contacts_ru),
-        new: String(this.sectormodel.contacts_ru),
+        old: String(this.old_data.contacts_ru),
+        new: String(this.new_data.contacts_ru),
         el: '#compare_contacts_ru',
       }, {
-        old: String(this.selected_sector.contacts_kz),
-        new: String(this.sectormodel.contacts_kz),
+        old: String(this.old_data.contacts_kz),
+        new: String(this.new_data.contacts_kz),
         el: '#compare_contacts_kz',
       }, {
-        old: String(this.selected_sector.contacts_en),
-        new: String(this.sectormodel.contacts_en),
+        old: String(this.old_data.contacts_en),
+        new: String(this.new_data.contacts_en),
         el: '#compare_contacts_en',
       }].forEach(it => {
         let color = '', 
@@ -387,7 +388,7 @@
     ></h2>
 
     <div class="editpanel_editzone_reconciliation-buttons">
-      <button class="editpanel_editzone_reconciliation-button" v-on:click="update_sector(sectormodel)" 
+      <button class="editpanel_editzone_reconciliation-button" v-on:click="update_sector(new_data)" 
         v-text="lang == 'ru' ? 'Сохранить' : lang == 'en' ? 'Save' : 'Cақтау'"
       ></button>
       <button class="editpanel_editzone_reconciliation-button" v-on:click="reject_data(edited_sector)" 
@@ -422,45 +423,48 @@
 
       <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Тип проекта' : lang == 'en' ? 'Project type': 'Жобаның түрі'"></h2>
         
-      <div v-if="selected_sector.project_type !== sectormodel.project_type">
-        <div class="editpanel_editzone_reconcilation-value">
-          <span style="color: #fff; background: rgb(255, 100, 64)"  v-text="selected_sector.project_type == 1 ? (lang == 'ru' ? 'Действующий' : lang == 'kz' ? 'Ағымдағы жоба' : 'Ongoing') :
-            selected_sector.project_type == 2 ? (lang == 'ru' ? 'На стадии реализации' : lang == 'kz' ? 'Iске асырылуда' : 'Underway') :
-            selected_sector.project_type == 3 ? (lang == 'ru' ? 'Делимый' : lang == 'en' ? 'Divisible': 'Бөліседі') : ''"
-          ></span>
-          <span style="color: #fff; background: rgb(10, 207, 0)" v-text="sectormodel.project_type == 1 ? (lang == 'ru' ? 'Действующий' : lang == 'kz' ? 'Ағымдағы жоба' : 'Ongoing') :
-            sectormodel.project_type == 2 ? (lang == 'ru' ? 'На стадии реализации' : lang == 'kz' ? 'Iске асырылуда' : 'Underway') :
-            sectormodel.project_type == 3 ? (lang == 'ru' ? 'Делимый' : lang == 'en' ? 'Divisible': 'Бөліседі') : ''"
-          ></span>
+      <template v-if="new_data">
+        <div v-if="new_data.project_type !== new_data.project_type">
+          <div class="editpanel_editzone_reconcilation-value">
+            <span style="color: #fff; background: rgb(255, 100, 64)"  v-text="new_data.project_type == 1 ? (lang == 'ru' ? 'Действующий' : lang == 'kz' ? 'Ағымдағы жоба' : 'Ongoing') :
+              new_data.project_type == 2 ? (lang == 'ru' ? 'На стадии реализации' : lang == 'kz' ? 'Iске асырылуда' : 'Underway') :
+              new_data.project_type == 3 ? (lang == 'ru' ? 'Делимый' : lang == 'en' ? 'Divisible': 'Бөліседі') : ''"
+            ></span>
+            <span style="color: #fff; background: rgb(10, 207, 0)" v-text="new_data.project_type == 1 ? (lang == 'ru' ? 'Действующий' : lang == 'kz' ? 'Ағымдағы жоба' : 'Ongoing') :
+              new_data.project_type == 2 ? (lang == 'ru' ? 'На стадии реализации' : lang == 'kz' ? 'Iске асырылуда' : 'Underway') :
+              new_data.project_type == 3 ? (lang == 'ru' ? 'Делимый' : lang == 'en' ? 'Divisible': 'Бөліседі') : ''"
+            ></span>
+          </div>
         </div>
-      </div>
 
-      <div v-else>
-        <div class="editpanel_editzone_reconcilation-value"
-          v-text="selected_sector.project_type == 1 ? (lang == 'ru' ? 'Действующий' : lang == 'kz' ? 'Ағымдағы жоба' : 'Ongoing') :
-            selected_sector.project_type == 2 ? (lang == 'ru' ? 'На стадии реализации' : lang == 'kz' ? 'Iске асырылуда' : 'Underway') :
-            selected_sector.project_type == 3 ? (lang == 'ru' ? 'Делимый' : lang == 'en' ? 'Divisible': 'Бөліседі') : ''"
-        ></div>
-      </div>
+        <div v-else>
+          <div class="editpanel_editzone_reconcilation-value"
+            v-text="new_data.project_type == 1 ? (lang == 'ru' ? 'Действующий' : lang == 'kz' ? 'Ағымдағы жоба' : 'Ongoing') :
+              new_data.project_type == 2 ? (lang == 'ru' ? 'На стадии реализации' : lang == 'kz' ? 'Iске асырылуда' : 'Underway') :
+              new_data.project_type == 3 ? (lang == 'ru' ? 'Делимый' : lang == 'en' ? 'Divisible': 'Бөліседі') : ''"
+          ></div>
+        </div>
 
-      <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Делимый' : lang == 'en' ? 'Divisible': 'Бөліседі'"
-        v-if="sectormodel.project_type == 3"></h2>
-      <select 
-        class="editpanel_editsector_reconciliation-tab-input-oi"
-        v-if="sectormodel.project_type == 3" 
-        v-text="sectormodel.divisible"
-      >
-        <option 
-          value=1
-          :selected="sectormodel.divisible == 1"
-          v-text="lang == 'ru' ? 'Да' : lang == 'kz' ? 'Иә' : 'Yes'"
-        ></option> 
-        <option 
-          value=0
-          :selected="sectormodel.divisible == 0"
-          v-text="lang == 'ru' ? 'Нет' : lang == 'kz' ? 'Жоқ' : 'No'"
-        ></option>
-      </select>
+        <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Делимый' : lang == 'en' ? 'Divisible': 'Бөліседі'"
+          v-if="new_data.project_type == 3"></h2>
+        <select 
+          class="editpanel_editsector_reconciliation-tab-input-oi"
+          v-if="new_data.project_type == 3" 
+          v-text="new_data.divisible"
+        >
+          <option 
+            value=1
+            :selected="new_data.divisible == 1"
+            v-text="lang == 'ru' ? 'Да' : lang == 'kz' ? 'Иә' : 'Yes'"
+          ></option> 
+          <option 
+            value=0
+            :selected="new_data.divisible == 0"
+            v-text="lang == 'ru' ? 'Нет' : lang == 'kz' ? 'Жоқ' : 'No'"
+          ></option>
+        </select>
+
+      </template>
 
       <h2 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Стоимость проекта' : lang == 'en' ? 'Project price': 'Жобаның құны'"></h2>
       <div class="editpanel_editzone_reconcilation-value"  id="compare_project_price"></div>
