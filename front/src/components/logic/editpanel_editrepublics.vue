@@ -2,10 +2,13 @@
   import { mapGetters, mapActions } from 'vuex';  
   import tabs from '../ui/tabs';  
   import filebase64 from '../../util/filebase64';
+  import modal from "../ui/modal";
 
   export default {
     data () {
       return {
+        selected_image: "",
+
         sezmodel: {
           advantages_en: null,
           advantages_kz: null,
@@ -18,14 +21,31 @@
           contacts_kz: null,
           contacts_ru: null,
           demand: null,
-          files: null,
           id: null,
-          photos: null,
           title_en: null,
           title_kz: null,
           title_ru: null,
           type: null,
+
+          photos: null,
           videos: null,
+          files: null,
+
+          new_photos: {
+            ru: [],
+            kz: [],
+            en: [],
+          },
+          new_videos: {
+            ru: [],
+            kz: [],
+            en: [],
+          },
+          new_files: {
+            ru: [],
+            kz: [],
+            en: [],
+          },
         },
 
         izmodel: {
@@ -40,14 +60,31 @@
           contacts_kz: null,
           contacts_ru: null,
           demand: null,
-          files: null,
           id: null,
-          photos: null,
           title_en: null,
           title_kz: null,
           title_ru: null,
           type: null,
+
+          photos: null,
           videos: null,
+          files: null,
+
+          new_photos: {
+            ru: [],
+            kz: [],
+            en: [],
+          },
+          new_videos: {
+            ru: [],
+            kz: [],
+            en: [],
+          },
+          new_files: {
+            ru: [],
+            kz: [],
+            en: [],
+          },
         },
 
         adilet: null,
@@ -57,6 +94,7 @@
 
     components: {
       tabs,
+      modal,
     },
 
     computed: mapGetters([
@@ -64,6 +102,7 @@
       'profile',
       'republics',
       'links_adilet',
+      'image_modal',
     ]),
 
     methods: {
@@ -73,7 +112,34 @@
         'update_republic',
         'update_links_adilet',
         'update_contacts',
+        'change_ui_visibility',
       ]),
+
+      select_image(src) {
+        this.selected_image = src;
+      },
+
+      set_photo ({ target: { files }}, lang, type) {
+        if (!files.length) {
+          console.log('empty')
+          return;
+        }
+        Object.keys(files).map((key, idx) => {
+          filebase64(files[key])
+          .then(result => {
+            switch(type) {
+              case 'sez':
+                this.sezmodel.new_photos[lang].push(result);
+                return;
+              break;
+              case 'iz':
+                this.izmodel.new_photos[lang].push(result);
+                return;
+              break;
+            }
+          });
+        });
+      },
 
     },
 
@@ -82,8 +148,12 @@
       await this.set_republics({query: 'rep'});
       await this.set_links_adilet();
       this.adilet = this.links_adilet;
-      this.sezmodel = this.republics.filter(it => it.id == 1)[0];
-      this.izmodel = this.republics.filter(it => it.id == 2)[0];
+      Object.keys(this.sezmodel).filter(it => it != 'new_photos' && it != 'new_videos' && it != 'new_files').forEach(it => {
+        this.sezmodel[it] = this.republics.filter(it => it.id == 1)[0][it];
+      });
+      Object.keys(this.izmodel).filter(it => it != 'new_photos' && it != 'new_videos' && it != 'new_files').forEach(it => {
+        this.izmodel[it] = this.republics.filter(it => it.id == 2)[0][it];
+      });
     }
 
   }
@@ -92,6 +162,20 @@
 
 <template>
   <div class="editpanel_editrepublics">
+
+    <modal
+      v-if="image_modal"
+      v-on:close="change_ui_visibility({
+        ui_component: 'image_modal',
+        ui_component_state: false,
+      })">
+      <img
+        style="object-fit: cover;"
+        width="100%"
+        height="100%"
+        :src="selected_image"
+      />
+    </modal>
 
     <tabs
       :titles_style="{
@@ -175,7 +259,7 @@
           }['title_' + lang]"
         ></h3>
         <wysiwyg v-model="sezmodel['common_' + lang]" />
-        
+
         <p class="editpanel_editzone_reconciliation-tab-title" 
           v-text="lang == 'ru' ? 'Потребность' : lang == 'en' ? 'Budget need' : 'Мұқтаждық'"></p>
         <input class="editpanel_editzone-input" type="number" min="0"
@@ -185,7 +269,7 @@
         <input class="editpanel_editzone-input" type="number" min="0"
           v-model="sezmodel.allocated"/>
 
-        <!-- <h3 class="editpanel_editzone_reconciliation-tab-title"
+        <h3 class="editpanel_editzone_reconciliation-tab-title"
            v-text="{
             'title_ru': 'Маркетинговые материалы',
             'title_kz': 'Marketing materials',
@@ -193,30 +277,57 @@
           }['title_' + lang]"
         ></h3>
         <div>
-          <h2 v-if="sezmodel.photos.length"
+          <p class="editpanel_editzone_reconciliation-tab-title" v-if="sezmodel.photos.length"
             v-text="lang == 'ru' ? 'Фото' : lang == 'en' ? 'Photo': 'Сурет'"
-          ></h2>
-          <div v-if="sezmodel.photos.length"
-            <div v-for="photo in sezmodel.photos">
-              <img :src="photo['src_' + lang]"/>            
-            </div>          
+          ></p>
+          <div class="sidebar-market_wrap" v-if="sezmodel.photos.length">
+            <div 
+              class="sidebar-passport_photo"
+              v-for="photo in sezmodel.photos"
+            >
+              <img 
+                :src="photo['src_' + lang]"
+                v-on:click="
+                  change_ui_visibility({
+                    ui_component: 'image_modal',
+                    ui_component_state: true,
+                  }),
+                  select_image(photo['src_' + lang])"
+              />            
+            </div>
+
+            <div style="clear: both">
+              <div class="editpanel_editzone-add">
+                <input id="zone_photo_input" type="file" multiple v-on:change="set_photo($event, 'ru', 'sez')" />
+                <span class="editpanel_editzone-lang">RU</span>
+              </div>
+              <div class="editpanel_editzone-add">
+                <input id="zone_photo_input" type="file" multiple v-on:change="set_photo($event, 'kz', 'sez')" />
+                <span class="editpanel_editzone-lang">KZ</span>
+              </div>
+              <div class="editpanel_editzone-add">
+                <input id="zone_photo_input" type="file" multiple v-on:change="set_photo($event, 'en', 'sez')" />
+                <span class="editpanel_editzone-lang">EN</span>
+              </div>
+            </div>
+
           </div>
-          <h2 v-if="sezmodel.videos.length"
+          <!-- <p class="editpanel_editzone_reconciliation-tab-title" v-if="sezmodel.videos.length"
             v-text="lang == 'ru' ? 'Видео' : lang == 'en' ? 'Video': 'Бейне сурет'"
-          ></h2>
+          ></p>
           <div v-if="sezmodel.videos.length">
             <div v-for="video in sezmodel.videos">
             </div>
           </div>
-          <h2 v-if="sezmodel.files.length"
+          <p class="editpanel_editzone_reconciliation-tab-title" v-if="sezmodel.files.length"
             v-text="lang == 'ru' ? 'Файлы' : lang == 'en' ? 'Files': 'Файлдар'"
           ></h2>
           <div 
             v-if="sezmodel.files.length"
             v-for="file in sezmodel.files"
           >
-          </div>
-        </div> -->
+          </div> -->
+        </div>
 
 
       </div>
