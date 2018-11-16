@@ -52,6 +52,7 @@ export default {
       "set_active",
       "set_zone",
       'show_popup',
+      'zones',
     ]),
 
     reset_sector() {
@@ -294,115 +295,109 @@ export default {
         };
 
         if (
-          JSON.parse(this.selected_sector.st_asgeojson).type == "Polygon"
+          JSON.parse(this.edited_sector.old_data.st_asgeojson).type == "Polygon"
         ) {
             sector.data.features.push({
                 type: "Feature",
-                geometry: JSON.parse(this.selected_sector.st_asgeojson),
+                geometry: JSON.parse(this.edited_sector.old_data.st_asgeojson),
                 properties: {
-                  title_ru: this.selected_sector.title_ru,
-                  title_kz: this.selected_sector.title_kz,
-                  title_en: this.selected_sector.title_en,
-                  type: this.selected_sector.project_type,
-                  id: this.selected_sector.id,
-                  area: this.selected_sector.area
-                    ? this.selected_sector.area
+                  title_ru: this.edited_sector.old_data.title_ru,
+                  title_kz: this.edited_sector.old_data.title_kz,
+                  title_en: this.edited_sector.old_data.title_en,
+                  type: this.edited_sector.old_data.project_type,
+                  id: this.edited_sector.old_data.id,
+                  area: this.edited_sector.old_data.area
+                    ? this.edited_sector.old_data.area
                     : "-",
-                  divisible: this.selected_sector.divisible
+                  divisible: this.edited_sector.old_data.divisible
                 }
             });
             sector_line.data.features.push({
                 type: "Feature",
                 geometry: turf.polygonToLine(
-                  JSON.parse(this.selected_sector.st_asgeojson)
+                  JSON.parse(this.edited_sector.old_data.st_asgeojson)
                 ).geometry,
                 properties: {
-                  title_ru: this.selected_sector.title_ru,
-                  title_kz: this.selected_sector.title_kz,
-                  title_en: this.selected_sector.title_en,
-                  type: this.selected_sector.project_type,
-                  id: this.selected_sector.id,
-                  divisible: this.selected_sector.divisible
+                  title_ru: this.edited_sector.old_data.title_ru,
+                  title_kz: this.edited_sector.old_data.title_kz,
+                  title_en: this.edited_sector.old_data.title_en,
+                  type: this.edited_sector.old_data.project_type,
+                  id: this.edited_sector.old_data.id,
+                  divisible: this.edited_sector.old_data.divisible
                 }
             });
         }
         if (
-            JSON.parse(this.selected_sector.st_asgeojson).type == "LineString"
+            JSON.parse(this.edited_sector.old_data.st_asgeojson).type == "LineString"
         ) {
               sector.data.features.push({
                 type: "Feature",
                 geometry: turf.lineToPolygon(
-                  JSON.parse(this.selected_sector.st_asgeojson)
+                  JSON.parse(this.edited_sector.old_data.st_asgeojson)
                 ).geometry,
                 properties: {
-                  title_ru: this.selected_sector.title_ru,
-                  title_kz: this.selected_sector.title_kz,
-                  title_en: this.selected_sector.title_en,
-                  type: this.selected_sector.project_type,
-                  id: this.selected_sector.id,
-                  area: this.selected_sector.area
+                  title_ru: this.edited_sector.old_data.title_ru,
+                  title_kz: this.edited_sector.old_data.title_kz,
+                  title_en: this.edited_sector.old_data.title_en,
+                  type: this.edited_sector.old_data.project_type,
+                  id: this.edited_sector.old_data.id,
+                  area: this.edited_sector.old_data.area
                     ? this.selected_sector.area
                     : "-",
-                  divisible: this.selected_sector.divisible
+                  divisible: this.edited_sector.old_data.divisible
                 }
               });
               sector_line.data.features.push({
                 type: "Feature",
-                geometry: JSON.parse(this.selected_sector.st_asgeojson),
+                geometry: JSON.parse(this.edited_sector.old_data.st_asgeojson),
                 properties: {
-                  title_ru: this.selected_sector.title_ru,
-                  title_kz: this.selected_sector.title_kz,
-                  title_en: this.selected_sector.title_en,
-                  type: this.selected_sector.project_type,
-                  id: this.selected_sector.id,
-                  area: this.selected_sector.area
-                    ? this.selected_sector.area
-                    : "-",
-                  divisible: this.selected_sector.divisible
+                  title_ru: this.edited_sector.old_data.title_ru,
+                  title_kz: this.edited_sector.old_data.title_kz,
+                  title_en: this.edited_sector.old_data.title_en,
+                  type: this.edited_sector.old_data.project_type,
+                  id: this.edited_sector.old_data.id,
+                  divisible: this.edited_sector.old_data.divisible
                 }
               });
         }
         if (
-            JSON.parse(this.selected_sector.st_asgeojson).type ==
+            JSON.parse(this.edited_sector.old_data.st_asgeojson).type ==
             "MultiPolygon"
         ) {
               sector_multi.data.features.push({
                 type: "Feature",
-                geometry: JSON.parse(this.selected_sector.st_asgeojson),
+                geometry: JSON.parse(this.edited_sector.old_data.st_asgeojson),
                 properties: {
-                  title_ru: this.selected_sector.title_ru,
-                  title_kz: this.selected_sector.title_kz,
-                  title_en: this.selected_sector.title_en,
-                  type: this.selected_sector.project_type,
-                  id: this.selected_sector.id,
-                  area: this.selected_sector.area
+                  title_ru: this.edited_sector.old_data.title_ru,
+                  title_kz: this.edited_sector.old_data.title_kz,
+                  title_en: this.edited_sector.old_data.title_en,
+                  type: this.edited_sector.old_data.project_type,
+                  id: this.edited_sector.old_data.id,
+                  area: this.edited_sector.old_data.area
                     ? this.selected_sector.area
                     : 0,
-                  divisible: this.selected_sector.divisible
+                  divisible: this.edited_sector.old_data.divisible
                 }
               });
 
               if (
                 turf.polygonToLine(
-                  JSON.parse(this.selected_sector.st_asgeojson)
+                  JSON.parse(this.edited_sector.old_data.st_asgeojson)
                 ).features.length > 1
               ) {
                 turf
-                  .polygonToLine(JSON.parse(this.selected_sector.st_asgeojson))
+                  .polygonToLine(JSON.parse(this.edited_sector.old_data.st_asgeojson))
                   .features.forEach(line => {
                     sector_line_multi.data.features.push({
                       type: "Feature",
                       geometry: line.geometry,
                       properties: {
-                        title_ru: this.selected_sector.title_ru,
-                        title_kz: this.selected_sector.title_kz,
-                        title_en: this.selected_sector.title_en,
-                        type: this.selected_sector.project_type,
-                        id: this.selected_sector.id,
-                        area: this.selected_sector.area
-                          ? this.selected_sector.area
-                          : 0,
-                        divisible: this.selected_sector.divisible
+                        title_ru: this.edited_sector.old_data.title_ru,
+                        title_kz: this.edited_sector.old_data.title_kz,
+                        title_en: this.edited_sector.old_data.title_en,
+                        type: this.edited_sector.old_data.project_type,
+                        id: this.edited_sector.old_data.id,
+                        divisible: this.edited_sector.old_data.divisible
                       }
                     });
                   });
@@ -410,18 +405,15 @@ export default {
                 sector_line_multi.data.features.push({
                   type: "Feature",
                   geometry: turf.polygonToLine(
-                    JSON.parse(this.selected_sector.st_asgeojson)
+                    JSON.parse(this.edited_sector.old_data.st_asgeojson)
                   ).features[0].geometry,
                   properties: {
-                    title_ru: this.selected_sector.title_ru,
-                    title_kz: this.selected_sector.title_kz,
-                    title_en: this.selected_sector.title_en,
-                    type: this.selected_sector.project_type,
-                    id: this.selected_sector.id,
-                    area: this.selected_sector.area
-                      ? this.selected_sector.area
-                      : 0,
-                    divisible: this.selected_sector.divisible
+                    title_ru: this.edited_sector.old_data.title_ru,
+                    title_kz: this.edited_sector.old_data.title_kz,
+                    title_en: this.edited_sector.old_data.title_en,
+                    type: this.edited_sector.old_data.project_type,
+                    id: this.edited_sector.old_data.id,
+                    divisible: this.edited_sector.old_data.divisible
                   }
                 });
               }
@@ -596,7 +588,7 @@ export default {
                 'type': 'geojson',
                 'data': {
                     'type': 'Feature',
-                    'geometry': JSON.parse(JSON.parse(this.edited_sector.model).model.st_asgeojson),
+                    'geometry': JSON.parse(this.edited_sector.new_data.st_asgeojson),
                 }
             },
             'layout': {},
@@ -1085,11 +1077,11 @@ export default {
           this._mapboxgl_map.jumpTo(
             {
               center: turf.centerOfMass(
-                JSON.parse(JSON.parse(this.edited_sector.model).model.st_asgeojson)
+                JSON.parse(this.edited_sector.old_data.st_asgeojson)
               ).geometry.coordinates,
               zoom: 13,
               around: turf.centerOfMass(
-                JSON.parse(JSON.parse(this.edited_sector.model).model.st_asgeojson)
+                JSON.parse(this.edited_sector.old_data.st_asgeojson)
               ).geometry.coordinates
             },
             {
@@ -1097,6 +1089,23 @@ export default {
             }
           );
           this.add_sector();
+          this._mapboxgl_map.addLayer({
+            id: 'zone',
+            type: 'line',
+            source: {
+              type: 'geojson',
+              data: turf.polygonToLine(JSON.parse(this.zones.filter(zone => zone.id == this.edited_sector.new_data.zone_id)[0].st_asgeojson))
+            },
+            layout: {
+              'line-join': 'round',
+              'line-cap': 'round'
+            },
+            paint: {
+              'line-color': '#888',
+              'line-width': 3,
+              'line-dasharray': [5, 10]
+            }
+          });
         });
         break;
       case "infrastructure":
