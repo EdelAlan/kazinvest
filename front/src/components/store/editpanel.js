@@ -96,7 +96,7 @@ export default {
     views(state, getters) {
       return state.views.filter(it => {
         if (getters.profile) {
-          return getters.profile.member_role == 'superadmin' ? it : it.id != 'members' && it.id != 'feedback' && it.id != 'rejected' && it.id != 'allowed' && it.id != 'reconciliation';
+          return getters.profile.member_role == 'superadmin' ? it : it.id != 'members' && it.id != 'feedback' && it.id != 'rejected' && it.id != 'allowed' && it.id != 'reconciliation' && it.id != 'republics';
         }
       });
     },

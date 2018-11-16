@@ -72,7 +72,7 @@
           break;
           case 'inf':
             this.set_edited_inf(data);
-            await this.set_zone(JSON.parse(data.model).zone_id);
+            await this.set_zone(data.new_data.zone_id);
             this.set_edited_zone(this.zones[0]);
             this.set_infrastructures_list();
             this.set_objects_list();

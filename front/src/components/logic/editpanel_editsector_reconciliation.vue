@@ -678,7 +678,7 @@
 
   .editpanel_editsector_reconciliation-map {
     position: fixed;
-    top: 123px;
+    top: 160px;
     background: #eee;
     right: 34px;
     width: 35%;
@@ -686,9 +686,10 @@
   }
 
   .editpanel_editsector_reconciliation-basemaps {
-    top: 215px;
+    position: fixed;
+    top: 310px;
     background: #eee;
-    right: 14px;
+    right: 44px;
   }
 
   .editpanel_editsector_reconciliation-title {
