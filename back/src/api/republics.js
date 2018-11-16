@@ -2,6 +2,7 @@ const router = require('express-async-router').AsyncRouter();
 const body_parser = require('body-parser');
 const db_query = require('../util/db_query');
 const repfilespath = __dirname + '/../../../front/public/files/republics/';
+// const repfilespath = __dirname + '/../../../kazinvest/files/republics/'; 
 const decodebase64img = require('../util/decodebase64img');
 const fs = require('fs');
 
