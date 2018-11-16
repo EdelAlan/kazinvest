@@ -108,6 +108,8 @@
             <div v-text="lang == 'ru' ? 'Название' : lang == 'en' ? 'Title' : 'Атауы'" class="editpanel_sectorstable-table_header_item"></div>
             <div v-text="lang == 'ru' ? 'Статус' : lang == 'en' ? 'Status' : 'Мәртебе'" class="editpanel_sectorstable-table_header_item"></div>
             <div v-text="lang == 'ru' ? 'Срок реализации' : lang == 'en' ? 'Implementation period' : 'Іске асыру мерзімі'" class="editpanel_sectorstable-table_header_item"></div>
+            <div v-text="lang == 'ru' ? 'Площадь (га)' : lang == 'en' ? 'Square (ha)' : 'Площадь (га)'" class="editpanel_sectorstable-table_header_item"></div>
+            <div v-text="lang == 'ru' ? 'Дата изменения' : lang == 'en' ? 'Change date' : 'Дата изменения'" class="editpanel_sectorstable-table_header_item"></div>
           </div>
       
           <div class="editpanel_sectorstable-sectors"
@@ -139,6 +141,16 @@
                 <span class="editpanel_sectorstable-sector_item_title" 
                   :title="sector.project_date"
                   v-text="sector.project_date"></span>
+              </div>
+              <div class="editpanel_sectorstable-sector_item">
+                <span class="editpanel_sectorstable-sector_item_title" 
+                  :title="sector.area"
+                  v-text="sector.area"></span>
+              </div>
+              <div class="editpanel_sectorstable-sector_item">
+                <span class="editpanel_sectorstable-sector_item_title" 
+                  :title="sector.last_updated_date"
+                  v-text="sector.last_updated_date"></span>
               </div>
             </div>
           </div>
