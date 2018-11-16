@@ -117,7 +117,7 @@
   <div class="editpanel_editzone">
 
     <h2 class="editpanel_editzone-title" v-text="edited_zone['title_' + lang]"></h2>
-    <h3 class="editpanel_editzone-last_title">Предыдущее согласование: {{edited_zone.last_updated_member}}, {{edited_zone.last_updated_date.replace('T', ' ').slice(0, 19)}} </h3>
+    <h3 class="editpanel_editzone-last_title">Предыдущее согласование: {{edited_zone.last_updated_member}}, {{edited_zone.last_updated_date ? edited_zone.last_updated_date.replace('T', ' ').slice(0, 19) : ''}} </h3>
 
 
     <div class="editpanel_editzone_reconciliation-buttons">
