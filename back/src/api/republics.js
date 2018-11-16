@@ -142,13 +142,15 @@ router.put('/', body_parser.json({ limit: '100mb' }), async (req, res) => {
     INSERT INTO republic_videos (name_ru, name_kz, name_en, republic_id, src_ru, src_kz, src_en ) 
     VALUES ($1, $2, $3, $4, $5, $6, $7)
   `;
-  await db_query(to_video_sql, [...to_video_values])
-  .catch (err => {
-    console.log(err);
-    res.status(500).json({
-      msg: 'something broke',
+  if (to_video_values.src_ru || to_video_values.src_kz || to_video_values.src_en) {
+    await db_query(to_video_sql, [...to_video_values])
+    .catch (err => {
+      console.log(err);
+      res.status(500).json({
+        msg: 'something broke',
+      });
     });
-  });
+  }
   // END VIDEO
 
 
