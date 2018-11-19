@@ -294,11 +294,11 @@ export default {
           console.log(res)
         });
       } else {
-        const path = this.getters.api_path + `/back/api/sectors/${sector.id}?who=${this.getters.profile.member_id}`;
+        const path = this.getters.api_path + `/back/api/sectors/${new_data.id}?who=${this.getters.profile.member_id}`;
         return fetcher({ 
           method: 'put',
           path,
-          body: sector,
+          body: new_data,
         }).then(async res => {
           console.log(res)
           const path = this.getters.api_path + `/back/api/new_data/reject/${this.getters.edited_sector.id}`;

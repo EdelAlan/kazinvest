@@ -4,11 +4,16 @@
   import editmap from '../logic/editmap';
   import basemaps from '../logic/basemaps';
   import * as jsdiff from 'diff';
+  import modal from "../ui/modal";
 
   export default {
     data () {
       return {
-        new_data: null,
+        new_data: {
+          photos: [],
+          videos: [],
+          files: [],
+        },
         old_data: null,
         investment: {
           investments2014: '',
@@ -47,6 +52,13 @@
           spent_foreign_investments2017: '',
           spent_foreign_investments2018: '',
         },
+
+        photos: [],
+        videos: [],
+        files: [],
+
+        selected_image: '',
+        selected_video: '',
       }
     },
 
@@ -54,6 +66,7 @@
       tabs,
       editmap,
       basemaps,
+      modal,
     },
 
     computed: mapGetters([
@@ -68,6 +81,8 @@
       "taxes",
       "exports_volume",
       "spent_foreign_investments",
+      'image_modal',
+      'video_modal',
     ]),
 
     methods: {
@@ -77,7 +92,21 @@
         'reject_data',
         'set_new_data',
         'set_edited_sector_geom',
+        'change_ui_visibility',
       ]),
+
+      select_image(src) {
+        this.selected_image = src;
+      },
+
+      select_video(src) {
+        this.selected_video = src;
+      },
+
+      open_pdf(file) {
+        let pdf_window = window.open("")
+        pdf_window.document.write("<iframe width='100%' height='100%' src='"+encodeURI(file)+"'></iframe>")
+      },
 
     },
 
@@ -128,6 +157,26 @@
         spent_foreign_investments2017: this.spent_foreign_investments.filter(el => el.parent_id == this.new_data.id && el.year == 2017)[0] ? this.spent_foreign_investments.filter(el => el.parent_id == this.new_data.id && el.year == 2017)[0].val : 0,
         spent_foreign_investments2018: this.spent_foreign_investments.filter(el => el.parent_id == this.new_data.id && el.year == 2018)[0] ? this.spent_foreign_investments.filter(el => el.parent_id == this.new_data.id && el.year == 2018)[0].val : 0,
       };
+
+      if (this.edited_sector.new_data.new_photos) {
+        Object.keys(this.edited_sector.new_data.new_photos).filter(lang => lang.length >= 1).forEach(lang => {
+          this.edited_sector.new_data.new_photos[lang].filter(photo => photo.length >= 1).forEach(photo => {
+            this.photos.push(photo);
+          });
+        });
+      }
+
+      if (this.edited_sector.new_data.new_video) {
+        this.videos = this.edited_sector.new_data.new_video;
+      }
+
+      if (this.edited_sector.new_data.new_files) {
+        Object.keys(this.edited_sector.new_data.new_files).filter(lang => lang.length >= 1).forEach(lang => {
+          this.edited_sector.new_data.new_files[lang].filter(file => file.length >= 1).forEach(file => {
+            this.files.push(file);
+          });
+        });
+      }
 
 
       [{
@@ -382,6 +431,31 @@
 <template>
   <div class="editpanel_editzone_reconciliation">
 
+    <modal
+      v-if="video_modal"
+      v-on:close="change_ui_visibility({
+        ui_component: 'video_modal',
+        ui_component_state: false,
+      })">
+      <iframe style="border: none" width="520" height="305"
+        :src="selected_video">
+      </iframe>
+    </modal>
+
+    <modal
+      v-if="image_modal"
+      v-on:close="change_ui_visibility({
+        ui_component: 'image_modal',
+        ui_component_state: false,
+      })">
+      <img
+        style="object-fit: cover;"
+        width="100%"
+        height="100%"
+        :src="selected_image"
+      />
+    </modal>
+
     <h2 class="editpanel_editzone_reconciliation-title" 
       v-text="edited_sector.member_id + ', ' 
       + edited_sector.timestamp.replace('T', ' ').slice(0, 19)"
@@ -509,6 +583,119 @@
       <div class="editpanel_editzone_reconcilation-value"  id="compare_contacts__kz"></div>
       <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'eng'"></h4>
       <div class="editpanel_editzone_reconcilation-value"  id="compare_contacts__en"></div>
+
+
+      <h3 class="editpanel_editzone_reconciliation-tab-title"
+        v-text="lang == 'ru' ? 'Фото' : lang == 'en' ? 'Photo': 'Сурет'"
+        v-if="new_data.photos.length || photos.length"
+      ></h3>
+      <p class="editpanel_editzone_reconciliation-tab-sub_title" 
+        v-if="new_data.photos.length"
+        v-text="lang == 'ru' ? 'Существующие фото' : lang == 'en' ? 'Existing photos' : 'Бар суреттер'"></p>
+      <div 
+        class="sidebar-market_wrap"
+        v-if="new_data.photos.length"
+      >
+            <div 
+              class="sidebar-passport_photo"
+              v-for="photo in new_data.photos"
+            >
+              <img 
+                :src="photo['src_' + lang]"
+                v-on:click="
+                  change_ui_visibility({
+                    ui_component: 'image_modal',
+                    ui_component_state: true,
+                  }),
+                  select_image(photo['src_' + lang])"
+              />            
+            </div>
+      </div>
+      <p class="editpanel_editzone_reconciliation-tab-sub_title" 
+        v-if="photos.length"
+        v-text="lang == 'ru' ? 'Новые фото' : lang == 'en' ? 'New photos' : 'Жана суреттер'"></p>
+      <div class="sidebar-market_wrap"
+        v-if="photos.length"
+      >
+        <div v-for="photo in photos" class="sidebar-passport_photo">
+          <img :src="photo" 
+            v-on:click="
+              change_ui_visibility({
+                ui_component: 'image_modal',
+                ui_component_state: true,
+              }),
+              select_image(photo)"
+          />
+        </div>
+      </div>
+      
+      <h3 class="editpanel_editzone_reconciliation-tab-title"
+        v-text="lang == 'en' ? 'Video' : 'Видео'"
+        v-if="new_data.videos.length || videos.length"
+      ></h3>
+      <p class="editpanel_editzone_reconciliation-tab-sub_title" 
+            v-if="new_data.videos.length"
+            v-text="lang == 'ru' ? 'Существующие видеоролики' : lang == 'en' ? 'Existing videos' : 'Бар бейне'"></p>
+      <div class="sidebar-market_wrap"
+        v-if="new_data.videos.length"
+      >
+        <div v-for="video in new_data.videos" class="sidebar-passport_video">
+          <div 
+            class="sidebar-passport_video"
+            v-on:click="
+              change_ui_visibility({
+                ui_component: 'video_modal',
+                ui_component_state: true,
+              }),
+              select_video(video['src_' + lang])"
+          >
+          </div>
+        </div>
+      </div>
+      <p class="editpanel_editzone_reconciliation-tab-sub_title" 
+        v-if="!Array.isArray(videos)"
+        v-text="lang == 'ru' ? 'Новые видеоролики' : lang == 'en' ? 'New videos' : 'Жана бейне'"></p>
+      <div class="sidebar-market_wrap"
+        v-if="!Array.isArray(videos)"
+      >
+        <div 
+          class="sidebar-passport_video"
+          v-on:click="
+            change_ui_visibility({
+              ui_component: 'video_modal',
+              ui_component_state: true,
+            }),
+            select_video(videos['src_' + lang])"
+        >
+        </div>
+      </div>
+      
+
+      <h3 class="editpanel_editzone_reconciliation-tab-title"
+        v-text="lang == 'ru' ? 'Файлы' : lang == 'en' ? 'Files' : 'Файлдар'"
+        v-if="new_data.files.length || files.length"
+      ></h3>
+      <p class="editpanel_editzone_reconciliation-tab-sub_title" 
+        v-if="new_data.files.length"
+        v-text="lang == 'ru' ? 'Существующие файлы' : lang == 'en' ? 'Existing files' : 'Бар файлдар'"></p>
+      <div class="sidebar-market_file"
+        v-if="new_data.files.length"
+      >
+        <a v-for="file in new_data.files" :href="file['src_' + lang]" target="_blank">
+          <div class="sidebar-market_pdf"></div>
+          <div class="sidebar-market_pdf_text">{{file['name_' + lang]}}</div>
+        </a>
+      </div>
+      <p class="editpanel_editzone_reconciliation-tab-sub_title" 
+        v-if="files.length"
+        v-text="lang == 'ru' ? 'Новые файлы' : lang == 'en' ? 'New files' : 'Жана файлдар'"></p>
+      <div class="sidebar-market_file"
+        v-if="files.length"
+      >
+        <div v-for="file in files" v-on:click="open_pdf(file)" target="_blank">
+          <div class="sidebar-market_pdf"></div>
+        </div>
+      </div>
 
 
       <br>

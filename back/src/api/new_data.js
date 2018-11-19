@@ -72,7 +72,9 @@ router.put('/zone', body_parser.json({
     });
 });
 
-router.put('/sector', body_parser.json(), async (req, res) => {
+router.put('/sector', body_parser.json({
+    limit: '100mb'
+}), async (req, res) => {
     console.log(32423)
     const {
         new_data,
