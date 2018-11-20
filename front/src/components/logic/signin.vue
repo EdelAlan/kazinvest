@@ -46,40 +46,41 @@
 	<div class="signin">
 
 		<div class="signin-container">
-
-			<div class="signin-input_container">
-				<div class="signin-input_title"
-					v-text="'E-mail'">
+			<form>
+				<div class="signin-input_container">
+					<div class="signin-input_title"
+						v-text="'E-mail'">
+					</div>
+					<input class="signin-input"
+						v-model="user_model.userid" />
 				</div>
-				<input class="signin-input"
-					v-model="user_model.userid" />
-			</div>
 
-			<div class="signin-input_container">
-				<div class="signin-input_title"
-					v-text="{
-						'title_ru': 'Пароль', 
-						'title_kz': 'Құпия сөз', 
-						'title_en': 'Password'
-					}['title_' + lang]">
+				<div class="signin-input_container">
+					<div class="signin-input_title"
+						v-text="{
+							'title_ru': 'Пароль', 
+							'title_kz': 'Құпия сөз', 
+							'title_en': 'Password'
+						}['title_' + lang]">
+					</div>
+					<input class="signin-input"
+						:type="password_visibility ? 'text' : 'password'"
+						v-model="user_model.password" />
+					<span class="signin-password_eye"
+						@click="toggle_password_visibility"></span>
 				</div>
-				<input class="signin-input"
-					:type="password_visibility ? 'text' : 'password'"
-					v-model="user_model.password" />
-				<span class="signin-password_eye"
-					@click="toggle_password_visibility"></span>
-			</div>
 
-			<div class="signin-controls">
-				<button class="signin-control signin-control--primary"
-					@click="signin"
-					v-text="{
-						'title_ru': 'Войти', 
-						'title_kz': 'Кіру', 
-						'title_en': 'Sign in'
-					}['title_' + lang]">
-				</button>
-			</div>
+				<div class="signin-controls">
+					<button class="signin-control signin-control--primary"
+						@click.prevent="signin"
+						v-text="{
+							'title_ru': 'Войти', 
+							'title_kz': 'Кіру', 
+							'title_en': 'Sign in'
+						}['title_' + lang]">
+					</button>
+				</div>
+			</form>
 
 		</div>
 

@@ -97,7 +97,6 @@
 			<template
 				v-if="!select_password_state">
 
-
 				<div class="signup-input_container">
 					<div class="signup-input_title"
 						v-text="{
@@ -169,52 +168,53 @@
 
 			<template
 				v-if="select_password_state">
-				
-				<div class="signup-input_container">
-					<div class="signup-input_title"
-						v-text="{
-								'title_ru': 'Придумайте пароль', 
-								'title_kz': 'Құпия сөз жасаңыз', 
-								'title_en': 'Create a password'
+				<form>
+					<div class="signup-input_container">
+						<div class="signup-input_title"
+							v-text="{
+									'title_ru': 'Придумайте пароль', 
+									'title_kz': 'Құпия сөз жасаңыз', 
+									'title_en': 'Create a password'
+								}['title_' + lang]">
+						</div>
+						<input class="signup-input"
+							:type="password_visibility ? 'text' : 'password'"
+							v-model="user_model.password" />
+						<span class="signin-password_eye"
+							v-on:click="toggle_password_visibility"></span>
+					</div>
+
+					<div class="signup-input_container">
+						<div class="signup-input_title"
+							v-text="{
+								'title_ru': 'Повторите пароль', 
+								'title_kz': 'Құпия сөзді қайталаңыз', 
+								'title_en': 'Confirm password'
 							}['title_' + lang]">
+						</div>
+						<input class="signup-input"
+							:type="password_visibility ? 'text' : 'password'"
+							v-model="password_confirmation">
+						<span class="signin-password_eye"
+							v-on:click="toggle_password_visibility"></span>
 					</div>
-					<input class="signup-input"
-						:type="password_visibility ? 'text' : 'password'"
-						v-model="user_model.password" />
-					<span class="signin-password_eye"
-						v-on:click="toggle_password_visibility"></span>
-				</div>
 
-				<div class="signup-input_container">
-					<div class="signup-input_title"
-						v-text="{
-							'title_ru': 'Повторите пароль', 
-							'title_kz': 'Құпия сөзді қайталаңыз', 
-							'title_en': 'Confirm password'
-						}['title_' + lang]">
+					{{!user_model.password.length && !password_confirmation.length ? 
+						'' : password_confirmation == user_model.password ? 'Пароли совпадают' : 'Пароли не совпадают'}}
+					<div class="signup-controls">
+						<button class="signup-control signup-control--primary"
+							@click.prevent="
+								signup(user_model)
+							"
+							v-text="{
+								'title_ru': 'Сохранить', 
+								'title_kz': 'Cақтау', 
+								'title_en': 'Save'
+							}['title_' + lang]">
+						</button>
+			
 					</div>
-					<input class="signup-input"
-						:type="password_visibility ? 'text' : 'password'"
-						v-model="password_confirmation">
-					<span class="signin-password_eye"
-						v-on:click="toggle_password_visibility"></span>
-				</div>
-
-				{{!user_model.password.length && !password_confirmation.length ? 
-					'' : password_confirmation == user_model.password ? 'Пароли совпадают' : 'Пароли не совпадают'}}
-				<div class="signup-controls">
-					<button class="signup-control signup-control--primary"
-						v-on:click="
-							signup(user_model)
-						"
-						v-text="{
-							'title_ru': 'Сохранить', 
-							'title_kz': 'Cақтау', 
-							'title_en': 'Save'
-						}['title_' + lang]">
-					</button>
-		
-				</div>
+				</form>
 
 			</template>
 
