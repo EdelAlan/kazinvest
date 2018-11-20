@@ -1,6 +1,10 @@
 const router = require('express-async-router').AsyncRouter();
 const body_parser = require('body-parser');
 const db_query = require('../util/db_query');
+const decodebase64img = require('../util/decodebase64img');
+const fs = require('fs');
+const sectorfilespath = __dirname + '/../../../front/public/files/sectors/';
+// const sectorfilespath = __dirname + '/../../../kazinvest/files/sectors/'; 
 
 const FIELDS = `
   sectors.id,
@@ -135,7 +139,193 @@ router.get('/:id', async (req, res) => {
 
 });
 
-router.put('/:id', body_parser.json(), async (req, res) => {
+router.put('/:id', body_parser.json({ limit: '100mb' }), async (req, res) => {
+  const dir = sectorfilespath + req.params.id;
+  // PHOTOS
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir);
+  }
+  await new Promise((resolve, reject) => {
+    let img_names = [[],[],[]];
+    let types = [[],[],[]];
+    Object.keys(req.body.new_photos).forEach(lang => {
+      if (req.body.new_photos[lang].length > 0) {
+        req.body.new_photos[lang].forEach(photo => {
+          const img = decodebase64img(photo);
+          let path;
+          switch(lang) {
+            case 'ru':
+              let img_name_ru = Math.random(10).toString(32).slice(2);
+              img_names[0] = [...img_names[0], img_name_ru];
+              types[0] = [...types[0], img.type.split('/')[1]];
+              path = dir + '/' + img_name_ru + '_ru.' + img.type.split('/')[1];
+            break;
+            case 'kz':
+              let img_name_kz = Math.random(10).toString(32).slice(2);
+              img_names[1] = [...img_names[1], img_name_kz];
+              types[1] = [...types[1], img.type.split('/')[1]];
+              path = dir + '/' + img_name_kz + '_kz.' + img.type.split('/')[1];
+            break;
+            case 'en':
+              let img_name_en = Math.random(10).toString(32).slice(2);
+              img_names[2] = [...img_names[2], img_name_en];
+              types[2] = [...types[2], img.type.split('/')[1]];
+              path = dir + '/' + img_name_en + '_en.' + img.type.split('/')[1];
+            break;
+          }
+          fs.writeFile(path, img.data, async err => {
+            if (err) return reject(err);
+            console.log('file was saved');
+          });
+        });
+      }
+    });
+    return resolve({ img_names, types});
+  }).then(async({ img_names, types }) => {
+    console.log(img_names, types)
+
+    const sql = `
+      INSERT INTO sector_photos (name_ru, name_kz, name_en, sector_id, src_ru, src_kz, src_en ) 
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
+    `;
+    const path = '/files/sectors/' + req.body.id + '/';
+
+    img_names.every(lang => {
+      if (lang.length > 0) {
+        lang.forEach(async (img_name, img_name_idx) => {
+          await db_query(sql, [
+            img_name, 
+            img_name, 
+            img_name, 
+            req.body.id,
+            img_names[0][img_name_idx] ? path + img_names[0][img_name_idx] + '_ru.' + types[0][img_name_idx] : '',
+            img_names[1][img_name_idx] ? path + img_names[1][img_name_idx] + '_kz.' + types[1][img_name_idx] : '',
+            img_names[2][img_name_idx] ? path + img_names[2][img_name_idx] + '._en' + types[2][img_name_idx] : '',
+          ]);
+        });
+        return false;
+      }
+      return true;
+    });
+
+  });
+  // END PHOTOS
+
+  // VIDEO
+  Object.keys(req.body.videos).forEach(async video => {
+    const to_video = JSON.parse(JSON.stringify({
+      ...req.body.videos[video],
+      id: undefined,
+    }));
+    const to_video_values = Object.keys(to_video).map(key => {
+      return to_video[key];
+    });
+    const sql = `
+      UPDATE sector_videos SET
+        ${Object.keys(to_video).map((key, idx) => {
+          return key + ' = $' + (++idx)
+        }).join(', ')}
+      WHERE sector_videos.id = ${req.body.videos[video].id}
+    `;
+    await db_query(sql, [...to_video_values])
+    .catch (err => {
+      console.log(err);
+      res.status(500).json({
+        msg: 'something broke',
+      });
+    });
+  });
+
+  const to_video = JSON.parse(JSON.stringify({
+    ...req.body.new_video,
+  }));
+  const to_video_values = Object.keys(to_video).map(key => {
+    return to_video[key];
+  });
+  const to_video_sql = `
+    INSERT INTO sector_videos (name_ru, name_kz, name_en, src_ru, src_kz, src_en, sector_id ) 
+    VALUES ($1, $2, $3, $4, $5, $6, $7)
+  `;
+  if (to_video_values[0] || to_video_values[1] || to_video_values[2]) {
+    await db_query(to_video_sql, [...to_video_values, req.body.id])
+    .catch (err => {
+      console.log(err);
+      res.status(500).json({
+        msg: 'something broke',
+      });
+    });
+  }
+  // END VIDEO
+
+  // FILES
+  await new Promise((resolve, reject) => {
+    let file_names = [[],[],[]];
+    let types = [[],[],[]];
+    Object.keys(req.body.new_files).forEach(lang => {
+      if (req.body.new_files[lang].length > 0) {
+        req.body.new_files[lang].forEach(file => {
+          const fl = decodebase64img(file);
+          let path;
+          switch(lang) {
+            case 'ru':
+              let file_name_ru = Math.random(10).toString(32).slice(2);
+              file_names[0] = [...file_names[0], file_name_ru];
+              types[0] = [...types[0], fl.type.split('/')[1]];
+              path = dir + '/' + file_name_ru + '_ru.' + fl.type.split('/')[1];
+            break;
+            case 'kz':
+              let file_name_kz = Math.random(10).toString(32).slice(2);
+              file_names[1] = [...file_names[1], file_name_kz];
+              types[1] = [...types[1], fl.type.split('/')[1]];
+              path = dir + '/' + file_name_kz + '_kz.' + fl.type.split('/')[1];
+            break;
+            case 'en':
+              let file_name_en = Math.random(10).toString(32).slice(2);
+              file_names[2] = [...file_names[2], file_name_en];
+              types[2] = [...types[2], fl.type.split('/')[1]];
+              path = dir + '/' + file_name_en + '_en.' + fl.type.split('/')[1];
+            break;
+          }
+          console.log(fl)
+          fs.writeFile(path, fl.data, async err => {
+            if (err) return reject(err);
+            console.log('file was saved');
+          });
+        });
+      }
+    });
+    return resolve({ file_names, types});
+  }).then(async({ file_names, types }) => {
+    console.log(file_names, types)
+
+    const sql = `
+      INSERT INTO sector_files (name_ru, name_kz, name_en, sector_id, src_ru, src_kz, src_en ) 
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
+    `;
+    const path = '/files/sectors/' + req.body.id + '/';
+
+    file_names.every(lang => {
+      if (lang.length > 0) {
+        lang.forEach(async (file_name, file_name_idx) => {
+          await db_query(sql, [
+            file_name, 
+            file_name, 
+            file_name, 
+            req.body.id,
+            file_names[0][file_name_idx] ? path + file_names[0][file_name_idx] + '_ru.' + types[0][file_name_idx] : '',
+            file_names[1][file_name_idx] ? path + file_names[1][file_name_idx] + '_kz.' + types[1][file_name_idx] : '',
+            file_names[2][file_name_idx] ? path + file_names[2][file_name_idx] + '._en' + types[2][file_name_idx] : '',
+          ]);
+        });
+        return false;
+      }
+      return true;
+    });
+
+  });
+  // END FILES
+
+
   const to_investments = JSON.parse(JSON.stringify({
     2014: req.body.investments2014,
     2015: req.body.investments2015,
@@ -339,7 +529,6 @@ router.put('/:id', body_parser.json(), async (req, res) => {
     }
   });
 
-  console.log(req.body.geom)
   const sql_geom = `
     UPDATE sectors SET geom = ST_GeomFromGeoJSON( $1 )
     WHERE sectors.id = ${req.params.id}

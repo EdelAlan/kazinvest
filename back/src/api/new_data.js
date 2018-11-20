@@ -72,7 +72,9 @@ router.put('/zone', body_parser.json({
     });
 });
 
-router.put('/sector', body_parser.json(), async (req, res) => {
+router.put('/sector', body_parser.json({
+    limit: '100mb'
+}), async (req, res) => {
     console.log(32423)
     const {
         new_data,
@@ -132,26 +134,59 @@ router.put('/sector', body_parser.json(), async (req, res) => {
 
 router.put('/infrastructure', body_parser.json(), async (req, res) => {
     const {
+        new_data,
+        old_data,
+        last_updated_member,
+        last_updated_date,
+        origin_title_ru,
+        origin_title_en,
+        origin_title_kz,
+    } = req.body.infrastructure;
+    console.log(req.body.infrastructure)
+    const {
         member_id, 
         member_firstname, 
         member_lastname,
     } = req.body.member;
-    const to_infrastructure = JSON.parse(JSON.stringify({
-        ...req.body.infrastructure,
-    }));
-    sql = `
-        INSERT INTO new_data (new_data, type, member_id, member_firstname, member_lastname) 
-        VALUES ($1, $2, $3, $4, $5)
+    const sql = `
+        INSERT INTO new_data (
+            new_data, 
+            type, 
+            member_id, 
+            member_firstname, 
+            member_lastname, 
+            last_updated_member, 
+            last_updated_date,
+            origin_title_ru,
+            origin_title_kz,
+            origin_title_en,
+            state,
+            old_data
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
     `;
-    await db_query(sql, [to_infrastructure, 'inf', member_id, member_firstname, member_lastname])
-        .then(_ => res.json({
-            msg: 'infrastructure new data updated',
-        })).catch(err => {
-            console.log(err);
-            res.status(500).json({
-                msg: 'something broke',
-            });
+    return await db_query(
+        sql, 
+        [   new_data, 
+            'inf', 
+            member_id, 
+            member_firstname, 
+            member_lastname, 
+            last_updated_member, 
+            last_updated_date, 
+            origin_title_ru,
+            origin_title_kz,
+            origin_title_en, 
+            'not_verified', 
+            old_data, 
+        ]
+    ).then(_ => res.json({
+        msg: 'new data infrastructure updated',
+    })).catch(err => {
+        console.err(err);
+        res.status(500).json({
+            msg: 'something broke',
         });
+    });
 });
 
 router.put('/reject/:id', body_parser.json(), async (req, res) => {

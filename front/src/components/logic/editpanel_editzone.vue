@@ -6,6 +6,7 @@
   import reset_sector_map from '../logic/editpanel_reset_sector_map';
   import basemaps from '../logic/basemaps';
   import save_geom from '../logic/save_geom';
+  import modal from "../ui/modal";
 
   export default {
     data () {
@@ -27,19 +28,37 @@
           contacts_ru: null,
           contacts_kz: null,
           contacts_en: null,
+          
           files: null,
           videos: null,
           photos: null,
-          physic_photo: {
-            ru: null,
-            kz: null,
-            en: null,
+          
+          new_photos: {
+            ru: [],
+            kz: [],
+            en: [],
+          },
+          new_video: {
+            name_ru: '',
+            name_kz: '',
+            name_en: '',
+            src_ru: '',
+            src_kz: '',
+            src_en: '',
+          },
+          new_files: {
+            ru: [],
+            kz: [],
+            en: [],
           },
 
           budget_allocated: null,
           budget_need: null,
           level: null,
         },
+
+        selected_image: '',
+        selected_video: '',
       }
     },
 
@@ -49,6 +68,7 @@
       reset_sector_map,
       basemaps,
       save_geom,
+      modal,
     },
 
     computed: mapGetters([
@@ -58,6 +78,8 @@
       'infrastructures',
       'objects',
       'show_on_map_geom',
+      'image_modal',
+      'video_modal',
     ]),
 
     methods: {
@@ -69,6 +91,7 @@
         'set_objects',
         'set_infrastructures_list',
         'set_objects_list',
+        'change_ui_visibility',
       ]),
 
       reset_geom() {
@@ -76,28 +99,48 @@
         this.show_on_map();
         this.show_on_map(geom);
       },
-  
+
+      select_image(src) {
+        this.selected_image = src;
+      },
+
+      select_video(src) {
+        this.selected_video = src;
+      },
+
       set_photo ({ target: { files }}, lang) {
         if (!files.length) {
           console.log('empty')
           return;
         }
-        filebase64(files[0])
-        .then(result => {
-          this.zonemodel.physic_photo[lang] = result;
+        Object.keys(files).map((key, idx) => {
+          filebase64(files[key])
+          .then(result => {
+            this.zonemodel.new_photos[lang].push(result);
+          });
+        });
+      },
+
+      set_files ({ target: { files }}, lang) {
+        if (!files.length) {
+          console.log('empty')
           return;
-        }).then(_ => {
-          console.log(this.zonemodel.physic_photo);
-        })
+        }
+        Object.keys(files).map((key, idx) => {
+          filebase64(files[key])
+          .then(result => {
+            this.zonemodel.new_files[lang].push(result);
+          });
+        });
       },
 
     },
 
 
     async mounted () {
-      Object.keys(this.zonemodel).filter(it => it != 'physic_photo').forEach(it => {
+      Object.keys(this.zonemodel).filter(it => it != 'new_photos' && it != 'new_video' && it != 'new_files').forEach(it => {
         if (it == 'title_ru' || it == 'title_kz' || it == 'title_en') {
-          this.profile.member_role == 'superadmin' ? this.zonemodel[it] = this.edited_zone[it].slice(4) : this.zonemodel[it] = this.edited_zone[it];
+          this.zonemodel[it] = this.edited_zone[it].slice(4);
           return;
         }
         this.zonemodel[it] = this.edited_zone[it];
@@ -115,6 +158,31 @@
 
 <template>
   <div class="editpanel_editzone">
+
+    <modal
+      v-if="video_modal"
+      v-on:close="change_ui_visibility({
+        ui_component: 'video_modal',
+        ui_component_state: false,
+      })">
+      <iframe style="border: none" width="520" height="305"
+        :src="selected_video">
+      </iframe>
+    </modal>
+
+    <modal
+      v-if="image_modal"
+      v-on:close="change_ui_visibility({
+        ui_component: 'image_modal',
+        ui_component_state: false,
+      })">
+      <img
+        style="object-fit: cover;"
+        width="100%"
+        height="100%"
+        :src="selected_image"
+      />
+    </modal>
 
     <h2 class="editpanel_editzone-title" v-text="edited_zone['title_' + lang]"></h2>
     <h3 class="editpanel_editzone-last_title">Предыдущее согласование: {{edited_zone.last_updated_member}}, {{edited_zone.last_updated_date ? edited_zone.last_updated_date.replace('T', ' ').slice(0, 19) : ''}} </h3>
@@ -182,55 +250,129 @@
 
         <wysiwyg v-model="zonemodel['region_description_' + lang]" />
 
-
-
-<!--
-        <h3 class="editpanel_editzone_reconciliation-tab-title"
-          v-text="lang == 'ru' ? 'Маркетинговые материалы' : lang == 'en' ? 'Merketing materials' : 'Маркетингтік материалдар'"
-        ></h3>
-        <div class="sidebar-market_wrap">
-          <div v-for="photo in zonemodel.photos" class="sidebar-passport_photo">
-            <img :src="photo['src_' + lang]" />
-          </div>
-
-
-
-
-          <div style="clear: both">
-          <div class="editpanel_editzone-add">
-            <input id="zone_photo_input" type="file" v-on:change="set_photo($event, 'ru')" />
-            <span class="editpanel_editzone-lang">RU</span>
-          </div>
-          <div class="editpanel_editzone-add">
-            <input id="zone_photo_input" type="file" v-on:change="set_photo($event, 'kz')" />
-            <span class="editpanel_editzone-lang">KZ</span>
-          </div>
-          <div class="editpanel_editzone-add">
-            <input id="zone_photo_input" type="file" v-on:change="set_photo($event, 'en')" />
-            <span class="editpanel_editzone-lang">EN</span>
-          </div>
-          </div>
-        </div>
-        <h3 class="editpanel_editzone_reconciliation-tab-title"
-          v-text="lang == 'en' ? 'Video' : 'Видео'"
-        ></h3>
-        <div class="sidebar-market_wrap">
-          <div v-for="video in zonemodel.videos" class="sidebar-passport_video"></div>
-        </div>
-        <h3 class="editpanel_editzone_reconciliation-tab-title"
-          v-text="lang == 'ru' ? 'Файлы' : lang == 'en' ? 'Files' : 'Файлдар'"
-        ></h3>
-        <div class="sidebar-market_file">
-          <a v-for="file in zonemodel.files" :href="file['src_' + lang]" target="_blank">
-            <div class="sidebar-market_pdf"></div>
-            <div class="sidebar-market_pdf_text">{{file['name_' + lang]}}</div>
-          </a>
-        </div>
-        -->
         <h3 class="editpanel_editzone_reconciliation-tab-title"
           v-text="lang == 'ru' ? 'Контакты' : lang == 'en' ? 'Contacts' : 'Байланыс'"
         ></h3>
         <wysiwyg v-model="zonemodel['contacts_' + lang]" />
+
+
+
+
+        <h3 class="editpanel_editsector_reconciliation-tit"
+           v-text="{
+            'title_ru': 'Маркетинговые материалы',
+            'title_kz': 'Marketing materials',
+            'title_en': 'Маркетингтік материалдар',
+          }['title_' + lang]"
+        ></h3>
+        <div>
+          <p class="editpanel_editsector_reconciliation-tit"
+            v-text="lang == 'ru' ? 'Фото' : lang == 'en' ? 'Photo': 'Сурет'"
+          ></p>
+          <div class="sidebar-market_wrap">
+            <div 
+              class="sidebar-passport_photo"
+               v-if="zonemodel.photos.length"
+              v-for="photo in zonemodel.photos"
+            >
+              <img 
+                :src="photo['src_' + lang]"
+                v-on:click="
+                  change_ui_visibility({
+                    ui_component: 'image_modal',
+                    ui_component_state: true,
+                  }),
+                  select_image(photo['src_' + lang])"
+              />            
+            </div>
+
+            <div style="clear: both">
+              <div class="editpanel_editzone-add">
+                <input id="zone_photo_input" type="file" multiple v-on:change="set_photo($event, 'ru')" />
+                <span class="editpanel_editzone-lang">RU</span>
+              </div>
+              <div class="editpanel_editzone-add">
+                <input id="zone_photo_input" type="file" multiple v-on:change="set_photo($event, 'kz')" />
+                <span class="editpanel_editzone-lang">KZ</span>
+              </div>
+              <div class="editpanel_editzone-add">
+                <input id="zone_photo_input" type="file" multiple v-on:change="set_photo($event, 'en')" />
+                <span class="editpanel_editzone-lang">EN</span>
+              </div>
+            </div>
+
+          </div>
+
+          <p class="editpanel_editsector_reconciliation-tit"
+            v-text="lang == 'ru' ? 'Видео' : lang == 'en' ? 'Video': 'Бейне сурет'"
+          ></p>
+          <p class="editpanel_editzone_reconciliation-tab-title" 
+            v-if="zonemodel.videos.length"
+            v-text="lang == 'ru' ? 'Существующие видеоролики' : lang == 'en' ? 'Existing videos' : 'Бар бейне'"></p>
+          <div class="sidebar-market_wrap" v-if="zonemodel.videos.length">
+            <div
+              v-for="video in zonemodel.videos">
+              <div 
+                class="sidebar-passport_video"
+                v-on:click="
+                  change_ui_visibility({
+                    ui_component: 'video_modal',
+                    ui_component_state: true,
+                  }),
+                  select_video(video['src_' + lang])"
+              >
+              </div>
+              <div style="clear: both">
+                <p class="editpanel_editzone_reconciliation-tab-title" 
+                  v-text="lang == 'ru' ? 'Название видеоролика' : lang == 'en' ? 'Title of the video' : 'Бейне атауы'"></p>
+                <input class="editpanel_editzone-input" type="text"
+                  v-model="video['name_'+lang]"/>
+                <p class="editpanel_editzone_reconciliation-tab-title"
+                  :style="{ margin: '0' }"
+                  v-text="lang == 'ru' ? 'Ссылка на видео' : lang == 'en' ? 'Link to video' : 'Бейне сілтемесі'"></p>
+                <input class="editpanel_editzone-input" type="text"
+                  v-model="video['src_'+lang]"/>
+              </div>
+            </div>
+          </div>
+          <p class="editpanel_editzone_reconciliation-tab-title" 
+              :style="{ margin: 0 }"
+              v-text="lang == 'ru' ? 'Добавить видеоролик' : lang == 'en' ? 'Add video' : 'Бейнені қосу'"></p>
+          <div class="sidebar-market_wrap">
+            <p class="editpanel_editzone_reconciliation-tab-title" 
+              v-text="lang == 'ru' ? 'Название видеоролика' : lang == 'en' ? 'Title of the video' : 'Бейне атауы'"></p>
+            <input class="editpanel_editzone-input" type="text"
+              v-model="zonemodel.new_video['name_'+lang]"/>
+            <p class="editpanel_editzone_reconciliation-tab-title" 
+              v-text="lang == 'ru' ? 'Ссылка на видео' : lang == 'en' ? 'Link to video' : 'Бейне сілтемесі'"></p>
+            <input class="editpanel_editzone-input" type="text"
+              v-model="zonemodel.new_video['src_'+lang]"/>
+          </div>
+
+          <p class="editpanel_editsector_reconciliation-tit"
+            v-text="lang == 'ru' ? 'Файлы' : lang == 'en' ? 'Files': 'Файлдар'"
+          ></p>
+          <div v-if="zonemodel.files.length" class="sidebar-market_file" v-for="file in zonemodel.files">
+            <a :href="file['src_' + lang]" download>
+              <div class="sidebar-market_pdf"></div>
+              <div class="sidebar-market_pdf_text">{{file['name_' + lang]}}</div>
+            </a>
+          </div>
+          <div style="clear: both">
+            <div class="editpanel_editzone-add">
+              <input id="zone_photo_input" type="file" multiple v-on:change="set_files($event, 'ru')" />
+              <span class="editpanel_editzone-lang">RU</span>
+            </div>
+            <div class="editpanel_editzone-add">
+              <input id="zone_photo_input" type="file" multiple v-on:change="set_files($event, 'kz')" />
+              <span class="editpanel_editzone-lang">KZ</span>
+            </div>
+            <div class="editpanel_editzone-add">
+              <input id="zone_photo_input" type="file" multiple v-on:change="set_files($event, 'en')" />
+              <span class="editpanel_editzone-lang">EN</span>
+            </div>
+          </div>
+        </div>
 
 
       </div>

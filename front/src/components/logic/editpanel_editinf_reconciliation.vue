@@ -36,7 +36,7 @@
     },
 
     async mounted () {
-      this.infmodel = await JSON.parse(this.edited_inf.model);
+      this.infmodel = await this.edited_inf.new_data;
       this.save_geom({
         ...this.infmodel,
       })
@@ -94,20 +94,20 @@
 
         <div class="editpanel_editinf_reconciliation-tab" slot="tab_0">
           <h3 class="editpanel_editinf_reconciliation-tab-title"
-            v-text="JSON.parse(edited_inf.model).type <= 12 ? (lang == 'ru' ? 'Инфраструктура' : lang == 'en' ? 'Infrastructure' : 'Инфрақұрылым') : (lang == 'ru' ? 'Объекты' : lang == 'en' ? 'Objects' : 'Объектілер')"
+            v-text="edited_inf.new_data.type <= 12 ? (lang == 'ru' ? 'Инфраструктура' : lang == 'en' ? 'Infrastructure' : 'Инфрақұрылым') : (lang == 'ru' ? 'Объекты' : lang == 'en' ? 'Objects' : 'Объектілер')"
           ></h3>
           <div>
             <p class="editpanel_editinf_reconciliation-tab-input_title-infrastructure" 
-              v-text="JSON.parse(edited_inf.model)['title_'+lang]"></p>
+              v-text="edited_inf.new_data['title_'+lang]"></p>
 
             <div class="editpanel_editinf_reconciliation-tab-input_subtitle" 
               v-text="'Атрибут'"></div>
             <span class="editpanel_editinf_reconciliation-input" type="text"
-              v-text="JSON.parse(edited_inf.model).capacity ? JSON.parse(edited_inf.model).capacity : '-'"/>
+              v-text="edited_inf.new_data.capacity ? edited_inf.new_data.capacity : '-'"/>
             <div class="editpanel_editinf_reconciliation-tab-input_subtitle" 
               v-text="'Единица измерения'"></div>
             <span class="editpanel_editinf_reconciliation-input" type="text"
-              v-text="JSON.parse(edited_inf.model).unit ? JSON.parse(edited_inf.model).unit : '-'"/>
+              v-text="edited_inf.new_data.unit ? edited_inf.new_data.unit : '-'"/>
           </div>
 
           <editmap class="editpanel_editinf_reconciliation-map"
@@ -115,7 +115,7 @@
           />
           <basemaps
             class="editpanel_editinf_reconciliation-basemaps"
-            :style="{ top: '280px', right: '10px' }"
+            :style="{ top: '310px', right: '40px' }"
             v-on:click="set_basemap"/>
         </div>
 
@@ -239,8 +239,8 @@
     position: fixed;
     height: 100%;
     width: 40%;
-    right: 0px;
-    top: 131px
+    right: 30px;
+    top: 161px
   }
 
   .mapboxgl-canvas {

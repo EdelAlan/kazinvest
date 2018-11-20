@@ -57,9 +57,13 @@ export default {
                             path,
                             body: {
                                 infrastructure: {
-                                    ...this.getters.geom,
-                                    capacity: it.capacity,
-                                    unit: it.unit,
+                                    new_data: this.getters.geom,
+                                    old_data: {},
+                                    last_updated_member: 'none',
+                                    last_updated_date: new Date(),
+                                    origin_title_en: it.title_en,
+                                    origin_title_ru: it.title_ru,
+                                    origin_title_kz: it.title_kz,
                                 },
                                 member: {
                                     member_firstname: this.getters.profile.member_firstname,
@@ -68,7 +72,7 @@ export default {
                                 },
                             },
                         }).then(({msg}) => {
-                            if (msg == 'infrastructure new data updated') {
+                            if (msg == 'new data infrastructure updated') {
                                 commit('geom_update', false);
                             }
                         });
@@ -102,9 +106,13 @@ export default {
                             path,
                             body: {
                                 infrastructure: {
-                                    ...this.getters.geom,
-                                    capacity: it.capacity,
-                                    unit: it.unit,
+                                    new_data: this.getters.geom,
+                                    old_data: {},
+                                    last_updated_member: 'none',
+                                    last_updated_date: new Date(),
+                                    origin_title_en: it.title_en,
+                                    origin_title_ru: it.title_ru,
+                                    origin_title_kz: it.title_kz,
                                 },
                                 member: {
                                     member_firstname: this.getters.profile.member_firstname,
@@ -113,7 +121,7 @@ export default {
                                 },
                             },
                         }).then(({msg}) => {
-                            if (msg == 'infrastructure new data updated') {
+                            if (msg == 'new data infrastructure updated') {
                                 commit('geom_update', false);
                             }
                         });
