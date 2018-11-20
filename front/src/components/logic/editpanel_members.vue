@@ -86,16 +86,16 @@
    
           <selector
             :list="[{
-              title_ru: 'Пониженный',
-              title_ru: 'Downgrade',
-              title_ru: 'Пониженный',
+              title_ru: 'Стандартный',
+              title_en: 'Standart',
+              title_kz: 'Стандартты',
               member_role: 'member_min',
               member_id: member.member_id,
               member_verification: member.member_verification,
             }, {
-              title_ru: 'Стандартный',
-              title_ru: 'Standart',
-              title_ru: 'Стандартный',
+              title_ru: 'Администратор',
+              title_en: 'Administrator',
+              title_kz: 'Әкімші',
               member_role: 'member',
               member_id: member.member_id,
               member_verification: member.member_verification,
@@ -106,16 +106,16 @@
             v-on:select="select_role"
             :selected="
               member.member_role == 'member' ? {
-                title_ru: 'Стандартный',
-                title_ru: 'Standart',
-                title_ru: 'Стандартный',
+                title_ru: 'Администратор',
+                title_en: 'Administrator',
+                title_kz: 'Әкімші',
                 member_role: 'member',
               }
               : 
               member.member_role == 'member_min' ? {
-                title_ru: 'Пониженный',
-                title_ru: 'Downgrade',
-                title_ru: 'Пониженный',
+                title_ru: 'Стандартный',
+                title_en: 'Standart',
+                title_kz: 'Стандартты',
                 member_role: 'member_min',
               } : ''
             "
