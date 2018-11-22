@@ -9,6 +9,7 @@ export default {
     edited_sector: null,
     edited_inf: null,
     new_data: null,
+    selected_tab: 1,
     crumbs_admin: [{
       active: true,
       id: 'sectors',
@@ -90,6 +91,9 @@ export default {
     set_crumbs_admin(state, crumbs_admin) {
       state.crumbs_admin = crumbs_admin;
     },
+    set_selected_tab(state, selected_tab) {
+      state.selected_tab = selected_tab;
+    },
   },
 
   getters: {
@@ -109,6 +113,7 @@ export default {
     edited_inf: state => state.edited_inf,
     new_data: state => state.new_data,
     crumbs_admin: state => state.crumbs_admin,
+    selected_tab: state => state.selected_tab,
   },
 
   actions: {
@@ -199,10 +204,13 @@ export default {
     set_crumbs_admin({ commit }, crumbs_admin) {
       commit('set_crumbs_admin', crumbs_admin);
     },
+    set_selected_tab({ commit }, selected_tab) {
+      commit('set_selected_tab', selected_tab);
+    },
     set_crumb_first({ commit, dispatch }, data) {
       if (data.id == 'reconciliation') {
         commit('set_new_data', '');
-        dispatch('set_new_data');
+        dispatch('set_new_data', this.getters.selected_tab);
       }
       if (data.level == 1) {
         commit('set_crumbs_admin', [this.getters.crumbs_admin[0]]);
@@ -258,7 +266,7 @@ export default {
             console.log(res);
           });
           commit('set_new_data', '');
-          dispatch('set_new_data');
+          dispatch('set_new_data', this.getters.selected_tab);
           commit('set_edited_zone', false);
           commit('set_edited_sector', false);
         });
@@ -306,26 +314,27 @@ export default {
             console.log(res);
           });
           commit('set_new_data', '');
-          dispatch('set_new_data');
+          dispatch('set_new_data', this.getters.selected_tab);
           commit('set_edited_zone', false);
           commit('set_edited_sector', false);
         })
       }
     },
-    set_new_data({ commit }) {
+    set_new_data({ commit }, selected_tab) {
+      const path = this.getters.api_path + `/back/api/new_data/${selected_tab}`;
       return fetcher({
-        path: this.getters.api_path + '/back/api/new_data'
+        path
       }).then(new_data => commit('set_new_data', new_data));
     },
     reject_data({ commit, dispatch }, data) {
-      const path = this.getters.api_path + `/back/api/new_data/reject/${data.id}`;
+      const path = this.getters.api_path + `/back/api/new_data/${data.id}`;
       return fetcher({ 
         method: 'put',
         path,
       }).then(res => {
         console.log(res)
         commit('set_new_data', '');
-        dispatch('set_new_data');
+        dispatch('set_new_data', this.getters.selected_tab);
         commit('set_edited_zone', false);
         commit('set_edited_sector', false);
         commit('set_edited_inf', false);

@@ -265,8 +265,7 @@
         </span>        
       </span>
       
-      <!--
-      <span slot="tab_title_2">
+      <!-- <span slot="tab_title_2">
         <span class="sidebar-tab">
           <span class="sidebar-tab_icon"></span>
           <span class="sidebar-tab_title"
@@ -282,11 +281,7 @@
             v-text="lang == 'ru' ? 'Файлы для скачивания' : lang == 'en' ? 'Files to download': 'Жүктелетін файлдар'"
           ></span>
         </span>        
-      </span>
-
-
-
--->
+      </span> -->
 
 
 
@@ -818,6 +813,20 @@
 </template>
 
 <style>
+
+  .left-col {
+    width: 45%;
+    padding-bottom: 20px;
+  }
+
+  .map-container {
+    position: fixed;
+    top: 145px;
+    bottom: 45px;
+    background: #eee;
+    right: 45px;
+    width: 35%;
+  }
 
   .editpanel_editsector {
     position: absolute;

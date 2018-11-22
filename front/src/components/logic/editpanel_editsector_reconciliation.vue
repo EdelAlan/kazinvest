@@ -90,7 +90,6 @@
         'update_sector',
         'set_basemap',
         'reject_data',
-        'set_new_data',
         'set_edited_sector_geom',
         'change_ui_visibility',
       ]),
@@ -110,7 +109,7 @@
 
     },
 
-    async mounted () {
+    mounted () {
       this.old_data = this.edited_sector.old_data;
       this.new_data = this.edited_sector.new_data;
       
@@ -456,10 +455,20 @@
       />
     </modal>
 
-    <h2 class="editpanel_editzone_reconciliation-title" 
-      v-text="edited_sector.member_id + ', ' 
-      + edited_sector.timestamp.replace('T', ' ').slice(0, 19)"
+    <h2 class="editpanel_editinf_reconciliation-title" 
+      v-text="({
+        title_ru: 'Новые данные: ', 
+        title_kz: 'Жана деректер: ', 
+        title_en: 'New data: '
+      }['title_' + lang])
+      + edited_sector.member_firstname + ' ' 
+      + edited_sector.member_lastname + 
+      ' (' + edited_sector.member_id + '), ' + edited_sector.timestamp.replace('T', ' ').slice(0, 19)"
     ></h2>
+    <h3 class="editpanel_editzone-last_title" 
+      v-text="'Предыдущее согласование: ' + edited_sector.last_updated_member + ', ' 
+      + edited_sector.last_updated_date.replace('T', ' ').slice(0, 19)"
+    ></h3>
 
     <div class="editpanel_editzone_reconciliation-buttons">
       <button class="editpanel_editzone_reconciliation-button" v-on:click="update_sector(new_data)" 

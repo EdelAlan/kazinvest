@@ -41,12 +41,36 @@
     </div>
     <div class="editpanel_members-table">
       <div class="editpanel_members-table_header">
-        <div v-text="'Логин'" class="editpanel_members-table_header_item"></div>
-        <div v-text="'Одобрен'" class="editpanel_members-table_header_item"></div>
-        <div v-text="'Время регистрации'" class="editpanel_members-table_header_item"></div>
-        <div v-text="'ФИО'" class="editpanel_members-table_header_item"></div>
-        <div v-text="'Зона'" class="editpanel_members-table_header_item"></div>
-        <div v-text="'Роль'" class="editpanel_members-table_header_item"></div>
+        <div v-text="{
+                title_ru: 'Логин', 
+                title_kz: 'Логин', 
+                title_en: 'Login'
+              }['title_' + lang]" class="editpanel_members-table_header_item"></div>
+        <div v-text="{
+                title_ru: 'Одобрен', 
+                title_kz: 'Бекітілді', 
+                title_en: 'Approved'
+              }['title_' + lang]" class="editpanel_members-table_header_item"></div>
+        <div v-text="{
+                title_ru: 'Время регистрации', 
+                title_kz: 'Тіркеу уақыты', 
+                title_en: 'Registration time'
+              }['title_' + lang]" class="editpanel_members-table_header_item"></div>
+        <div v-text="{
+                title_ru: 'ФИО', 
+                title_kz: 'ТАЖ', 
+                title_en: 'Full name'
+              }['title_' + lang]" class="editpanel_members-table_header_item"></div>
+        <div v-text="{
+                title_ru: 'Зона', 
+                title_kz: 'Аймақ', 
+                title_en: 'Zone'
+              }['title_' + lang]" class="editpanel_members-table_header_item"></div>
+        <div v-text="{
+                title_ru: 'Роль', 
+                title_kz: 'Рөл', 
+                title_en: 'Role'
+              }['title_' + lang]" class="editpanel_members-table_header_item"></div>
       </div>
     </div>
     <div class="editpanel_members-sectors">

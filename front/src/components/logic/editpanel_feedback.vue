@@ -35,9 +35,6 @@
 
         return response;
       }
-
-      console.log(decodeBase64Image(this.feedback[1].file))
-
       this.image = decodeBase64Image(this.feedback[1].file);
     },
 

@@ -35,11 +35,11 @@
       ]),
     },
 
-    async mounted () {
-      this.infmodel = await this.edited_inf.new_data;
+    mounted () {
+      this.infmodel = this.edited_inf.new_data;
       this.save_geom({
-        ...this.infmodel,
-      })
+        ...this.edited_inf.new_data,
+      });
     },
 
   }
@@ -53,28 +53,66 @@
 
       <h2 class="editpanel_editinf_reconciliation-title" 
         v-text="({
-          title_ru: 'Новые данные', 
-          title_kz: 'Жана деректер', 
-          title_en: 'New data'
+          title_ru: 'Новые данные: ', 
+          title_kz: 'Жана деректер: ', 
+          title_en: 'New data: '
         }['title_' + lang])
-        + ', ' 
         + edited_inf.member_firstname + ' ' 
         + edited_inf.member_lastname + 
-        ' (' + edited_inf.member_id + ')'"
+        ' (' + edited_inf.member_id + '), ' + edited_inf.timestamp.replace('T', ' ').slice(0, 19)"
       ></h2>
-      <span class="editpanel_editinf_reconciliation-date" v-text="edited_inf.timestamp.replace('T', ' ').slice(0, 19)"></span>
-      <div class="editpanel_editinf_reconciliation-buttons">
+      <h3 class="editpanel_editzone-last_title" 
+        v-text="'Предыдущее согласование: ' + edited_inf.last_updated_member + ', ' 
+        + edited_inf.last_updated_date.replace('T', ' ').slice(0, 19)"
+      ></h3>
+      <div class="editpanel_editzone_reconciliation-buttons">
         <button 
-          class="editpanel_editinf_reconciliation-button"
+          class="editpanel_editzone_reconciliation-button"
           v-on:click="send_geom"
           v-text="lang == 'ru' ? 'Сохранить' : lang == 'en' ? 'Save' : 'Cақтау'"
         ></button>
-        <button class="editpanel_editinf_reconciliation-button" v-on:click="reject_data(edited_inf)" 
+        <button class="editpanel_editzone_reconciliation-button" v-on:click="reject_data(edited_inf)" 
           v-text="lang == 'ru' ? 'Отклонить' : lang == 'en' ? 'Reject' : 'Қабылдамау'"
         ></button>
       </div>
 
-      <tabs
+      <div class="editpanel_editzone_reconciliation-container">
+        <h3 class="editpanel_editinf_reconciliation-tab-title"
+          v-text="edited_inf.new_data.st_asgeojson.geometry.type == 'MultiLineString' ? (lang == 'ru' ? 'Инфраструктура' : lang == 'en' ? 'Infrastructure' : 'Инфрақұрылым') : (lang == 'ru' ? 'Объекты' : lang == 'en' ? 'Objects' : 'Объектілер')"
+        ></h3>
+        <div>
+          <p class="editpanel_editinf_reconciliation-tab-input_title-infrastructure" 
+            v-text="edited_inf.new_data['title_'+lang]"></p>
+
+          <div class="editpanel_editinf_reconciliation-tab-input_subtitle" 
+            v-text="{
+              title_ru: 'Атрибут', 
+              title_kz: 'Атрибут', 
+              title_en: 'Capacity'
+            }['title_' + lang]"></div>
+          <span class="editpanel_editinf_reconciliation-input" type="text"
+            v-text="edited_inf.new_data.capacity ? edited_inf.new_data.capacity : '-'"/>
+          <div class="editpanel_editinf_reconciliation-tab-input_subtitle" 
+            v-text="{
+              title_ru: 'Единица измерения', 
+              title_kz: 'Өлшем бірлігі', 
+              title_en: 'Unit'
+            }['title_' + lang]"></div>
+          <span class="editpanel_editinf_reconciliation-input" type="text"
+            v-text="edited_inf.new_data.unit ? edited_inf.new_data.unit : '-'"/>
+        </div>
+
+        <editmap class="editpanel_editsector_reconciliation-map"
+          :is_sector="'infrastructure'"
+        />
+        <!-- :style="{ top: '350px', right: '40px' }" -->
+        <basemaps
+          class="editpanel_editsector_reconciliation-basemaps"
+          v-on:click="set_basemap"
+        />
+      </div>
+
+      <!-- <tabs
         :titles_style="{
           'font-size': '14px',
           'padding': '10px',
@@ -94,18 +132,26 @@
 
         <div class="editpanel_editinf_reconciliation-tab" slot="tab_0">
           <h3 class="editpanel_editinf_reconciliation-tab-title"
-            v-text="edited_inf.new_data.type <= 12 ? (lang == 'ru' ? 'Инфраструктура' : lang == 'en' ? 'Infrastructure' : 'Инфрақұрылым') : (lang == 'ru' ? 'Объекты' : lang == 'en' ? 'Objects' : 'Объектілер')"
+            v-text="edited_inf.new_data.st_asgeojson.geometry.type == 'MultiLineString' ? (lang == 'ru' ? 'Инфраструктура' : lang == 'en' ? 'Infrastructure' : 'Инфрақұрылым') : (lang == 'ru' ? 'Объекты' : lang == 'en' ? 'Objects' : 'Объектілер')"
           ></h3>
           <div>
             <p class="editpanel_editinf_reconciliation-tab-input_title-infrastructure" 
               v-text="edited_inf.new_data['title_'+lang]"></p>
 
             <div class="editpanel_editinf_reconciliation-tab-input_subtitle" 
-              v-text="'Атрибут'"></div>
+              v-text="{
+                title_ru: 'Атрибут', 
+                title_kz: 'Атрибут', 
+                title_en: 'Capacity'
+              }['title_' + lang]"></div>
             <span class="editpanel_editinf_reconciliation-input" type="text"
               v-text="edited_inf.new_data.capacity ? edited_inf.new_data.capacity : '-'"/>
             <div class="editpanel_editinf_reconciliation-tab-input_subtitle" 
-              v-text="'Единица измерения'"></div>
+              v-text="{
+                title_ru: 'Единица измерения', 
+                title_kz: 'Өлшем бірлігі', 
+                title_en: 'Unit'
+              }['title_' + lang]"></div>
             <span class="editpanel_editinf_reconciliation-input" type="text"
               v-text="edited_inf.new_data.unit ? edited_inf.new_data.unit : '-'"/>
           </div>
@@ -115,18 +161,19 @@
           />
           <basemaps
             class="editpanel_editinf_reconciliation-basemaps"
-            :style="{ top: '310px', right: '40px' }"
-            v-on:click="set_basemap"/>
+            :style="{ top: '350px', right: '40px' }"
+            v-on:click="set_basemap"
+          />
         </div>
 
-      </tabs>
+      </tabs> -->
     </div>
   </div>
 </template>
 
 <style>
 
-  .editpanel_editinf_reconciliation {
+  /* .editpanel_editinf_reconciliation {
     top: 60px;
     right: 30px;
     bottom: 30px;
@@ -137,13 +184,13 @@
     box-shadow: 0 0 5px 0 rgba(0,0,0,.2);
     border-radius: 3px;
     overflow-y: auto;
-  }
+  } */
 
   .editpanel_editinf_reconciliation-title {
     font-size: 16px;
     color: #555;
     font-weight: normal;
-    padding: 20px;
+    padding: 10px 20px 0px 20px;
     margin: 0;
   }
 
@@ -236,11 +283,11 @@
   }
 
   .editpanel_editinf_reconciliation-map {
-    position: fixed;
-    height: 100%;
-    width: 40%;
-    right: 30px;
-    top: 161px
+    position: absolute;
+    height: 645px;
+    width: 50%;
+    right: 0px;
+    top: 140px
   }
 
   .mapboxgl-canvas {
@@ -290,7 +337,6 @@
   }
   .editpanel_editinf_reconciliation-date {
     position: absolute;
-    top: 41px;
     left: 20px;
     color: #bbb;
     font-size: 12px;

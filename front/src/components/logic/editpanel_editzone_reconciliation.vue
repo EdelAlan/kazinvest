@@ -69,7 +69,7 @@
       },
     },
 
-    async mounted () {
+    mounted () {
       this.old_data = this.edited_zone.old_data;
       this.new_data = this.edited_zone.new_data;
       
@@ -190,10 +190,15 @@
       />
     </modal>
 
-    <h2 class="editpanel_editzone_reconciliation-title" 
-      v-text="edited_zone.member_firstname + ' ' + edited_zone.member_lastname + 
-        ' (' + edited_zone.member_id + ') ' 
-      + edited_zone.timestamp.replace('T', ' ').slice(0, 19)"
+    <h2 class="editpanel_editinf_reconciliation-title" 
+      v-text="({
+        title_ru: 'Новые данные: ', 
+        title_kz: 'Жана деректер: ', 
+        title_en: 'New data: '
+      }['title_' + lang])
+      + edited_zone.member_firstname + ' ' 
+      + edited_zone.member_lastname + 
+      ' (' + edited_zone.member_id + '), ' + edited_zone.timestamp.replace('T', ' ').slice(0, 19)"
     ></h2>
     <h3 class="editpanel_editzone-last_title" 
       v-text="'Предыдущее согласование: ' + edited_zone.last_updated_member + ', ' 
@@ -379,7 +384,7 @@
     margin: 5px 0 0 0;
   }
 
-  .editpanel_editzone_reconciliation {
+  /* .editpanel_editzone_reconciliation {
     z-index: 10;
     background: #fff;
     position: absolute;
@@ -390,7 +395,7 @@
     left: 30px;
     bottom: 30px;
 
-  }
+  } */
 
   .editpanel_editzone_reconcilation-separator {
     height: 20px;
@@ -561,7 +566,7 @@
     z-index: 10;
     position: absolute;
     right: 20px;
-    top: 15px;
+    top: 40px;
   }
   .editpanel_editzone_reconciliation-date {
     position: absolute;
