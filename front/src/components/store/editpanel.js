@@ -38,18 +38,6 @@ export default {
       title_en: 'Data reconciliation',
     }, {
       active: false,
-      id: 'rejected',
-      title_ru: 'Отклоненные изменения',
-      title_kz: 'Отклоненные изменения',
-      title_en: 'Rejected changes',
-    }, {
-      active: false,
-      id: 'allowed',
-      title_ru: 'Согласованные изменения',
-      title_kz: 'Согласованные изменения',
-      title_en: 'Allowed changes',
-    }, {
-      active: false,
       id: 'feedback',
       title_ru: 'Обратная связь',
       title_kz: 'Кері байланыс',
