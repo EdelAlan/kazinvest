@@ -1,158 +1,189 @@
 <script>
-  import { mapGetters, mapActions } from 'vuex';  
-  import tabs from '../ui/tabs';  
-  import editmap from '../logic/editmap';
-  import filebase64 from '../../util/filebase64';
-  import reset_sector_map from '../logic/editpanel_reset_sector_map';
-  import basemaps from '../logic/basemaps';
-  import save_geom from '../logic/save_geom';
-  import modal from "../ui/modal";
+import { mapGetters, mapActions } from "vuex";
+import tabs from "../ui/tabs";
+import editmap from "../logic/editmap";
+import filebase64 from "../../util/filebase64";
+import reset_sector_map from "../logic/editpanel_reset_sector_map";
+import basemaps from "../logic/basemaps";
+import save_geom from "../logic/save_geom";
+import add_infrastructure from "../logic/add_infrastructure";
+import modal from "../ui/modal";
 
-  export default {
-    data () {
-      return {
-        zonemodel: {
-          id: null,
-          title_ru: null,
-          title_kz: null,
-          title_en: null,
-          status: null,
-          zone_time: null,
-          zone_type: null,
-          description_ru: null,
-          description_kz: null,
-          description_en: null,
-          region_description_ru: null,
-          region_description_kz: null,
-          region_description_en: null,
-          contacts_ru: null,
-          contacts_kz: null,
-          contacts_en: null,
-          
-          files: null,
-          videos: null,
-          photos: null,
-          
-          new_photos: {
-            ru: [],
-            kz: [],
-            en: [],
-          },
-          new_video: {
-            name_ru: '',
-            name_kz: '',
-            name_en: '',
-            src_ru: '',
-            src_kz: '',
-            src_en: '',
-          },
-          new_files: {
-            ru: [],
-            kz: [],
-            en: [],
-          },
+export default {
+  data() {
+    return {
+      zonemodel: {
+        id: null,
+        title_ru: null,
+        title_kz: null,
+        title_en: null,
+        status: null,
+        zone_time: null,
+        zone_type: null,
+        description_ru: null,
+        description_kz: null,
+        description_en: null,
+        region_description_ru: null,
+        region_description_kz: null,
+        region_description_en: null,
+        contacts_ru: null,
+        contacts_kz: null,
+        contacts_en: null,
 
-          budget_allocated: null,
-          budget_need: null,
-          level: null,
+        files: null,
+        videos: null,
+        photos: null,
+
+        new_photos: {
+          ru: [],
+          kz: [],
+          en: []
+        },
+        new_video: {
+          name_ru: "",
+          name_kz: "",
+          name_en: "",
+          src_ru: "",
+          src_kz: "",
+          src_en: ""
+        },
+        new_files: {
+          ru: [],
+          kz: [],
+          en: []
         },
 
-        selected_image: '',
-        selected_video: '',
-      }
-    },
+        budget_allocated: null,
+        budget_need: null,
+        level: null
+      },
 
-    components: {
-      tabs,
-      editmap,
-      reset_sector_map,
-      basemaps,
-      save_geom,
-      modal,
-    },
+      selected_image: "",
+      selected_video: ""
+    };
+  },
 
-    computed: mapGetters([
-      'lang',
-      'profile',
-      'edited_zone',
-      'infrastructures',
-      'objects',
-      'show_on_map_geom',
-      'image_modal',
-      'video_modal',
+  components: {
+    tabs,
+    editmap,
+    reset_sector_map,
+    basemaps,
+    save_geom,
+    add_infrastructure,
+    modal
+  },
+
+  computed: mapGetters([
+    "lang",
+    "profile",
+    "edited_zone",
+    "infrastructures",
+    "objects",
+    "show_on_map_geom",
+    "image_modal",
+    "video_modal",
+    "new_infrastructure"
+  ]),
+
+  methods: {
+    ...mapActions([
+      "update_zone",
+      "set_basemap",
+      "show_on_map",
+      "set_infrastructures",
+      "set_objects",
+      "set_infrastructures_list",
+      "set_objects_list",
+      "change_ui_visibility",
+      "remove_new_infrastructure",
+      "remove_all_new_infrastructure",
     ]),
 
-    methods: {
-      ...mapActions([
-        'update_zone',
-        'set_basemap',
-        'show_on_map',
-        'set_infrastructures',
-        'set_objects',
-        'set_infrastructures_list',
-        'set_objects_list',
-        'change_ui_visibility',
-      ]),
-
-      reset_geom() {
-        let geom = this.show_on_map_geom;
-        this.show_on_map();
-        this.show_on_map(geom);
-      },
-
-      select_image(src) {
-        this.selected_image = src;
-      },
-
-      select_video(src) {
-        this.selected_video = src;
-      },
-
-      set_photo ({ target: { files }}, lang) {
-        if (!files.length) {
-          console.log('empty')
-          return;
-        }
-        Object.keys(files).map((key, idx) => {
-          filebase64(files[key])
-          .then(result => {
-            this.zonemodel.new_photos[lang].push(result);
-          });
-        });
-      },
-
-      set_files ({ target: { files }}, lang) {
-        if (!files.length) {
-          console.log('empty')
-          return;
-        }
-        Object.keys(files).map((key, idx) => {
-          filebase64(files[key])
-          .then(result => {
-            this.zonemodel.new_files[lang].push(result);
-          });
-        });
-      },
-
+    reset_geom() {
+      let geom = this.show_on_map_geom;
+      this.show_on_map();
+      this.show_on_map(geom);
     },
 
+    select_image(src) {
+      this.selected_image = src;
+    },
 
-    async mounted () {
-      Object.keys(this.zonemodel).filter(it => it != 'new_photos' && it != 'new_video' && it != 'new_files').forEach(it => {
-        if (it == 'title_ru' || it == 'title_kz' || it == 'title_en') {
+    select_video(src) {
+      this.selected_video = src;
+    },
+
+    set_photo(
+      {
+        target: { files }
+      },
+      lang
+    ) {
+      if (!files.length) {
+        console.log("empty");
+        return;
+      }
+      Object.keys(files).map((key, idx) => {
+        filebase64(files[key]).then(result => {
+          this.zonemodel.new_photos[lang].push(result);
+        });
+      });
+    },
+
+    set_files(
+      {
+        target: { files }
+      },
+      lang
+    ) {
+      if (!files.length) {
+        console.log("empty");
+        return;
+      }
+      Object.keys(files).map((key, idx) => {
+        filebase64(files[key]).then(result => {
+          this.zonemodel.new_files[lang].push(result);
+        });
+      });
+    },
+
+    onChange(infrastructure, id) {
+      this.show_on_map();
+      this.show_on_map({
+        ...infrastructure, 
+        id: id,
+      });
+    },
+
+    n_inf(inf, id) {
+      return {
+        ...inf,
+        id: id,
+      }
+    },
+  },
+
+  mounted() {
+    Object.keys(this.zonemodel)
+      .filter(
+        it => it != "new_photos" && it != "new_video" && it != "new_files"
+      )
+      .forEach(it => {
+        if (it == "title_ru" || it == "title_kz" || it == "title_en") {
           this.zonemodel[it] = this.edited_zone[it].slice(4);
           return;
         }
         this.zonemodel[it] = this.edited_zone[it];
       });
 
-      await this.set_infrastructures_list();
-      await this.set_objects_list();
-      await this.set_infrastructures();
-      await this.set_objects();
-    }
+    this.set_infrastructures_list();
+    this.set_objects_list();
+    this.set_infrastructures();
+    this.set_objects();
 
+    this.remove_all_new_infrastructure();
   }
+};
 </script>
 
 
@@ -397,51 +428,8 @@
       </div>
 
       <div class="editpanel_editzone-tab editpanel_editzone-container" slot="tab_2">
-        <div class="left-col">
-          <h3 class="editpanel_editsector_reconciliation-tit"
-            v-text="lang == 'ru' ? 'Инфраструктура' : lang == 'en' ? 'Infrastructure' : 'Инфрақұрылым'"
-          ></h3>
 
-          <div
-            v-for="infrastructure in infrastructures"
-          >
-            <p class="editpanel_editzone_reconciliation-tab-title editpanel_editzone_reconciliation-tab-title-active" 
-              v-on:click="show_on_map(infrastructure)"
-              v-text="infrastructure['title_' + lang]"></p>
-
-            <div class="editpanel_editzone-tab-input_subtitle" 
-              v-text="'Атрибут'"></div>
-            <input class="editpanel_editzone-input" type="text"
-              v-model="infrastructure.capacity"/>
-            <div class="editpanel_editzone-tab-input_subtitle" 
-              v-text="'Единица измерения'"></div>
-            <input class="editpanel_editzone-input" type="text"
-              v-model="infrastructure.unit"/>
-          </div>
-
-          <h3 class="editpanel_editzone_reconciliation-tab-title"
-            v-text="lang == 'ru' ? 'Объекты' : lang == 'en' ? 'Objects' : 'Объектілер'"
-          ></h3>
-          <div
-            v-for="object in objects"
-          >
-            <p class="editpanel_editzone_reconciliation-tab-title editpanel_editzone_reconciliation-tab-title-active" 
-              v-on:click="show_on_map(object)"
-              v-text="object['title_' + lang]"></p>
-
-            <div class="editpanel_editzone-tab-input_subtitle" 
-              v-text="'Атрибут'"></div>
-            <input class="editpanel_editzone-input" type="text"
-              v-model="object.capacity"/>
-            <div class="editpanel_editzone-tab-input_subtitle" 
-              v-text="'Единица измерения'"></div>
-            <input class="editpanel_editzone-input" type="text"
-              v-model="object.unit"/>
-          </div>
-
-        </div>
-
-      <div class="map-container">
+        <div class="map-container-inf">
           <editmap class="editpanel_editzone-map"
             :is_sector="'zone'"
           />
@@ -454,164 +442,353 @@
             v-on:click="set_basemap"/>
           <save_geom class="editpanel_editzone-basemaps" 
             :style="{ position: 'absolute', top: '10px', right: '50px' }" />
+        </div>
+
+        <div class="left-col-inf">
+
+          <add_infrastructure/>
+          
+          <div class="editpanel_members-table">
+            <div class="editpanel_members-table_header">
+              <div v-text="{
+                title_ru: 'Название', 
+                title_kz: 'Атауы', 
+                title_en: 'Title'
+              }['title_' + lang]" class="editpanel_members-table_header_item"></div>
+              <div v-text="{
+                title_ru: 'Тип', 
+                title_kz: 'Түрі', 
+                title_en: 'Type'
+              }['title_' + lang]" class="editpanel_members-table_header_item"></div>
+              <div v-text="{
+                title_ru: 'Атрибут', 
+                title_kz: 'Атрибут', 
+                title_en: 'Capacity'
+              }['title_' + lang]" class="editpanel_members-table_header_item"></div>
+              <div v-text="{
+                title_ru: 'Единица измерения', 
+                title_kz: 'Өлшем бірлігі', 
+                title_en: 'Unit'
+              }['title_' + lang]" class="editpanel_members-table_header_item"></div>
+            </div>
+          </div>
+          <div class="editpanel_editzone-sectors">
+            <div
+              class="editpanel_editzone-sector"
+              v-if="new_infrastructure"
+              v-for="(infrastructure, idx) in new_infrastructure"
+              v-on:click="onChange(infrastructure, idx)"
+              :class="{'editpanel_editzone-sector--active': n_inf(infrastructure, idx).id == (show_on_map_geom ? show_on_map_geom.id : '')}"
+            >
+              <div class="editpanel_editzone-table_item">
+                <input 
+                  class="editpanel_editzone-table_item-input"
+                  v-model="infrastructure['title_'+lang]"
+                  :style="{ width: '100px' }"
+                />
+              </div>
+              <div class="editpanel_editzone-table_item">
+                <select 
+                  class="editpanel_editzone-table_item-input"
+                  v-model="infrastructure.type"
+                  v-on:change="onChange(infrastructure, idx)"
+                >
+                  <option 
+                    :selected="true"
+                    value='inf'
+                    v-text="lang == 'ru' ? 'Инфраструктура' : lang == 'en' ? 'Infrastructure': 'Инфрақұрылым'"
+                  ></option> 
+                  <option 
+                    value='obj'
+                    v-text="lang == 'en' ? 'Object' : 'Объект'"
+                  ></option>
+                </select>
+              </div>
+              <div class="editpanel_editzone-table_item">
+                <input 
+                  type="number"
+                  class="editpanel_editzone-table_item-input"
+                  v-model="infrastructure.capacity"
+                  :style="{ width: '100px' }"
+                />
+              </div>
+              <div class="editpanel_editzone-table_item">
+                <input 
+                  class="editpanel_editzone-table_item-input"
+                  v-model="infrastructure.unit"
+                  :style="{ width: '100px' }"
+                />
+              </div>
+              <button class="editpanel_editzone-zone_edit" 
+                v-on:click="
+                  remove_new_infrastructure(idx)"
+              ></button>
+            </div>
+            <div class="editpanel_editzone-sector"
+              v-for="infrastructure in infrastructures"
+              v-on:click="show_on_map(infrastructure)"
+              :class="{ 'editpanel_editzone-sector--active': infrastructure == show_on_map_geom }">
+              <div class="editpanel_editzone-table_item">
+                <span 
+                  v-text="infrastructure['title_'+lang]"></span>
+              </div>
+              <div class="editpanel_editzone-table_item">
+                <span
+                  v-text="lang == 'ru' ? 'Инфраструктура' : lang == 'en' ? 'Infrastructure' : 'Инфрақұрылым'"></span>
+              </div>
+              <div class="editpanel_editzone-table_item">
+                <input 
+                   class="editpanel_editzone-table_item-input"
+                  v-model="infrastructure.capacity"
+                  :style="{ width: '100px' }"
+                />
+              </div>
+              <div class="editpanel_editzone-table_item">
+                <input 
+                  class="editpanel_editzone-table_item-input"
+                  v-model="infrastructure.unit"
+                  :style="{ width: '100px' }"
+                />
+              </div>
+            </div>
+            <div class="editpanel_editzone-sector"
+              v-for="object in objects"
+              v-on:click="show_on_map(object)"
+              :class="{ 'editpanel_editzone-sector--active': object == show_on_map_geom }">
+              <div class="editpanel_editzone-table_item">
+                <span
+                  v-text="object['title_'+lang]"></span>
+              </div>
+              <div class="editpanel_editzone-table_item">
+                <span
+                  v-text="lang == 'en' ? 'Object' : 'Объект'"></span>
+              </div>
+              <div class="editpanel_editzone-table_item">
+                <input 
+                  class="editpanel_editzone-table_item-input"
+                  v-model="object.capacity"
+                  :style="{ width: '100px' }"
+                />
+              </div>
+              <div class="editpanel_editzone-table_item">
+                <input
+                  class="editpanel_editzone-table_item-input"
+                  v-model="object.unit"
+                  :style="{ width: '100px' }"
+                />
+              </div>
+            </div>
+          </div>
 
         </div>
+
       </div>
     </tabs>
   </div>
 </template>
 
 <style>
+.left-col-inf {
+  position: relative;
+  width: 100%;
+  top: 7px;
+  bottom: 0;
+}
 
-  .left-col {
-    width: 45%;
-    padding-bottom: 20px;
-  }
+.map-container-inf {
+  position: relative;
+  height: 500px;
+  background: #eee;
+  width: 100%;
+}
 
-  .map-container {
-    position: fixed;
-    top: 145px;
-    bottom: 45px;
-    background: #eee;
-    right: 45px;
-    width: 35%;
-  }
+.editpanel_editzone {
+  position: absolute;
+  z-index: 10;
+  width: calc(100% - 60px);
+  background: #fff;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  padding: 0;
+  margin: 30px;
+}
 
-  .editpanel_editzone {
-    position: absolute;
-    z-index: 10;
-    width: calc(100% - 60px);
-    background: #fff;
-    box-shadow: 0 0 5px 0 rgba(0,0,0,.2);
-    border-radius: 3px;
-    padding: 0;
-    margin: 30px;
-  }
+.editpanel_editzone-container {
+  padding: 0 20px 20px 20px;
+  border-top: 1px solid #eee;
+  overflow-y: auto;
+  height: calc(100vh - 205px);
+}
 
-  .editpanel_editzone-container {
-    padding: 0 20px 20px 20px;
-    border-top: 1px solid #eee;
-    overflow-y: auto;
-    height: calc(100vh - 205px);
-  }
+.editpanel_editzone-title {
+  font-size: 18px;
+  color: #555;
+  font-weight: normal;
+  padding: 20px;
+  margin: 0;
+}
 
-  .editpanel_editzone-title {
-    font-size: 18px;
-    color: #555;
-    font-weight: normal;
-    padding: 20px;
-    margin: 0;
-  }
+.editpanel_editzone-tab {
+  padding: 0 20px;
+}
 
+.editpanel_editzone-tab-input_subtitle {
+  font-weight: normal;
+  font-size: 12px;
+  color: #747474;
+}
 
+.editpanel_editzone-add {
+  width: 92px;
+  height: 53px;
+  background: #555;
+  float: left;
+  margin: 5px;
+  overflow: hidden;
+  color: transparent;
+  border-radius: 2px;
+  cursor: pointer;
+  position: relative;
+}
+.editpanel_editzone-lang {
+  position: absolute;
+  top: 0;
+  color: #fff;
+  left: 5px;
+  z-index: 2;
+  font-size: 12px;
+}
+.editpanel_editzone-add::before {
+  content: "";
+  background-image: url("../../assets/images/add-plus-button.svg");
+  position: absolute;
+  top: 50%;
+  opacity: 0.8;
+  transform: translate(-50%, -50%);
+  height: 25px;
+  width: 25px;
+  background-size: contain;
+  left: 50%;
+}
+#zone_photo_input {
+  opacity: 0;
+  cursor: pointer;
+  width: 92px;
+  height: 53px;
+  background: #aaa;
+  overflow: hidden;
+  color: transparent;
+  border-radius: 2px;
+  cursor: pointer;
+  position: relative;
+}
 
-  .editpanel_editzone-tab {
-    padding: 0 20px;
-  }
+input[type=file], /* FF, IE7+, chrome (except button) */
+  input[type=file]::-webkit-file-upload-button {
+  /* chromes and blink button */
+  cursor: pointer;
+}
 
-  .editpanel_editzone-tab-input_subtitle {
-    font-weight: normal;
-    font-size: 12px;
-    color: #747474;
-  }
+.editpanel_editzone-map {
+  right: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
+}
 
-  .editpanel_editzone-add {
-    width: 92px;
-    height: 53px;
-    background: #555;
-    float: left;
-    margin: 5px;
-    overflow: hidden;
-    color: transparent;
-    border-radius: 2px;
-    cursor: pointer;
-    position: relative;
-  }
-  .editpanel_editzone-lang {
-    position: absolute;
-    top: 0;
-    color: #fff;
-    left: 5px;
-    z-index: 2;
-    font-size: 12px;
-  }
-  .editpanel_editzone-add::before {
-    content: '';
-    background-image: url("../../assets/images/add-plus-button.svg");
-    position: absolute;
-    top: 50%;
-    opacity: .8;
-    transform: translate(-50%, -50%);
-    height: 25PX;
-    width: 25PX;
-    background-size: contain;
-    left: 50%;
-  }
-  #zone_photo_input {
-    opacity: 0;
-    cursor: pointer;
-    width: 92px;
-    height: 53px;
-    background: #aaa;
-    overflow: hidden;
-    color: transparent;
-    border-radius: 2px;
-    cursor: pointer;
-    position: relative;
-  }
+.mapboxgl-canvas {
+  height: 100%;
+  width: 100%;
+}
 
-  input[type=file], /* FF, IE7+, chrome (except button) */
-  input[type=file]::-webkit-file-upload-button { /* chromes and blink button */
-      cursor: pointer; 
-  }
+.editpanel_editzone-input {
+  border: none;
+  font-size: 13px;
+  outline: none;
+  border-bottom: 2px solid #50c7f9;
+  width: 100%;
+}
 
-  .editpanel_editzone-map {
-    right: 0;
-    left: 0;
-    top: 0;
-    bottom: 0;
-  }
+.editpanel_editzone-basemaps {
+  z-index: 100;
+}
 
-  .mapboxgl-canvas {
-    height: 100%;
-    width: 100%;
-  }
+.sidebar-passport_photo_meta {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: #fff;
+  font-size: 10px;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  line-height: 13px;
+}
 
-  .editpanel_editzone-input {
-    border: none;
-    font-size: 13px;
-    outline: none;
-    border-bottom: 2px solid #50C7F9;
-    width: 100%;
-  }
+.editpanel_editzone_reconciliation-tab-title-active:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+.editpanel_editzone-last_title {
+  font-size: 15px;
+  color: #888;
+  font-weight: normal;
+  margin: 0 20px 20px 20px;
+}
 
-  .editpanel_editzone-basemaps {
-    z-index: 100;
-  }
+.editpanel_editzone-sectors {
+  overflow-y: auto;
+  padding: 0;
+}
 
-  .sidebar-passport_photo_meta {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    color: #fff;
-    font-size: 10px;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    line-height: 13px;
-  }
+.editpanel_editzone-sector {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
 
-  .editpanel_editzone_reconciliation-tab-title-active:hover {
-    text-decoration: underline;
-    cursor: pointer;
-  }
-  .editpanel_editzone-last_title {
-    font-size: 15px;
-    color: #888;
-    font-weight: normal;
-    margin: 0 20px 20px 20px;
-  }
+.editpanel_editzone-sector--active {
+  background: #50c7f9;
+  color: #fff;
+}
 
+.editpanel_editzone-sector:hover {
+  cursor: pointer;
+}
 
-  
- 
+.editpanel_editzone-table_item {
+  position: relative;
+  flex: 1;
+  padding: 15px 20px;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.editpanel_editzone-table_item-input {
+  border: none;
+  font-size: 12px;
+  outline: none;
+  border-bottom: 1px solid #aaa;
+  width: 100%;
+}
+
+.editpanel_editzone-zone_edit {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  right: 15px;
+  margin-top: 9px;
+  background-color: #fff;
+  border-radius: 50%;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background-image: url("../../assets/images/сross-black.svg");
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+}
+.editpanel_editzone-zone_edit:hover {
+  background-color: #f1f1f1;
+}
 </style>

@@ -2,8 +2,19 @@ const router = require('express-async-router').AsyncRouter();
 const body_parser = require('body-parser');
 const db_query = require('../util/db_query');
 
-router.get('/', async (req, res) => {
-    return res.send(await db_query(`SELECT * FROM new_data WHERE state = 'not_verified' ORDER BY id DESC`));
+router.get('/:selected_tab', async (req, res) => {
+    console.log(req.params.selected_tab)
+    switch (req.params.selected_tab) {
+        case '1':
+            console.log('case 1');
+            return res.send(await db_query(`SELECT * FROM new_data WHERE state = 'not_verified' ORDER BY id DESC`));
+        case '2':
+            console.log('case 2');
+            return res.send(await db_query(`SELECT * FROM new_data WHERE state = 'allowed' ORDER BY id DESC`));
+        case '3':
+            console.log('case 3');
+            return res.send(await db_query(`SELECT * FROM new_data WHERE state = 'rejected' ORDER BY id DESC`));
+    }
 });
 
 router.get('/allowed', async (req, res) => {
@@ -142,7 +153,6 @@ router.put('/infrastructure', body_parser.json(), async (req, res) => {
         origin_title_en,
         origin_title_kz,
     } = req.body.infrastructure;
-    console.log(req.body.infrastructure)
     const {
         member_id, 
         member_firstname, 
