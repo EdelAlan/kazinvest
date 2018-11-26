@@ -1,41 +1,56 @@
 <script>
-  import { mapGetters, mapActions } from 'vuex';  
+  import { mapGetters, mapActions } from 'vuex'; 
+  import modal from '../ui/modal';
 
   export default {
 
-    data() {
+    data () {
       return {
-        image: null,
-      }
+        selected_feedback: {
+          created_date: '',
+          email: '',
+          file: '',
+          id: '',
+          member_id: '',
+          message: '',
+          answer: '',
+        },
+      };
+    },
+
+    components: {
+      modal,
     },
 
     computed: mapGetters([
       'lang',
       'feedback',
+      'image_modal',
     ]),
 
-    methods: mapActions([
-      'set_feedback',
-      'update_feedback',
-    ]),
+    methods: {
+      ...mapActions([
+        'set_feedback',
+        'update_feedback',
+        'change_ui_visibility',
+        'send_feedback_answer',
+      ]),
+
+      select_feedback(feedback) {
+        Object.keys(feedback).forEach(it => {
+          this.selected_feedback[it] = feedback[it];
+        });
+      },
+
+      open_img(file) {
+        let img_window = window.open("")
+        img_window.document.write("<iframe width='100%' height='100%' src='"+encodeURI(file)+"'></iframe>")
+      },
+
+    },
 
     async mounted () {
       await this.set_feedback();
-
-      function decodeBase64Image(dataString) {
-        var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
-          response = {};
-
-        if (matches.length !== 3) {
-          return new Error('Invalid input string');
-        }
-
-        response.type = matches[1];
-        response.data = new Buffer(matches[2], 'base64');
-
-        return response;
-      }
-      this.image = decodeBase64Image(this.feedback[1].file);
     },
 
   }
@@ -45,6 +60,109 @@
 <template>
   <div class="editpanel_feedback"
   >
+    <modal
+      v-if="image_modal"
+      v-on:close="change_ui_visibility({
+        ui_component: 'image_modal',
+        ui_component_state: false,
+      })">
+      <div class="editpanel_feedback-modal">
+        <div class="editpanel_reconciliation-item">
+            <h2 class="editpanel_reconciliation-header_title" 
+              v-text="{
+                title_ru: 'Номер участника', 
+                title_kz: 'Қатысушы нөмірі', 
+                title_en: 'Member ID'
+              }['title_' + lang]">
+            </h2>
+            <span 
+              class="editpanel_reconciliation-date" 
+              v-text="selected_feedback.member_id">
+            </span>
+        </div>
+        <div class="editpanel_reconciliation-item">
+            <h2 class="editpanel_reconciliation-header_title" 
+              v-text="'E-mail'">
+            </h2>
+            <span 
+              class="editpanel_reconciliation-date" 
+              v-text="selected_feedback.email">
+            </span>
+        </div>
+        <div class="editpanel_reconciliation-item">
+            <h2 class="editpanel_reconciliation-header_title" 
+              v-text="{
+                title_ru: 'Сообщение',
+                title_kz: 'Хабар',
+                title_en: 'Message'
+              }['title_' + lang]">
+            </h2>
+            <span 
+              class="editpanel_reconciliation-date" 
+              v-text="selected_feedback.message">
+            </span>
+        </div>
+        <div class="editpanel_reconciliation-item">
+            <h2 class="editpanel_reconciliation-header_title" 
+              v-text="{
+                title_ru: 'Дата',
+                title_kz: 'Берілген күні',
+                title_en: 'Date'
+              }['title_' + lang]">
+            </h2>
+            <span 
+              class="editpanel_reconciliation-date" 
+              v-text="selected_feedback.created_date">
+            </span>
+        </div>
+        <div class="editpanel_reconciliation-item"
+          v-if="selected_feedback.file"
+          :style="{ height: '120px' }">
+            <h2 class="editpanel_reconciliation-header_title" 
+              v-text="{
+                title_ru: 'Изображение',
+                title_kz: 'Бейне',
+                title_en: 'Image'
+              }['title_' + lang]">
+            </h2>
+            <div class="editpanel_feedback-modal_img">
+              <img 
+                style="object-fit: cover;" 
+                :src="selected_feedback.file"
+                v-on:click="open_img(selected_feedback.file)"
+              />
+            </div>
+        </div>
+        <div class="editpanel_reconciliation-item"
+          :style="{ height: '150px' }">
+          <h2 class="editpanel_reconciliation-header_title"
+            :style="{ 'font-size': '20px' }" 
+            v-text="{
+              title_ru: 'Ответ',
+              title_kz: 'Жауап',
+              title_en: 'Answer'
+            }['title_' + lang]">
+          </h2>
+          <textarea
+            :style="{ margin: '0 0 0 20px', height: '70px', width: '540px' }"
+            v-model="selected_feedback.answer"
+          />
+        </div>
+        <div class="editpanel_reconciliation-item">
+        <div class="feedback-controls">
+					<button class="feedback-control feedback-control--primary"
+						@click="send_feedback_answer(selected_feedback)"
+						v-text="{
+							title_ru: 'Отправить', 
+							title_kz: 'Жіберу', 
+							title_en: 'Send'
+						}['title_' + lang]">
+					</button>
+				</div>
+        </div>
+      </div>
+    </modal>
+
     <div class="editpanel_feedback-header">
       <h2 class="editpanel_feedback-header_title" 
         v-text="{
@@ -83,7 +201,12 @@
     </div>
     <div class="editpanel_feedback-sectors">
       <div class="editpanel_feedback-sector"
-        v-for="it in feedback">
+        v-for="it in feedback"
+        v-on:click="change_ui_visibility({
+                    ui_component: 'image_modal',
+                    ui_component_state: true,
+                  }),
+                  select_feedback(it)">
         <div class="editpanel_feedback-member_item">
           <span class="editpanel_feedback-member_item_title" 
             :title="it.member_id"
@@ -104,11 +227,6 @@
             :title="it.created_date"
             v-text="it.created_date"></span>
         </div>
-        <!-- <div class="editpanel_feedback-member_item">
-          <img 
-            :src="image"
-          />
-        </div> -->
       </div>
     </div>
   </div>
@@ -154,6 +272,10 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    cursor: pointer;
+  }
+  .editpanel_feedback-sector:hover {
+    background: #50C7F9;
   }
   .editpanel_feedback-member_item {
     position: relative;
@@ -181,5 +303,26 @@
   }
   .editpanel_feedback-member_item_title--leftpd {
     padding-left: 45px;
+  }
+
+  .editpanel_feedback-modal {
+    width: 600px;
+    padding: 10px;
+  }
+  .editpanel_feedback-modal_img {
+    width: 92px;
+    height: 53px;
+    background: #aaa;
+    float: left;
+    overflow: hidden;
+    border-radius: 2px;
+    border: 1px solid #333;
+    cursor: pointer;
+    position: relative;
+    margin: 0 20px 20px;
+  }
+  .editpanel_feedback-modal_img img {
+    height: 100%;
+    width: 100%;
   }
 </style>

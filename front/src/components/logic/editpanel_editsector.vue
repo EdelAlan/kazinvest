@@ -233,7 +233,8 @@
 
     <h2 class="editpanel_editsector-title" v-text="sectormodel['title_' + lang]"></h2>
 
-    <div class="editpanel_editzone_reconciliation-buttons">
+    <div class="editpanel_editzone_reconciliation-buttons"
+      :style="{ top: '0' }">
       <button class="editpanel_editzone_reconciliation-button" v-on:click="update_sector(sectormodel)" 
         v-text="lang == 'ru' ? 'Сохранить' : lang == 'en' ? 'Save' : 'Cақтау'"
       ></button>

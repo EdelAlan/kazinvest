@@ -73,9 +73,20 @@ router.put('/zone', body_parser.json({
             'not_verified', 
             old_data, 
         ]
-    ).then(_ => res.json({
-        msg: 'new data zone updated',
-    })).catch(err => {
+    ).then(async _ => {
+        const admins = await db_query(`SELECT member_id FROM member WHERE member_role = 'superadmin'`);
+        admins.forEach(async el => {
+        if (el.member_id.includes('@')) {
+            let text = 'Новая заявка на подтверждение редактирования зоны от: ' + member_id + ', ' 
+                + member_firstname + ' ' + member_lastname + '\n'
+                + 'Наименование зоны: ' + origin_title_ru;
+            await mailer(el.member_id, 'Редактирование зоны',  text).then(res => console.log('mailer res: ' + res));
+        }
+        });
+        res.json({
+            msg: 'new data zone updated',
+        });
+    }).catch(err => {
         console.err(err);
         res.status(500).json({
             msg: 'something broke',
@@ -133,9 +144,20 @@ router.put('/sector', body_parser.json({
             'not_verified',
             old_data,
         ]        
-    ).then(_ => res.json({
+    ).then(async _ => {
+        const admins = await db_query(`SELECT member_id FROM member WHERE member_role = 'superadmin'`);
+        admins.forEach(async el => {
+            if (el.member_id.includes('@')) {
+                let text = 'Новая заявка на подтверждение редактирования сектора от: ' + member_id + ', ' 
+                    + member_firstname + ' ' + member_lastname + '\n'
+                    + 'Наименование сектора: ' + origin_title_ru;
+                await mailer(el.member_id, 'Редактирование сектора',  text).then(res => console.log('mailer res: ' + res));
+            }
+        });
+        res.json({
             msg: 'sectors new data updated',
-        })).catch(err => {
+        });
+    }).catch(err => {
             console.log(err);
             res.status(500).json({
                 msg: 'something broke',
@@ -189,9 +211,20 @@ router.put('/infrastructure', body_parser.json(), async (req, res) => {
             'not_verified', 
             old_data, 
         ]
-    ).then(_ => res.json({
-        msg: 'new data infrastructure updated',
-    })).catch(err => {
+    ).then(async _ => {
+        const admins = await db_query(`SELECT member_id FROM member WHERE member_role = 'superadmin'`);
+        admins.forEach(async el => {
+            if (el.member_id.includes('@')) {
+                let text = 'Новая заявка на подтверждение редактирования инфраструктуры от: ' + member_id + ', ' 
+                    + member_firstname + ' ' + member_lastname + '\n'
+                    + 'Наименование инфраструктуры: ' + new_data.title_ru;
+                await mailer(el.member_id, 'Редактирование инфраструктуры',  text).then(res => console.log('mailer res: ' + res));
+            }
+        });
+        res.json({
+            msg: 'new data infrastructure updated',
+        });
+    }).catch(err => {
         console.err(err);
         res.status(500).json({
             msg: 'something broke',
