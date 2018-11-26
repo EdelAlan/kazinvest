@@ -213,6 +213,10 @@ export default {
     update_zone ({ commit, dispatch }, new_data) {
       if (this.getters.profile.member_role != 'superadmin') {
         const path = this.getters.api_path + `/back/api/new_data/zone`;
+        console.log(new_data);
+        console.log({
+          ...this.getters.edited_zone
+        });
         return fetcher({ 
           method: 'put',
           path,
@@ -315,7 +319,7 @@ export default {
       }).then(new_data => commit('set_new_data', new_data));
     },
     reject_data({ commit, dispatch }, data) {
-      const path = this.getters.api_path + `/back/api/new_data/${data.id}`;
+      const path = this.getters.api_path + `/back/api/new_data/reject/${data.id}`;
       return fetcher({ 
         method: 'put',
         path,

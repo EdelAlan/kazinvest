@@ -31,6 +31,7 @@ export default {
     "edited_sector_geom",
     "edited_inf",
     "is_reset_sector",
+    "is_reset_zone",
     "basemap",
     "show_on_map_geom",
     "infrastructures",
@@ -54,6 +55,22 @@ export default {
       "set_zone",
       'show_popup',
     ]),
+
+    reset_zone() {
+      if (this.is_reset_zone) {
+        let geom = {
+          type: "Feature",
+          geometry: JSON.parse(this.edited_zone.st_asgeojson),
+          properties: {}
+        };
+        this.set_edited_sector_geom(geom);
+        this.draw.deleteAll();
+        turf.flatten(geom).features.forEach(zone => {
+          this.draw.add(zone);
+        });
+        this.set_reset_zone();
+      }
+    },
 
     reset_sector() {
       if (this.is_reset_sector) {
@@ -635,7 +652,8 @@ export default {
   watch: {
     show_on_map_geom: "set_geom",
     basemap: "change_basemap",
-    is_reset_sector: "reset_sector"
+    is_reset_sector: "reset_sector",
+    is_reset_zone: "reset_zone"
   },
 
   mounted() {
@@ -659,6 +677,59 @@ export default {
     this._mapboxgl_map.addControl(new mapboxgl.NavigationControl());
 
     switch (this.is_sector) {
+      case "edit_zone":
+        this.draw = new MapboxDraw({
+          displayControlsDefault: false,
+          controls: {
+            polygon: true,
+            trash: true
+          }
+        });
+        this._mapboxgl_map.addControl(this.draw);
+
+        this._mapboxgl_map.on("style.load", () => {
+          this._mapboxgl_map.jumpTo(
+            {
+              center: turf.centerOfMass(
+                JSON.parse(this.edited_zone.st_asgeojson)
+              ).geometry.coordinates,
+              zoom: 13,
+              around: turf.centerOfMass(
+                JSON.parse(this.edited_zone.st_asgeojson)
+              ).geometry.coordinates
+            },
+            {
+              padding: 50
+            }
+          );
+
+          let geom = {
+            type: "Feature",
+            geometry: JSON.parse(this.edited_zone.st_asgeojson),
+            properties: {}
+          };
+          this.set_edited_sector_geom(geom);
+          turf.flatten(geom).features.forEach(zone => {
+            this.draw.add(zone);
+          });
+        });
+
+        this._mapboxgl_map.on("draw.update", () => {
+          this.set_edited_sector_geom(
+            turf.combine(this.draw.getAll()).features[0]
+          );
+        });
+        this._mapboxgl_map.on("draw.create", () => {
+          this.set_edited_sector_geom(
+            turf.combine(this.draw.getAll()).features[0]
+          );
+        });
+        this._mapboxgl_map.on("draw.delete", () => {
+          this.set_edited_sector_geom(
+            turf.combine(this.draw.getAll()).features[0]
+          );
+        });
+        break;
       case "sector":
         this.draw = new MapboxDraw({
           displayControlsDefault: false,
@@ -1249,6 +1320,53 @@ export default {
           this._mapboxgl_map.on('mouseleave', 'free-sector-multi', e => {
             this._mapboxgl_map.getCanvas().style.cursor = '';
             this.show_popup();
+          });
+        });
+        break;
+      case "admin_zone":
+        this._mapboxgl_map.on("style.load", () => {
+          this._mapboxgl_map.jumpTo(
+            {
+              center: turf.centerOfMass(
+                JSON.parse(this.edited_zone.old_data.st_asgeojson)
+              ).geometry.coordinates,
+              zoom: 13,
+              around: turf.centerOfMass(
+                JSON.parse(this.edited_zone.old_data.st_asgeojson)
+              ).geometry.coordinates
+            },
+            {
+              padding: 50
+            }
+          );
+          this._mapboxgl_map.addLayer({
+            id: 'old_zone',
+            type: 'fill',
+            source: {
+              type: 'geojson',
+              data: JSON.parse(this.edited_zone.old_data.st_asgeojson)
+            },
+            paint: {
+              "fill-color": "#00ACFF",
+              "fill-opacity": 0.8
+            },
+          });
+          this._mapboxgl_map.addLayer({
+            id: 'zone',
+            type: 'line',
+            source: {
+              type: 'geojson',
+              data: turf.polygonToLine(this.edited_zone.new_data.geom)
+            },
+            layout: {
+              'line-join': 'round',
+              'line-cap': 'round'
+            },
+            paint: {
+              'line-color': '#888',
+              'line-width': 3,
+              'line-dasharray': [2, 5]
+            }
           });
         });
         break;
