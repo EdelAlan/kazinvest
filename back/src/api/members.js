@@ -1,6 +1,7 @@
 const router = require('express-async-router').AsyncRouter();
 const db_query = require('../util/db_query');
 const bodyparser = require('body-parser');
+const mailer = require('../util/mailer');
 
 const FIELDS = `
   member_id,

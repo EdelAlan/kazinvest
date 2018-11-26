@@ -1,6 +1,7 @@
 const router = require('express-async-router').AsyncRouter();
 const body_parser = require('body-parser');
 const db_query = require('../util/db_query');
+const mailer = require('../util/mailer');
 
 router.get('/:selected_tab', async (req, res) => {
     console.log(req.params.selected_tab)
