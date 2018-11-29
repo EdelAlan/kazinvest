@@ -60,9 +60,9 @@
         style="width: 100%; margin-bottom: 5px"
         :list="provinces_filter"
         :title="{
-          'title_ru': provinces_filter.filter(it => it.checked).length ? provinces_filter.filter(it => it.checked).map(it => it.title_ru).join(', ') : 'Регион', 
-          'title_kz': provinces_filter.filter(it => it.checked).length ? provinces_filter.filter(it => it.checked).map(it => it.title_kz).join(', ') : 'Аймақ', 
-          'title_en': provinces_filter.filter(it => it.checked).length ? provinces_filter.filter(it => it.checked).map(it => it.title_en).join(', ') : 'District',
+          'title_ru': provinces_filter.filter(it => it.checked).length == 0 ? 'Регион' : provinces_filter.filter(it => it.checked).length < 10 ? provinces_filter.filter(it => it.checked).map(it => it.title_ru).join(', ') : 'Регион', 
+          'title_kz': provinces_filter.filter(it => it.checked).length == 0 ? 'Аймақ' : provinces_filter.filter(it => it.checked).length < 10 ? provinces_filter.filter(it => it.checked).map(it => it.title_kz).join(', ') : 'Аймақ', 
+          'title_en': provinces_filter.filter(it => it.checked).length == 0 ? 'District' : provinces_filter.filter(it => it.checked).length < 10 ? provinces_filter.filter(it => it.checked).map(it => it.title_en).join(', ') : 'District',
         }"
         v-on:select="set_provinces_filter"
         :styles="{
@@ -80,9 +80,9 @@
         <filter_checker
           :list="zone_filter"
           :title="{
-            'title_ru': zone_filter.filter(it => it.checked).length ? zone_filter.filter(it => it.checked).map(it => it.title_ru).join(', ') : 'СЭЗ/ИЗ', 
-            'title_kz': zone_filter.filter(it => it.checked).length ? zone_filter.filter(it => it.checked).map(it => it.title_kz).join(', ') : 'АЭА/ИА', 
-            'title_en': zone_filter.filter(it => it.checked).length ? zone_filter.filter(it => it.checked).map(it => it.title_en).join(', ') : 'IZ/SEZ',
+            'title_ru': zone_filter.filter(it => it.checked).length < 10 ? zone_filter.filter(it => it.checked).map(it => it.title_ru).join(', ') : 'СЭЗ/ИЗ', 
+            'title_kz': zone_filter.filter(it => it.checked).length < 10 ? zone_filter.filter(it => it.checked).map(it => it.title_kz).join(', ') : 'АЭА/ИА', 
+            'title_en': zone_filter.filter(it => it.checked).length < 10 ? zone_filter.filter(it => it.checked).map(it => it.title_en).join(', ') : 'IZ/SEZ',
           }"
           v-on:select="set_zone_filter"
           :styles="{
