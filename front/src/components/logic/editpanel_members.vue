@@ -123,6 +123,13 @@
               member_role: 'member',
               member_id: member.member_id,
               member_verification: member.member_verification,
+            }, {
+              title_ru: 'Супер администратор',
+              title_en: 'Super administrator',
+              title_kz: 'Әкімші',
+              member_role: 'superadmin',
+              member_id: member.member_id,
+              member_verification: member.member_verification,
             }]"
             :styles="{
               'font-size': '14px',
@@ -140,6 +147,12 @@
                 title_ru: 'Стандартный',
                 title_en: 'Standart',
                 title_kz: 'Стандартты',
+                member_role: 'member_min',
+              } :
+              member.member_role == 'superadmin' ? {
+                title_ru: 'Супер администратор',
+                title_en: 'Super admin',
+                title_kz: 'Әкімші',
                 member_role: 'member_min',
               } : ''
             "
