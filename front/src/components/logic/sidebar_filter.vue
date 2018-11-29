@@ -105,9 +105,9 @@
         <filter_checker
           :list="industries_filter"
           :title="{
-            'title_ru': industries_filter.filter(it => it.checked).length ? industries_filter.filter(it => it.checked).map(it => it.title_ru).join(', ') : 'Отрасль', 
-            'title_kz': industries_filter.filter(it => it.checked).length ? industries_filter.filter(it => it.checked).map(it => it.title_kz).join(', ') : 'Салалары', 
-            'title_en': industries_filter.filter(it => it.checked).length ? industries_filter.filter(it => it.checked).map(it => it.title_en).join(', ') : 'Industries',
+            'title_ru': industries_filter.filter(it => it.checked).length == 0 ? 'Отрасль' : industries_filter.filter(it => it.checked).length < 12 ? industries_filter.filter(it => it.checked).map(it => it.title_ru).join(', ') : 'Отрасль', 
+            'title_kz': industries_filter.filter(it => it.checked).length == 0 ? 'Салалары' : industries_filter.filter(it => it.checked).length < 12 ? industries_filter.filter(it => it.checked).map(it => it.title_kz).join(', ') : 'Салалары', 
+            'title_en': industries_filter.filter(it => it.checked).length == 0 ? 'Industries' : industries_filter.filter(it => it.checked).length < 12 ? industries_filter.filter(it => it.checked).map(it => it.title_en).join(', ') : 'Industries',
           }"
           v-on:select="set_industries_filter"
           :styles="{
