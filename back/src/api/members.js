@@ -15,17 +15,16 @@ const FIELDS = `
 router.get('/', async (_, res) => {
   const result = (await db_query(`
     SELECT ${FIELDS} FROM member 
-    WHERE NOT member_role = 'superadmin'
     ORDER BY member_verification ASC, member_firstname ASC
   `)).map(it => ({
     ...it,
-    member_zone: {
+    member_zone: it.member_zone ? {
       id: it.member_zone.id,
       title_ru: it.member_zone.title_ru,
       title_en: it.member_zone.title_en,
       title_kz: it.member_zone.title_kz,
       industries_id: it.member_zone.industries_id,
-    }
+    } : null
   }));
   res.send(result)
 });

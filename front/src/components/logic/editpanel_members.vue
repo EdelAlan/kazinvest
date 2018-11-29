@@ -78,7 +78,7 @@
             v-text="`${member.member_firstname} ${member.member_lastname}`"></span>
         </div>
         <div class="editpanel_members-member_item">
-          <span class="editpanel_members-member_item_title" 
+          <span v-if="member.member_zone" class="editpanel_members-member_item_title" 
             :title="member.member_zone['title_' + lang]"
             v-text="member.member_zone['title_' + lang]"></span>
         </div>
