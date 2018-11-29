@@ -672,20 +672,6 @@
 
 <style>
 
-  .left-col-inf {
-    width: 100%;
-    bottom: 0;
-  }
-
-  .map-container-inf {
-    position: absolute;
-    top: 103px;
-    right: 0;
-    bottom: 250px;
-    background: #eee;
-    width: 100%;
-  }
-
   .editpanel_editrepublics {
     position: absolute;
     z-index: 10;

@@ -69,7 +69,7 @@
       },
     },
 
-    async mounted () {
+    mounted () {
       this.old_data = this.edited_zone.old_data;
       this.new_data = this.edited_zone.new_data;
       
@@ -190,10 +190,15 @@
       />
     </modal>
 
-    <h2 class="editpanel_editzone_reconciliation-title" 
-      v-text="edited_zone.member_firstname + ' ' + edited_zone.member_lastname + 
-        ' (' + edited_zone.member_id + ') ' 
-      + edited_zone.timestamp.replace('T', ' ').slice(0, 19)"
+    <h2 class="editpanel_editinf_reconciliation-title" 
+      v-text="({
+        title_ru: 'Новые данные: ', 
+        title_kz: 'Жана деректер: ', 
+        title_en: 'New data: '
+      }['title_' + lang])
+      + edited_zone.member_firstname + ' ' 
+      + edited_zone.member_lastname + 
+      ' (' + edited_zone.member_id + '), ' + edited_zone.timestamp.replace('T', ' ').slice(0, 19)"
     ></h2>
     <h3 class="editpanel_editzone-last_title" 
       v-text="'Предыдущее согласование: ' + edited_zone.last_updated_member + ', ' 
@@ -209,107 +214,127 @@
     </div>
 
     <div class="editpanel_editzone_reconciliation-container">
-      <h3 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Название' : lang == 'en' ? 'Title' : 'Атауы'"></h3>
-      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'рус'"></h4>
-      <div class="editpanel_editzone_reconcilation-value" id="compare_title_ru"></div>
-      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'қаз'"></h4>
-      <div class="editpanel_editzone_reconcilation-value" id="compare_title_kz"></div>
-      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'eng'"></h4>
-      <div class="editpanel_editzone_reconcilation-value" id="compare_title_en"></div>
+
+      <div class="left-col">
+        <h3 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Название' : lang == 'en' ? 'Title' : 'Атауы'"></h3>
+        <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'рус'"></h4>
+        <div class="editpanel_editzone_reconcilation-value" id="compare_title_ru"></div>
+        <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'қаз'"></h4>
+        <div class="editpanel_editzone_reconcilation-value" id="compare_title_kz"></div>
+        <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'eng'"></h4>
+        <div class="editpanel_editzone_reconcilation-value" id="compare_title_en"></div>
+        
+  
+        <h3 class="editpanel_editzone_reconciliation-tab-title" v-text="(lang == 'ru' ? 'Описание' : lang == 'en' ? 'Description' : 'Сипаттама') + ' (рус, қаз, eng)'"></h3>
+        <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'рус'"></h4>
+        <div class="editpanel_editzone_reconcilation-value" id="compare_description_ru"></div>
+        <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'қаз'"></h4>
+        <div class="editpanel_editzone_reconcilation-value" id="compare_description_kz"></div>
+        <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'eng'"></h4>
+        <div class="editpanel_editzone_reconcilation-value" id="compare_description_en"></div>
+
+
+        <h3 class="editpanel_editzone_reconciliation-tab-title" v-text="(lang == 'ru' ? 'Описание региона' : lang == 'en' ? 'Region description' : 'Аймақтың сипаттамасы') + ' (рус, қаз, eng)'"></h3>
+        <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'рус'"></h4>
+        <div class="editpanel_editzone_reconcilation-value" id="compare_region_description_ru"></div>
+        <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'қаз'"></h4>
+        <div class="editpanel_editzone_reconcilation-value" id="compare_region_description_kz"></div>
+        <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'eng'"></h4>
+        <div class="editpanel_editzone_reconcilation-value" id="compare_region_description_en"></div>
       
- 
-      <h3 class="editpanel_editzone_reconciliation-tab-title" v-text="(lang == 'ru' ? 'Описание' : lang == 'en' ? 'Description' : 'Сипаттама') + ' (рус, қаз, eng)'"></h3>
-      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'рус'"></h4>
-      <div class="editpanel_editzone_reconcilation-value" id="compare_description_ru"></div>
-      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'қаз'"></h4>
-      <div class="editpanel_editzone_reconcilation-value" id="compare_description_kz"></div>
-      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'eng'"></h4>
-      <div class="editpanel_editzone_reconcilation-value" id="compare_description_en"></div>
-
-
-      <h3 class="editpanel_editzone_reconciliation-tab-title" v-text="(lang == 'ru' ? 'Описание региона' : lang == 'en' ? 'Region description' : 'Аймақтың сипаттамасы') + ' (рус, қаз, eng)'"></h3>
-      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'рус'"></h4>
-      <div class="editpanel_editzone_reconcilation-value" id="compare_region_description_ru"></div>
-      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'қаз'"></h4>
-      <div class="editpanel_editzone_reconcilation-value" id="compare_region_description_kz"></div>
-      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'eng'"></h4>
-      <div class="editpanel_editzone_reconcilation-value" id="compare_region_description_en"></div>
-    
+        
+        <h3 class="editpanel_editzone_reconciliation-tab-title" v-text="(lang == 'ru' ? 'Контакты' : lang == 'en' ? 'Contacts' : 'Байланыс') + ' (рус, қаз, eng)'"></h3>
+        <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'рус'"></h4>
+        <div class="editpanel_editzone_reconcilation-value" id="compare_contact_ru"></div>
+        <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'қаз'"></h4>
+        <div class="editpanel_editzone_reconcilation-value" id="compare_contact_kz"></div>
+        <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'eng'"></h4>
+        <div class="editpanel_editzone_reconcilation-value" id="compare_contact_en"></div>
       
-      <h3 class="editpanel_editzone_reconciliation-tab-title" v-text="(lang == 'ru' ? 'Контакты' : lang == 'en' ? 'Contacts' : 'Байланыс') + ' (рус, қаз, eng)'"></h3>
-      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'рус'"></h4>
-      <div class="editpanel_editzone_reconcilation-value" id="compare_contact_ru"></div>
-      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'қаз'"></h4>
-      <div class="editpanel_editzone_reconcilation-value" id="compare_contact_kz"></div>
-      <h4 class="editpanel_editzone_reconciliation-tab-sub_title" v-text="'eng'"></h4>
-      <div class="editpanel_editzone_reconcilation-value" id="compare_contact_en"></div>
-     
- 
-      <h3 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Потребность' : lang == 'en' ? 'Budget need' : 'Мұқтаждық'"></h3>
-      <div class="editpanel_editzone_reconcilation-value" id="compare_budget_need"></div>
+  
+        <h3 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Потребность' : lang == 'en' ? 'Budget need' : 'Мұқтаждық'"></h3>
+        <div class="editpanel_editzone_reconcilation-value" id="compare_budget_need"></div>
 
-      <h3 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Выделено' : lang == 'en' ? 'Budget allocated' : 'Белгіленген'"></h3>
-      <div class="editpanel_editzone_reconcilation-value" id="compare_budget_allocated"></div>
-      
+        <h3 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Выделено' : lang == 'en' ? 'Budget allocated' : 'Белгіленген'"></h3>
+        <div class="editpanel_editzone_reconcilation-value" id="compare_budget_allocated"></div>
+        
 
-      <h3 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Соотношение свободных и занятых земель' : lang == 'en' ? 'Free and taken land share' : 'Бос және қабылданған жер үлесі'"></h3>
-      <div class="editpanel_editzone_reconcilation-value" id="compare_level"></div>
+        <h3 class="editpanel_editzone_reconciliation-tab-title" v-text="lang == 'ru' ? 'Соотношение свободных и занятых земель' : lang == 'en' ? 'Free and taken land share' : 'Бос және қабылданған жер үлесі'"></h3>
+        <div class="editpanel_editzone_reconcilation-value" id="compare_level"></div>
 
-      <h3 class="editpanel_editzone_reconciliation-tab-title"
-        v-text="lang == 'ru' ? 'Фото' : lang == 'en' ? 'Photo': 'Сурет'"
-        v-if="new_data.photos.length || photos.length"
-      ></h3>
-      <p class="editpanel_editzone_reconciliation-tab-sub_title" 
-        v-if="new_data.photos.length"
-        v-text="lang == 'ru' ? 'Существующие фото' : lang == 'en' ? 'Existing photos' : 'Бар суреттер'"></p>
-      <div 
-        class="sidebar-market_wrap"
-        v-if="new_data.photos.length"
-      >
-            <div 
-              class="sidebar-passport_photo"
-              v-for="photo in new_data.photos"
-            >
-              <img 
-                :src="photo['src_' + lang]"
-                v-on:click="
-                  change_ui_visibility({
-                    ui_component: 'image_modal',
-                    ui_component_state: true,
-                  }),
-                  select_image(photo['src_' + lang])"
-              />            
-            </div>
-      </div>
-      <p class="editpanel_editzone_reconciliation-tab-sub_title" 
-        v-if="photos.length"
-        v-text="lang == 'ru' ? 'Новые фото' : lang == 'en' ? 'New photos' : 'Жана суреттер'"></p>
-      <div class="sidebar-market_wrap"
-        v-if="photos.length"
-      >
-        <div v-for="photo in photos" class="sidebar-passport_photo">
-          <img :src="photo" 
-            v-on:click="
-              change_ui_visibility({
-                ui_component: 'image_modal',
-                ui_component_state: true,
-              }),
-              select_image(photo)"
-          />
+        <h3 class="editpanel_editzone_reconciliation-tab-title"
+          v-text="lang == 'ru' ? 'Фото' : lang == 'en' ? 'Photo': 'Сурет'"
+          v-if="new_data.photos.length || photos.length"
+        ></h3>
+        <p class="editpanel_editzone_reconciliation-tab-sub_title" 
+          v-if="new_data.photos.length"
+          v-text="lang == 'ru' ? 'Существующие фото' : lang == 'en' ? 'Existing photos' : 'Бар суреттер'"></p>
+        <div 
+          class="sidebar-market_wrap"
+          v-if="new_data.photos.length"
+        >
+              <div 
+                class="sidebar-passport_photo"
+                v-for="photo in new_data.photos"
+              >
+                <img 
+                  :src="photo['src_' + lang]"
+                  v-on:click="
+                    change_ui_visibility({
+                      ui_component: 'image_modal',
+                      ui_component_state: true,
+                    }),
+                    select_image(photo['src_' + lang])"
+                />            
+              </div>
         </div>
-      </div>
-      
-      <h3 class="editpanel_editzone_reconciliation-tab-title"
-        v-text="lang == 'en' ? 'Video' : 'Видео'"
-        v-if="new_data.videos.length || videos.length"
-      ></h3>
-      <p class="editpanel_editzone_reconciliation-tab-sub_title" 
-            v-if="new_data.videos.length"
-            v-text="lang == 'ru' ? 'Существующие видеоролики' : lang == 'en' ? 'Existing videos' : 'Бар бейне'"></p>
-      <div class="sidebar-market_wrap"
-        v-if="new_data.videos.length"
-      >
-        <div v-for="video in new_data.videos" class="sidebar-passport_video">
+        <p class="editpanel_editzone_reconciliation-tab-sub_title" 
+          v-if="photos.length"
+          v-text="lang == 'ru' ? 'Новые фото' : lang == 'en' ? 'New photos' : 'Жана суреттер'"></p>
+        <div class="sidebar-market_wrap"
+          v-if="photos.length"
+        >
+          <div v-for="photo in photos" class="sidebar-passport_photo">
+            <img :src="photo" 
+              v-on:click="
+                change_ui_visibility({
+                  ui_component: 'image_modal',
+                  ui_component_state: true,
+                }),
+                select_image(photo)"
+            />
+          </div>
+        </div>
+        
+        <h3 class="editpanel_editzone_reconciliation-tab-title"
+          v-text="lang == 'en' ? 'Video' : 'Видео'"
+          v-if="new_data.videos.length || videos.length"
+        ></h3>
+        <p class="editpanel_editzone_reconciliation-tab-sub_title" 
+              v-if="new_data.videos.length"
+              v-text="lang == 'ru' ? 'Существующие видеоролики' : lang == 'en' ? 'Existing videos' : 'Бар бейне'"></p>
+        <div class="sidebar-market_wrap"
+          v-if="new_data.videos.length"
+        >
+          <div v-for="video in new_data.videos" class="sidebar-passport_video">
+            <div 
+              class="sidebar-passport_video"
+              v-on:click="
+                change_ui_visibility({
+                  ui_component: 'video_modal',
+                  ui_component_state: true,
+                }),
+                select_video(video['src_' + lang])"
+            >
+            </div>
+          </div>
+        </div>
+        <p class="editpanel_editzone_reconciliation-tab-sub_title" 
+          v-if="!Array.isArray(videos)"
+          v-text="lang == 'ru' ? 'Новые видеоролики' : lang == 'en' ? 'New videos' : 'Жана бейне'"></p>
+        <div class="sidebar-market_wrap"
+          v-if="!Array.isArray(videos)"
+        >
           <div 
             class="sidebar-passport_video"
             v-on:click="
@@ -317,54 +342,44 @@
                 ui_component: 'video_modal',
                 ui_component_state: true,
               }),
-              select_video(video['src_' + lang])"
+              select_video(videos['src_' + lang])"
           >
           </div>
         </div>
-      </div>
-      <p class="editpanel_editzone_reconciliation-tab-sub_title" 
-        v-if="!Array.isArray(videos)"
-        v-text="lang == 'ru' ? 'Новые видеоролики' : lang == 'en' ? 'New videos' : 'Жана бейне'"></p>
-      <div class="sidebar-market_wrap"
-        v-if="!Array.isArray(videos)"
-      >
-        <div 
-          class="sidebar-passport_video"
-          v-on:click="
-            change_ui_visibility({
-              ui_component: 'video_modal',
-              ui_component_state: true,
-            }),
-            select_video(videos['src_' + lang])"
-        >
-        </div>
-      </div>
-      
+        
 
-      <h3 class="editpanel_editzone_reconciliation-tab-title"
-        v-text="lang == 'ru' ? 'Файлы' : lang == 'en' ? 'Files' : 'Файлдар'"
-        v-if="new_data.files.length || files.length"
-      ></h3>
-      <p class="editpanel_editzone_reconciliation-tab-sub_title" 
-        v-if="new_data.files.length"
-        v-text="lang == 'ru' ? 'Существующие файлы' : lang == 'en' ? 'Existing files' : 'Бар файлдар'"></p>
-      <div class="sidebar-market_file"
-        v-if="new_data.files.length"
-      >
-        <a v-for="file in new_data.files" :href="file['src_' + lang]" target="_blank">
-          <div class="sidebar-market_pdf"></div>
-          <div class="sidebar-market_pdf_text">{{file['name_' + lang]}}</div>
-        </a>
-      </div>
-      <p class="editpanel_editzone_reconciliation-tab-sub_title" 
-        v-if="files.length"
-        v-text="lang == 'ru' ? 'Новые файлы' : lang == 'en' ? 'New files' : 'Жана файлдар'"></p>
-      <div class="sidebar-market_file"
-        v-if="files.length"
-      >
-        <div v-for="file in files" v-on:click="open_pdf(file)" target="_blank">
-          <div class="sidebar-market_pdf"></div>
+        <h3 class="editpanel_editzone_reconciliation-tab-title"
+          v-text="lang == 'ru' ? 'Файлы' : lang == 'en' ? 'Files' : 'Файлдар'"
+          v-if="new_data.files.length || files.length"
+        ></h3>
+        <p class="editpanel_editzone_reconciliation-tab-sub_title" 
+          v-if="new_data.files.length"
+          v-text="lang == 'ru' ? 'Существующие файлы' : lang == 'en' ? 'Existing files' : 'Бар файлдар'"></p>
+        <div class="sidebar-market_file"
+          v-if="new_data.files.length"
+        >
+          <a v-for="file in new_data.files" :href="file['src_' + lang]" target="_blank">
+            <div class="sidebar-market_pdf"></div>
+            <div class="sidebar-market_pdf_text">{{file['name_' + lang]}}</div>
+          </a>
         </div>
+        <p class="editpanel_editzone_reconciliation-tab-sub_title" 
+          v-if="files.length"
+          v-text="lang == 'ru' ? 'Новые файлы' : lang == 'en' ? 'New files' : 'Жана файлдар'"></p>
+        <div class="sidebar-market_file"
+          v-if="files.length"
+        >
+          <div v-for="file in files" v-on:click="open_pdf(file)" target="_blank">
+            <div class="sidebar-market_pdf"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="map-container-zone_rec">
+        <editmap class="editpanel_editsector_reconciliation-map"
+          :is_sector="'admin_zone'"
+        />
+        <basemaps class="editpanel_editsector_reconciliation-basemaps" v-on:click="set_basemap"/>
       </div>
       
     </div>
@@ -373,13 +388,22 @@
 
 <style>
 
+  .map-container-zone_rec {
+    position: fixed;
+    top: 160px;
+    background: #eee;
+    right: 34px;
+    width: 35%;
+    height: 650px;
+  }
+
   .editpanel_editzone_reconciliation-tab-sub_title {
     font-size: 12px;
     color: #03A0E3;
     margin: 5px 0 0 0;
   }
 
-  .editpanel_editzone_reconciliation {
+  /* .editpanel_editzone_reconciliation {
     z-index: 10;
     background: #fff;
     position: absolute;
@@ -390,7 +414,7 @@
     left: 30px;
     bottom: 30px;
 
-  }
+  } */
 
   .editpanel_editzone_reconcilation-separator {
     height: 20px;
@@ -561,7 +585,7 @@
     z-index: 10;
     position: absolute;
     right: 20px;
-    top: 15px;
+    top: 40px;
   }
   .editpanel_editzone_reconciliation-date {
     position: absolute;

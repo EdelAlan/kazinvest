@@ -97,9 +97,9 @@ export default {
     };
   },
 
-  async mounted() {
-    await this.get_all_investments();
-    await this.set_links_adilet();
+  mounted() {
+    this.get_all_investments();
+    this.set_links_adilet();
   },
 
   computed: {

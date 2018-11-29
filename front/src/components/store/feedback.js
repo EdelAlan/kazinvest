@@ -37,9 +37,28 @@ export default {
             file,
             member_id,
         },
-      }).then(msg => {
+      }).then( ({ msg }) => {
         return msg;
       });
-    }
+    },
+
+    send_feedback_answer (_, selected_feedback) {
+      return fetcher({
+        method: 'post',
+        path: this.getters.api_path + '/back/api/feedback/answer',
+        body: {
+            ...selected_feedback
+        },
+      }).then( ({ msg }) => {
+        if (msg == 'feedback answered') {
+          this.dispatch('set_feedback');
+          this.dispatch('change_ui_visibility', {
+            ui_component: 'image_modal',
+            ui_component_state: false,
+          });
+        }
+      });
+    },
+
   },
 };

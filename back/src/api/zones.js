@@ -427,8 +427,15 @@ router.put('/:id', body_parser.json({ limit: '100mb' }), async (req, res) => {
   });
   // END FILES
 
+  const sql_geom = `
+    UPDATE zone SET geom = ST_GeomFromGeoJSON( $1 )
+    WHERE zone.id = ${req.body.id}
+  `;
+  await db_query(sql_geom, req.body.geom.features ? [req.body.geom.features[0].geometry] : [req.body.geom.geometry]);
+
   const to_zone = JSON.parse(JSON.stringify({
     ...req.body,
+    geom: undefined,
     id: undefined,
     files: undefined,
     videos: undefined,
@@ -440,10 +447,6 @@ router.put('/:id', body_parser.json({ limit: '100mb' }), async (req, res) => {
     new_video: undefined,
     new_files: undefined,
   }));
-
-  console.log(to_zone)
-  // console.log(photos)
-  // return;
   const to_zone_values = Object.keys(to_zone).map(key => {
     return to_zone[key];
   });

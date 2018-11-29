@@ -1,6 +1,7 @@
 const router = require('express-async-router').AsyncRouter();
 const db_query = require('../util/db_query');
 const bodyparser = require('body-parser');
+const mailer = require('../util/mailer');
 
 const FIELDS = `
   member_id,
@@ -49,6 +50,11 @@ router.put('/:id', bodyparser.json(), async (req, res) => {
       member_id,
     ],
   );
+  if (member_id.includes('@')) {
+    let text = 'Ваш профиль ' + member_id + (member_verification ? 'активирован' : 'деактивирован');
+    await mailer(el.member_id, 'Обновление статуса', text).then(res => console.log('mailer res: ' + res));
+  }
+
   return res.json({
     member_updated: member_id,
   });

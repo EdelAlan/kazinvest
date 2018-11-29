@@ -1,4 +1,5 @@
 <script>
+	import { mapActions } from 'vuex';  
 
 	export default {
 
@@ -15,8 +16,15 @@
 		},
 
 		methods: {
-			page_activate (num) {
+			...mapActions([
+				'set_new_data',
+				'set_selected_tab',
+			]),
+
+			async page_activate (num) {
 				this.active_page_num = num;
+				await this.set_new_data(num+1);
+				await this.set_selected_tab(num+1);
 			},
 		},
 

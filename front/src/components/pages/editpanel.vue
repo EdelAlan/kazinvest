@@ -52,10 +52,8 @@
         <editpanel_sectorstable v-if="views[0] && views[0].active" />
         <editpanel_members v-if="views[1] && views[1].active && profile && profile.member_role == 'superadmin'" />
         <editpanel_reconciliation v-if="views[2] && views[2].active && profile && profile.member_role == 'superadmin'"/>
-        <div v-if="views[3] && views[3].active && profile && profile.member_role == 'superadmin'">{{views[3]['title_' + lang]}}</div>
-        <div v-if="views[4] && views[4].active && profile && profile.member_role == 'superadmin'">{{views[4]['title_' + lang]}}</div>
-        <editpanel_feedback v-if="views[5] && views[5].active && profile && profile.member_role == 'superadmin'" />
-        <editpanel_editrepublics v-if="views[6] && views[6].active && profile.member_role == 'superadmin'" />
+        <editpanel_feedback v-if="views[3] && views[3].active && profile && profile.member_role == 'superadmin'" />
+        <editpanel_editrepublics v-if="views[4] && views[4].active && profile.member_role == 'superadmin'" />
       </div>
     </div>
   </div>

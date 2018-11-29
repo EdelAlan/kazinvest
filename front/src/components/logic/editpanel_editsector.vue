@@ -233,7 +233,8 @@
 
     <h2 class="editpanel_editsector-title" v-text="sectormodel['title_' + lang]"></h2>
 
-    <div class="editpanel_editzone_reconciliation-buttons">
+    <div class="editpanel_editzone_reconciliation-buttons"
+      :style="{ top: '0' }">
       <button class="editpanel_editzone_reconciliation-button" v-on:click="update_sector(sectormodel)" 
         v-text="lang == 'ru' ? 'Сохранить' : lang == 'en' ? 'Save' : 'Cақтау'"
       ></button>
@@ -265,8 +266,7 @@
         </span>        
       </span>
       
-      <!--
-      <span slot="tab_title_2">
+      <!-- <span slot="tab_title_2">
         <span class="sidebar-tab">
           <span class="sidebar-tab_icon"></span>
           <span class="sidebar-tab_title"
@@ -282,11 +282,7 @@
             v-text="lang == 'ru' ? 'Файлы для скачивания' : lang == 'en' ? 'Files to download': 'Жүктелетін файлдар'"
           ></span>
         </span>        
-      </span>
-
-
-
--->
+      </span> -->
 
 
 
@@ -818,6 +814,20 @@
 </template>
 
 <style>
+
+  .left-col {
+    width: 45%;
+    padding-bottom: 20px;
+  }
+
+  .map-container {
+    position: fixed;
+    top: 145px;
+    bottom: 45px;
+    background: #eee;
+    right: 45px;
+    width: 35%;
+  }
 
   .editpanel_editsector {
     position: absolute;
