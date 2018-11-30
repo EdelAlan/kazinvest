@@ -582,7 +582,7 @@ export default {
           }
         },
         paint: {
-          'circle-radius': 6,
+          'circle-radius': 10,
           'circle-color': '#C30D0D',
           'circle-stroke-width': 2,
           'circle-stroke-color': '#fff'
@@ -607,7 +607,7 @@ export default {
           }
         },
         paint: {
-          'circle-radius': 6,
+          'circle-radius': 10,
           'circle-color': '#C30D0D',
           'circle-stroke-width': 2,
           'circle-stroke-color': '#fff'
@@ -632,7 +632,7 @@ export default {
           }
         },
         paint: {
-          'circle-radius': 6,
+          'circle-radius': 10,
           'circle-color': '#C30D0D',
           'circle-stroke-width': 2,
           'circle-stroke-color': '#fff'

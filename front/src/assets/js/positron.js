@@ -470,9 +470,9 @@ export default () => ({
       layout: {
         'text-field': '{title}',
         'text-font': ['Proxima Nova'],
-        'text-size': 10,
+        'text-size': 14,
         'text-allow-overlap': true,
-        'text-offset': [0, 1.2],
+        'text-offset': [0, 2],
       }
     },
   ],
