@@ -367,5 +367,80 @@ export default {
       });
     },
 
+    add_zone({ commit }, new_data) {
+      const path = this.getters.api_path + `/back/api/zones/add/?who=${this.getters.profile.member_id}`;
+      return fetcher({ 
+        method: 'put',
+        path,
+        body: new_data,
+      }).then(({ msg }) => {
+        if (msg == 'zone added') {
+          commit('set_edited_zone', false);
+          commit('set_editzone_state', false);
+        }
+      }).catch(err => {
+        switch(this.getters.lang) {
+          case 'ru':
+            return alert('Заполните все поля');
+          case 'en':
+            return alert('Fill in all the fields');
+          case 'kz':
+            return alert('Барлық өрістерді толтырыңыз');
+        }
+      });
+    },
+    add_sector({ commit }, new_data) {
+      if (this.getters.profile.member_role == 'superadmin') {
+        const path = this.getters.api_path + `/back/api/sectors/add/?who=${this.getters.profile.member_id}`;
+        return fetcher({ 
+          method: 'put',
+          path,
+          body: new_data,
+        }).then(({ msg }) => {
+          if (msg == 'sector added') {
+            commit('set_edited_zone', false);
+            commit('set_edited_sector', false);
+            commit('set_editsector_state', false);
+          }
+        }).catch(err => {
+          switch(this.getters.lang) {
+            case 'ru':
+              return alert('Заполните все поля');
+            case 'en':
+              return alert('Fill in all the fields');
+            case 'kz':
+              return alert('Барлық өрістерді толтырыңыз');
+          }
+        });
+      } else {
+        const path = this.getters.api_path + `/back/api/new_data/sector`;
+        return fetcher({ 
+          method: 'put',
+          path,
+          body: {
+            sector: {
+              new_data,
+              old_data: {
+                ...new_data,
+                st_asgeojson: new_data.geom
+              },
+              last_updated_member: this.getters.profile.member_id,
+              last_updated_date: new Date(),
+              origin_title_en: 'New sector',
+              origin_title_ru: 'Новый сектор',
+              origin_title_kz: 'Жана сектор',
+            },
+            member: {
+              member_firstname: this.getters.profile.member_firstname,
+              member_lastname: this.getters.profile.member_lastname,
+              member_id: this.getters.profile.member_id,
+            },
+          },
+        }).then(res => {
+          console.log(res)
+        });
+      }
+    },
+
   },
 };

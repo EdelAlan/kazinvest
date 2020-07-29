@@ -1,13 +1,13 @@
 <template>
 	<div class="basemaps">
-        <button class="basemaps-toggler"
-            v-on:click="$emit('click')"
-            :class="{
-              'basemaps-toggler--map': basemap == true,
-              'basemaps-toggler--sputnic': basemap == false
-            }"
-        ></button>
-    </div>
+    <button class="basemaps-toggler"
+      v-on:click="$emit('click')"
+      :class="{
+        'basemaps-toggler--map': basemap == true,
+        'basemaps-toggler--sputnic': basemap == false
+      }"
+    ></button>
+  </div>
 </template>
 
 <script>

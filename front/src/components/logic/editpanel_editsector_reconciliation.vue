@@ -407,7 +407,7 @@
         new: String(this.new_data.contacts_en),
         el: '#compare_contacts_en',
       }].forEach(it => {
-        let color = '', 
+          let color = '', 
           span = null,
           diff = jsdiff.diffWords(it.old, it.new),
           display = document.querySelector(it.el),

@@ -1,17 +1,17 @@
 <template>
 	<div class="add_infrastructure">
-        <button class="add_infrastructure-toggler"
-            v-on:click="add_new_infrastructure"
-        >
-          <span
-            v-text="{
-              'title_ru': 'Добавить объект', 
-              'title_kz': 'Объект қосу', 
-              'title_en': 'Add object'
-            }['title_' + lang]"
-          ></span>
-        </button>
-    </div>
+    <button class="add_infrastructure-toggler"
+        v-on:click="add_new_infrastructure"
+    >
+      <span
+        v-text="{
+          'title_ru': 'Добавить объект', 
+          'title_kz': 'Объект қосу', 
+          'title_en': 'Add object'
+        }['title_' + lang]"
+      ></span>
+    </button>
+  </div>
 </template>
 
 <script>

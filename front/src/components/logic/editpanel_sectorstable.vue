@@ -80,6 +80,19 @@
     <editpanel_editzone v-if="editzone_state" />
     <editpanel_editsector v-if="editsector_state" />
 
+    <button 
+      v-if="!editzone_state && !editsector_state && profile.member_role == 'superadmin'" 
+      class="editpanel_sectorstable-new_zone"
+      v-on:click="
+      set_crumbs_admin([crumbs_admin[0],{
+        level: 2,
+        title_ru: 'Добавление зоны',
+        title_kz: 'Аймақты қосу',
+        title_en: 'Add zone',
+      }]),
+      set_editzone_state(true)"    
+    ></button>
+
     <div v-if="!editzone_state && !editsector_state" class="editpanel_sectorstable-zones">
 
       <div v-for="zone in zone_sectors" class="editpanel_sectorstable-item">
@@ -111,6 +124,26 @@
             <div v-text="lang == 'ru' ? 'Площадь (га)' : lang == 'en' ? 'Square (ha)' : 'Площадь (га)'" class="editpanel_sectorstable-table_header_item"></div>
             <div v-text="lang == 'ru' ? 'Дата изменения' : lang == 'en' ? 'Change date' : 'Дата изменения'" class="editpanel_sectorstable-table_header_item"></div>
           </div>
+
+          <button
+            class="editpanel_sectorstable-new_zone"
+            v-if="profile.member_role == 'superadmin'"
+            :style="{ 
+              position: 'relative',
+              right: '0',
+              top: '0',
+              margin: '5px 0 5px 18px'
+             }"
+            v-on:click="
+              set_edited_zone(zone),
+              set_crumbs_admin([crumbs_admin[0],{
+                level: 2,
+                title_ru: 'Добавление сектора',
+                title_kz: 'Секторды қосу',
+                title_en: 'Add sector',
+              }]),
+              set_editsector_state(true)"
+          ></button>
       
           <div class="editpanel_sectorstable-sectors"
             v-for="sector in zone.sectors">
@@ -279,5 +312,34 @@
   }
   .editpanel_sectorstable-sector_item_title--leftpd {
     padding-left: 45px;
+  }
+
+  .editpanel_sectorstable-new_zone {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    right: 55px;
+    top: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 50%;
+    border: none;
+    background: #f1f1f1;
+    outline: none;
+    cursor: pointer;
+  }
+  .editpanel_sectorstable-new_zone:hover {
+    background: #50C7F9;
+  }
+  .editpanel_sectorstable-new_zone::after {
+    content: '';   
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    pointer-events: none;
+    position: absolute;
+    top: 16px;
+    transform: translate(-50%, -50%);
+    background-size: contain;
+    background-image: url('../../assets/images/plus.png');
   }
 </style>

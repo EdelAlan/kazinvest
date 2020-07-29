@@ -51,8 +51,8 @@ router.put('/:id', bodyparser.json(), async (req, res) => {
     ],
   );
   if (member_id.includes('@')) {
-    let text = 'Ваш профиль ' + member_id + (member_verification ? 'активирован' : 'деактивирован');
-    await mailer(el.member_id, 'Обновление статуса', text).then(res => console.log('mailer res: ' + res));
+    let text = 'Ваш профиль ' + member_id + (member_verification ? ' активирован' : ' деактивирован');
+    await mailer(member_id, 'Обновление статуса', text).then(res => console.log('mailer res: ' + res));
   }
 
   return res.json({

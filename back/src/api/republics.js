@@ -1,8 +1,9 @@
 const router = require('express-async-router').AsyncRouter();
 const body_parser = require('body-parser');
 const db_query = require('../util/db_query');
-const repfilespath = __dirname + '/../../../front/public/files/republics/';
+// const repfilespath = __dirname + '/../../../front/public/files/republics/';
 // const repfilespath = __dirname + '/../../../kazinvest/files/republics/'; 
+const repfilespath = __dirname + '/../../var/www/kazinvest/files/republics/'; 
 const decodebase64img = require('../util/decodebase64img');
 const fs = require('fs');
 
@@ -96,7 +97,7 @@ router.put('/', body_parser.json({ limit: '100mb' }), async (req, res) => {
             req.body.id,
             img_names[0][img_name_idx] ? path + img_names[0][img_name_idx] + '_ru.' + types[0][img_name_idx] : '',
             img_names[1][img_name_idx] ? path + img_names[1][img_name_idx] + '_kz.' + types[1][img_name_idx] : '',
-            img_names[2][img_name_idx] ? path + img_names[2][img_name_idx] + '._en' + types[2][img_name_idx] : '',
+            img_names[2][img_name_idx] ? path + img_names[2][img_name_idx] + '_en.' + types[2][img_name_idx] : '',
           ]);
         });
         return false;
@@ -212,7 +213,7 @@ router.put('/', body_parser.json({ limit: '100mb' }), async (req, res) => {
             req.body.id,
             file_names[0][file_name_idx] ? path + file_names[0][file_name_idx] + '_ru.' + types[0][file_name_idx] : '',
             file_names[1][file_name_idx] ? path + file_names[1][file_name_idx] + '_kz.' + types[1][file_name_idx] : '',
-            file_names[2][file_name_idx] ? path + file_names[2][file_name_idx] + '._en' + types[2][file_name_idx] : '',
+            file_names[2][file_name_idx] ? path + file_names[2][file_name_idx] + '_en.' + types[2][file_name_idx] : '',
           ]);
         });
         return false;

@@ -35,7 +35,7 @@ router.post('/', bodyparser.json(), async (req, res) => {
     });
   } 
   return res.status(404).json({
-    msg: 'userid and password in body aren\'t exists',
+    msg: 'userid and password in body dons\'t exists',
   });
 });
 

@@ -1,18 +1,18 @@
 'use strict';
-const email = require('email');
+const mail = require('sendmail')();
 
 module.exports = async (
-    to,
-    subject,
-    body
+  to,
+  subject,
+  body
 ) => {
-
-    var Email = email.Email;
-    email.from = 'interactivemap@invest.gov.kz'
-    var mail = new Email({
-      to: to,
-      subject: subject,
-      body: body
-    });
-    return mail.send();
+  return mail({
+    from: "interactivemap@invest.gov.kz", // sender address
+    to: to,
+    subject: subject,
+    text: body
+  }, (err, reply) => {
+    console.log(err && err.stack);
+    console.log(reply);
+  });
 }

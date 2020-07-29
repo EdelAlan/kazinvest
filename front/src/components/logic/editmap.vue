@@ -1,6 +1,6 @@
 <template>
-    <div id='editmap'>
-    </div>
+  <div id='editmap'>
+  </div>
 </template>
 
 <script>
@@ -687,32 +687,103 @@ export default {
         });
         this._mapboxgl_map.addControl(this.draw);
 
-        this._mapboxgl_map.on("style.load", () => {
-          this._mapboxgl_map.jumpTo(
-            {
-              center: turf.centerOfMass(
-                JSON.parse(this.edited_zone.st_asgeojson)
-              ).geometry.coordinates,
-              zoom: 13,
-              around: turf.centerOfMass(
-                JSON.parse(this.edited_zone.st_asgeojson)
-              ).geometry.coordinates
-            },
-            {
-              padding: 50
-            }
-          );
+        if (this.edited_zone) {
+          this._mapboxgl_map.on("style.load", () => {
+            this._mapboxgl_map.jumpTo(
+              {
+                center: turf.centerOfMass(
+                  JSON.parse(this.edited_zone.st_asgeojson)
+                ).geometry.coordinates,
+                zoom: 13,
+                around: turf.centerOfMass(
+                  JSON.parse(this.edited_zone.st_asgeojson)
+                ).geometry.coordinates
+              },
+              {
+                padding: 50
+              }
+            );
 
-          let geom = {
-            type: "Feature",
-            geometry: JSON.parse(this.edited_zone.st_asgeojson),
-            properties: {}
-          };
-          this.set_edited_sector_geom(geom);
-          turf.flatten(geom).features.forEach(zone => {
-            this.draw.add(zone);
+            let geom = {
+              type: "Feature",
+              geometry: JSON.parse(this.edited_zone.st_asgeojson),
+              properties: {}
+            };
+            this.set_edited_sector_geom(geom);
+            turf.flatten(geom).features.forEach(zone => {
+              this.draw.add(zone);
+            });
           });
+        }
+
+        this._mapboxgl_map.on("draw.update", () => {
+          this.set_edited_sector_geom(
+            turf.combine(this.draw.getAll()).features[0]
+          );
         });
+        this._mapboxgl_map.on("draw.create", () => {
+          this.set_edited_sector_geom(
+            turf.combine(this.draw.getAll()).features[0]
+          );
+        });
+        this._mapboxgl_map.on("draw.delete", () => {
+          this.set_edited_sector_geom(
+            turf.combine(this.draw.getAll()).features[0]
+          );
+        });
+        break;
+      case "add_sector":
+        this.draw = new MapboxDraw({
+          displayControlsDefault: false,
+          controls: {
+            polygon: true,
+            trash: true
+          }
+        });
+        this._mapboxgl_map.addControl(this.draw);
+
+        if (this.edited_zone) {
+          this._mapboxgl_map.on("style.load", () => {
+            this._mapboxgl_map.jumpTo(
+              {
+                center: turf.centerOfMass(
+                  JSON.parse(this.edited_zone.st_asgeojson)
+                ).geometry.coordinates,
+                zoom: 13,
+                around: turf.centerOfMass(
+                  JSON.parse(this.edited_zone.st_asgeojson)
+                ).geometry.coordinates
+              },
+              {
+                padding: 50
+              }
+            );
+
+            let geom = {
+              type: "Feature",
+              geometry: JSON.parse(this.edited_zone.st_asgeojson),
+              properties: {}
+            };
+
+            this._mapboxgl_map.addLayer({
+              id: 'zone',
+              type: 'line',
+              source: {
+                type: 'geojson',
+                data: turf.polygonToLine(JSON.parse(this.edited_zone.st_asgeojson))
+              },
+              layout: {
+                'line-join': 'round',
+                'line-cap': 'round'
+              },
+              paint: {
+                'line-color': '#888',
+                'line-width': 3,
+                'line-dasharray': [5, 10]
+              }
+            });
+          });
+        }
 
         this._mapboxgl_map.on("draw.update", () => {
           this.set_edited_sector_geom(
@@ -1245,21 +1316,68 @@ export default {
         break;
       case "admin":
         this._mapboxgl_map.on("style.load", () => {
-          this._mapboxgl_map.jumpTo(
-            {
-              center: turf.centerOfMass(
-                JSON.parse(this.edited_sector.old_data.st_asgeojson)
-              ).geometry.coordinates,
-              zoom: 13,
-              around: turf.centerOfMass(
-                JSON.parse(this.edited_sector.old_data.st_asgeojson)
-              ).geometry.coordinates
-            },
-            {
-              padding: 50
-            }
-          );
-          this.add_sector();
+          if (this.edited_sector.origin_title_en == 'New sector') {
+            this._mapboxgl_map.jumpTo(
+              {
+                center: turf.centerOfMass(
+                  JSON.parse(this.edited_sector.old_data.st_asgeojson)
+                ).geometry.coordinates,
+                zoom: 13,
+                around: turf.centerOfMass(
+                  JSON.parse(this.edited_sector.old_data.st_asgeojson)
+                ).geometry.coordinates
+              },
+              {
+                padding: 50
+              }
+            );
+            this.add_sector();
+
+            this._mapboxgl_map.on('mousemove', e => {
+              if (this._mapboxgl_map.isStyleLoaded()) {
+                var sectors = this._mapboxgl_map.queryRenderedFeatures(e.point, {
+                  layers: ['current-sector', 'processing-sector', 'free-sector', 'current-sector-multi', 'processing-sector-multi', 'free-sector-multi']
+                });
+                if (sectors[0]) {
+                  this._mapboxgl_map.getCanvas().style.cursor = 'pointer';
+
+                  this.show_popup({
+                    is_piechart: false,
+                    pageX: e.originalEvent.pageX - 480,
+                    pageY: e.originalEvent.pageY - 7,
+                    feature: sectors[0]
+                  });
+                }
+              }
+            });
+
+            this._mapboxgl_map.on('mouseleave', 'current-sector', e => {
+              this._mapboxgl_map.getCanvas().style.cursor = '';
+              this.show_popup();
+            });
+            this._mapboxgl_map.on('mouseleave', 'processing-sector', e => {
+              this._mapboxgl_map.getCanvas().style.cursor = '';
+              this.show_popup();
+            });
+            this._mapboxgl_map.on('mouseleave', 'free-sector', e => {
+              this._mapboxgl_map.getCanvas().style.cursor = '';
+              this.show_popup();
+            });
+
+            this._mapboxgl_map.on('mouseleave', 'current-sector-multi', e => {
+              this._mapboxgl_map.getCanvas().style.cursor = '';
+              this.show_popup();
+            });
+            this._mapboxgl_map.on('mouseleave', 'processing-sector-multi', e => {
+              this._mapboxgl_map.getCanvas().style.cursor = '';
+              this.show_popup();
+            });
+            this._mapboxgl_map.on('mouseleave', 'free-sector-multi', e => {
+              this._mapboxgl_map.getCanvas().style.cursor = '';
+              this.show_popup();
+            });
+          }
+          
           this._mapboxgl_map.addLayer({
             id: 'zone',
             type: 'line',
@@ -1276,50 +1394,6 @@ export default {
               'line-width': 3,
               'line-dasharray': [5, 10]
             }
-          });
-
-          this._mapboxgl_map.on('mousemove', e => {
-            if (this._mapboxgl_map.isStyleLoaded()) {
-              var sectors = this._mapboxgl_map.queryRenderedFeatures(e.point, {
-                layers: ['current-sector', 'processing-sector', 'free-sector', 'current-sector-multi', 'processing-sector-multi', 'free-sector-multi']
-              });
-              if (sectors[0]) {
-                this._mapboxgl_map.getCanvas().style.cursor = 'pointer';
-
-                this.show_popup({
-                  is_piechart: false,
-                  pageX: e.originalEvent.pageX - 480,
-                  pageY: e.originalEvent.pageY - 7,
-                  feature: sectors[0]
-                });
-              }
-            }
-          });
-
-          this._mapboxgl_map.on('mouseleave', 'current-sector', e => {
-            this._mapboxgl_map.getCanvas().style.cursor = '';
-            this.show_popup();
-          });
-          this._mapboxgl_map.on('mouseleave', 'processing-sector', e => {
-            this._mapboxgl_map.getCanvas().style.cursor = '';
-            this.show_popup();
-          });
-          this._mapboxgl_map.on('mouseleave', 'free-sector', e => {
-            this._mapboxgl_map.getCanvas().style.cursor = '';
-            this.show_popup();
-          });
-
-          this._mapboxgl_map.on('mouseleave', 'current-sector-multi', e => {
-            this._mapboxgl_map.getCanvas().style.cursor = '';
-            this.show_popup();
-          });
-          this._mapboxgl_map.on('mouseleave', 'processing-sector-multi', e => {
-            this._mapboxgl_map.getCanvas().style.cursor = '';
-            this.show_popup();
-          });
-          this._mapboxgl_map.on('mouseleave', 'free-sector-multi', e => {
-            this._mapboxgl_map.getCanvas().style.cursor = '';
-            this.show_popup();
           });
         });
         break;

@@ -18,22 +18,28 @@ nodeup:
 	cd ../back && \
 	npm install
 
+# pub:
+# 	cd ./front && npm run build && \
+# 	mv dist ./kazinvest && cd .. && \
+# 	scp -P 7722 -r ./front/kazinvest ${DEVSERVER}:/home/administrator && \
+# 	rm -rf ./front/kazinvest && \
+# 	mv ./back/node_modules . && \
+# 	scp -P 7722 -r ./back ${DEVSERVER}:/home/administrator/ && \
+# 	mv ./node_modules ./back
+# 	ssh ${DEVSERVER} -p 7722 ' \
+# 		rm -rf /home/administrator/kazinvest-back && \
+# 		mv /home/administrator/back /home/administrator/kazinvest-back && \
+# 		cd /home/administrator/kazinvest-back/ && \
+# 		npm install && \
+# 		forever stop 0 && \
+# 		forever start index.js \
+# 	'
+
 pub:
 	cd ./front && npm run build && \
 	mv dist ./kazinvest && cd .. && \
-	scp -r ./front/kazinvest ${DEVSERVER}:/srv/ && \
-	rm -rf ./front/kazinvest && \
-	mv ./back/node_modules . && \
-	scp -r ./back ${DEVSERVER}:/srv/ && \
-	mv ./node_modules ./back
-	ssh ${DEVSERVER} ' \
-		rm -rf /srv/kazinvest-back && \
-		mv /srv/back /srv/kazinvest-back && \
-		cd /srv/kazinvest-back/ && \
-		npm install && \
-		forever stop 0 && \
-		forever start index.js \
-	'
+	scp -P 7722 -r ./front/kazinvest ${DEVSERVER}:/home/administrator/ && \
+	rm -rf ./front/kazinvest
 
 some:
 	mv ./back/node_modules .

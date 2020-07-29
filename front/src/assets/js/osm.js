@@ -22,7 +22,7 @@ export default () => ({
     },
     'openmaptiles': {
         'type': 'vector',
-        'tiles': ['https://tile.kagis.kz/openmaptiles/data/v3/{z}/{x}/{y}.pbf?key=egrA25FNSYcFuvl6Lb8Y'],
+        'tiles': ['https://tile.kagis.kz/openmaptiles/tiles/v3/{z}/{x}/{y}.pbf?key=egrA25FNSYcFuvl6Lb8Y'],
         'minzoom': 0,
         'maxzoom': 14,
     },  
@@ -32,7 +32,7 @@ export default () => ({
     }
   },
   'sprite': 'mapbox://sprites/alanedel/cjm8zxhak2s1i2sn29k3p7b8n',
-  'glyphs': 'https://free.tilehosting.com/fonts/{fontstack}/{range}.pbf?key=hWWfWrAiWGtv68r8wA6D',
+  'glyphs': 'https://tile.kagis.kz/openmaptiles/fonts/{fontstack}/{range}.pbf?key=egrA25FNSYcFuvl6Lb8Y',
   'layers': [
       {
         "id": "background",

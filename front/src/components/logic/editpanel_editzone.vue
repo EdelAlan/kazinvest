@@ -13,27 +13,27 @@ export default {
   data() {
     return {
       zonemodel: {
-        id: null,
-        title_ru: null,
-        title_kz: null,
-        title_en: null,
-        status: null,
-        zone_time: null,
-        zone_type: null,
-        description_ru: null,
-        description_kz: null,
-        description_en: null,
-        region_description_ru: null,
-        region_description_kz: null,
-        region_description_en: null,
-        contacts_ru: null,
-        contacts_kz: null,
-        contacts_en: null,
-        geom: null,
+        id: '',
+        title_ru: '',
+        title_kz: '',
+        title_en: '',
+        status: 0,
+        zone_time: '',
+        zone_type: '',
+        description_ru: '',
+        description_kz: '',
+        description_en: '',
+        region_description_ru: '',
+        region_description_kz: '',
+        region_description_en: '',
+        contacts_ru: '',
+        contacts_kz: '',
+        contacts_en: '',
+        geom: '',
 
-        files: null,
-        videos: null,
-        photos: null,
+        files: [],
+        videos: [],
+        photos: [],
 
         new_photos: {
           ru: [],
@@ -56,7 +56,7 @@ export default {
 
         budget_allocated: null,
         budget_need: null,
-        level: null
+        level: 0,
       },
 
       selected_image: "",
@@ -93,6 +93,7 @@ export default {
 
   methods: {
     ...mapActions([
+      "add_zone",
       "update_zone",
       "set_basemap",
       "show_on_map",
@@ -175,22 +176,24 @@ export default {
   },
 
   mounted() {
-    Object.keys(this.zonemodel)
-      .filter(
-        it => it != "new_photos" && it != "new_video" && it != "new_files"
-      )
-      .forEach(it => {
-        if (it == "title_ru" || it == "title_kz" || it == "title_en") {
-          this.zonemodel[it] = this.edited_zone[it].slice(4);
-          return;
-        }
-        this.zonemodel[it] = this.edited_zone[it];
-      });
+    if (this.edited_zone) {
+      Object.keys(this.zonemodel)
+        .filter(
+          it => it != "new_photos" && it != "new_video" && it != "new_files"
+        )
+        .forEach(it => {
+          if (it == "title_ru" || it == "title_kz" || it == "title_en") {
+            this.zonemodel[it] = this.edited_zone[it].slice(4);
+            return;
+          }
+          this.zonemodel[it] = this.edited_zone[it];
+        });
 
-    this.set_infrastructures_list();
-    this.set_objects_list();
-    this.set_infrastructures();
-    this.set_objects();
+      this.set_infrastructures_list();
+      this.set_objects_list();
+      this.set_infrastructures();
+      this.set_objects();
+    }
 
     this.remove_all_new_infrastructure();
   }
@@ -226,13 +229,18 @@ export default {
       />
     </modal>
 
-    <h2 class="editpanel_editzone-title" v-text="edited_zone['title_' + lang]"></h2>
-    <h3 class="editpanel_editzone-last_title">Предыдущее согласование: {{edited_zone.last_updated_member}}, {{edited_zone.last_updated_date ? edited_zone.last_updated_date.replace('T', ' ').slice(0, 19) : ''}} </h3>
+    <div v-if="edited_zone">
+      <h2 class="editpanel_editzone-title" v-text="edited_zone['title_' + lang]"></h2>
+      <h3 class="editpanel_editzone-last_title">Предыдущее согласование: {{edited_zone.last_updated_member}}, {{edited_zone.last_updated_date ? edited_zone.last_updated_date.replace('T', ' ').slice(0, 19) : ''}} </h3>
+    </div>
+    <div v-else>
+      <h2 class="editpanel_editzone-title" v-text="zonemodel['title_' + lang]"></h2>
+    </div>
 
 
     <div class="editpanel_editzone_reconciliation-buttons"
       :style="{ top: '0' }">
-      <button class="editpanel_editzone_reconciliation-button" v-on:click="update_zone(zonemodel)" 
+      <button class="editpanel_editzone_reconciliation-button" v-on:click="edited_zone ? update_zone(zonemodel) : add_zone(zonemodel)" 
         v-text="lang == 'ru' ? 'Сохранить' : lang == 'en' ? 'Save' : 'Cақтау'"
       ></button>
     </div>
@@ -263,7 +271,9 @@ export default {
         </span>        
       </span>
       
-      <span slot="tab_title_2">
+      <span slot="tab_title_2"
+        v-if="edited_zone"
+      >
         <span class="sidebar-tab">
           <span class="sidebar-tab_icon"></span>
           <span class="sidebar-tab_title"
@@ -281,10 +291,29 @@ export default {
           <input class="editpanel_editzone-input"
             v-model="zonemodel['title_' + lang]"
           />
+
+          <p class="editpanel_editzone_reconciliation-tab-title"
+            v-text="lang == 'ru' ? 'Тип зоны' : lang == 'en' ? 'Zone type': 'Аймақтың түрі'"
+          ></p>
+          <select 
+            class="editpanel_editzone-input"
+            v-model="zonemodel.zone_type"
+          >
+            <option 
+              value=1
+              :selected="zonemodel.zone_type == 1"
+              v-text="lang == 'ru' ? 'СЭЗ' : lang == 'kz' ? 'АЭА' : 'SEZ'"
+            ></option> 
+            <option 
+              value=2
+              :selected="zonemodel.zone_type == 2"
+              v-text="lang == 'ru' ? 'ИЗ' : lang == 'kz' ? 'ИА' : 'IZ'"
+            ></option>
+          </select>
+
           <h3 class="editpanel_editzone_reconciliation-tab-title"
             v-text="lang == 'ru' ? 'Описание' : lang == 'en' ? 'Description' : 'Сипаттама'"
           ></h3>
-      
           <wysiwyg v-model="zonemodel['description_' + lang]" />
 
           <h3 class="editpanel_editzone_reconciliation-tab-title"
@@ -451,7 +480,9 @@ export default {
           v-model="zonemodel.level"/>
       </div>
 
-      <div class="editpanel_editzone-tab editpanel_editzone-container" slot="tab_2">
+      <div class="editpanel_editzone-tab editpanel_editzone-container" slot="tab_2"
+        v-if="edited_zone"
+      >
 
         <div class="map-container-inf">
           <editmap class="editpanel_editzone-map"

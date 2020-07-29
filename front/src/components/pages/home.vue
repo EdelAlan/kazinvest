@@ -42,6 +42,7 @@
       'levels',
       'profile',
       'signup_success',
+      'all_zones',
     ]),
 
 		methods: {
@@ -57,6 +58,7 @@
         'set_provinces_filter',
         'set_search_string',
         'signout',
+        'set_all_zones',
       ]),
       async find() {
         this.$router.push('/map?' + this.search_query);
@@ -87,6 +89,7 @@
 		},
 
     async mounted () {
+      await this.set_all_zones();
       await this.set_provinces({
         query: this.$route.query, 
         not_selected: true,
@@ -320,7 +323,9 @@
 
             <div class="btn_group">
                 <router-link class="btn category" to="/map?zone_filter=[2]">
-                  <div class="count">11</div>
+                  <div class="count"
+                    v-text="all_zones.filter(zone => zone.zone_type == 1).length"
+                  ></div>
                   <p class="title"
                     v-text="{
                       'title_ru': 'Специальные экономические зоны (СЭЗ)', 
@@ -331,7 +336,9 @@
                 </router-link>
 
                 <router-link class="btn category" to="/map?zone_filter=[1]">
-                  <div class="count">24</div>
+                  <div class="count"
+                    v-text="all_zones.filter(zone => zone.zone_type == 2).length"
+                  ></div>
                   <p class="title"
                     v-text="{
                       'title_ru': 'Индустриальные зоны (ИЗ)', 

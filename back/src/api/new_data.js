@@ -77,12 +77,12 @@ router.put('/zone', body_parser.json({
     ).then(async _ => {
         const admins = await db_query(`SELECT member_id FROM member WHERE member_role = 'superadmin'`);
         admins.forEach(async el => {
-        if (el.member_id.includes('@')) {
-            let text = 'Новая заявка на подтверждение редактирования зоны от: ' + member_id + ', ' 
-                + member_firstname + ' ' + member_lastname + '\n'
-                + 'Наименование зоны: ' + origin_title_ru;
-            await mailer(el.member_id, 'Редактирование зоны',  text).then(res => console.log('mailer res: ' + res));
-        }
+            if (el.member_id.includes('@')) {
+                let text = 'Новая заявка на подтверждение редактирования зоны от: ' + member_id + ', ' 
+                    + member_firstname + ' ' + member_lastname + '\n'
+                    + 'Наименование зоны: ' + origin_title_ru;
+                await mailer(el.member_id, 'Редактирование зоны',  text).then(res => console.log('mailer res: ' + res));
+            }
         });
         res.json({
             msg: 'new data zone updated',

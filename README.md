@@ -5,6 +5,10 @@
 ### Запуск фронта
 
 ```
+redis-server
+```
+
+```
 make f
 ```
 http://localhost:8080

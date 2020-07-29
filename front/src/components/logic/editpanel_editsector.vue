@@ -12,7 +12,7 @@
       return {
         sectormodel: {
           id: null,
-          zone_id: null,
+          zone_id: 0,
           area: null,
           comment: null,
           contacts_en: null,
@@ -21,7 +21,7 @@
           current_status_en: null,
           current_status_kz: null,
           current_status_ru: null,
-          divisible: null,
+          divisible: 0,
           foreign_participation: null,
           indicators_en:null,
           indicators_kz:null,
@@ -29,18 +29,18 @@
           infrastructural_en:null,
           infrastructural_kz:null,
           infrastructural_ru:null,
-          plan_jobs: null,
+          plan_jobs: 0,
           power: null,
           products_en: null,
           products_kz: null,
           products_ru: null,
           project_date: null,
-          project_price: null,
-          project_type: null,
+          project_price: 0,
+          project_type: 0,
           sef: null,
           st_asgeojson: null,
           geom: null,
-          status: null,
+          status: 1,
           time_realization_en: null,
           time_realization_kz: null,
           time_realization_ru: null,
@@ -51,9 +51,9 @@
           title_project_kz: null,
           title_project_ru: null,
           
-          photos: null,
-          videos: null,
-          files: null,
+          photos: [],
+          videos: [],
+          files: [],
 
           new_photos: {
             ru: [],
@@ -74,47 +74,47 @@
             en: [],
           },
 
-          investments2014: null,
-          investments2015: null,
-          investments2016: null,
-          investments2017: null,
-          investments2018: null,
+          investments2014: 0,
+          investments2015: 0,
+          investments2016: 0,
+          investments2017: 0,
+          investments2018: 0,
 
-          production2014: null,
-          production2015: null,
-          production2016: null,
-          production2017: null,
-          production2018: null,
+          production2014: 0,
+          production2015: 0,
+          production2016: 0,
+          production2017: 0,
+          production2018: 0,
 
-          foreign_investments2014: null,
-          foreign_investments2015: null,
-          foreign_investments2016: null,
-          foreign_investments2017: null,
-          foreign_investments2018: null,
+          foreign_investments2014: 0,
+          foreign_investments2015: 0,
+          foreign_investments2016: 0,
+          foreign_investments2017: 0,
+          foreign_investments2018: 0,
 
-          number_jobs2014: null,
-          number_jobs2015: null,
-          number_jobs2016: null,
-          number_jobs2017: null,
-          number_jobs2018: null,
+          number_jobs2014: 0,
+          number_jobs2015: 0,
+          number_jobs2016: 0,
+          number_jobs2017: 0,
+          number_jobs2018: 0,
 
-          taxes2014: null,
-          taxes2015: null,
-          taxes2016: null,
-          taxes2017: null,
-          taxes2018: null,
+          taxes2014: 0,
+          taxes2015: 0,
+          taxes2016: 0,
+          taxes2017: 0,
+          taxes2018: 0,
 
-          exports_volume2014: null,
-          exports_volume2015: null,
-          exports_volume2016: null,
-          exports_volume2017: null,
-          exports_volume2018: null,
+          exports_volume2014: 0,
+          exports_volume2015: 0,
+          exports_volume2016: 0,
+          exports_volume2017: 0,
+          exports_volume2018: 0,
 
-          spent_foreign_investments2014: null,
-          spent_foreign_investments2015: null,
-          spent_foreign_investments2016: null,
-          spent_foreign_investments2017: null,
-          spent_foreign_investments2018: null,
+          spent_foreign_investments2014: 0,
+          spent_foreign_investments2015: 0,
+          spent_foreign_investments2016: 0,
+          spent_foreign_investments2017: 0,
+          spent_foreign_investments2018: 0,
         },
 
         selected_image: '',
@@ -133,6 +133,7 @@
     computed: mapGetters([
       'lang',
       'profile',
+      'edited_zone',
       'edited_sector',
       'edited_sector_geom',
       'image_modal',
@@ -145,6 +146,7 @@
 
     methods: {
       ...mapActions([
+        'add_sector',
         'update_sector',
         'set_basemap',
         'set_reset_sector',
@@ -193,11 +195,14 @@
     },
 
     mounted () {
-      console.log(this.edited_sector)
-      Object.keys(this.sectormodel).filter(it => it != 'new_photos' && it != 'new_video' && it != 'new_files').forEach(it => {
-        this.sectormodel[it] = this.edited_sector[it];
-      });
-      this.set_zone(this.edited_sector.zone_id);
+      if (!this.edited_zone) {
+        Object.keys(this.sectormodel).filter(it => it != 'new_photos' && it != 'new_video' && it != 'new_files').forEach(it => {
+          this.sectormodel[it] = this.edited_sector[it];
+        });
+        this.set_zone(this.edited_sector.zone_id);
+      } else {
+        this.sectormodel.zone_id = this.edited_zone.id;
+      }
     }
   }
 </script>
@@ -235,7 +240,7 @@
 
     <div class="editpanel_editzone_reconciliation-buttons"
       :style="{ top: '0' }">
-      <button class="editpanel_editzone_reconciliation-button" v-on:click="update_sector(sectormodel)" 
+      <button class="editpanel_editzone_reconciliation-button" v-on:click="edited_sector ? update_sector(sectormodel) : add_sector(sectormodel)" 
         v-text="lang == 'ru' ? 'Сохранить' : lang == 'en' ? 'Save' : 'Cақтау'"
       ></button>
     </div>
@@ -539,7 +544,7 @@
         <div class="map-container">
 
           <editmap class="editpanel_editsector-map"
-            :is_sector="'sector'"
+            :is_sector="edited_sector ? 'sector' : 'add_sector'"
           />
           <reset_sector_map
             :style="{ top: '220px', right: '10px', position: 'absolute' }"
